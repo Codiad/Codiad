@@ -166,7 +166,7 @@ if(!$workspace || !$data || !$config){
             
             empty_fields = false;
             $('input').each(function(){
-                if($(this).val()==''){ empty_fields = true; }
+                if($(this).val()=='' && $(this).attr('name')!='path'){ empty_fields = true; }
             });
             
             if(empty_fields){ alert('All fields must be filled out'); }
