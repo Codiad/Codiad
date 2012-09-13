@@ -179,6 +179,22 @@ var editor = {
         i.on('change',function(){
             active.mark_changed();
         });
+    },
+    
+    //////////////////////////////////////////////////////////////////
+    // Get Selected Text
+    //////////////////////////////////////////////////////////////////
+    
+    get_selected_text : function(id){
+        return editor_instance[id].getCopyText();
+    },
+    
+    //////////////////////////////////////////////////////////////////
+    // Insert text
+    //////////////////////////////////////////////////////////////////
+    
+    insert_text : function(id,val){
+        editor_instance[id].insert(val);
     }
 
 }
