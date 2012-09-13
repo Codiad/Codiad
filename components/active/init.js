@@ -185,6 +185,22 @@ var active = {
         }else{
             message.error('No Open Files');
         }
+    },
+    
+    //////////////////////////////////////////////////////////////////
+    // Get Selected Text
+    //////////////////////////////////////////////////////////////////
+    
+    get_selected_text : function(){
+        return editor.get_selected_text(active.get_id());
+    },
+    
+    //////////////////////////////////////////////////////////////////
+    // Insert Text
+    //////////////////////////////////////////////////////////////////
+    
+    insert_text : function(val){
+        editor.insert_text(active.get_id(),val);
     }
 
 };
