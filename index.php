@@ -70,7 +70,7 @@
     
         <div id="sb-left" class="sidebar">
         
-            <a id="lock-left-sidebar" title="Lock / Unlock Sidebar" class="icon">U</a>
+            <!--<a id="lock-left-sidebar" title="Lock / Unlock Sidebar" class="icon">U</a>-->
         
             <div class="sb-left-content">
         
