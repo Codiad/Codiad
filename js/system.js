@@ -123,6 +123,7 @@ var sidebars = {
         this.user_lock();
         
         // Left Column Slider
+        /* Not working with ACE, need to fix
         $("#sb-left").hover(function() {
             var timeout_l = $(this).data("timeout_l");
             if(timeout_l){ clearTimeout(timeout_l); }
@@ -136,6 +137,7 @@ var sidebars = {
                 },this), 500));
              }
          });
+         */
          
          // Right Column Slider
          $("#sb-right").hover(function() {
