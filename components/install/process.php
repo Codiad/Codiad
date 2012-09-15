@@ -108,9 +108,9 @@ date_default_timezone_set("' . $timezone . '");
 // SESSIONS
 //////////////////////////////////////////////////////////////////
 
-session_start();
 ini_set("session.cache_expire",360000);
 ini_set("session.gc_maxlifetime", "3600000");
+session_start();
 
 //////////////////////////////////////////////////////////////////
 // COMMON
