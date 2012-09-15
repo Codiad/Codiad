@@ -17,7 +17,7 @@
         $key = "";
         if(isset($_GET['key'])){ $key = $_GET['key']; }
         if(!isset($_SESSION['user']) && !in_array($key,$api_keys)){
-            exit('Authentication Failure');
+            exit('{"status":"error","message":"Authentication Error"}');
         }
     }
 
