@@ -48,7 +48,13 @@ class Filemanager {
         if(!empty($get['type'])){ $this->type = $get['type']; }
         // Modify\Create
         if(!empty($get['new_name'])){ $this->new_name = $get['new_name']; }
-        if(!empty($post['content'])){ $this->content = stripslashes($post['content']); }
+        if(!empty($post['content'])){ 
+            if(get_magic_quotes_gpc()){
+                $this->content = stripslashes($post['content']); 
+            }else{
+                $this->content = $post['content'];
+            }
+        }
         // Duplicate
         if(!empty($get['destination'])){ $this->destination = $this->root . $get['destination']; }
     }
