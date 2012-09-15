@@ -221,9 +221,7 @@ class Filemanager {
         if($this->content){
             if(is_file($this->path)){
                 if($file = fopen($this->path, 'w')){            
-                    $code = $this->content;
-                    if(get_magic_quotes_gpc()){ $code = stripslashes($code); }
-                    fwrite($file, $code);
+                    fwrite($file, $this->content);
                     fclose($file);
                     $this->status = "success";
                 }else{
