@@ -264,7 +264,7 @@ var filemanager = {
     // Copy to Clipboard
     //////////////////////////////////////////////////////////////////
     
-    copy_node : function(path){ this.clipboard = path; },
+    copy_node : function(path){ this.clipboard = path; message.success('Copied to Clipboard'); },
     
     //////////////////////////////////////////////////////////////////
     // Paste
