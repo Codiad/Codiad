@@ -145,7 +145,7 @@
         // JS
         foreach($components as $component){
             if(file_exists(COMPONENTS . "/" . $component . "/init.js")){
-                echo("<script src="components/$component/init.js"></script>n");
+                echo('<script src="components/'.$component.'/init.js"></script>"');
             }
         }
         
@@ -153,7 +153,7 @@
         // CSS
         foreach($components as $component){
             if(file_exists(COMPONENTS . "/" . $component . "/screen.css")){
-                echo("<link rel="stylesheet" href="components/$component/screen.css">n");
+                echo('<link rel="stylesheet" href="components/'.$component.'/screen.css">');
             }
         }
     
