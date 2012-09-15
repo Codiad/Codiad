@@ -1,3 +1,4 @@
+# Ignore the following:
 config.php
 workspace
 data
