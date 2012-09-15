@@ -98,7 +98,7 @@
     
         </div>
     
-        <div id="editor-region"></div>
+        <div id="editor-region"></div> 
     
         <div id="sb-right" class="sidebar">
         
