@@ -70,8 +70,6 @@
     
         <div id="sb-left" class="sidebar">
         
-            <!--<a id="lock-left-sidebar" title="Lock / Unlock Sidebar" class="icon">U</a>-->
-        
             <div class="sb-left-content">
         
                 <div id="context-menu" data-path="" data-type="">
@@ -147,7 +145,7 @@
         // JS
         foreach($components as $component){
             if(file_exists(COMPONENTS . "/" . $component . "/init.js")){
-                echo("<script src=\"components/$component/init.js\"></script>\n");
+                echo("<script src="components/$component/init.js"></script>n");
             }
         }
         
@@ -155,7 +153,7 @@
         // CSS
         foreach($components as $component){
             if(file_exists(COMPONENTS . "/" . $component . "/screen.css")){
-                echo("<link rel=\"stylesheet\" href=\"components/$component/screen.css\">\n");
+                echo("<link rel="stylesheet" href="components/$component/screen.css">n");
             }
         }
     
