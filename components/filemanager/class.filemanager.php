@@ -348,4 +348,8 @@ class Filemanager {
     
 }
     
+<<<<<<< HEAD
 ?>
+=======
+?>
+>>>>>>> 8d9b6b84a16dcbfcdbe2893c5ad03ce8dd291ea0
