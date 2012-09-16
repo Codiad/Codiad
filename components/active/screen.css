@@ -4,7 +4,7 @@
 
     #active-files a { display: block; padding: 5px 45px 5px 10px; margin: 5px 0; border-radius: 5px; line-height: 150%; font-size: 12px; word-break: break-all; background-color: #262626; } 
     #active-files a:hover, #active-files a.active { background-color: #474747; }
-    #active-files a.changed { border: 2px solid #878787; border-top: 0; border-bottom: 0; }
+    #active-files a.changed { border: 3px solid #878787; border-top: 0; border-bottom: 0; }
     #active-files div {  }
     #active-files a span { display: block; float: right; margin: 1px -40px 0 10px; padding: 1px 4px 2px 4px; color: transparent; background: none; border-radius: 5px; line-height: 100%; }
     #active-files a span:after { content: 'x'; }

@@ -215,7 +215,7 @@ var editor = {
     cursor_tracking : function(id){
         clearInterval(cursorpoll);
         cursorpoll = setInterval(function(){
-            $('#cursor-position').html('Ln: '+editor_instance[id].getCursorPosition().row+' &middot; Col: '+editor_instance[id].getCursorPosition().column);
+            $('#cursor-position').html('Ln: '+(editor_instance[id].getCursorPosition().row+1)+' &middot; Col: '+editor_instance[id].getCursorPosition().column);
         },100);
     }
     
