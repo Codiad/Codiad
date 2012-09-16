@@ -161,6 +161,8 @@ var active = {
     //////////////////////////////////////////////////////////////////
     
     rename : function(old_path,new_path){
+        if($('#current-file').html()==old_path){ $('#current-file').html(new_path); }
+        $.get(active.controller+'?action=rename&old_path='+old_path+'&new_path='+new_path);
         $('#active-files a').each(function(){
             cur_path = $(this).attr('data-path');
             new_path = cur_path.replace(old_path,new_path);

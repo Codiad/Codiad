@@ -14,6 +14,7 @@ class Active {
     
     public $username    = "";
     public $path        = "";
+    public $new_path    = "";
     public $actives     = "";
     
     //////////////////////////////////////////////////////////////////
@@ -80,6 +81,23 @@ class Active {
             saveJSON('active.php',$this->actives);
             echo formatJSEND("success");
         }
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Rename File
+    //////////////////////////////////////////////////////////////////
+    
+    public function Rename(){
+        $revised_actives = array();
+        foreach($this->actives as $active=>$data){
+            if($data['username']==$this->username && $data['path']==$this->path){
+                $revised_actives[] = array("username"=>$data['username'],"path"=>$this->new_path);
+            }else{
+                $revised_actives[] = array("username"=>$data['username'],"path"=>$data['path']);
+            }
+        }
+        saveJSON('active.php',$revised_actives);
+        echo formatJSEND("success");
     }
     
     //////////////////////////////////////////////////////////////////
