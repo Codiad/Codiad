@@ -31,7 +31,7 @@ var active = {
         // Open saved-state active files on load
         $.get(active.controller+'?action=list',function(data){
             var list_response = jsend.parse(data);
-            if(list_response!=null){
+            if(list_response!==null){
                 $.each(list_response, function(index, value) { 
                     filemanager.open_file(value);
                 });
@@ -92,11 +92,15 @@ var active = {
     //////////////////////////////////////////////////////////////////
     
     focus : function(path){
-        if(editor.get_id(path)!=null){
+        if(editor.get_id(path)!==null){
             var id = editor.get_id(path);
             $('.editor').removeClass('active').hide();
             $('#editor'+id).addClass('active').show();
             editor.resize(id);
+            editor.focus(id);
+            // Prevent weird editor issues
+            setTimeout(function(){ editor.cursor_tracking(id); },500);
+            $('#current-file').html(path);
         }
         $('#active-files a').removeClass('active');
         $('#active-files a[data-path="'+path+'"]').addClass('active');
@@ -133,13 +137,18 @@ var active = {
     //////////////////////////////////////////////////////////////////
     
     remove : function(path){
-        if(editor.get_id(path)!=null){
+        if(editor.get_id(path)!==null){
             if($('#active-files a[data-path="'+path+'"]').hasClass('changed')){
                 close_file = confirm('Close file without saving changes?');
             }else{
                 close_file = true;
             }
             if(close_file){
+                if($('#active-files a[data-path="'+path+'"]').hasClass('active')){
+                   $('#current-file').html('');
+                   clearInterval(cursorpoll);
+                   $('#cursor-position').html('Ln: 0 &middot; Col: 0');
+                }
                 $('#editor'+editor.get_id(path)).remove();
                 $('#active-files a[data-path="'+path+'"]').remove();
                 $.get(active.controller+'?action=remove&path='+path);

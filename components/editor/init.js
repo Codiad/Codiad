@@ -7,6 +7,7 @@
 editor_instance = {}; // Instances array
 editor_modes = {}; // Loaded modes
 editor_count = 0; // Counter for incrementing instances
+cursorpoll = null;
 
 var editor = {
     
@@ -36,7 +37,7 @@ var editor = {
             this.set_print_margin(false,editor_instance[editor_count]);
             this.set_highlight_line(true,editor_instance[editor_count]);
             this.set_indent_guides(true,editor_instance[editor_count]);
-            this.change_listener(editor_instance[editor_count],editor_count);
+            this.change_listener(editor_instance[editor_count]);
             
             // Add to active list
             active.add(path);
@@ -128,7 +129,7 @@ var editor = {
     //////////////////////////////////////////////////////////////////
     
     set_highlight_line : function(h,i){
-        i.setHighlightActiveLine(h)
+        i.setHighlightActiveLine(h);
     },
     
     //////////////////////////////////////////////////////////////////
@@ -169,7 +170,8 @@ var editor = {
     
     resize : function(id){
         editor_instance[id].resize();
-        $('.editor').css({'width':$(window).outerWidth()-310+'px','height':$(window).outerHeight()+'px'});
+        $('.editor').css({'width':$(window).outerWidth()-310+'px','height':$(window).outerHeight()-25+'px'});
+        $('#editor-bottom-bar').css({ 'width' : $(window).outerWidth()-310+'px' });
     },
     
     //////////////////////////////////////////////////////////////////
@@ -196,6 +198,26 @@ var editor = {
     
     insert_text : function(id,val){
         editor_instance[id].insert(val);
+    },
+    
+    //////////////////////////////////////////////////////////////////
+    // Focus
+    //////////////////////////////////////////////////////////////////
+    
+    focus : function(id){ 
+        editor_instance[id].focus();  
+    },
+    
+    //////////////////////////////////////////////////////////////////
+    // Cursor Tracking
+    //////////////////////////////////////////////////////////////////
+    
+    cursor_tracking : function(id){
+        clearInterval(cursorpoll);
+        cursorpoll = setInterval(function(){
+            $('#cursor-position').html('Ln: '+editor_instance[id].getCursorPosition().row+' &middot; Col: '+editor_instance[id].getCursorPosition().column);
+        },100);
     }
+    
 
-}
+};

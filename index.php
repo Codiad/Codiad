@@ -98,7 +98,16 @@
     
         </div>
     
-        <div id="editor-region"></div> 
+        <div id="editor-region">
+        
+            <div id="editor-bottom-bar">
+                <div id="current-file"></div>
+                <div id="cursor-position">CURSOR</div>
+            </div>
+        
+        </div>
+        
+        
     
         <div id="sb-right" class="sidebar">
         
