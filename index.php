@@ -115,19 +115,25 @@
         
             <div class="sb-right-content">
             
-                <a onclick="active.save();"><span class="icon">x</span>Save File</a>
+                <?php
                 
-                <hr>
+                ////////////////////////////////////////////////////////////
+                // Load Right Bar
+                ////////////////////////////////////////////////////////////
                 
-                <a onclick="project.list();"><span class="icon">t</span>Projects</a>
+                $right_bar = file_get_contents(COMPONENTS . "/right_bar.json");
+                $right_bar = json_decode($right_bar,true);
+                foreach($right_bar as $item=>$data){
+                    
+                    if($data['title']=='break'){
+                        echo("<hr>");
+                    }else{
+                        echo('<a onclick="'.$data['onclick'].'"><span class="icon">'.$data['icon'].'</span>'.$data['title'].'</a>');
+                    }
+                    
+                }
                 
-                <hr>
-                
-                <a onclick="user.list();"><span class="icon">,</span>Users</a>
-                
-                <hr>
-                
-                <a onclick="user.logout();"><span class="icon">/</span>Log Out</a>
+                ?>
             
             </div>
 
