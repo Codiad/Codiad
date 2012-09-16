@@ -10,6 +10,16 @@
         "onclick": null
     },
     {
+        "title": "Color Tool",
+        "icon": "F",
+        "onclick": "color_picker.open();"
+    },
+    {
+        "title": "break",
+        "icon": null,
+        "onclick": null
+    },
+    {
         "title": "Projects",
         "icon": "t",
         "onclick": "project.list();"
