@@ -37,6 +37,7 @@
         
             // Get projects JSON data
             $projects = getJSON('projects.php');
+            sort($projects);
             foreach($projects as $project=>$data){        
             ?>
             <tr>
