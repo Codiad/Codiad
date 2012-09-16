@@ -115,29 +115,8 @@ var message = {
 
 var sidebars = {
 
-    lock_left : false,
-    lock_left_user : true,
 
     init : function(){
-    
-        this.user_lock();
-        
-        // Left Column Slider
-        /* Not working with ACE, need to fix
-        $("#sb-left").hover(function() {
-            var timeout_l = $(this).data("timeout_l");
-            if(timeout_l){ clearTimeout(timeout_l); }
-            $('#editor-region').animate({'margin-left':'300px'},300,'easeOutQuart');
-            $(this).animate({'left':'0px'},300,'easeOutQuart');
-         },function() {
-             if(!sidebars.lock_left && !sidebars.lock_left_user){
-                $(this).data("timeout_l", setTimeout($.proxy(function() {
-                    $(this).animate({'left':'-290px'},300,'easeOutQuart');
-                    $('#editor-region').animate({'margin-left':'10px'},300,'easeOutQuart');
-                },this), 500));
-             }
-         });
-         */
          
          // Right Column Slider
          $("#sb-right").hover(function() {
@@ -151,18 +130,6 @@ var sidebars = {
                 $('#editor-region').animate({'margin-right':'10px'},300,'easeOutQuart');
             },this), 500));
          });    
-    },
-    
-    user_lock : function(){
-        $('#lock-left-sidebar').click(function(){
-            if(!sidebars.lock_left_user){
-                sidebars.lock_left_user = true;
-                $('#lock-left-sidebar').text('U');
-            }else{
-                sidebars.lock_left_user = false;
-                $('#lock-left-sidebar').text('V');
-            }
-        });
     }
     
 };
