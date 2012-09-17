@@ -40,6 +40,12 @@ var keybindings = {
         
         // Open in browser [CTRL+O] //////////////////////////////////
         $.ctrl('O', function(){ active.open_in_browser(); });
+        
+        // Find [CTRL+F] /////////////////////////////////////////////
+        $.ctrl('f', function(){ editor.open_search('find'); });
+        
+        // Replace [CTRL+R] /////////////////////////////////////////////
+        $.ctrl('f', function(){ editor.open_search('replace'); });
     
     }
 

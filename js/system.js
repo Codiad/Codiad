@@ -66,18 +66,20 @@ var jsend = {
 var modal = {
 
     load : function(w,u){ // (Width, URL)
-        $('#modal').css({'width':w+'px','margin-left':'-'+Math.ceil(w/2)+'px'});
+        $('#modal').css({'top':'15%','left':'50%','width':w+'px','margin-left':'-'+Math.ceil(w/2)+'px'}).draggable();
         $('#modal-content').html('<div id="modal-loading"></div>');
         $('#modal-content').load(u);
         $('#modal, #modal-overlay').fadeIn(200);
-        sidebars.lock_left = true;
+    },
+        
+    hide_overlay : function(){
+        $('#modal-overlay').hide();  
     },
     
     unload : function(){
         $('#modal-content form').die('submit'); // Prevent form bubbling
         $('#modal, #modal-overlay').fadeOut(200);
         $('#modal-content').html('');
-        sidebars.lock_left = false;
     }
 
 };

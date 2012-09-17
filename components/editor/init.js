@@ -38,6 +38,7 @@ var editor = {
             this.set_highlight_line(true,editor_instance[editor_count]);
             this.set_indent_guides(true,editor_instance[editor_count]);
             this.change_listener(editor_instance[editor_count]);
+            this.bind_keys(editor_instance[editor_count]);
             
             // Add to active list
             active.add(path);
@@ -217,7 +218,89 @@ var editor = {
         cursorpoll = setInterval(function(){
             $('#cursor-position').html('Ln: '+(editor_instance[id].getCursorPosition().row+1)+' &middot; Col: '+editor_instance[id].getCursorPosition().column);
         },100);
-    }
+    },
     
+    //////////////////////////////////////////////////////////////////
+    // Bind Keys
+    //////////////////////////////////////////////////////////////////
+    
+    bind_keys : function(i){
+        // Find
+        i.commands.addCommand({
+            name: 'Find',
+            bindKey: {win: 'Ctrl-F',  mac: 'Command-F'},
+            exec: function(e) {
+                editor.open_search('find');
+            }
+        });
+        // Find + Replace
+        i.commands.addCommand({
+            name: 'Replace',
+            bindKey: {win: 'Ctrl-R',  mac: 'Command-R'},
+            exec: function(e) {
+                editor.open_search('replace');
+            }
+        });
+        
+    },
+    
+    //////////////////////////////////////////////////////////////////
+    // Search (Find + Replace)
+    //////////////////////////////////////////////////////////////////
+    
+    open_search : function(type){
+        act_id = active.get_id();
+        if(act_id){
+            modal.load(400,'components/editor/dialog.php?action=search&type='+type);
+            modal.hide_overlay();
+        }else{
+            message.error('No Open Files');
+        }
+    },
+    
+    search : function(action){
+        var id = active.get_id();
+        var find = $('#modal input[name="find"]').val();
+        var replace = $('#modal input[name="replace"]').val();
+        switch(action){
+            case 'find':
+                
+                editor_instance[id].find(find,{
+                    backwards: false,
+                    wrap: true,
+                    caseSensitive: false,
+                    wholeWord: false,
+                    regExp: false
+                });
+                
+                break;
+                
+            case 'replace':
+                
+                editor_instance[id].find(find,{
+                    backwards: false,
+                    wrap: true,
+                    caseSensitive: false,
+                    wholeWord: false,
+                    regExp: false
+                });
+                editor_instance[id].replace(replace);
+                
+                break;
+                
+            case 'replace_all':
+                
+                editor_instance[id].find(find,{
+                    backwards: false,
+                    wrap: true,
+                    caseSensitive: false,
+                    wholeWord: false,
+                    regExp: false
+                });
+                editor_instance[id].replaceAll(replace);
+                
+                break;
+        }
+    }   
 
 };
