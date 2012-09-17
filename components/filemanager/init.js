@@ -13,6 +13,8 @@ $(window).load(function(){ filemanager.init(); });
 var filemanager = {
 
     clipboard : '',
+    
+    no_open : ['jpg','jpeg','png','gif','svg','bmp','exe','zip','tar','tar.gz'],
 
     controller : 'components/filemanager/controller.php',
     dialog : 'components/filemanager/dialog.php',
@@ -202,12 +204,17 @@ var filemanager = {
     //////////////////////////////////////////////////////////////////
     
     open_file : function(path){
-        $.get(this.controller+'?action=open&path='+path,function(data){
-            open_response = jsend.parse(data);
-            if(open_response!='error'){
-                editor.open(path,open_response.content);
-            }
-        }); 
+        var ext = filemanager.get_extension(path);
+        if($.inArray(ext,filemanager.no_open)<0){
+            $.get(this.controller+'?action=open&path='+path,function(data){
+                open_response = jsend.parse(data);
+                if(open_response!='error'){
+                    editor.open(path,open_response.content);
+                }
+            });
+        }else{
+            filemanager.download(path);
+        }
     },
     
     //////////////////////////////////////////////////////////////////
