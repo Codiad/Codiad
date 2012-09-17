@@ -10,7 +10,7 @@ into consideration:
 There is an established format for `components` which utilizes one JS (`init.js`) and one CSS (`screen.css`) which is handled by the loader file. Any other 
 resources used should be loaded or accessed from one of these.
 
-**Dont't Reinvent the Wheel!**. There's an API and defined, easy-to-inderstand set of methods for a reason - use them.
+**Don't Reinvent the Wheel!**. There's an API and defined, easy-to-inderstand set of methods for a reason - use them.
 
 Stick to the conventions defined in other components as closely as possible. 
 
@@ -18,4 +18,4 @@ Stick to the conventions defined in other components as closely as possible.
 * Use underscores in namespaces instead of interCaps
 * When working with the editor utilize the `active` object whenever possible instead of going direct to the `editor`
 
-If you have questions, please ask. Submit an issue of [contact me (fluidbyte) directly](mailto:dev@codiad.com).
+If you have questions, please ask. Submit an issue or [contact me (fluidbyte) directly](mailto:dev@codiad.com).
