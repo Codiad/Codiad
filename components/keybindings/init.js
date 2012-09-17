@@ -45,8 +45,8 @@ var keybindings = {
         $.ctrl('f', function(){ editor.open_search('find'); });
         
         // Replace [CTRL+R] /////////////////////////////////////////////
-        $.ctrl('f', function(){ editor.open_search('replace'); });
+        $.ctrl('r', function(){ editor.open_search('replace'); });
     
     }
 
-}
+};
