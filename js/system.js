@@ -9,7 +9,7 @@
 //////////////////////////////////////////////////////////////////////
 
 jQuery.loadScript = function (url, arg1, arg2) {
-  var cache = false, callback = null;
+  var cache = true, callback = null;
   //arg1 and arg2 can be interchangable
   if ($.isFunction(arg1)){
     callback = arg1;
