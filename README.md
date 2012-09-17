@@ -12,8 +12,7 @@ For more information please **[read the installation instructions](https://githu
 
 ## Interface
 
-Codiad consists of three panels; a left panel which houses the file manager and active files, center panel which is where editors reside, and a right panel which contains system and other controls. The two side panels collapse to give full-window focus to the code editor.
-
+Codiad consists of three panels; a left panel which houses the file manager and active files, center panel which is where editors reside, and a right panel which contains system and other controls. The right side panel collapses and there's no top toolbar to provide maximum real-estate to the editor.
 ![Codiad Screenshot](http://codiad.com/screenshot.jpg)
 
 
