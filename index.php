@@ -79,7 +79,7 @@
                     <a data-action="upload" class="directory-only"><span class="icon">v</span>Upload Files</a>
                     <hr class="directory-only">
                     <a data-action="copy" class="both"><span class="icon">m</span>Copy</a>
-                    <a data-action="paste" class="both"><span class="icon">n</span>Paste</a>
+                    <a data-action="paste" class="directory-only"><span class="icon">n</span>Paste</a>
                     <hr class="non-root">
                     <a data-action="rename" class="non-root"><span class="icon">&amp;</span>Rename</a>
                     <hr class="non-root">
