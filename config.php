@@ -27,7 +27,6 @@ date_default_timezone_set("America/Chicago");
 // SESSIONS
 //////////////////////////////////////////////////////////////////
 
-@ini_set("session.cookie_path",BASE_PATH);
 ini_set("session.cookie_lifetime","0");
 session_start();
 

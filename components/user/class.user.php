@@ -42,9 +42,9 @@ class User {
         $users = getJSON('users.php');
         foreach($users as $user){
             if($user['username']==$this->username && $user['password']==$this->password){
+                $pass = true;
                 $_SESSION['user'] = $this->username;
                 if($user['project']!=''){ $_SESSION['project'] = $user['project']; }
-                $pass = true;
             }
         }
         
