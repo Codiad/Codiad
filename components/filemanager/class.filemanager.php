@@ -225,6 +225,7 @@ class Filemanager {
         
         // Change content
         if($this->content){
+            if($this->content==' '){ $this->content=''; } // Blank out file
             if(is_file($this->path)){
                 if($file = fopen($this->path, 'w')){            
                     fwrite($file, $this->content);

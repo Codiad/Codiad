@@ -162,7 +162,9 @@ var editor = {
     //////////////////////////////////////////////////////////////////
     
     get_content : function(id){
-        return editor_instance[id].getSession().getValue();
+        var content = editor_instance[id].getSession().getValue();
+        if(!content){ content = ' '; } // Pass something through
+        return content;
     },
     
     //////////////////////////////////////////////////////////////////
