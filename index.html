@@ -24,8 +24,8 @@
         </header>
 
         <section id="downloads" class="clearfix">
-          <a href="https://github.com/Fluidbyte/Codiad/zipball/master" id="download-zip" class="button" onclick=”_gaq.push(['_trackEvent','Download','ZIP',this.href]);”><span>Download .zip</span></a>
-          <a href="https://github.com/Fluidbyte/Codiad/tarball/master" id="download-tar-gz" class="button" onclick=”_gaq.push(['_trackEvent','Download','TAR',this.href]);”><span>Download .tar.gz</span></a>
+          <a href="https://github.com/Fluidbyte/Codiad/zipball/master" id="download-zip" class="button" onclick="var that=this;_gaq.push(['_trackEvent','Download','ZIP',this.href]);setTimeout(function(){location.href=that.href;},200);return false;"><span>Download .zip</span></a>
+          <a href="https://github.com/Fluidbyte/Codiad/tarball/master" id="download-tar-gz" class="button" onclick="var that=this;_gaq.push(['_trackEvent','Download','TAR',this.href]);setTimeout(function(){location.href=that.href;},200);return false;"><span>Download .tar.gz</span></a>
           <a href="https://github.com/Fluidbyte/Codiad" id="view-on-github" class="button"><span>View on GitHub</span></a>
         </section>
 
