@@ -171,8 +171,6 @@ var editor = {
     
     resize : function(id){
         editor_instance[id].resize();
-        $('.editor').css({'width':$(window).outerWidth()-310+'px','height':$(window).outerHeight()-25+'px'});
-        $('#editor-bottom-bar').css({ 'width' : $(window).outerWidth()-310+'px' });
     },
     
     //////////////////////////////////////////////////////////////////

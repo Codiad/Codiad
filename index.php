@@ -71,6 +71,8 @@
         <div id="sb-left" class="sidebar">
         
             <div class="sb-left-content">
+            
+                <a id="lock-left-sidebar" class="icon">U</a>
         
                 <div id="context-menu" data-path="" data-type="">
                     <a data-action="new_file" class="directory-only"><span class="icon">l</span>New File</a>
@@ -98,11 +100,12 @@
     
         </div>
     
+        <div id="cursor-position">Ln: 0 &middot; Col: 0</div>
+    
         <div id="editor-region">
         
             <div id="editor-bottom-bar">
                 <div id="current-file"></div>
-                <div id="cursor-position">CURSOR</div>
             </div>
         
         </div>
