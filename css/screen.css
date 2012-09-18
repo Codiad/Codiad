@@ -125,6 +125,9 @@
         border-radius: 5px;
     }
     
+    #modal #drag-handle { float: right; font-size: 34px; margin: -9px 2px 0 0; padding: 5px; cursor: move; color: #999; }
+    #modal #drag-handle:hover { color: #fff; }
+    
     #modal-content { padding: 20px; }
     
     #modal-loading { height: 100px; background: url(../images/loading.gif) no-repeat center; }

@@ -31,7 +31,7 @@ var editor = {
             var ext = filemanager.get_extension(path);
             var mode = this.select_mode(ext);
             
-            this.set_mode(mode,editor_instance[editor_count]);
+            this.set_mode(mode,editor_count);
             this.set_theme('twilight',editor_instance[editor_count]);
             this.set_content(content,editor_instance[editor_count]);
             this.set_print_margin(false,editor_instance[editor_count]);
@@ -96,16 +96,16 @@ var editor = {
     // Set editor mode/language
     //////////////////////////////////////////////////////////////////
     
-    set_mode : function(m,i){
+    set_mode : function(m,id){
         if(!editor_modes[m]){ // Check if mode is already loaded
             $.loadScript("components/editor/ace-editor/mode-"+m+".js", function(){
                 editor_modes[m] = true; // Mark to not load again
                 var EditorMode = require("ace/mode/"+m).Mode;
-                i.getSession().setMode(new EditorMode());
+                editor_instance[id].getSession().setMode(new EditorMode());
             },true);
         }else{
             var EditorMode = require("ace/mode/"+m).Mode;
-            i.getSession().setMode(new EditorMode());
+            editor_instance[id].getSession().setMode(new EditorMode());
         }
     },
     

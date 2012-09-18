@@ -142,7 +142,7 @@
     </div>
     
     <div id="modal-overlay"></div>
-    <div id="modal"><div id="modal-content"></div></div>
+    <div id="modal"><div id="drag-handle" class="icon">0</div><div id="modal-content"></div></div>
     
     <iframe id="download"></iframe>
 

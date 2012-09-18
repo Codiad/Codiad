@@ -94,6 +94,9 @@ var active = {
     focus : function(path){
         if(editor.get_id(path)!==null){
             var id = editor.get_id(path);
+            var ext = filemanager.get_extension(path);
+            var mode = editor.select_mode(ext);
+            editor.set_mode(mode,id);
             $('.editor').removeClass('active').hide();
             $('#editor'+id).addClass('active').show();
             editor.resize(id);
