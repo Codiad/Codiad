@@ -60,7 +60,9 @@ table {
 }
 
 /* LAYOUT STYLES */
+html { width: 100%; height: 100%; }
 body {
+  width: 100%; height: 100%;
   font-size: 1em;
   line-height: 1.5; 
   background: #e7e7e7 url(../images/body-bg.png) 0 0 repeat;
@@ -70,7 +72,7 @@ body {
 }
 
 a {
-  color: #34437a; font-weight: bold;
+  color: #34437a; font-weight: bold; cursor: pointer;
 }
 a:hover {
   color: #34437a; text-decoration: underline;
@@ -355,6 +357,30 @@ footer a:hover {
 .clearfix {display: inline-block;}
 * html .clearfix {height: 1%;}
 .clearfix {display: block;}
+
+/* MODAL */
+
+.caption { text-align: center; font-style: italic; font-size: 12px; color: #888; margin-top: -20px; }
+
+#modal { display: none; position: fixed; top: 10%; left: 50%; width: 1012px; margin-left: -506px; background: #000; padding: 15px; border: 2px solid #fff; z-index: 99999; text-align: center;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .5);
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .5);   
+}
+
+#modal a, #modal a:link, #modal a:visited { display: block; height: 22px; width: 24px; line-height: 100%; float: right; margin: -30px -25px 0 0; cursor: pointer; font-weight: normal; padding: 3px 1px 0 0; color: #999; 
+    background: #000;
+    border: 2px solid #fff;
+    -webkit-border-radius: 25px;
+    border-radius: 25px;
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .5);
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .5); 
+}
+
+#modal a:hover { color: #fff; text-decoration: none; }
+
+#modal-overlay { display: none; position: fixed; width: 100%; height: 100%; top: 0; left: 0; background: #fff; opacity: 0.8; z-index: 99998; }
 
 /* #Media Queries
 ================================================== */
