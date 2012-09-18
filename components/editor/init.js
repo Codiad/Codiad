@@ -242,6 +242,22 @@ var editor = {
             }
         });
         
+        i.commands.addCommand({
+            name: 'Move Up',
+            bindKey: {win: 'Ctrl-up',  mac: 'Command-up'},
+            exec: function(e) {
+                active.move('up');
+            }
+        });
+        
+        i.commands.addCommand({
+            name: 'Move Down',
+            bindKey: {win: 'Ctrl-down',  mac: 'Command-up'},
+            exec: function(e) {
+                active.move('down');
+            }
+        });
+        
     },
     
     //////////////////////////////////////////////////////////////////

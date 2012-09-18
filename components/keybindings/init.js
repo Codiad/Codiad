@@ -13,7 +13,7 @@ $.ctrl = function(key, callback, args) {
     $(document).keydown(function(e) {
         if(!args) args=[];
         if(e.ctrlKey) isCtrl = true;
-        if(e.keyCode == key.charCodeAt(0) && isCtrl) {
+        if(e.keyCode == key && isCtrl) {
             callback.apply(this, args);
             return false;
         }
@@ -36,16 +36,22 @@ var keybindings = {
         $(document).keyup(function(e){ if(e.keyCode == 27){ modal.unload(); } });
    
         // Save [CTRL+S] /////////////////////////////////////////////
-        $.ctrl('S', function(){ active.save(); });
+        $.ctrl('83', function(){ active.save(); });
         
         // Open in browser [CTRL+O] //////////////////////////////////
-        $.ctrl('O', function(){ active.open_in_browser(); });
+        $.ctrl('79', function(){ active.open_in_browser(); });
         
         // Find [CTRL+F] /////////////////////////////////////////////
-        $.ctrl('f', function(){ editor.open_search('find'); });
+        $.ctrl('70', function(){ editor.open_search('find'); });
         
-        // Replace [CTRL+R] /////////////////////////////////////////////
-        $.ctrl('r', function(){ editor.open_search('replace'); });
+        // Replace [CTRL+R] //////////////////////////////////////////
+        $.ctrl('82', function(){ editor.open_search('replace'); });
+        
+        // Active List Up ////////////////////////////////////////////
+        $.ctrl('38', function(){ active.move('up'); });
+        
+        // Active List Down //////////////////////////////////////////
+        $.ctrl('40', function(){ active.move('down'); });
     
     }
 

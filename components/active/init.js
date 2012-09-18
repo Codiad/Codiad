@@ -212,6 +212,35 @@ var active = {
     
     insert_text : function(val){
         editor.insert_text(active.get_id(),val);
+    },
+    
+    //////////////////////////////////////////////////////////////////
+    // Move Up (Key Combo)
+    //////////////////////////////////////////////////////////////////
+    
+    move : function(dir){
+        
+        var num = $('#active-files a').length;
+        if(num>1){
+            if(dir=='up'){
+                // Move Up or rotate to bottom
+                new_active = $('#active-files li a.active').parent('li').prev('li').children('a').attr('data-path');
+                if(!new_active){
+                    new_active = $('#active-files li:last-child a').attr('data-path');
+                }
+                
+            }else{
+                // Move down or rotate to top
+                new_active = $('#active-files li a.active').parent('li').next('li').children('a').attr('data-path');
+                if(!new_active){
+                    new_active = $('#active-files li:first-child a').attr('data-path');
+                }
+                
+            }
+            
+            active.focus(new_active);
+        }
+        
     }
 
 };
