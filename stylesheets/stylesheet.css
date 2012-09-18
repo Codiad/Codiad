@@ -362,7 +362,7 @@ footer a:hover {
 
 .caption { text-align: center; font-style: italic; font-size: 12px; color: #888; margin-top: -20px; }
 
-#modal { display: none; position: fixed; top: 10%; left: 50%; width: 1012px; margin-left: -506px; background: #000; padding: 15px; border: 2px solid #fff; z-index: 99999; text-align: center;
+#modal { display: none; position: absolute; top: 10%; left: 50%; width: 1012px; margin-left: -506px; background: #000; padding: 15px; border: 2px solid #fff; z-index: 99999; text-align: center;
     -webkit-border-radius: 15px;
     border-radius: 15px;
     -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .5);
