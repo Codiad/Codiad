@@ -11,6 +11,19 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <title>Codiad by Fluidbyte</title>
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-34692757-1']);
+      _gaq.push(['_trackPageview']);
+    
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    
+    </script>
   </head>
 
   <body>
@@ -24,8 +37,8 @@
         </header>
 
         <section id="downloads" class="clearfix">
-          <a href="https://github.com/Fluidbyte/Codiad/zipball/master" id="download-zip" class="button" onclick="var that=this;_gaq.push(['_trackEvent','Download','ZIP',this.href]);setTimeout(function(){location.href=that.href;},200);return false;"><span>Download .zip</span></a>
-          <a href="https://github.com/Fluidbyte/Codiad/tarball/master" id="download-tar-gz" class="button" onclick="var that=this;_gaq.push(['_trackEvent','Download','TAR',this.href]);setTimeout(function(){location.href=that.href;},200);return false;"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/Fluidbyte/Codiad/zipball/master" id="download-zip" class="button" onClick="_gaq.push(['_trackEvent', 'Download', 'Zip', 'Download Zip']);"><span>Download .zip</span></a>
+          <a href="https://github.com/Fluidbyte/Codiad/tarball/master" id="download-tar-gz" class="button" onClick="_gaq.push(['_trackEvent', 'Download', 'Tar', 'Download Tarball']);"><span>Download .tar.gz</span></a>
           <a href="https://github.com/Fluidbyte/Codiad" id="view-on-github" class="button"><span>View on GitHub</span></a>
         </section>
 
@@ -76,17 +89,6 @@
 
         <script src="javascripts/jquery.js"></script>
         <script src="javascripts/main.js"></script>
-
-           <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-34692757-1");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
 
       </div>
     </div>
