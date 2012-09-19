@@ -39,7 +39,7 @@
         <section id="downloads" class="clearfix">
           <a href="https://github.com/Fluidbyte/Codiad/zipball/master" id="download-zip" class="button" onClick="_gaq.push(['_trackEvent', 'Download', 'Zip', 'Download Zip']);"><span>Download .zip</span></a>
           <a href="https://github.com/Fluidbyte/Codiad/tarball/master" id="download-tar-gz" class="button" onClick="_gaq.push(['_trackEvent', 'Download', 'Tar', 'Download Tarball']);"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/Fluidbyte/Codiad" id="view-on-github" class="button"><span>View on GitHub</span></a>
+          <a href="https://github.com/Fluidbyte/Codiad" id="view-on-github" class="button" onClick="_gaq.push(['_trackEvent', 'GitHub', 'ViewSource', 'View Source on GitHub']);"><span>View on GitHub</span></a>
         </section>
 
         <hr>
@@ -61,7 +61,7 @@
 
 <p>Codiad consists of three panels; a left panel which houses the file manager and active files, center panel which is where editors reside, and a right panel which contains system and other controls. The right &amp; left side panels collapse and there's no top toolbar or tabs, providing maximum real-estate to the editor.</p>
 
-<p><a onclick="openModal();"><img src="screenshot.png" alt="Codiad Screenshot"></a></p>
+<p><a onclick="openModal(); _gaq.push(['_trackEvent', 'Screenshot', 'Open', 'View Larger Screenshot']);"><img src="screenshot.png" alt="Codiad Screenshot"></a></p>
 <p class="caption">Click Image for Larger View</p>
 
 <div id="modal">
