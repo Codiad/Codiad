@@ -141,22 +141,26 @@ var active = {
     
     remove : function(path){
         if(editor.get_id(path)!==null){
+            var close_file = true;
             if($('#active-files a[data-path="'+path+'"]').hasClass('changed')){
-                close_file = confirm('Close file without saving changes?');
-            }else{
-                close_file = true;
+                modal.load(450,'components/active/dialog.php?action=confirm&path='+path);
+                close_file = false;
             }
             if(close_file){
-                if($('#active-files a[data-path="'+path+'"]').hasClass('active')){
-                   $('#current-file').html('');
-                   clearInterval(cursorpoll);
-                   $('#cursor-position').html('Ln: 0 &middot; Col: 0');
-                }
-                $('#editor'+editor.get_id(path)).remove();
-                $('#active-files a[data-path="'+path+'"]').remove();
-                $.get(active.controller+'?action=remove&path='+path);
+                active.close(path);
             }
         }
+    },
+    
+    close : function(path){
+        if($('#active-files a[data-path="'+path+'"]').hasClass('active')){
+           $('#current-file').html('');
+           clearInterval(cursorpoll);
+           $('#cursor-position').html('Ln: 0 &middot; Col: 0');
+        }
+        $('#editor'+editor.get_id(path)).remove();
+        $('#active-files a[data-path="'+path+'"]').remove();
+        $.get(active.controller+'?action=remove&path='+path);
     },
     
     //////////////////////////////////////////////////////////////////
