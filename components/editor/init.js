@@ -34,6 +34,7 @@ var editor = {
             this.set_mode(mode,editor_count);
             this.set_theme('twilight',editor_instance[editor_count]);
             this.set_content(content,editor_instance[editor_count]);
+            this.set_font_size(14,editor_instance[editor_count]);
             this.set_print_margin(false,editor_instance[editor_count]);
             this.set_highlight_line(true,editor_instance[editor_count]);
             this.set_indent_guides(true,editor_instance[editor_count]);
@@ -123,6 +124,14 @@ var editor = {
     
     set_content : function(c,i){
         i.getSession().setValue(c);
+    },
+    
+    //////////////////////////////////////////////////////////////////
+    // Set Font Size
+    //////////////////////////////////////////////////////////////////
+    
+    set_font_size : function(s,i){
+        i.setFontSize(s);
     },
     
     //////////////////////////////////////////////////////////////////
