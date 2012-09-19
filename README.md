@@ -1,6 +1,6 @@
 # Codiad Web IDE
 
-Codiad is a web-based IDE framework with a small footprint and minimal requirements. The system is still early in development, and while it has been proven extremely stable please be sure to backup regularly if you use it in any production work.
+Codiad is a web-based IDE framework with a small footprint and minimal requirements. The system is still early in development, and while it has been proven extremely stable please be sure have a backup system if you use it in any production work.
 
 Keep up to date with the latest changes and news on **[Twitter](http://twitter.com/codiadide)** or **[Facebook](http://www.facebook.com/Codiad)**
 
