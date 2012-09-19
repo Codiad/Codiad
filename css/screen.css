@@ -83,7 +83,7 @@
     #editor-region { margin-left: 300px; position: relative; }
     
     #editor-bottom-bar { position: fixed; bottom: 0; z-index: 1; height: 25px; padding: 5px 15px; background: #303030; font-size: 12px; color: #999; border-top: 2px solid #202020; width: 100%; box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .9); }
-        #cursor-position { position: absolute; right: 30px; bottom: 4px; font-size: 12px padding-right: 30px; z-index: 99; color: #999; }
+        #cursor-position { position: absolute; right: 30px; bottom: 4px; font-size: 12px; z-index: 99; color: #999; }
         #current-file { float: left; }
 
     .sidebar { position: fixed; top: 0; height: 100%; z-index: 99; -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; user-select: none; background: #1a1a1a; }
