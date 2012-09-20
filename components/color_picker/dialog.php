@@ -17,7 +17,13 @@
     $(function(){
     
         selected = active.get_selected_text();
-        sellength = selected.length;
+        
+        if(selected==null){ 
+            selected = '#45818a'; 
+            sellength = 7;
+        }else{
+            sellength = selected.length;
+        }
         
         var colorRegEx = /^#?([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$/;
         seltest = colorRegEx.test(selected);

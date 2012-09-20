@@ -210,7 +210,13 @@ var active = {
     //////////////////////////////////////////////////////////////////
     
     get_selected_text : function(){
-        return editor.get_selected_text(active.get_id());
+        var path = this.get_path();
+        var id = this.get_id();
+        if(path && id){
+            return editor.get_selected_text(active.get_id());
+        }else{
+            message.error('No Open Files or Selected Text');
+        }
     },
     
     //////////////////////////////////////////////////////////////////
