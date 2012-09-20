@@ -103,7 +103,6 @@ class Active {
     public function Remove(){
         foreach($this->actives as $active=>$data){
             if($this->username==$data['username'] && $this->path==$data['path']){
-                //$revised_list[] = array("username"=>$data['username'],"path"=>$data['path']);
                 unset($this->actives[$active]);
             }
         }

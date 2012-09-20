@@ -159,7 +159,7 @@ var active = {
            $('#cursor-position').html('Ln: 0 &middot; Col: 0');
         }
         $('#editor'+editor.get_id(path)).remove();
-        $('#active-files a[data-path="'+path+'"]').remove();
+        $('#active-files a[data-path="'+path+'"]').parent('li').remove();
         $.get(active.controller+'?action=remove&path='+path);
     },
     
