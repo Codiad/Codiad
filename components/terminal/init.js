@@ -17,6 +17,7 @@ var terminal = {
         cur_terminal = $('#terminal');
         if(c=='clear'){
             cur_terminal.html('');
+            $('#term-command').val('').focus();
         }else{
             $('#term-command').val('Processing...');
             $.get(terminal.controller+'?command='+c,function(data){
