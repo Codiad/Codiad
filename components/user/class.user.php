@@ -16,6 +16,7 @@ class User {
     public $password    = '';
     public $project     = '';
     public $users       = '';
+    public $actives     = '';
     
     //////////////////////////////////////////////////////////////////
     // METHODS
@@ -29,6 +30,7 @@ class User {
     
     public function __construct(){
         $this->users = getJSON('users.php');
+        $this->actives = getJSON('active.php');
     }
     
     //////////////////////////////////////////////////////////////////
@@ -73,6 +75,7 @@ class User {
     //////////////////////////////////////////////////////////////////
     
     public function Delete(){
+        // Remove User
         $revised_array = array();
         foreach($this->users as $user=>$data){
             if($data['username']!=$this->username){
@@ -81,6 +84,15 @@ class User {
         }
         // Save array back to JSON
         saveJSON('users.php',$revised_array);
+        
+        // Remove any active files
+        foreach($this->actives as $active=>$data){
+            if($this->username==$data['username']){
+                unset($this->actives[$active]);
+            }
+        }
+        saveJSON('active.php',$this->actives);
+        
         // Response
         echo formatJSEND("success",null);
     }
