@@ -73,5 +73,14 @@
         $User->project  = $_GET['project'];
         $User->Project();
     }
+    
+    //////////////////////////////////////////////////////////////////
+    // Verify User Account
+    //////////////////////////////////////////////////////////////////
+    
+    if($_GET['action']=='verify'){
+        $User->username = $_SESSION['user'];
+        $User->Verify();
+    }
 
 ?>

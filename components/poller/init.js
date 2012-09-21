@@ -9,7 +9,7 @@ $(function(){ poller.init(); });
 var poller = {
     
     controller : 'components/poller/controller.php',
-    interval : 120000,
+    interval : 10000,
     
     init : function(){
     
@@ -36,6 +36,11 @@ var poller = {
                     }
                 }
                 
+            });
+            
+            // Check user
+            $.get(user.controller+'?action=verify',function(data){
+                if(data=='false'){ user.logout(); }
             });
         
         },poller.interval);
