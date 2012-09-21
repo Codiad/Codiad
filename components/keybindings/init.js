@@ -15,6 +15,7 @@ $.ctrl = function(key, callback, args) {
         if(e.ctrlKey) isCtrl = true;
         if(e.keyCode == key && isCtrl) {
             callback.apply(this, args);
+            isCtrl = false;
             return false;
         }
     }).keyup(function(e) {
