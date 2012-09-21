@@ -64,5 +64,17 @@
         $Project->path = $_GET['project_path'];
         $Project->Delete();
     }
+    
+    //////////////////////////////////////////////////////////////////
+    // Return Current
+    //////////////////////////////////////////////////////////////////
+    
+    if($_GET['action']=='current'){
+        if(isset($_SESSION['project'])){
+            echo formatJSEND("success",$_SESSION['project']);
+        }else{
+            echo formatJSEND("error","No Project Returned");
+        }
+    }
 
 ?>

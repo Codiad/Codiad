@@ -99,6 +99,19 @@ var project = {
                 }
             });
         });
-    }  
+    },
+    
+    //////////////////////////////////////////////////////////////////
+    // Get Current (Path)
+    //////////////////////////////////////////////////////////////////
+    
+    get_current : function(){
+        $.get(project.controller+'?action=current',function(data){
+            current_response = jsend.parse(data);
+            if(current_response!='error'){
+                console.log(current_response);
+            }
+        });
+    }
 
 };
