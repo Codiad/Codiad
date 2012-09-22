@@ -75,8 +75,8 @@
         }
     }
     
-    $command_response = terminal($_GET['command'],$restricted);
+    $command_response = terminal(urldecode($_GET['command']),$restricted);
     
-    echo($command_response['output']);
+    echo(htmlentities($command_response['output']));
     
 ?>

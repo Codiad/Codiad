@@ -20,7 +20,7 @@ var terminal = {
             $('#term-command').val('').focus();
         }else{
             $('#term-command').val('Processing...');
-            $.get(terminal.controller+'?command='+c,function(data){
+            $.get(terminal.controller+'?command='+escape(c),function(data){
                 cur_terminal.append('<pre class="output-command">&gt;&gt;&nbsp;'+c+'</pre>');
                 cur_terminal.append('<pre class="output-data">'+data+'</pre>');
                 cur_terminal.scrollTop(
