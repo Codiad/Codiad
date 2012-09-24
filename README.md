@@ -4,4 +4,4 @@ Codiad is a web-based IDE framework with a small footprint and minimal requireme
 
 Keep up to date with the latest changes and news on **[Twitter](http://twitter.com/codiadide)** or **[Facebook](http://www.facebook.com/Codiad)**
 
-For more information on the project please check out the **[check out the Wiki](https://github.com/Fluidbyte/Codiad/wiki)** or **[the Codiad Website](https://www.codiad.com)**
+For more information on the project please check out the **[check out the Wiki](https://github.com/Fluidbyte/Codiad/wiki)** or **[the Codiad Website](http://www.codiad.com)**
