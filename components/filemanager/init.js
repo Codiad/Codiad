@@ -115,6 +115,11 @@ var filemanager = {
                 case 'backup':
                     filemanager.download(path);
                     break;
+                default:
+                    //Endables other actions to be applyed by changing the data-action attribute to object-function
+                    string = action.replace('-','.');
+                    eval(string + '(path);');
+                    break;
             }
         });
     },
