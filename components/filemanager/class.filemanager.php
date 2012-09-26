@@ -133,8 +133,11 @@ class Filemanager {
     //////////////////////////////////////////////////////////////////
     
     public function openinbrowser(){
+        $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+        $domainName = $_SERVER['HTTP_HOST'];
+        $url =  $protocol.WSURL.$this->rel_path;
         $this->status = "success";
-        $this->data = '"url":' . json_encode('http://' . WSURL . $this->rel_path);
+        $this->data = '"url":' . json_encode(rtrim($url,"/"));
         $this->respond();
     }
     
