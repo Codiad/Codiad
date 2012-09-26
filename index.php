@@ -75,19 +75,27 @@
                 <a id="lock-left-sidebar" class="icon">U</a>
         
                 <div id="context-menu" data-path="" data-type="">
-                    <a data-action="new_file" class="directory-only"><span class="icon">l</span>New File</a>
-                    <a data-action="new_directory" class="directory-only"><span class="icon">s</span>New Folder</a>
-                    <hr class="directory-only">
-                    <a data-action="upload" class="directory-only"><span class="icon">v</span>Upload Files</a>
-                    <hr class="directory-only">
-                    <a data-action="copy" class="both"><span class="icon">m</span>Copy</a>
-                    <a data-action="paste" class="directory-only"><span class="icon">n</span>Paste</a>
-                    <hr class="non-root">
-                    <a data-action="rename" class="non-root"><span class="icon">&amp;</span>Rename</a>
-                    <hr class="non-root">
-                    <a data-action="delete" class="non-root"><span class="icon">[</span>Delete</a>
-                    <hr>
-                    <a data-action="backup"><span class="icon">x</span>Download</a>
+                
+                    <?php
+                
+                        ////////////////////////////////////////////////////////////
+                        // Load Context Menu
+                        ////////////////////////////////////////////////////////////
+                        
+                        $context_menu = file_get_contents(COMPONENTS . "/filemanager/context_menu.json");
+                        $context_menu = json_decode($context_menu,true);
+                        foreach($context_menu as $item=>$data){
+                            
+                            if($data['title']=='Break'){
+                                echo('<hr class="'.$data['applies-to'].'">');
+                            }else{
+                                echo('<a class="'.$data['applies-to'].'" onclick="'.$data['onclick'].'"><span class="icon">'.$data['icon'].'</span>'.$data['title'].'</a>');
+                            }
+                            
+                        }
+                        
+                ?>
+                
                 </div>
             
                 <div id="file-manager"></div>

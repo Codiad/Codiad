@@ -23,8 +23,6 @@ var filemanager = {
     init : function(){
         // Initialize node listener
         this.node_listener();
-        // Context Menu Event Listener
-        this.context_menu_event_listener();
         // Load uploader
         $.loadScript("components/filemanager/upload_scripts/jquery.ui.widget.js",true);
         $.loadScript("components/filemanager/upload_scripts/jquery.iframe-transport.js",true);
@@ -74,54 +72,17 @@ var filemanager = {
         $('#context-menu').css({'top':(e.pageY-10)+'px','left':(e.pageX-10)+'px'})
             .fadeIn(200).attr('data-path',path).attr('data-type',type);
         // Show faded 'paste' if nothing in clipboard
-        if(this.clipboard==''){ $('#context-menu a[data-action="paste"]').addClass('disabled');
+        if(this.clipboard===''){ $('#context-menu a[content="Paste"]').addClass('disabled');
         }else{ $('#context-menu a[data-action="paste"]').removeClass('disabled'); }
         // Hide menu
         $('#file-manager, #editor-region').on('mouseover',function(){ filemanager.context_menu_hide(); });
+        // Hide on click
+        $('#context-menu a').click(function(){ filemanager.context_menu_hide(); });
     },
     
     context_menu_hide : function(){
         $('#context-menu').fadeOut(200);
         $('#file-manager a').removeClass('context-menu-active');
-    },
-    
-    context_menu_event_listener : function(){
-        $('#context-menu a').live('click',function(){
-            filemanager.context_menu_hide();
-            var path = $('#context-menu').attr('data-path');
-            var action = $(this).attr('data-action');
-            switch(action){
-                case 'new_file':
-                    filemanager.create_node(path,'file');
-                    break;
-                case 'new_directory':
-                    filemanager.create_node(path,'directory');
-                    break;
-                case 'copy':
-                    filemanager.copy_node(path);
-                    break;
-                case 'paste':
-                    filemanager.paste_node(path);
-                    break;
-                case 'rename':
-                    filemanager.rename_node(path);
-                    break;
-                case 'delete':
-                    filemanager.delete_node(path);
-                    break;
-                case 'upload':
-                    filemanager.upload_to_node(path);
-                    break;
-                case 'backup':
-                    filemanager.download(path);
-                    break;
-                default:
-                    //Endables other actions to be applyed by changing the data-action attribute to object-function
-                    string = action.replace('-','.');
-                    eval(string + '(path);');
-                    break;
-            }
-        });
     },
     
     //////////////////////////////////////////////////////////////////

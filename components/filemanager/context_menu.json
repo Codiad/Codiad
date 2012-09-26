@@ -1,0 +1,80 @@
+[
+    {
+        "title": "New File",
+        "icon": "l",
+        "applies-to" : "directory-only",
+        "onclick": "filemanager.create_node($('#context-menu').attr('data-path'),'file');"
+    },
+    {
+        "title": "New Folder",
+        "icon": "s",
+        "applies-to" : "directory-only",
+        "onclick": "filemanager.create_node($('#context-menu').attr('data-path'),'directory');"
+    },
+    {
+        "title": "Break",
+        "icon": null,
+        "applies-to" : "directory-only",
+        "onclick": null
+    },
+    {
+        "title": "Upload Files",
+        "icon": "v",
+        "applies-to" : "directory-only",
+        "onclick": "filemanager.upload_to_node($('#context-menu').attr('data-path'));"
+    },
+    {
+        "title": "Break",
+        "icon": null,
+        "applies-to" : "directory-only",
+        "onclick": null
+    },
+    {
+        "title": "Copy",
+        "icon": "m",
+        "applies-to" : "both",
+        "onclick": "filemanager.copy_node($('#context-menu').attr('data-path'));"
+    },
+    {
+        "title": "Paste",
+        "icon": "n",
+        "applies-to" : "directory-only",
+        "onclick": "filemanager.paste_node($('#context-menu').attr('data-path'));"
+    },
+    {
+        "title": "Break",
+        "icon": null,
+        "applies-to" : "non-root",
+        "onclick": null
+    },
+    {
+        "title": "Rename",
+        "icon": "&amp;",
+        "applies-to" : "non-root",
+        "onclick": "filemanager.rename_node($('#context-menu').attr('data-path'));"
+    },
+    {
+        "title": "Break",
+        "icon": null,
+        "applies-to" : "non-root",
+        "onclick": null
+    },
+    {
+        "title": "Delete",
+        "icon": "[",
+        "applies-to" : "non-root",
+        "onclick": "filemanager.delete_node($('#context-menu').attr('data-path'));"
+    },
+    {
+        "title": "Break",
+        "icon": null,
+        "applies-to" : "both",
+        "onclick": null
+    },
+    {
+        "title": "Download",
+        "icon": "x",
+        "applies-to" : "both",
+        "onclick": "filemanager.download($('#context-menu').attr('data-path'));"
+    }
+]
