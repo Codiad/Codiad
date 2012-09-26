@@ -84,7 +84,7 @@
                         
                         $context_menu = file_get_contents(COMPONENTS . "/filemanager/context_menu.json");
                         $context_menu = json_decode($context_menu,true);
-                        foreach($context_menu as $item=>$data){
+                        foreach($context_menu as $menu_item=>$data){
                             
                             if($data['title']=='Break'){
                                 echo('<hr class="'.$data['applies-to'].'">');
@@ -134,7 +134,7 @@
                 
                 $right_bar = file_get_contents(COMPONENTS . "/right_bar.json");
                 $right_bar = json_decode($right_bar,true);
-                foreach($right_bar as $item=>$data){
+                foreach($right_bar as $item_rb=>$data){
                     
                     if($data['title']=='break'){
                         echo("<hr>");

@@ -1,80 +1,57 @@
 [
     {
-        "title": "New File",
-        "applies-to" : "directory-only",
-        "icon": "l",
-        "action": "new_file"
-    },
-    {
-        "title": "New Folder",
-        "applies-to" : "directory-only",
-        "icon": "s",
-        "action": "new_directory"
-    },
-    {
-        "title": "Break",
-        "applies-to" : "directory-only",
-        "icon": null,
-        "action": null
-    },
-    {
-        "title": "Upload",
-        "applies-to" : "directory-only",
-        "icon": "v",
-        "action": "upload"
-    },
-    {
-        "title": "Break",
-        "applies-to" : "directory-only",
-        "icon": null,
-        "action": null
-    },
-    {
-        "title": "Copy",
-        "applies-to" : "both",
-        "icon": "m",
-        "action": "copy"
-    },
-    {
-        "title": "Paste",
-        "applies-to" : "directory-only",
-        "icon": "n",
-        "action": "paste"
-    },
-    {
-        "title": "Break",
-        "applies-to" : "non-root",
-        "icon": null,
-        "action": null
-    },
-    {
-        "title": "Rename",
-        "applies-to" : "non-root",
-        "icon": "&amp;",
-        "action": "rename"
-    },
-    {
-        "title": "Break",
-        "applies-to" : "non-root",
-        "icon": null,
-        "action": null
-    },
-    {
-        "title": "Delete",
-        "applies-to" : "non-root",
-        "icon": "[",
-        "action": "delete"
-    },
-    {
-        "title": "Break",
-        "applies-to" : "both",
-        "icon": null,
-        "action": null
-    },
-    {
-        "title": "Download",
-        "applies-to" : "both",
+        "title": "Save File",
         "icon": "x",
-        "action": "download"
-    }       
+        "onclick": "active.save();"
+    },
+    {
+        "title": "break",
+        "icon": null,
+        "onclick": null
+    },
+    {
+        "title": "Color Tool",
+        "icon": "F",
+        "onclick": "color_picker.open();"
+    },
+    {
+        "title": "break",
+        "icon": null,
+        "onclick": null
+    },
+    {
+        "title": "Terminal",
+        "icon": "@",
+        "onclick": "terminal.open();"
+    },
+    {
+        "title": "break",
+        "icon": null,
+        "onclick": null
+    },
+    {
+        "title": "Projects",
+        "icon": "t",
+        "onclick": "project.list();"
+    },
+    {
+        "title": "break",
+        "icon": null,
+        "onclick": null
+    },
+    {
+        "title": "Users",
+        "icon": ",",
+        "onclick": "user.list();"
+    },
+    {
+        "title": "break",
+        "icon": null,
+        "onclick": null
+    },
+    {
+        "title": "Logout",
+        "icon": "/",
+        "onclick": "user.logout();"
+    }
 ]
