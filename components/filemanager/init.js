@@ -372,6 +372,31 @@ var filemanager = {
     },
     
     //////////////////////////////////////////////////////////////////
+    // Search
+    //////////////////////////////////////////////////////////////////
+    
+    search : function(path){
+        modal.load(500,this.dialog+'?action=search&path='+path);
+        modal.hide_overlay();
+        $('#modal-content form').live('submit',function(e){
+            e.preventDefault();
+            search_string = $('#modal-content form input[name="search_string"]').val();
+            $.post(filemanager.controller+'?action=search&path='+path,{search_string:search_string},function(data){
+                search_response = jsend.parse(data);
+                if(search_response!='error'){
+                    var results = '';
+                    $.each(search_response.index, function(key, val) {
+                        results += '<div><a onclick="filemanager.open_file(\'' + val['file'] + '\');setTimeout( function() { editor_instance[active.get_id()].gotoLine(\'' + val['line'] + '\' , 0 , true ); } , 500 );modal.unload();">Line ' + val['line'] + ': ' + val['file'] + '</a></div>';
+                    });
+                    $('#filemanager-search-results').slideDown().html(results);
+                }else{
+                    $('#filemanager-search-results').slideUp();
+                }
+            });
+        });
+    },
+    
+    //////////////////////////////////////////////////////////////////
     // Upload
     //////////////////////////////////////////////////////////////////
     

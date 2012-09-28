@@ -18,6 +18,30 @@
         "onclick": null
     },
     {
+        "title": "New Folder",
+        "icon": "s",
+        "applies-to" : "directory-only",
+        "onclick": "filemanager.create_node($('#context-menu').attr('data-path'),'directory');"
+    },
+    {
+        "title": "Break",
+        "icon": null,
+        "applies-to" : "directory-only",
+        "onclick": null
+    },
+    {
+        "title": "Search",
+        "icon": "4",
+        "applies-to" : "directory-only",
+        "onclick": "filemanager.search($('#context-menu').attr('data-path'));"
+    },
+    {
+        "title": "Break",
+        "icon": null,
+        "applies-to" : "directory-only",
+        "onclick": null
+    },
+    {
         "title": "Upload Files",
         "icon": "v",
         "applies-to" : "directory-only",

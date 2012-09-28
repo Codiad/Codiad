@@ -22,6 +22,19 @@
 
 .disabled { color: #999; font-style: italic; }
 
+/* SEARCH */
+
+#filemanager-search-results { display: none; height: 250px; overflow: scroll !important; border: 1px solid #262626; }
+#filemanager-search-results div { padding: 4px 6px 3px 6px; border-radius: 3px; white-space: nowrap; }
+#filemanager-search-results div:hover { 
+    background-image: linear-gradient(left , rgb(26,26,26) 1%, rgba(26,26,26,0.0) 100%);
+    background-image: -o-linear-gradient(left , rgb(26,26,26) 1%, rgba(26,26,26,0.0) 100%);
+    background-image: -moz-linear-gradient(left , rgb(26,26,26) 1%, rgba(26,26,26,0.0) 100%);
+    background-image: -webkit-linear-gradient(left , rgb(26,26,26) 1%, rgba(26,26,26,0.0) 100%);
+    background-image: -ms-linear-gradient(left , rgb(26,26,26) 1%, rgba(26,26,26,0.0) 100%);
+    background-image: -webkit-gradient(linear, left top, right top,	color-stop(0.01, rgb(26,26,26)), color-stop(1.00, rgba(26,26,26,0.0)));
+}
+
 /* UPLOADER */
 
 #upload-drop-zone { height: 200px; padding-top: 60px; border: 1px solid #666; border-radius: 5px; margin: 10px 0; box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .5); 

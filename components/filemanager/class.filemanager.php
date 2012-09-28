@@ -12,22 +12,23 @@ class Filemanager {
     // PROPERTIES
     //////////////////////////////////////////////////////////////////
     
-    public $root        = "";
-    public $project     = "";
-    public $rel_path    = "";
-    public $path        = "";
-    public $type        = "";
-    public $new_name    = "";
-    public $content     = "";
-    public $destination = "";
-    public $upload      = "";
-    public $controller  = "";
-    public $upload_json = "";
+    public $root          = "";
+    public $project       = "";
+    public $rel_path      = "";
+    public $path          = "";
+    public $type          = "";
+    public $new_name      = "";
+    public $content       = "";
+    public $destination   = "";
+    public $upload        = "";
+    public $controller    = "";
+    public $upload_json   = "";
+    public $search_string = "";
     
     // JSEND Return Contents
-    public $status      = "";
-    public $data        = "";
-    public $message     = "";
+    public $status        = "";
+    public $data          = "";
+    public $message       = "";
     
     //////////////////////////////////////////////////////////////////
     // METHODS
@@ -44,6 +45,8 @@ class Filemanager {
         if($this->rel_path!="/"){ $this->rel_path .= "/"; } 
         $this->root = $get['root'];
         $this->path = $this->root . $get['path'];
+        // Search
+        if(!empty($post['search_string'])){ $this->search_string = $post['search_string']; }
         // Create
         if(!empty($get['type'])){ $this->type = $get['type']; }
         // Modify\Create
@@ -109,6 +112,46 @@ class Filemanager {
             $this->message = "Path Does Not Exist";
         }
             
+        $this->respond();
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // SEARCH
+    //////////////////////////////////////////////////////////////////
+    
+    public function search(){
+        if(!function_exists('shell_exec')){
+            $this->status = "error";
+            $this->message = "Shell_exec() Command Not Enabled.";
+        }else{
+            chdir(WORKSPACE);
+            if($this->path[0] == "/"){
+                $path = substr($this->path,1);
+            }else{
+                $path = $this->path;
+            }
+            $input = str_replace('"' , '', $this->search_string);
+            $output = shell_exec('grep -i -I -n -R "' . $input . '" /' . $path . '/* ');
+            $output_arr = explode("\n", $output);
+            $return = array();
+            foreach($output_arr as $line){
+                $data = explode(":", $line);
+                $da = array();
+                if(count($data) > 2){
+                    $da['line'] = $data[1];
+                    $da['file'] = str_replace(WORKSPACE,'',$data[0]);
+                    $da['string'] = str_replace($data[0] . ":" . $data[1] . ':' , '', $line);
+                    $return[] = $da;
+                }
+            }
+            if(count($return)==0){
+                $this->status = "error";
+                $this->message = "No Results Returned";
+            }else{
+                $this->status = "success";
+                $this->data = '"index":' . json_encode($return);
+            }
+        }
         $this->respond();
     }
         
