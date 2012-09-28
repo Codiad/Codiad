@@ -386,7 +386,7 @@ var filemanager = {
                 if(search_response!='error'){
                     var results = '';
                     $.each(search_response.index, function(key, val) {
-                        results += '<div><a onclick="filemanager.open_file(\'' + val['file'] + '\');setTimeout( function() { editor_instance[active.get_id()].gotoLine(\'' + val['line'] + '\' , 0 , true ); } , 500 );modal.unload();">Line ' + val['line'] + ': ' + val['file'] + '</a></div>';
+                        results += '<div><a onclick="filemanager.open_file(\'' + val['file'] + '\');setTimeout( function() { active.goto_line('+val['line']+'); }, 500);modal.unload();">Line ' + val['line'] + ': ' + val['file'] + '</a></div>';
                     });
                     $('#filemanager-search-results').slideDown().html(results);
                 }else{
