@@ -131,11 +131,12 @@ var filemanager = {
     // Loop out all files and folders in directory path
     //////////////////////////////////////////////////////////////////
 
-    index : function(path){
+    index : function(path,rescan){
+        if(rescan === undefined){ rescan = false; }
         node = $('#file-manager a[data-path="'+path+'"]');
         node.addClass('loading');
         $.get(this.controller+'?action=index&path='+path,function(data){
-            if(node.hasClass('open')){
+            if(node.hasClass('open') && !rescan){
                 node.parent('li').children('ul').slideUp(300,function(){ 
                     $(this).remove(); 
                     node.removeClass('open');
@@ -146,7 +147,9 @@ var filemanager = {
                 if(objects_response!='error'){
                     files = objects_response.index;
                     if(files.length>0){
-                        var appendage = '<ul style="display: none;">';
+                        var display = 'display:none;';
+                        if(rescan){ display = ''; }
+                        var appendage = '<ul style="'+display+'">';
                         $.each(files,function(index){
                             var ext = '';
                             var name = files[index].name.replace(path,'');
@@ -155,14 +158,37 @@ var filemanager = {
                             appendage += '<li><a class="'+files[index].type+ext+'" data-type="'+files[index].type+'" data-path="'+files[index].name+'">'+name+'</a></li>';
                         });
                         appendage += '</ul>';
+                        if(rescan){ node.parent('li').children('ul').remove(); }
                         $(appendage).insertAfter(node);
-                        node.siblings('ul').slideDown(300);   
+                        if(!rescan){ node.siblings('ul').slideDown(300); }
                     }
                 }
             }
             node.removeClass('loading');
+            if(rescan && filemanager.rescan_children.length>filemanager.rescan_counter){
+                filemanager.rescan(filemanager.rescan_children[filemanager.rescan_counter++]);
+            }else{
+                filemanager.rescan_children = [];
+                filemanager.rescan_counter = 0;
+            }
         });
         
+    },
+    
+    rescan_children : [],
+    
+    rescan_counter : 0,
+    
+    rescan : function(path){        
+        if(filemanager.rescan_counter===0){
+            // Create array of open directories
+            node = $('#file-manager a[data-path="'+path+'"]');
+            node.parent().find('a.open').each(function(){
+                filemanager.rescan_children.push($(this).attr('data-path'));
+            });
+        }
+        
+        filemanager.index(path,true);
     },
     
     //////////////////////////////////////////////////////////////////

@@ -76,5 +76,17 @@
         "icon": "x",
         "applies-to" : "both",
         "onclick": "filemanager.download($('#context-menu').attr('data-path'));"
+    },
+    {
+        "title": "Break",
+        "icon": null,
+        "applies-to" : "directory-only",
+        "onclick": null
+    },
+    {
+        "title": "Rescan",
+        "icon": "d",
+        "applies-to" : "directory-only",
+        "onclick": "filemanager.rescan($('#context-menu').attr('data-path'));"
     }
 ]
