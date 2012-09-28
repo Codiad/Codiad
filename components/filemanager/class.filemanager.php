@@ -131,6 +131,7 @@ class Filemanager {
                 $path = $this->path;
             }
             $input = str_replace('"' , '', $this->search_string);
+            $input = preg_quote($input);
             $output = shell_exec('grep -i -I -n -R "' . $input . '" /' . $path . '/* ');
             $output_arr = explode("\n", $output);
             $return = array();
