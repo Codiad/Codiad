@@ -38,6 +38,7 @@ var editor = {
             this.set_print_margin(false,editor_instance[editor_count]);
             this.set_highlight_line(true,editor_instance[editor_count]);
             this.set_indent_guides(true,editor_instance[editor_count]);
+            this.set_wrap_mode(false,editor_instance[editor_count]);
             this.change_listener(editor_instance[editor_count]);
             this.bind_keys(editor_instance[editor_count]);
             
@@ -164,6 +165,14 @@ var editor = {
     
     set_code_folding : function(f,i){
         i.setFoldStyle(f);
+    },
+    
+    //////////////////////////////////////////////////////////////////
+    // Set Line Wrapping
+    //////////////////////////////////////////////////////////////////
+    
+    set_wrap_mode : function(w,i){
+        i.getSession().setUseWrapMode(w);
     },
     
     //////////////////////////////////////////////////////////////////
