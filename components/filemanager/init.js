@@ -379,6 +379,7 @@ var filemanager = {
         modal.load(500,this.dialog+'?action=search&path='+path);
         modal.hide_overlay();
         $('#modal-content form').live('submit',function(e){
+            $('#filemanager-search-processing').show();
             e.preventDefault();
             search_string = $('#modal-content form input[name="search_string"]').val();
             $.post(filemanager.controller+'?action=search&path='+path,{search_string:search_string},function(data){
@@ -392,6 +393,7 @@ var filemanager = {
                 }else{
                     $('#filemanager-search-results').slideUp();
                 }
+                $('#filemanager-search-processing').hide();
             });
         });
     },
