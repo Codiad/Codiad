@@ -41,6 +41,22 @@ var active = {
         });
         // Run resize on window resize
         $(window).on('resize',function(){ active.resize(); });
+
+        // Prompt if a user tries to close window without saving all filess
+        window.onbeforeunload = function (e) {
+            if ($('#active-files a.changed').length > 0) {
+                var e = e || window.event;
+                var err_msg = "You have unsaved files."
+
+                // For IE and Firefox prior to version 4
+                if (e) {
+                    e.returnValue = err_msg;
+                }
+
+                // For rest
+                return err_msg;
+            }
+        };
     },
     
     //////////////////////////////////////////////////////////////////
@@ -128,11 +144,14 @@ var active = {
         var id = this.get_id();
         if(path && id){
             var content = editor.get_content(id);
-            filemanager.save_file(path,content);
+            filemanager.save_file(path,content, {
+                success: function(){
+                    $('#active-files a[data-path="'+path+'"]').removeClass('changed');
+                }
+            });
         }else{
             message.error('No Open Files to Save');
         }
-        $('#active-files a[data-path="'+path+'"]').removeClass('changed');
     },
     
     //////////////////////////////////////////////////////////////////
