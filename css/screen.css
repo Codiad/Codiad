@@ -98,16 +98,17 @@
             background-image: -ms-linear-gradient(left , rgb(120,120,120) 29%, rgb(77,77,77) 77%);
             background-image: -webkit-gradient(linear,left top,right top,color-stop(0.29, rgb(120,120,120)),color-stop(0.77, rgb(77,77,77)));
             box-shadow:  0px 0px 15px 0px rgba(0, 0, 0, .9);
+            cursor: 'ne-resize';
        }
        .sidebar-handle span { display: block; position: absolute; width: 9px; top: 50%; text-align: center; letter-spacing: -1px; color: #000; }
        
         
     /* Left Sidebar */   
-    #sb-left .sidebar-handle { float: left; }
+    #sb-left .sidebar-handle { position: absolute; right: 0; }
     
-    .sb-left-content { float: left; position: relative; width: 290px; height: 100%; }
+    .sb-left-content { position: absolute; top: 0; left: 0; right: 10px; bottom: 0;}
     
-    #lock-left-sidebar { display: block; position: absolute; cursor: pointer; font-size: 30px; margin: -3px 0 0 255px; color: #666; z-index: 99999; }
+    #lock-left-sidebar { display: block; position: absolute; cursor: pointer; font-size: 30px; color: #666; z-index: 99999; right: 20px;}
     #lock-left-sidebar:hover { color: #fff; }
     
     /* Right Sidebar */   
