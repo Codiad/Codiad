@@ -226,13 +226,28 @@ var filemanager = {
     // Save file
     //////////////////////////////////////////////////////////////////
     
-    save_file : function(path,content){
+    save_file : function(path,content, callbacks){
+        callbacks = callbacks || {};
+        var _this = this;
+        var notify_save_err = function(){
+            message.error('File could not be saved');
+            if (typeof callbacks.error === 'function'){
+                var context = callbacks.context || _this;
+                callbacks.error.apply(context, [data]);
+            }
+        }
         $.post(this.controller+'?action=modify&path='+path,{content:content},function(data){
             save_response = jsend.parse(data);
             if(save_response!='error'){
                 message.success('File Saved');
             }
-        });
+            if (typeof callbacks.success === 'function'){
+                var context = callbacks.context || _this;
+                callbacks.success.apply(context, [data]);
+            } else {
+                notify_save_err();
+            }
+        }).error(notify_save_err);
     },
     
     //////////////////////////////////////////////////////////////////
