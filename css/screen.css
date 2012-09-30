@@ -104,7 +104,7 @@
        
         
     /* Left Sidebar */   
-    #sb-left .sidebar-handle { position: absolute; right: 0; }
+    #sb-left .sidebar-handle { position: absolute; right: 0; cursor: col-resize; }
     
     .sb-left-content { position: absolute; top: 0; left: 0; right: 10px; bottom: 0;}
     
