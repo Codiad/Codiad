@@ -42,8 +42,13 @@ switch($_GET['action']){
 
     function save_and_close(path){
         var id = editor.get_id(path);
-        var content = editor.get_content(id);
-        filemanager.save_file(path,content);
+        var content = editor.get_content(id);        
+        filemanager.save_file(path,content, {
+            success: function(){
+                $('#active-files a[data-path="'+path+'"]').removeClass('changed');
+                active.remove_draft(path);
+            }
+        });
         active.close(path);        
         modal.unload();
     }

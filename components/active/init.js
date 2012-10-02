@@ -11,6 +11,10 @@ var active = {
     controller : 'components/active/controller.php',
 
     init : function(){
+        
+        // Load LocalStorage script
+        $.loadScript("components/active/localstorage.js",true);
+        
         // Focus
         $('#active-files a').live('click',function(){
             active.focus($(this).attr('data-path'));
@@ -60,6 +64,23 @@ var active = {
     },
     
     //////////////////////////////////////////////////////////////////
+    // Drafts
+    //////////////////////////////////////////////////////////////////
+    
+    check_draft : function(path){
+        var draft = localStorage.getItem(path);
+        if(draft!==null){
+            return draft;
+        }else{
+            return false;
+        }
+    },
+    
+    remove_draft : function(path){
+        localStorage.removeItem(path);
+    },
+    
+    //////////////////////////////////////////////////////////////////
     // Get active editor ID
     //////////////////////////////////////////////////////////////////
     
@@ -101,6 +122,8 @@ var active = {
         $('#active-files').append('<li><a data-path="'+path+'"><span></span><div>'+path+'</div></a></li>');
         $.get(active.controller+'?action=add&path='+path);
         this.focus(path);
+        // Mark draft as changed
+        if(active.check_draft(path)){ active.mark_changed(editor.get_id(path)); }
     },
     
     //////////////////////////////////////////////////////////////////
@@ -147,6 +170,7 @@ var active = {
             filemanager.save_file(path,content, {
                 success: function(){
                     $('#active-files a[data-path="'+path+'"]').removeClass('changed');
+                    active.remove_draft(path);
                 }
             });
         }else{
@@ -180,6 +204,8 @@ var active = {
         $('#editor'+editor.get_id(path)).remove();
         $('#active-files a[data-path="'+path+'"]').parent('li').remove();
         $.get(active.controller+'?action=remove&path='+path);
+        // Remove any draft content
+        active.remove_draft(path);
     },
     
     //////////////////////////////////////////////////////////////////

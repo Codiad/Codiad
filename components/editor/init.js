@@ -18,6 +18,10 @@ var editor = {
     open : function(path,content){
     
         if(this.get_id(path)==null){
+            
+            // Check draft
+            var draft = active.check_draft(path);
+            if(draft){ content = draft; }
     
             // Hide all other editors
             $('.editor').hide();
