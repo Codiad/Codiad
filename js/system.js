@@ -83,7 +83,10 @@ var modal = {
     load : function(w,u){ // (Width, URL)
         $('#modal').css({'top':'15%','left':'50%','width':w+'px','margin-left':'-'+Math.ceil(w/2)+'px'}).draggable({ handle: '#drag-handle' });
         $('#modal-content').html('<div id="modal-loading"></div>');
-        $('#modal-content').load(u);
+        $('#modal-content').load(u,function(){
+            // Fix for Firefox autofocus goofiness
+            $('input[autofocus="autofocus"]').focus();
+        });
         $('#modal, #modal-overlay').fadeIn(200);
         sidebars.modal_lock = true;
     },
