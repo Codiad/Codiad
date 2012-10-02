@@ -12,9 +12,6 @@ var active = {
 
     init : function(){
         
-        // Load LocalStorage script
-        $.loadScript("components/active/localstorage.js",true);
-        
         // Focus
         $('#active-files a').live('click',function(){
             active.focus($(this).attr('data-path'));
