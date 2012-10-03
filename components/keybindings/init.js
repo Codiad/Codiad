@@ -12,7 +12,7 @@ $.ctrl = function(key, callback, args) {
     var isCtrl = false;
     $(document).keydown(function(e) {
         if(!args) args=[];
-        if(e.ctrlKey) isCtrl = true;
+        isCtrl = e.ctrlKey;
         if(e.keyCode == key && isCtrl) {
             callback.apply(this, args);
             isCtrl = false;
