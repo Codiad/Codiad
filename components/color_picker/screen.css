@@ -159,5 +159,6 @@
 .colorpicker_slider {
     background-position: bottom;
 }
-
-.colorpicker_rgb_r input, .colorpicker_rgb_g input, .colorpicker_rgb_b input, .colorpicker_hsb_h input, .colorpicker_hsb_s input, .colorpicker_hsb_b input { max-width: 30px; }
+.colorpicker_rgb_r input, .colorpicker_rgb_g input, .colorpicker_rgb_b input, .colorpicker_hsb_h input, .colorpicker_hsb_s input, .colorpicker_hsb_b input {
+    max-width: 30px;
+}

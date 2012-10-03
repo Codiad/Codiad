@@ -1,16 +1,27 @@
-#editor-region { width: 100%; height: 100%; }
-
-.editor { width: 100%; height: 100%; background: #1a1a1a; color: #fff; font-size: 14px; }
-
-.ace_content { padding: 0; margin: 0; }
-    
-.ace_gutter-layer { 
+#editor-region {
+    width: 100%;
+    height: 100%;
+}
+.editor {
+    width: 100%;
+    height: 100%;
+    background: #1a1a1a;
+    color: #fff;
+    font-size: 14px;
+}
+.ace_content {
+    padding: 0;
+    margin: 0;
+}
+.ace_gutter-layer {
     padding: 0;
     -webkit-box-shadow: inset -3px 0px 10px 0px rgba(0, 0, 0, .5);
     -moz-box-shadow: inset -3px 0px 10px 0px rgba(0, 0, 0, .5);
     box-shadow: inset -3px 0px 10px 0px rgba(0, 0, 0, .5);
-    /*background: #303030;*/
+    /*background: #303030;
+    */
     background: url(gutter-bg.jpg);
 }
-
-.ace_error { background-position: 3px 0 !important; }
+.ace_error {
+    background-position: 3px 0 !important;
+}
