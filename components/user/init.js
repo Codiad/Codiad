@@ -1,75 +1,85 @@
 /*
-*  Copyright (c) Codiad & Kent Safranski (codiad.com), distributed
-*  as-is and without warranty under the MIT License. See 
-*  [root]/license.txt for more. This information must remain intact.
-*/
+ *  Copyright (c) Codiad & Kent Safranski (codiad.com), distributed
+ *  as-is and without warranty under the MIT License. See
+ *  [root]/license.txt for more. This information must remain intact.
+ */
 
-$(function(){ user.init(); });
+$(function() {
+    user.init();
+});
 
 var user = {
 
-    login_form  : $('#login'),
-    controller : 'components/user/controller.php',
-    dialog : 'components/user/dialog.php',
-    
+    login_form: $('#login'),
+    controller: 'components/user/controller.php',
+    dialog: 'components/user/dialog.php',
+
     //////////////////////////////////////////////////////////////////
     // Initilization
     //////////////////////////////////////////////////////////////////
 
-    init : function(){
-        this.login_form.on('submit',function(e){ e.preventDefault(); user.authenticate(); });
+    init: function() {
+        this.login_form.on('submit', function(e) {
+            e.preventDefault();
+            user.authenticate();
+        });
     },
-    
+
     //////////////////////////////////////////////////////////////////
     // Authenticate User
     //////////////////////////////////////////////////////////////////
-    
-    authenticate : function(){
-        $.post(this.controller+'?action=authenticate',this.login_form.serialize(),function(data){
+
+    authenticate: function() {
+        $.post(this.controller + '?action=authenticate', this.login_form.serialize(), function(data) {
             parsed = jsend.parse(data);
-            if(parsed!='error'){
+            if (parsed != 'error') {
                 // Session set, reload
                 window.location.reload();
             }
         });
     },
-    
+
     //////////////////////////////////////////////////////////////////
     // Logout
     //////////////////////////////////////////////////////////////////
-    
-    logout : function(){
-        $.get(this.controller+'?action=logout',function(){
+
+    logout: function() {
+        $.get(this.controller + '?action=logout', function() {
             window.location.reload();
         });
     },
-    
+
     //////////////////////////////////////////////////////////////////
     // Open the user manager dialog
     //////////////////////////////////////////////////////////////////
-    
-    list : function(){
-        $('#modal-content form').die('submit'); // Prevent form bubbling
-        modal.load(400,user.dialog+'?action=list');
+
+    list: function() {
+        $('#modal-content form')
+            .die('submit'); // Prevent form bubbling
+        modal.load(400, user.dialog + '?action=list');
     },
-    
+
     //////////////////////////////////////////////////////////////////
     // Create User
     //////////////////////////////////////////////////////////////////
-    
-    create_new : function(){
-        modal.load(400,user.dialog+'?action=create');
-        $('#modal-content form').live('submit',function(e){
+
+    create_new: function() {
+        modal.load(400, user.dialog + '?action=create');
+        $('#modal-content form')
+            .live('submit', function(e) {
             e.preventDefault();
-            var username = $('#modal-content form input[name="username"]').val();
-            var password1 = $('#modal-content form input[name="password1"]').val();
-            var password2 = $('#modal-content form input[name="password2"]').val();
-            if(password1!=password2){
+            var username = $('#modal-content form input[name="username"]')
+                .val();
+            var password1 = $('#modal-content form input[name="password1"]')
+                .val();
+            var password2 = $('#modal-content form input[name="password2"]')
+                .val();
+            if (password1 != password2) {
                 message.error('Passwords Do Not Match');
-            }else{
-                $.get(user.controller+'?action=create&username='+username+'&password='+password1,function(data){
+            } else {
+                $.get(user.controller + '?action=create&username=' + username + '&password=' + password1, function(data) {
                     create_response = jsend.parse(data);
-                    if(create_response!='error'){
+                    if (create_response != 'error') {
                         message.success('User Account Created');
                         user.list();
                     }
@@ -77,43 +87,49 @@ var user = {
             }
         });
     },
-    
+
     //////////////////////////////////////////////////////////////////
     // Delete User
     //////////////////////////////////////////////////////////////////
-    
-    delete : function(username){
-        modal.load(400,user.dialog+'?action=delete&username='+username);
-        $('#modal-content form').live('submit',function(e){
+
+    delete: function(username) {
+        modal.load(400, user.dialog + '?action=delete&username=' + username);
+        $('#modal-content form')
+            .live('submit', function(e) {
             e.preventDefault();
-            var username = $('#modal-content form input[name="username"]').val();
-            $.get(user.controller+'?action=delete&username='+username,function(data){
+            var username = $('#modal-content form input[name="username"]')
+                .val();
+            $.get(user.controller + '?action=delete&username=' + username, function(data) {
                 delete_response = jsend.parse(data);
-                if(delete_response!='error'){
+                if (delete_response != 'error') {
                     message.success('Account Deleted')
                     user.list();
                 }
             });
         });
     },
-    
+
     //////////////////////////////////////////////////////////////////
     // Change Password
     //////////////////////////////////////////////////////////////////
-    
-    password : function(username){
-        modal.load(400,user.dialog+'?action=password&username='+username);
-        $('#modal-content form').live('submit',function(e){
+
+    password: function(username) {
+        modal.load(400, user.dialog + '?action=password&username=' + username);
+        $('#modal-content form')
+            .live('submit', function(e) {
             e.preventDefault();
-            var username = $('#modal-content form input[name="username"]').val();
-            var password1 = $('#modal-content form input[name="password1"]').val();
-            var password2 = $('#modal-content form input[name="password2"]').val();
-            if(password1!=password2){
+            var username = $('#modal-content form input[name="username"]')
+                .val();
+            var password1 = $('#modal-content form input[name="password1"]')
+                .val();
+            var password2 = $('#modal-content form input[name="password2"]')
+                .val();
+            if (password1 != password2) {
                 message.error('Passwords Do Not Match');
-            }else{
-                $.get(user.controller+'?action=password&username='+username+'&password='+password1,function(data){
+            } else {
+                $.get(user.controller + '?action=password&username=' + username + '&password=' + password1, function(data) {
                     password_response = jsend.parse(data);
-                    if(password_response!='error'){
+                    if (password_response != 'error') {
                         message.success('Password Changed');
                         modal.unload();
                     }
@@ -121,13 +137,13 @@ var user = {
             }
         });
     },
-    
+
     //////////////////////////////////////////////////////////////////
     // Change Current Project
     //////////////////////////////////////////////////////////////////
-    
-    project : function(project){
-        $.get(user.controller+'?action=project&project='+project);
+
+    project: function(project) {
+        $.get(user.controller + '?action=project&project=' + project);
     }
 
 };

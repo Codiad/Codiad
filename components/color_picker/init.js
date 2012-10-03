@@ -1,52 +1,58 @@
 /*
-*  Copyright (c) Codiad & Kent Safranski (codiad.com), distributed
-*  as-is and without warranty under the MIT License. See 
-*  [root]/license.txt for more. This information must remain intact.
-*/
+ *  Copyright (c) Codiad & Kent Safranski (codiad.com), distributed
+ *  as-is and without warranty under the MIT License. See
+ *  [root]/license.txt for more. This information must remain intact.
+ */
 
-$(function(){ color_picker.init(); });
-    
+$(function() {
+    color_picker.init();
+});
+
 
 var color_picker = {
-    
-    init : function(){
-        
+
+    init: function() {
+
         $.loadScript("components/color_picker/color_parser.js");
         $.loadScript("components/color_picker/jquery.colorpicker.js");
-        
+
     },
-    
-    open : function(){
-        
-        modal.load(400,'components/color_picker/dialog.php');
-        
+
+    open: function() {
+
+        modal.load(400, 'components/color_picker/dialog.php');
+
     },
-    
-    insert : function(type){
+
+    insert: function(type) {
         color = '';
-        if(type=='rgb'){
-            color = $('.colorpicker_rgb_r input').val()+','+$('.colorpicker_rgb_g input').val()+','+$('.colorpicker_rgb_b input').val();
-            if(returnRGBWrapper===false){
+        if (type == 'rgb') {
+            color = $('.colorpicker_rgb_r input')
+                .val() + ',' + $('.colorpicker_rgb_g input')
+                .val() + ',' + $('.colorpicker_rgb_b input')
+                .val();
+            if (returnRGBWrapper === false) {
                 insert = (color);
-            }else{
-                insert = ('rgb('+color+')');
+            } else {
+                insert = ('rgb(' + color + ')');
             }
-        }else{
-            color = $('.colorpicker_hex input').val();
-            if(sellength==3 || sellength ==6){
-                if(seltest){
+        } else {
+            color = $('.colorpicker_hex input')
+                .val();
+            if (sellength == 3 || sellength == 6) {
+                if (seltest) {
                     insert = color;
-                }else{
-                    insert = '#'+color;
+                } else {
+                    insert = '#' + color;
                 }
-            }else{
-                insert = '#'+color;
+            } else {
+                insert = '#' + color;
             }
         }
-        
+
         active.insert_text(insert);
         modal.unload();
-        
+
     }
-    
+
 };
