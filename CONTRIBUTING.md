@@ -18,4 +18,9 @@ Stick to the conventions defined in other components as closely as possible.
 * Use underscores in namespaces instead of interCaps
 * When working with the editor utilize the `active` object whenever possible instead of going direct to the `editor`
 
+**Formatting**
+
+In order to maintain a consistant code structure to the code across the application please run any changes through JSBeautifier (http://jsbeautifier.org/) with 
+the default settings.
+
 If you have questions, please ask. Submit an issue or [contact me (fluidbyte) directly](mailto:dev@codiad.com).
