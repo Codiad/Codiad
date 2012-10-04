@@ -184,9 +184,7 @@ var filemanager = {
             rescan = false;
         }
         node = $('#file-manager a[data-path="' + path + '"]');
-        node.addClass('loading');
-        $.get(this.controller + '?action=index&path=' + path, function(data) {
-            if (node.hasClass('open') && !rescan) {
+        if (node.hasClass('open') && !rescan) {
                 node.parent('li')
                     .children('ul')
                     .slideUp(300, function() {
@@ -194,7 +192,9 @@ var filemanager = {
                         .remove();
                     node.removeClass('open');
                 });
-            } else {
+        } else {
+            node.addClass('loading');
+            $.get(this.controller + '?action=index&path=' + path, function(data) {
                 node.addClass('open');
                 objects_response = jsend.parse(data);
                 if (objects_response != 'error') {
@@ -230,16 +230,15 @@ var filemanager = {
                         }
                     }
                 }
-            }
-            node.removeClass('loading');
-            if (rescan && filemanager.rescan_children.length > filemanager.rescan_counter) {
-                filemanager.rescan(filemanager.rescan_children[filemanager.rescan_counter++]);
-            } else {
-                filemanager.rescan_children = [];
-                filemanager.rescan_counter = 0;
-            }
-        });
-
+                node.removeClass('loading');
+                if (rescan && filemanager.rescan_children.length > filemanager.rescan_counter) {
+                    filemanager.rescan(filemanager.rescan_children[filemanager.rescan_counter++]);
+                } else {
+                    filemanager.rescan_children = [];
+                    filemanager.rescan_counter = 0;
+                }
+            });
+        }
     },
 
     rescan_children: [],
