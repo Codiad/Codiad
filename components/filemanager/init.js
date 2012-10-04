@@ -185,13 +185,13 @@ var filemanager = {
         }
         node = $('#file-manager a[data-path="' + path + '"]');
         if (node.hasClass('open') && !rescan) {
-                node.parent('li')
-                    .children('ul')
-                    .slideUp(300, function() {
-                    $(this)
-                        .remove();
-                    node.removeClass('open');
-                });
+            node.parent('li')
+                .children('ul')
+                .slideUp(300, function() {
+                $(this)
+                    .remove();
+                node.removeClass('open');
+            });
         } else {
             node.addClass('loading');
             $.get(this.controller + '?action=index&path=' + path, function(data) {
