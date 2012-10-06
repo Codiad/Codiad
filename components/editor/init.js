@@ -29,15 +29,21 @@ var editor = {
     },
 
     add_instance: function(session){
-        var theme = 'ace/theme/'+this.settings.theme;
-        var i = new Editor(
-            new VirtualRenderer($('#editor')[0], theme)
-        );
+        var i  = ace.edit('editor');
+
+        // Apply the current configuration settings:
+        i.setTheme('ace/theme/' + this.settings.theme);
+        i.setFontSize(this.settings.font_size);
+        i.setShowPrintMargin(this.settings.print_margin);
+        i.setHighlightActiveLine(this.settings.highlight_line);
+        i.setDisplayIndentGuides(this.settings.indent_guides);
+
         this.instances.push(i);
+        return i;
     },
 
     exterminate: function(){
-        $('#editor').html('');
+        $('#editor-region').html('').append($("<div>").attr('id', 'editor'));
         this.instances = [];
     },
 
@@ -70,11 +76,8 @@ var editor = {
 
     set_session: function(session, i) {
         i = i || this.get_active();
-        if (i) {
-            i.setSession(session);
-        } else {
-            i = this.add_instance(session);
-        }
+        if (! i) i = this.add_instance(session);
+        i.setSession(session);
     },
 
     //////////////////////////////////////////////////////////////////

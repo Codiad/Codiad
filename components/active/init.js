@@ -22,15 +22,29 @@ var active = {
     },
 
     open: function(path, content, in_background){
+        if (this.is_open(path)) {
+            this.focus(path);
+            return;
+        }
         var ext = filemanager.get_extension(path);
         var mode = editor.select_mode(ext);
-        var session = new EditSession(content, mode);
-        session.path = path;
-        this.sessions[path] = session;
-        if (! in_background) {
-            editor.set_session(session);
+        var _this = this;
+
+        var fn = function(){
+            var Mode = require('ace/mode/'+mode).Mode;
+
+            var session = new EditSession(content, new Mode());
+            session.path = path;
+            _this.sessions[path] = session;
+            if (! in_background) {
+                editor.set_session(session);
+            }
+            _this.add(path, session);
         }
-        this.add(path, session);
+
+        $.loadScript('components/editor/ace-editor/mode-' + mode + '.js',
+                    fn );
+
     },
 
     init: function() {
@@ -164,6 +178,8 @@ var active = {
         $('#active-files a')
             .removeClass('active');
         this.sessions[path].thumb.addClass('active');
+        var session = this.sessions[path];
+        editor.get_active().setSession(session);
         active.check(path);
     },
 
@@ -218,7 +234,7 @@ var active = {
         var session = this.sessions[path];
         session.thumb.parent('li').remove();
         var next_thumb = $('#active-files a[data-path]');
-        if (next_path.length == 0) {
+        if (next_thumb.length == 0) {
             editor.exterminate();
         } else {
             var next_path = next_thumb.attr('data-path');
