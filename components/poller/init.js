@@ -63,8 +63,7 @@ var poller = {
             // Get changed content and path
             var path = $(this)
                 .attr('data-path');
-            var id = editor.get_id(path);
-            var content = editor.get_content(id);
+            var content = active.sessions[path].getValue();
 
             // Set localstorage
             localStorage.setItem(path, content);

@@ -112,7 +112,7 @@
         <div id="cursor-position">Ln: 0 &middot; Col: 0</div>
 
         <div id="editor-region">
-
+            <div id="editor"></div>
             <div id="editor-bottom-bar">
                 <div id="current-file"></div>
             </div>
@@ -158,6 +158,8 @@
 
     <iframe id="download"></iframe>
 
+    <!-- ACE -->
+    <script src="components/editor/ace-editor/ace.js"></script>
 
     <!-- COMPONENTS -->
     <?php
@@ -187,8 +189,6 @@
     }
 
     ?>
-    <!-- ACE -->
-    <script src="components/editor/ace-editor/ace.js"></script>
 
 </body>
 </html>
