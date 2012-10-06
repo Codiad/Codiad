@@ -241,6 +241,7 @@ var active = {
             var next_session = this.sessions[next_path];
             editor.remove_session(session, next_session);
         }
+        delete this.sessions[path];
         /*if ((session.thumb).hasClass('active')) {
             $('#current-file')
                 .html('');
