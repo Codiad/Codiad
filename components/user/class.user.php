@@ -15,6 +15,7 @@ class User {
     public $username    = '';
     public $password    = '';
     public $project     = '';
+    public $projects    = '';
     public $users       = '';
     public $actives     = '';
     
@@ -93,6 +94,11 @@ class User {
         }
         saveJSON('active.php',$this->actives);
         
+        // Remove access control list (if exists)
+        if(file_exists(BASE_PATH . "/data/" . $this->username . '_acl.php')){
+            unlink(BASE_PATH . "/data/" . $this->username . '_acl.php');
+        }
+        
         // Response
         echo formatJSEND("success",null);
     }
@@ -113,6 +119,25 @@ class User {
         }
         // Save array back to JSON
         saveJSON('users.php',$revised_array);
+        // Response
+        echo formatJSEND("success",null);
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Set Project Access
+    //////////////////////////////////////////////////////////////////
+    
+    public function Project_Access(){
+        // Access set to all projects
+        if($this->projects==0){
+            if(file_exists(BASE_PATH . "/data/" . $this->username . '_acl.php')){
+                unlink(BASE_PATH . "/data/" . $this->username . '_acl.php');
+            }
+        // Access set to restricted list
+        }else{
+            // Save array back to JSON
+            saveJSON($this->username . '_acl.php',$this->projects);
+        }
         // Response
         echo formatJSEND("success",null);
     }

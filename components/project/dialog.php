@@ -23,6 +23,12 @@
         
         case 'list':
         
+            // Get access control data
+            $projects_assigned = false;
+            if(file_exists(BASE_PATH . "/data/" . $_SESSION['user'] . '_acl.php')){
+                $projects_assigned = getJSON($_SESSION['user'] . '_acl.php');
+            }
+            
             ?>
             <label>Project List</label>
             <div id="project-list">
@@ -31,37 +37,43 @@
                     <th width="5">Open</th>
                     <th>Project Name</th>
                     <th>Path</th>
-                    <th width="5">Delete</th>
+                    <?php if(!$projects_assigned){ ?><th width="5">Delete</th><?php } ?>
                 </tr>
             <?php
-        
+            
             // Get projects JSON data
             $projects = getJSON('projects.php');
             sort($projects);
-            foreach($projects as $project=>$data){        
-            ?>
-            <tr>
-                <td><a onclick="project.open('<?php echo($data['path']); ?>');" class="icon">s</a></td>
-                <td><?php echo($data['name']); ?></td>
-                <td>/<?php echo($data['path']); ?></td>
+            foreach($projects as $project=>$data){
+                $show = true;
+                if($projects_assigned && !in_array($data['path'],$projects_assigned)){ $show=false; }
+                if($show){
+                ?>
+                <tr>
+                    <td><a onclick="project.open('<?php echo($data['path']); ?>');" class="icon">s</a></td>
+                    <td><?php echo($data['name']); ?></td>
+                    <td>/<?php echo($data['path']); ?></td>
+                    <?php
+                        if(!$projects_assigned){
+                            if($_SESSION['project'] == $data['path']){
+                            ?>
+                            <td><a onclick="message.error('Active Project Cannot Be Removed');" class="icon">^</a></td>
+                            <?php
+                            }else{
+                            ?>
+                            <td><a onclick="project.delete('<?php echo($data['name']); ?>','<?php echo($data['path']); ?>');" class="icon">[</a></td>
+                            <?php
+                            }
+                        }
+                    ?>
+                </tr>
                 <?php
-                    if($_SESSION['project'] == $data['path']){
-                    ?>
-                    <td><a onclick="message.error('Active Project Cannot Be Removed');" class="icon">^</a></td>
-                    <?php
-                    }else{
-                    ?>
-                    <td><a onclick="project.delete('<?php echo($data['name']); ?>','<?php echo($data['path']); ?>');" class="icon">[</a></td>
-                    <?php
-                    }
-                    ?>
-            </tr>
-            <?php
+                }
             }
             ?>
             </table>
             </div>
-            <button class="btn-left" onclick="project.create();">New Project</button><button class="btn-right" onclick="modal.unload();return false;">Close</button>
+            <?php if(!$projects_assigned){ ?><button class="btn-left" onclick="project.create();">New Project</button><?php } ?><button class="<?php if(!$projects_assigned){ echo('btn-right'); } ?>" onclick="modal.unload();return false;">Close</button>
             <?php
             
             break;
