@@ -92,36 +92,26 @@ var editor = {
         case 'htm':
         case 'tpl':
             return 'html';
-            break;
         case 'js':
             return 'javascript';
-            break;
         case 'css':
             return 'css';
-            break;
         case 'scss':
         case 'sass':
             return 'scss';
-            break;
         case 'less':
             return 'less';
-            break;
         case 'php':
         case 'php5':
             return 'php';
-            break;
         case 'json':
             return 'json';
-            break;
         case 'xml':
             return 'xml';
-            break;
         case 'sql':
             return 'sql';
-            break;
         case 'md':
             return 'markdown';
-            break;
         default:
             return 'text';
         }
