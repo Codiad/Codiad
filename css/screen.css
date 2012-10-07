@@ -30,6 +30,10 @@
     background-color: #999;
 }
 
+::-webkit-scrollbar-corner {
+    background-color: #2D2D2D;
+}
+
 /* DOCUMENT */
 
 html, body {
@@ -40,7 +44,7 @@ html, body {
     font: normal 13px 'Ubuntu', sans-serif;
     overflow: hidden;
 }
-    
+
 /* GLOBALS */
 
 a,a:link,a:visited {
@@ -73,9 +77,9 @@ a:hover,a:active {;
 .strong {
     font-weight: bold;
 }
-    
+
 /* ICONS */
-    
+
 .icon {
     display: inline-block;
     margin: 0;
@@ -84,7 +88,7 @@ a:hover,a:active {;
     font-size: 145%;
     line-height: 95%;
 }
-    
+
 /* FORMS */
 
 label {
@@ -191,7 +195,7 @@ pre {
     font-family: monospace;
     box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, .5);
     overflow: auto;
-} 
+}
 
 /* TABLES */
 
@@ -218,7 +222,7 @@ table .icon {
     padding-bottom: 5px;
     text-align: center;
 }
-    
+
 /* INSTALLER */
 
 #installer {
@@ -273,7 +277,7 @@ table .icon {
     border: 2px solid #00ff00;
     border-top: none;
 }
-    
+
 /* MAIN */
 
 #workspace {
@@ -290,7 +294,13 @@ table .icon {
     margin-left: 300px;
     position: relative;
 }
-
+#editor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
 #editor-bottom-bar {
     position: fixed;
     bottom: 0;
@@ -366,9 +376,9 @@ table .icon {
     letter-spacing: -1px;
     color: #000;
 }
-       
-        
-    /* Left Sidebar */   
+
+
+    /* Left Sidebar */
 #sb-left .sidebar-handle {
     position: absolute;
     right: 0;
@@ -396,8 +406,8 @@ table .icon {
 #lock-left-sidebar:hover {
     color: #fff;
 }
-    
-    /* Right Sidebar */   
+
+    /* Right Sidebar */
 #sb-right .sidebar-handle {
     float: left;
 }
@@ -433,7 +443,7 @@ table .icon {
     padding: 0;
     margin: 15px 0;
 }
-    
+
     /* Modal */
 #modal-overlay {
     display: none;
@@ -483,7 +493,7 @@ table .icon {
     height: 100px;
     background: url(../images/loading.gif) no-repeat center;
 }
-    
+
     /* Download iFrame */
 #download {
     display: none;

@@ -4,6 +4,9 @@
  *  [root]/license.txt for more. This information must remain intact.
  */
 
+var EditSession = require('ace/edit_session').EditSession;
+var UndoManager = require("ace/undomanager").UndoManager;
+
 $(function() {
     active.init();
 });
@@ -11,6 +14,49 @@ $(function() {
 var active = {
 
     controller: 'components/active/controller.php',
+
+    // Path to EditSession instance mapping
+    sessions: {},
+
+    is_open: function(path){
+        return !! this.sessions[path];
+    },
+
+    open: function(path, content, in_background){
+        if (this.is_open(path)) {
+            this.focus(path);
+            return;
+        }
+        var ext = filemanager.get_extension(path);
+        var mode = editor.select_mode(ext);
+        var _this = this;
+
+        var fn = function(){
+            var Mode = require('ace/mode/'+mode).Mode;
+
+            // TODO: Ask for user confirmation before recovering
+            // And maybe show a diff
+            var draft = active.check_draft(path);
+            if (draft) {
+                content = draft;
+                message.success('Recovered unsaved content for : ' + path );
+            }
+
+            var session = new EditSession(content, new Mode());
+            session.setUndoManager(new UndoManager());
+
+            session.path = path;
+            _this.sessions[path] = session;
+            if (! in_background) {
+                editor.set_session(session);
+            }
+            _this.add(path, session);
+        }
+
+        $.loadScript('components/editor/ace-editor/mode-' + mode + '.js',
+                    fn );
+
+    },
 
     init: function() {
 
@@ -20,6 +66,7 @@ var active = {
             active.focus($(this)
                 .attr('data-path'));
         });
+
         // Remove
         $('#active-files a>span')
             .live('click', function(e) {
@@ -28,6 +75,7 @@ var active = {
                 .parent('a')
                 .attr('data-path'));
         });
+
         // Sortable
         $('#active-files')
             .sortable({
@@ -37,6 +85,7 @@ var active = {
                 ui.placeholder.height(ui.item.height());
             }
         });
+
         // Open saved-state active files on load
         $.get(active.controller + '?action=list', function(data) {
             var list_response = jsend.parse(data);
@@ -48,6 +97,7 @@ var active = {
                 active.resize();
             }
         });
+
         // Run resize on window resize
         $(window)
             .on('resize', function() {
@@ -90,27 +140,13 @@ var active = {
     },
 
     //////////////////////////////////////////////////////////////////
-    // Get active editor ID
-    //////////////////////////////////////////////////////////////////
-
-    get_id: function() {
-        if ($('.editor.active')) {
-            return $('.editor.active')
-                .attr('data-id');
-        } else {
-            return null;
-        }
-    },
-
-    //////////////////////////////////////////////////////////////////
     // Get active editor path
     //////////////////////////////////////////////////////////////////
 
     get_path: function() {
-        if ($('.editor.active')) {
-            return $('.editor.active')
-                .attr('data-path');
-        } else {
+        try {
+            return editor.get_active().getSession().path;
+        } catch(e) {
             return null;
         }
     },
@@ -129,14 +165,19 @@ var active = {
     // Add newly opened file to list
     //////////////////////////////////////////////////////////////////
 
-    add: function(path) {
-        $('#active-files')
-            .append('<li><a data-path="' + path + '"><span></span><div>' + path + '</div></a></li>');
+    add: function(path, session) {
+        var thumb = $('<a data-path="' +
+                      path +
+                      '"><span></span><div>' +
+                      path +
+                      '</div></a>');
+        session.thumb = thumb;
+        $('#active-files').append($('<li>').append(thumb));
         $.get(active.controller + '?action=add&path=' + path);
         this.focus(path);
         // Mark draft as changed
         if (active.check_draft(path)) {
-            active.mark_changed(editor.get_id(path));
+            active.mark_changed(path);
         }
     },
 
@@ -145,30 +186,11 @@ var active = {
     //////////////////////////////////////////////////////////////////
 
     focus: function(path) {
-        if (editor.get_id(path) !== null) {
-            var id = editor.get_id(path);
-            var ext = filemanager.get_extension(path);
-            var mode = editor.select_mode(ext);
-            editor.set_mode(mode, id);
-            $('.editor')
-                .removeClass('active')
-                .hide();
-            $('#editor' + id)
-                .addClass('active')
-                .show();
-            editor.resize(id);
-            editor.focus(id);
-            // Prevent weird editor issues
-            setTimeout(function() {
-                editor.cursor_tracking(id);
-            }, 500);
-            $('#current-file')
-                .html(path);
-        }
         $('#active-files a')
             .removeClass('active');
-        $('#active-files a[data-path="' + path + '"]')
-            .addClass('active');
+        this.sessions[path].thumb.addClass('active');
+        var session = this.sessions[path];
+        editor.get_active().setSession(session);
         active.check(path);
     },
 
@@ -176,31 +198,30 @@ var active = {
     // Mark changed
     //////////////////////////////////////////////////////////////////
 
-    mark_changed: function(id) {
-        var path = this.get_path();
-        $('#active-files a[data-path="' + path + '"]')
-            .addClass('changed');
+    mark_changed: function(path) {
+        this.sessions[path].thumb.addClass('changed');
     },
 
     //////////////////////////////////////////////////////////////////
     // Save active editor
     //////////////////////////////////////////////////////////////////
 
-    save: function() {
-        var path = this.get_path();
-        var id = this.get_id();
-        if (path && id) {
-            var content = editor.get_content(id);
-            filemanager.save_file(path, content, {
-                success: function() {
-                    $('#active-files a[data-path="' + path + '"]')
-                        .removeClass('changed');
-                    active.remove_draft(path);
-                }
-            });
-        } else {
-            message.error('No Open Files to Save');
+    save: function(path) {
+        if ((path && ! this.is_open(path)) || (!path && ! editor.get_active())){
+            message.error('No Open Files to save');
+            return;
         }
+        var session;
+        if (path) session = this.sessions[path];
+        else session = editor.get_active().getSession();
+        var content = session.getValue();
+        var path = session.path;
+        filemanager.save_file(path, content, {
+            success: function(){
+                session.thumb.removeClass('changed');
+                active.remove_draft(path);
+            }
+        });
     },
 
     //////////////////////////////////////////////////////////////////
@@ -208,33 +229,37 @@ var active = {
     //////////////////////////////////////////////////////////////////
 
     remove: function(path) {
-        if (editor.get_id(path) !== null) {
-            var close_file = true;
-            if ($('#active-files a[data-path="' + path + '"]')
-                .hasClass('changed')) {
-                modal.load(450, 'components/active/dialog.php?action=confirm&path=' + path);
-                close_file = false;
-            }
-            if (close_file) {
-                active.close(path);
-            }
+        if (! this.is_open(path)) return;
+        var session = this.sessions[path];
+        var close_file = true;
+        if (session.thumb.hasClass('changed')) {
+            modal.load(450, 'components/active/dialog.php?action=confirm&path=' + path);
+            close_file = false;
+        }
+        if (close_file) {
+            active.close(path);
         }
     },
 
     close: function(path) {
-        if ($('#active-files a[data-path="' + path + '"]')
-            .hasClass('active')) {
+        var session = this.sessions[path];
+        session.thumb.parent('li').remove();
+        var next_thumb = $('#active-files a[data-path]');
+        if (next_thumb.length == 0) {
+            editor.exterminate();
+        } else {
+            var next_path = next_thumb.attr('data-path');
+            var next_session = this.sessions[next_path];
+            editor.remove_session(session, next_session);
+        }
+        delete this.sessions[path];
+        /*if ((session.thumb).hasClass('active')) {
             $('#current-file')
                 .html('');
             clearInterval(cursorpoll);
             $('#cursor-position')
                 .html('Ln: 0 &middot; Col: 0');
-        }
-        $('#editor' + editor.get_id(path))
-            .remove();
-        $('#active-files a[data-path="' + path + '"]')
-            .parent('li')
-            .remove();
+        }*/
         $.get(active.controller + '?action=remove&path=' + path);
         // Remove any draft content
         active.remove_draft(path);
@@ -262,8 +287,6 @@ var active = {
                 .children('div')
                 .html(change_path);
             // Associated editor
-            $('.editor[data-path="' + cur_path + '"]')
-                .attr('data-path', change_path);
         });
     },
 
@@ -276,8 +299,7 @@ var active = {
             .each(function() {
             cur_path = $(this)
                 .attr('data-path');
-            var id = editor.get_id(cur_path);
-            editor.resize(id);
+            editor.resize();
         });
     },
 
@@ -300,9 +322,12 @@ var active = {
 
     get_selected_text: function() {
         var path = this.get_path();
-        var id = this.get_id();
-        if (path && id) {
-            return editor.get_selected_text(active.get_id());
+
+        // var id = this.get_id();
+        //if (path && id) {
+        if (path && this.is_open(path)) {
+            return this.sessions[path].getSelection();
+            //return editor.get_selected_text(active.get_id());
         } else {
             message.error('No Open Files or Selected Text');
         }
@@ -313,7 +338,8 @@ var active = {
     //////////////////////////////////////////////////////////////////
 
     insert_text: function(val) {
-        editor.insert_text(active.get_id(), val);
+        editor.get_active().insert(val);
+        //editor.insert_text(active.get_id(), val);
     },
 
     //////////////////////////////////////////////////////////////////
@@ -321,7 +347,8 @@ var active = {
     //////////////////////////////////////////////////////////////////
 
     goto_line: function(line) {
-        editor.goto_line(active.get_id(), line);
+        editor.get_active().gotoLine(line, 0, true);
+        //editor.goto_line(active.get_id(), line);
     },
 
     //////////////////////////////////////////////////////////////////
