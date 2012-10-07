@@ -323,12 +323,14 @@ var active = {
 
     get_selected_text: function() {
         var path = this.get_path();
+        var session = this.sessions[path]
 
         // var id = this.get_id();
         //if (path && id) {
         if (path && this.is_open(path)) {
-            return this.sessions[path].getSelection();
-            //return editor.get_selected_text(active.get_id());
+            return session.getTextRange(
+                editor.get_active().getSelectionRange()
+            );
         } else {
             message.error('No Open Files or Selected Text');
         }
