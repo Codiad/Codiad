@@ -248,6 +248,7 @@ var active = {
         if (next_thumb.length == 0) {
             editor.exterminate();
         } else {
+            $(next_thumb[0]).addClass('active');
             var next_path = next_thumb.attr('data-path');
             var next_session = this.sessions[next_path];
             editor.remove_session(session, next_session);
@@ -270,23 +271,23 @@ var active = {
     //////////////////////////////////////////////////////////////////
 
     rename: function(old_path, new_path) {
-        if ($('#current-file')
-            .html() == old_path) {
-            $('#current-file')
-                .html(new_path);
+        this.sessions[new_path] = this.sessions[old_path];
+        this.sessions[new_path].path = new_path;
+        this.sessions[old_path] = undefined;
+        if ($('#current-file').html() == old_path) {
+            $('#current-file').html(new_path);
         }
         $.get(active.controller + '?action=rename&old_path=' + old_path + '&new_path=' + new_path);
         $('#active-files a')
             .each(function() {
-            cur_path = $(this)
-                .attr('data-path');
-            change_path = cur_path.replace(old_path, new_path);
-            // Active file object
-            $(this)
-                .attr('data-path', change_path)
-                .children('div')
-                .html(change_path);
-            // Associated editor
+                cur_path = $(this).attr('data-path');
+                change_path = cur_path.replace(old_path, new_path);
+                // Active file object
+                $(this)
+                    .attr('data-path', change_path)
+                    .children('div')
+                    .html(change_path);
+                // Associated editor
         });
     },
 
@@ -322,12 +323,14 @@ var active = {
 
     get_selected_text: function() {
         var path = this.get_path();
+        var session = this.sessions[path]
 
         // var id = this.get_id();
         //if (path && id) {
         if (path && this.is_open(path)) {
-            return this.sessions[path].getSelection();
-            //return editor.get_selected_text(active.get_id());
+            return session.getTextRange(
+                editor.get_active().getSelectionRange()
+            );
         } else {
             message.error('No Open Files or Selected Text');
         }
