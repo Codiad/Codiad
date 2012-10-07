@@ -7,7 +7,6 @@
     height: 100%;
     background: #1a1a1a;
     color: #fff;
-    font-size: 14px;
 }
 .ace_content {
     padding: 0;
@@ -18,8 +17,6 @@
     -webkit-box-shadow: inset -3px 0px 10px 0px rgba(0, 0, 0, .5);
     -moz-box-shadow: inset -3px 0px 10px 0px rgba(0, 0, 0, .5);
     box-shadow: inset -3px 0px 10px 0px rgba(0, 0, 0, .5);
-    /*background: #303030;
-    */
     background: url(gutter-bg.jpg);
 }
 .ace_error {
