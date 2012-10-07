@@ -38,6 +38,8 @@ var editor = {
         i.setHighlightActiveLine(this.settings.highlight_line);
         i.setDisplayIndentGuides(this.settings.indent_guides);
 
+        this.change_listener(i);
+
         this.instances.push(i);
         return i;
     },
@@ -289,8 +291,9 @@ var editor = {
     //////////////////////////////////////////////////////////////////
 
     change_listener: function(i) {
+        var _this = this;
         i.on('change', function() {
-            active.mark_changed();
+            active.mark_changed(_this.get_active().getSession().path);
         });
     },
 
