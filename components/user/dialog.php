@@ -21,14 +21,21 @@
         //////////////////////////////////////////////////////////////
         
         case 'list':
-        
+            
+            $projects_assigned = false;
+            if(file_exists(BASE_PATH . "/data/" . $_SESSION['user'] . '_acl.php')){ 
             ?>
+            <label>Restricted</label>
+            <pre>You can not edit the user list</pre>
+            <button onclick="modal.unload();return false;">Close</button>
+            <?php } else { ?>
             <label>User List</label>
-            <div id="project-list">
+            <div id="user-list">
             <table width="100%">
                 <tr>
                     <th>Login</th>
                     <th width="5">Password</th>
+                    <th width="5">Projects</th>
                     <th width="5">Delete</th>
                 </tr>
             <?php
@@ -40,6 +47,7 @@
             <tr>
                 <td><?php echo($data['username']); ?></td>
                 <td><a onclick="user.password('<?php echo($data['username']); ?>');" class="icon">A</a></td>
+                <td><a onclick="user.projects('<?php echo($data['username']); ?>');" class="icon">t</a></td>
                 <?php
                     if($_SESSION['user'] == $data['username']){
                     ?>
@@ -59,6 +67,7 @@
             </div>
             <button class="btn-left" onclick="user.create_new();">New Account</button><button class="btn-right" onclick="modal.unload();return false;">Close</button>
             <?php
+            }
             
             break;
             
@@ -80,7 +89,45 @@
             <form>
             <?php
             break;
-            
+        
+        //////////////////////////////////////////////////////////////////////
+        // Set Project Access
+        //////////////////////////////////////////////////////////////////////
+        
+        case projects:
+        
+            // Get project list
+            $projects = getJSON('projects.php');
+            // Get control list (if exists)
+            $projects_assigned = false;
+            if(file_exists(BASE_PATH . "/data/" . $_GET['username'] . '_acl.php')){
+                $projects_assigned = getJSON($_GET['username'] . '_acl.php');
+            }
+        
+        ?>
+            <form>
+            <input type="hidden" name="username" value="<?php echo($_GET['username']); ?>">
+            <label>Project Access for <?php echo(ucfirst($_GET['username'])); ?></label>
+            <select name="access_level" onchange="if($(this).val()=='0'){ $('#project_selector').slideUp(300); }else{ $('#project_selector').slideDown(300); }">
+                <option value="0" <?php if(!$projects_assigned){ echo('selected="selected"'); } ?>>Access ALL Projects</option>
+                <option value="1" <?php if($projects_assigned){ echo('selected="selected"'); } ?>>Only Selected Projects</option>
+            </select>
+            <div id="project_selector" <?php if(!$projects_assigned){ echo('style="display: none;"'); }  ?>>
+                <table>
+                <?php
+                    // Build list
+                    foreach($projects as $project=>$data){
+                        $sel = '';
+                        if($projects_assigned && in_array($data['path'],$projects_assigned)){ $sel = 'checked="checked"'; }
+                        echo('<tr><td width="5"><input type="checkbox" name="project" '.$sel.' id="'.$data['path'].'" value="'.$data['path'].'"></td><td>'.$data['name'].'</td></tr>');
+                    }
+                ?>
+                </table>
+            </div>
+            <button class="btn-left">Confirm</button><button class="btn-right" onclick="user.list();return false;">Cancel</button>
+            <?php
+            break;
+        
         //////////////////////////////////////////////////////////////////////
         // Delete User
         //////////////////////////////////////////////////////////////////////
@@ -101,15 +148,21 @@
         //////////////////////////////////////////////////////////////////////
         
         case password:
+            
+            if($_GET['username']=='undefined'){
+                $username = $_SESSION['user'];
+            }else{
+                $username = $_GET['username'];
+            }
         
         ?>
             <form>
-            <input type="hidden" name="username" value="<?php echo($_GET['username']); ?>">
+            <input type="hidden" name="username" value="<?php echo($username); ?>">
             <label>New Password</label>
             <input type="password" name="password1" autofocus="autofocus">
             <label>Confirm Password</label>
             <input type="password" name="password2">
-            <button class="btn-left">Change <?php echo(ucfirst($_GET['username'])); ?>'s Password</button><button class="btn-right" onclick="user.list();return false;">Cancel</button>
+            <button class="btn-left">Change <?php echo(ucfirst($username)); ?>&apos;s Password</button><button class="btn-right" onclick="modal.unload();return false;">Cancel</button>
             <?php
             break;
         

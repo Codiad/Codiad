@@ -108,6 +108,40 @@ var user = {
             });
         });
     },
+    
+    //////////////////////////////////////////////////////////////////
+    // Set Project Access
+    //////////////////////////////////////////////////////////////////
+
+    projects: function(username) {
+        modal.load(400, user.dialog + '?action=projects&username=' + username);
+        $('#modal-content form')
+            .live('submit', function(e) {
+            e.preventDefault();
+            var username = $('#modal-content form input[name="username"]')
+                .val();
+            var access_level = $('#modal-content form select[name="access_level"]')
+                .val();
+            var projects = new Array();
+            $('input:checkbox[name="project"]:checked').each(function(){
+                projects.push($(this).val());
+            });
+            console.log(projects);
+            if(access_level==0){ projects = 0; }
+            // Check and make sure if access level not full that at least on project is selected
+            if (access_level==1 && !projects) {
+                message.error('At Least One Project Must Be Selected');
+            } else {
+                $.post(user.controller + '?action=project_access&username=' + username,{projects: projects}, function(data) {
+                    projects_response = jsend.parse(data);
+                    if (projects_response != 'error') {
+                        message.success('Account Modified');
+                        //user.list();
+                    }
+                });
+            }
+        });
+    },
 
     //////////////////////////////////////////////////////////////////
     // Change Password

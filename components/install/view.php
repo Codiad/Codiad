@@ -11,12 +11,14 @@ $path = rtrim(str_replace("index.php", "", $_SERVER['PHP_SELF']),"/");
 
 $workspace = is_writable($_SERVER['DOCUMENT_ROOT'] . $path . "/workspace");
 $data = is_writable($_SERVER['DOCUMENT_ROOT'] . $path . "/data");
-$config = is_writable($_SERVER['DOCUMENT_ROOT'] . $path . "/config.php");
+if(file_exists($_SERVER['DOCUMENT_ROOT'] . $path . "/config.php")){
+    $config = is_writable($_SERVER['DOCUMENT_ROOT'] . $path . "/config.php");
+}else{ $config=false; }
 
 if(!$workspace || !$data || !$config){
     ?>
     <h1>Installation Error</h1>
-    <p>Please make sure the following are writeable:</p>
+    <p>Please make sure the following exist and are writeable:</p>
     <pre>[SYSTEM]/config.php
 [SYSTEM]/workspace
 [SYSTEM]/data</pre>

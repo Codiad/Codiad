@@ -16,6 +16,7 @@ class Project {
     public $path        = '';
     public $projects    = '';
     public $no_return   = false;
+    public $assigned    = false;
     
     //////////////////////////////////////////////////////////////////
     // METHODS
@@ -29,6 +30,9 @@ class Project {
     
     public function __construct(){
         $this->projects = getJSON('projects.php');
+        if(file_exists(BASE_PATH . "/data/" . $_SESSION['user'] . '_acl.php')){
+            $this->assigned = getJSON($_SESSION['user'] . '_acl.php');
+        }
     }
     
     //////////////////////////////////////////////////////////////////
@@ -36,10 +40,20 @@ class Project {
     //////////////////////////////////////////////////////////////////
     
     public function GetFirst(){
-                
-        $this->name = $this->projects[0]['name'];
-        $this->path = $this->projects[0]['path'];
         
+        $projects_assigned = false;
+        if($this->assigned){
+            foreach($this->projects as $project=>$data){
+                if(in_array($data['path'],$this->assigned)){
+                    $this->name = $data['name'];
+                    $this->path = $data['path'];
+                    break;
+                }
+            }
+        }else{
+            $this->name = $this->projects[0]['name'];
+            $this->path = $this->projects[0]['path'];
+        }
         // Set Sessions
         $_SESSION['project'] = $this->path;
         

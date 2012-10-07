@@ -130,6 +130,12 @@ input:focus, textarea:focus, select:focus {
     box-shadow: inset 0px 1px 5px 0px rgba(0, 0, 0, .2);
 }
 
+input[type="checkbox"] {
+    width: 20px;	
+	position: relative;
+    margin: 5px 0 0 0; padding: 0;
+}
+
 button {
     display: inline-block;
     width: auto;

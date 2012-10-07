@@ -50,6 +50,16 @@
         "onclick": null
     },
     {
+        "title": "Password",
+        "icon": "A",
+        "onclick": "user.password();"
+    },
+    {
+        "title": "break",
+        "icon": null,
+        "onclick": null
+    },
+    {
         "title": "Logout",
         "icon": "/",
         "onclick": "user.logout();"
