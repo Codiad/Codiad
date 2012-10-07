@@ -248,6 +248,7 @@ var active = {
         if (next_thumb.length == 0) {
             editor.exterminate();
         } else {
+            $(next_thumb[0]).addClass('active');
             var next_path = next_thumb.attr('data-path');
             var next_session = this.sessions[next_path];
             editor.remove_session(session, next_session);
