@@ -33,7 +33,14 @@ var active = {
         var fn = function(){
             var Mode = require('ace/mode/'+mode).Mode;
 
+            // TODO: Ask for user confirmation before recovering
+            // And maybe show a diff
+            var draft = active.check_draft(path);
+            if (draft) content = draft;
+            message.success('Recovered unsaved content for : ' + path );
+
             var session = new EditSession(content, new Mode());
+
             session.path = path;
             _this.sessions[path] = session;
             if (! in_background) {

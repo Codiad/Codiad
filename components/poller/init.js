@@ -65,6 +65,8 @@ var poller = {
                 .attr('data-path');
             var content = active.sessions[path].getValue();
 
+            // TODO: Add some visual indication about draft getting saved.
+
             // Set localstorage
             localStorage.setItem(path, content);
 
