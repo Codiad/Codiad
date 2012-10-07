@@ -151,7 +151,7 @@ var editor = {
         } else {
             // Change the theme for the existing editor instances
             // and make it the default for new instances
-            this.settings['theme'] = t;
+            this.settings.theme = t;
             for (var k = 0; k < this.instances.length; k++) {
                 this.instances[k].setTheme("ace/theme/"+t);
             }
@@ -175,7 +175,7 @@ var editor = {
         if (i) {
             i.setFontSize(s);
         } else {
-            this.settings['font_size'] = s;
+            this.settings.font_size = s;
             this.for_each(function(i) {
                 i.setFontSize(s);
             });
@@ -188,9 +188,9 @@ var editor = {
 
     set_highlight_line: function(h, i) {
         if (i) {
-            i.setHighlightActiveLine(h)
+            i.setHighlightActiveLine(h);
         } else {
-            this.settings['highlight_line'] = h;
+            this.settings.highlight_line = h;
             this.for_each(function(i) {
                 i.setHighlightActiveLine(h);
             });
@@ -205,7 +205,7 @@ var editor = {
         if (i) {
             i.setShowPrintMargin(p);
         } else {
-            this.settings['print_margin'] = p;
+            this.settings.print_margin = p;
             this.for_each(function(i) {
                 i.setPrintMargin(p);
             });
@@ -220,7 +220,7 @@ var editor = {
         if (i) {
             i.setDisplayIndentGuides(g);
         } else {
-            this.settings['indent_guides'] = g;
+            this.settings.indent_guides = g;
             this.for_each(function(i) {
                 i.setDisplayIndentGuides(g);
             });
