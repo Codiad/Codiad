@@ -7,9 +7,7 @@
 var VirtualRenderer = require('ace/virtual_renderer').VirtualRenderer;
 var Editor = require('ace/editor').Editor;
 
-editor_instance = {}; // Instances array
 editor_modes = {}; // Loaded modes
-editor_count = 0; // Counter for incrementing instances
 cursorpoll = null;
 
 var editor = {
@@ -39,6 +37,7 @@ var editor = {
         i.setDisplayIndentGuides(this.settings.indent_guides);
 
         this.change_listener(i);
+        this.cursor_tracking(i);
 
         this.instances.push(i);
         return i;
