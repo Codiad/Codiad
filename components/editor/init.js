@@ -23,7 +23,7 @@ var editor = {
         print_margin: false,
         highlight_line: true,
         indent_guides: true,
-        wrap_mode: false,
+        wrap_mode: false
     },
 
     add_instance: function(session){
