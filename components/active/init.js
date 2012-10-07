@@ -37,8 +37,10 @@ var active = {
             // TODO: Ask for user confirmation before recovering
             // And maybe show a diff
             var draft = active.check_draft(path);
-            if (draft) content = draft;
-            message.success('Recovered unsaved content for : ' + path );
+            if (draft) {
+                content = draft;
+                message.success('Recovered unsaved content for : ' + path );
+            }
 
             var session = new EditSession(content, new Mode());
             session.setUndoManager(new UndoManager());
