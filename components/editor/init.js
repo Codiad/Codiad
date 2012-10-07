@@ -19,7 +19,7 @@ var editor = {
     // Editor-wide settings
     settings: {
         theme: 'twilight',
-        font_size: 15,
+        font_size: '12px',
         print_margin: false,
         highlight_line: true,
         indent_guides: true,
