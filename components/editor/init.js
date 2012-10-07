@@ -31,7 +31,7 @@ var editor = {
 
         // Apply the current configuration settings:
         i.setTheme('ace/theme/' + this.settings.theme);
-        i.setFontSize(18);
+        i.setFontSize(this.settings.font_size);
         i.setShowPrintMargin(this.settings.print_margin);
         i.setHighlightActiveLine(this.settings.highlight_line);
         i.setDisplayIndentGuides(this.settings.indent_guides);
