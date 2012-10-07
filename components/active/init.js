@@ -5,6 +5,7 @@
  */
 
 var EditSession = require('ace/edit_session').EditSession;
+var UndoManager = require("ace/undomanager").UndoManager;
 
 $(function() {
     active.init();
@@ -40,6 +41,7 @@ var active = {
             message.success('Recovered unsaved content for : ' + path );
 
             var session = new EditSession(content, new Mode());
+            session.setUndoManager(new UndoManager());
 
             session.path = path;
             _this.sessions[path] = session;

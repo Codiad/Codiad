@@ -38,6 +38,7 @@ var editor = {
 
         this.change_listener(i);
         this.cursor_tracking(i);
+        this.bind_keys(i);
 
         this.instances.push(i);
         return i;
