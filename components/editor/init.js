@@ -75,6 +75,7 @@ var editor = {
     exterminate: function(){
         $('#editor').remove();
         $('#editor-region').append($("<div>").attr('id', 'editor'));
+        $('#current-file').html('');
         this.instances = [];
         this.active_instance = null;
     },
