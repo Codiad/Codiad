@@ -86,6 +86,9 @@ var editor = {
                 this.instances[k].setSession(replacement_session);
             }
         }
+        if ($('#current-file').text() === session.path) {
+            $('#current-file').text(replacement_session.path);
+        }
     },
 
     for_each: function(fn){
