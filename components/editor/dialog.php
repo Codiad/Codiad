@@ -243,8 +243,10 @@ var editor_settings = {
 
 };
 
-$(function(){ 
-    $('input[name="find"]').val(active.get_selected_text()); 
+$(function(){
+    <?php if($_GET['action']=='search'){ ?>
+    $('input[name="find"]').val(active.get_selected_text());
+    <?php } ?>
     editor_settings.init();   
 });
 
