@@ -73,7 +73,8 @@ var editor = {
     },
 
     exterminate: function(){
-        $('#editor-region').html('').append($("<div>").attr('id', 'editor'));
+        $('#editor').remove();
+        $('#editor-region').append($("<div>").attr('id', 'editor'));
         this.instances = [];
         this.active_instance = null;
     },
