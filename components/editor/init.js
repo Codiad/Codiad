@@ -27,35 +27,35 @@ var editor = {
         indent_guides: true,
         wrap_mode: false
     },
-    
+
     get_settings : function(){
         var bool_val = null;
         var theme = localStorage.getItem('theme'); if(theme!==null){ this.settings.theme = theme; }
         var font_size = localStorage.getItem('font-size'); if(font_size!==null){ this.settings.font_size = font_size; }
-        var print_margin = localStorage.getItem('print-margin'); if(print_margin!==null){ 
+        var print_margin = localStorage.getItem('print-margin'); if(print_margin!==null){
             bool_val = (print_margin == "true");
-            this.settings.print_margin = bool_val; 
+            this.settings.print_margin = bool_val;
         }
-        var highlight_line = localStorage.getItem('highlight-line'); if(highlight_line!==null){ 
+        var highlight_line = localStorage.getItem('highlight-line'); if(highlight_line!==null){
             bool_val = (highlight_line == "true");
-            this.settings.highlight_line = bool_val; 
+            this.settings.highlight_line = bool_val;
         }
-        var indent_guides = localStorage.getItem('indent-guides'); if(indent_guides!==null){ 
+        var indent_guides = localStorage.getItem('indent-guides'); if(indent_guides!==null){
             bool_val = (indent_guides == "true");
             this.settings.indent_guides = bool_val;
         }
-        var wrap_mode = localStorage.getItem('wrap-mode'); if(wrap_mode!==null){ 
+        var wrap_mode = localStorage.getItem('wrap-mode'); if(wrap_mode!==null){
             bool_val = (wrap_mode == "true");
-            this.settings.wrap_mode = bool_val; 
+            this.settings.wrap_mode = bool_val;
         }
     },
 
     add_instance: function(session){
         var i  = ace.edit('editor');
-        
+
         // Check user-specified settings
         this.get_settings();
-        
+
         // Apply the current configuration settings:
         i.setTheme('ace/theme/' + this.settings.theme);
         i.setFontSize(this.settings.font_size);
@@ -96,20 +96,20 @@ var editor = {
     //////////////////////////////////////////////////////////////////
 
     get_active: function() {
-	return this.active_instance;
+        return this.active_instance;
     },
 
     set_active: function(i) {
-	if (! i) return;
-	this.active_instance = i;
-	$('#current-file').text(i.getSession().path);
+        if (! i) return;
+        this.active_instance = i;
+        $('#current-file').text(i.getSession().path);
     },
 
     set_session: function(session, i) {
         i = i || this.get_active();
         if (! i) i = this.add_instance(session);
         i.setSession(session);
-	this.set_active(i);
+        this.set_active(i);
     },
 
     //////////////////////////////////////////////////////////////////
@@ -285,7 +285,7 @@ var editor = {
     // Set Line Wrapping
     //////////////////////////////////////////////////////////////////
 
-    set_wrap_mode: function(w, i) {  
+    set_wrap_mode: function(w, i) {
         if (i) {
             i.getSession().setUseWrapMode(w);
         } else {
