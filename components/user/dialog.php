@@ -79,7 +79,7 @@
         
             ?>
             <form>
-            <label>Userame</label>
+            <label>Username</label>
             <input type="text" name="username" autofocus="autofocus" autocomplete="off">
             <label>Password</label>
             <input type="password" name="password1">
