@@ -1,12 +1,13 @@
 #editor-region {
     width: 100%;
     height: 100%;
+    background: #fff;
 }
 .editor {
     width: 100%;
     height: 100%;
-    background: #1a1a1a;
     color: #fff;
+    background: #fff;
 }
 .ace_content {
     padding: 0;
@@ -18,6 +19,7 @@
     -moz-box-shadow: inset -3px 0px 10px 0px rgba(0, 0, 0, .5);
     box-shadow: inset -3px 0px 10px 0px rgba(0, 0, 0, .5);
     background: url(gutter-bg.jpg);
+    color: #ccc;
 }
 .ace_error {
     background-position: 3px 0 !important;
