@@ -166,7 +166,7 @@ class Filemanager {
             $this->data = '"content":' . json_encode(file_get_contents($this->path));
         }else{
             $this->status = "error";
-            $this->message = "Not A File";
+            $this->message = "Not A File :".$this->path;
         }
 
         $this->respond();

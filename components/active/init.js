@@ -271,24 +271,31 @@ var active = {
     //////////////////////////////////////////////////////////////////
 
     rename: function(old_path, new_path) {
-        this.sessions[new_path] = this.sessions[old_path];
-        this.sessions[new_path].path = new_path;
-        this.sessions[old_path] = undefined;
-        if ($('#current-file').html() == old_path) {
-            $('#current-file').html(new_path);
-        }
+	var switch_sessions = function(old_path, new_path) {
+	    var thumb = this.sessions[old_path].thumb;
+	    thumb.attr("data-path", new_path);
+	    thumb.find('div').text(new_path);
+	    this.sessions[new_path] = this.sessions[old_path];
+	    this.sessions[new_path].path = new_path;
+	    this.sessions[old_path] = undefined;
+	}
+	if (this.sessions[old_path]) {
+	    // A file was renamed
+	    switch_sessions.apply(this, [old_path, new_path]);
+	    if (editor.get_active().session.path == old_path) {
+		editor.set_active(this.sessions[new_path]);
+	    }
+	} else {
+	    // A folder was renamed
+	    var new_key;
+	    for (var key in this.sessions) {
+		new_key = key.replace(old_path, new_path);
+		if (new_key !== key) {
+		    switch_sessions.apply(this, [key, new_key]);
+		}
+	    }
+	}
         $.get(active.controller + '?action=rename&old_path=' + old_path + '&new_path=' + new_path);
-        $('#active-files a')
-            .each(function() {
-                cur_path = $(this).attr('data-path');
-                change_path = cur_path.replace(old_path, new_path);
-                // Active file object
-                $(this)
-                    .attr('data-path', change_path)
-                    .children('div')
-                    .html(change_path);
-                // Associated editor
-        });
     },
 
     //////////////////////////////////////////////////////////////////
