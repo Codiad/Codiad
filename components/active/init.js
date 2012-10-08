@@ -190,7 +190,7 @@ var active = {
             .removeClass('active');
         this.sessions[path].thumb.addClass('active');
         var session = this.sessions[path];
-        editor.get_active().setSession(session);
+	editor.set_session(session);
         active.check(path);
     },
 

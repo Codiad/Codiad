@@ -16,6 +16,8 @@ var editor = {
     // corresponding to each split.
     instances: [],
 
+    active_instance: null,
+
     // Editor-wide settings
     settings: {
         theme: 'twilight',
@@ -68,18 +70,20 @@ var editor = {
     //////////////////////////////////////////////////////////////////
 
     get_active: function() {
-        if (this.instances.length > 0)
-            // While there is no implementation for splitting
-            // there can be at most one editor instance.
-            return this.instances[0];
-        else
-            return null;
+	return this.active_instance;
+    },
+
+    set_active: function(i) {
+	if (! i) return;
+	this.active_instance = i;
+	$('#current-file').text(i.getSession().path);
     },
 
     set_session: function(session, i) {
         i = i || this.get_active();
         if (! i) i = this.add_instance(session);
         i.setSession(session);
+	this.set_active(i);
     },
 
     //////////////////////////////////////////////////////////////////
