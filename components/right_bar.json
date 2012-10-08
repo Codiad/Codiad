@@ -50,6 +50,11 @@
         "onclick": null
     },
     {
+        "title": "Editor&nbsp;Config",
+        "icon": "l",
+        "onclick": "modal.load(400, 'components/editor/dialog.php?action=settings');modal.hide_overlay();"
+    },
+    {
         "title": "Password",
         "icon": "A",
         "onclick": "user.password();"
