@@ -39,8 +39,9 @@ define('ace/theme/eclipse', ['require', 'exports', 'module', 'ace/lib/dom'], fun
 
 
 exports.isDark = false;
+exports.cssClass = "ace-eclipse";
 exports.cssText = ".ace-eclipse .ace_editor {\
-  border: 2px solid rgb(159, 159, 159);\
+  border: 2px solid #9f9f9f;\
 }\
 \
 .ace-eclipse .ace_editor.ace_focus {\
@@ -59,7 +60,7 @@ exports.cssText = ".ace-eclipse .ace_editor {\
 }\
 \
 .ace-eclipse .ace_fold {\
-    background-color: rgb(60, 76, 114);\
+    background-color: #3c4c72;\
 }\
 \
 .ace-eclipse .ace_text-layer {\
