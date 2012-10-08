@@ -18,7 +18,7 @@ var editor = {
 
     active_instance: null,
 
-    // Editor-wide settings
+    // Default Editor-wide settings
     settings: {
         theme: 'twilight',
         font_size: '13px',
@@ -27,16 +27,42 @@ var editor = {
         indent_guides: true,
         wrap_mode: false
     },
+    
+    get_settings : function(){
+        var bool_val = null;
+        var theme = localStorage.getItem('theme'); if(theme!==null){ this.settings.theme = theme; }
+        var font_size = localStorage.getItem('font-size'); if(font_size!==null){ this.settings.font_size = font_size; }
+        var print_margin = localStorage.getItem('print-margin'); if(print_margin!==null){ 
+            bool_val = (print_margin == "true");
+            this.settings.print_margin = bool_val; 
+        }
+        var highlight_line = localStorage.getItem('highlight-line'); if(highlight_line!==null){ 
+            bool_val = (highlight_line == "true");
+            this.settings.highlight_line = bool_val; 
+        }
+        var indent_guides = localStorage.getItem('indent-guides'); if(indent_guides!==null){ 
+            bool_val = (indent_guides == "true");
+            this.settings.indent_guides = bool_val;
+        }
+        var wrap_mode = localStorage.getItem('wrap-mode'); if(wrap_mode!==null){ 
+            bool_val = (wrap_mode == "true");
+            this.settings.wrap_mode = bool_val; 
+        }
+    },
 
     add_instance: function(session){
         var i  = ace.edit('editor');
-
+        
+        // Check user-specified settings
+        this.get_settings();
+        
         // Apply the current configuration settings:
         i.setTheme('ace/theme/' + this.settings.theme);
         i.setFontSize(this.settings.font_size);
         i.setShowPrintMargin(this.settings.print_margin);
         i.setHighlightActiveLine(this.settings.highlight_line);
         i.setDisplayIndentGuides(this.settings.indent_guides);
+        i.getSession().setUseWrapMode(this.settings.wrap_mode);
 
         this.change_listener(i);
         this.cursor_tracking(i);
@@ -160,6 +186,8 @@ var editor = {
                 this.instances[k].setTheme("ace/theme/"+t);
             }
         }
+        // LocalStorage
+        localStorage.setItem('theme',t);
     },
 
     //////////////////////////////////////////////////////////////////
@@ -184,6 +212,8 @@ var editor = {
                 i.setFontSize(s);
             });
         }
+        // LocalStorage
+        localStorage.setItem('font-size',s);
     },
 
     //////////////////////////////////////////////////////////////////
@@ -199,6 +229,8 @@ var editor = {
                 i.setHighlightActiveLine(h);
             });
         }
+        // LocalStorage
+        localStorage.setItem('highlight-line',h);
     },
 
     //////////////////////////////////////////////////////////////////
@@ -211,9 +243,11 @@ var editor = {
         } else {
             this.settings.print_margin = p;
             this.for_each(function(i) {
-                i.setPrintMargin(p);
+                i.setShowPrintMargin(p);
             });
         }
+        // LocalStorage
+        localStorage.setItem('print-margin',p);
     },
 
     //////////////////////////////////////////////////////////////////
@@ -229,6 +263,8 @@ var editor = {
                 i.setDisplayIndentGuides(g);
             });
         }
+        // LocalStorage
+        localStorage.setItem('indent-guides',g);
     },
 
     //////////////////////////////////////////////////////////////////
@@ -249,11 +285,16 @@ var editor = {
     // Set Line Wrapping
     //////////////////////////////////////////////////////////////////
 
-    set_wrap_mode: function(w, i) {
-        i = i || this.get_active();
-        if (! i) return;
-        i.getSession()
-            .setUseWrapMode(w);
+    set_wrap_mode: function(w, i) {  
+        if (i) {
+            i.getSession().setUseWrapMode(w);
+        } else {
+            this.for_each(function(i){
+                i.getSession().setUseWrapMode(w);
+            });
+        }
+        // LocalStorage
+        localStorage.setItem('wrap-mode',w);
     },
 
     //////////////////////////////////////////////////////////////////

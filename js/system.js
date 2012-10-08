@@ -72,6 +72,11 @@ $(function() {
                 .outerHeight() - 25) + 'px'
         });
     });
+    
+    $('#settings').click(function(){
+        modal.load(400, 'components/editor/dialog.php?action=settings');
+        modal.hide_overlay();
+    });
 });
 
 //////////////////////////////////////////////////////////////////////
@@ -284,7 +289,7 @@ var sidebars = {
             }, this), 500));
         });
 
-        $(".sidebar-handle")
+        $("#sb-left .sidebar-handle")
             .draggable({
             axis: 'x',
             drag: function(event, ui) {

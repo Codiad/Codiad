@@ -114,6 +114,8 @@
         <div id="editor-region">
             <div id="editor"></div>
             <div id="editor-bottom-bar">
+                <a id="settings"><span class="icon">@</span>Settings</a>
+                <div id="divider"></div>
                 <div id="current-file"></div>
             </div>
 
