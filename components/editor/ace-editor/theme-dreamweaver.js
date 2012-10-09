@@ -38,7 +38,11 @@
 define('ace/theme/dreamweaver', ['require', 'exports', 'module', 'ace/lib/dom'], function(require, exports, module) {
 exports.isDark = false;
 exports.cssClass = "ace-dreamweaver";
-exports.cssText = ".ace-dreamweaver .ace_editor {\
+exports.cssText = "\
+.editor, #editor-region {\
+  background: #ebebeb;\
+}\
+.ace-dreamweaver .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
 \

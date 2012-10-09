@@ -40,7 +40,11 @@ define('ace/theme/eclipse', ['require', 'exports', 'module', 'ace/lib/dom'], fun
 
 exports.isDark = false;
 exports.cssClass = "ace-eclipse";
-exports.cssText = ".ace-eclipse .ace_editor {\
+exports.cssText = "\
+.editor, #editor-region {\
+  background: #ebebeb;\
+}\
+.ace-eclipse .ace_editor {\
   border: 2px solid #9f9f9f;\
 }\
 \

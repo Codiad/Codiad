@@ -40,7 +40,12 @@ define('ace/theme/textmate', ['require', 'exports', 'module', 'ace/lib/dom'], fu
 
 exports.isDark = false;
 exports.cssClass = "ace-tm";
-exports.cssText = ".ace-tm .ace_editor {\
+exports.cssText = "\
+.editor, #editor-region {\
+  background: #f0f0f0;\
+}\
+\
+.ace-tm .ace_editor {\
   border: 2px solid rgb(159, 159, 159);\
 }\
 \
