@@ -11,6 +11,9 @@ $path = rtrim(str_replace("index.php", "", $_SERVER['PHP_SELF']),"/");
 
 $workspace = is_writable($_SERVER['DOCUMENT_ROOT'] . $path . "/workspace");
 $data = is_writable($_SERVER['DOCUMENT_ROOT'] . $path . "/data");
+if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $path . "/config.php")){
+	file_put_contents($_SERVER['DOCUMENT_ROOT'] . $path . "/config.php",file_get_contents($_SERVER['DOCUMENT_ROOT'] . $path . "/config.example.php"));
+}
 if(file_exists($_SERVER['DOCUMENT_ROOT'] . $path . "/config.php")){
     $config = is_writable($_SERVER['DOCUMENT_ROOT'] . $path . "/config.php");
 }else{ $config=false; }
