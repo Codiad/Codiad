@@ -270,8 +270,8 @@ var filemanager = {
             $.get(this.controller + '?action=open&path=' + path, function(data) {
                 open_response = jsend.parse(data);
                 if (open_response != 'error') {
+                    node.removeClass('loading');
                     active.open(path, open_response.content, false);
-                    // editor.open(path, open_response.content);
                 }
             });
         } else {
