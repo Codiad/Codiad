@@ -75,7 +75,7 @@
         // Create New User
         //////////////////////////////////////////////////////////////////////
         
-        case create:
+        case 'create':
         
             ?>
             <form>
@@ -94,7 +94,7 @@
         // Set Project Access
         //////////////////////////////////////////////////////////////////////
         
-        case projects:
+        case 'projects':
         
             // Get project list
             $projects = getJSON('projects.php');
@@ -132,7 +132,7 @@
         // Delete User
         //////////////////////////////////////////////////////////////////////
         
-        case delete:
+        case 'delete':
         
         ?>
             <form>
@@ -147,7 +147,7 @@
         // Change Password
         //////////////////////////////////////////////////////////////////////
         
-        case password:
+        case 'password':
             
             if($_GET['username']=='undefined'){
                 $username = $_SESSION['user'];
