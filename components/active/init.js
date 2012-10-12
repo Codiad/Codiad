@@ -299,10 +299,15 @@
             if (this.sessions[oldPath]) {
                 // A file was renamed
                 switchSessions.apply(this, [oldPath, newPath]);
-                if (codiad.editor.getActive()
-                    .session.path == oldPath) {
+                if (codiad.editor.getActive().session.path == oldPath) {
                     codiad.editor.setActive(this.sessions[newPath]);
                 }
+
+                // Change Editor Mode
+                var ext = codiad.filemanager.getExtension(new_path);
+                var mode = codiad.editor.selectMode(ext);
+                this.sessions[newPath].setMode("ace/mode/" + mode);
+
             } else {
                 // A folder was renamed
                 var newKey;

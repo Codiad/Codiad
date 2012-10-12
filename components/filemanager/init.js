@@ -274,8 +274,10 @@
         //////////////////////////////////////////////////////////////////
 
         openFile: function(path) {
+            var node = $('#file-manager a[data-path="' + path + '"]');
             var ext = this.getExtension(path);
             if ($.inArray(ext, this.noOpen) < 0) {
+                node.addClass('loading');
                 $.get(this.controller + '?action=open&path=' + path, function(data) {
                     var openResponse = codiad.jsend.parse(data);
                     if (openResponse != 'error') {
