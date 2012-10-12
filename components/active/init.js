@@ -277,7 +277,7 @@ var active = {
             thumb.find('div').text(new_path);
             this.sessions[new_path] = this.sessions[old_path];
             this.sessions[new_path].path = new_path;
-            this.sessions[old_path] = undefined;
+            this.sessions[old_path] = undefined; 
         }
         if (this.sessions[old_path]) {
             // A file was renamed
@@ -285,6 +285,10 @@ var active = {
             if (editor.get_active().session.path == old_path) {
                 editor.set_active(this.sessions[new_path]);
             }
+            // Change Editor Mode    
+            var ext = filemanager.get_extension(new_path);
+            var mode = editor.select_mode(ext);  
+            this.sessions[new_path].setMode("ace/mode/" + mode);             
         } else {
             // A folder was renamed
             var new_key;
