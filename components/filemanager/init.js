@@ -281,6 +281,7 @@
                 $.get(this.controller + '?action=open&path=' + path, function(data) {
                     var openResponse = codiad.jsend.parse(data);
                     if (openResponse != 'error') {
+                        node.removeClass('loading');
                         codiad.active.open(path, openResponse.content, false);
                     }
                 });
