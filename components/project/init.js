@@ -4,125 +4,133 @@
  *  [root]/license.txt for more. This information must remain intact.
  */
 
-$(function() {
-    project.init();
-});
+(function(global, $){
 
-var project = {
+    var codiad = global.codiad;
 
-    controller: 'components/project/controller.php',
-    dialog: 'components/project/dialog.php',
+    $(function() {
+        codiad.project.init();
+    });
 
-    init: function() {
-        this.load_current();
-    },
+    codiad.project = {
 
-    //////////////////////////////////////////////////////////////////
-    // Get Current Project
-    //////////////////////////////////////////////////////////////////
+        controller: 'components/project/controller.php',
+        dialog: 'components/project/dialog.php',
 
-    load_current: function() {
-        $.get(project.controller + '?action=get_current', function(data) {
-            var project_info = jsend.parse(data);
-            if (project_info != 'error') {
-                $('#file-manager')
-                    .html('')
-                    .append('<ul><li><a id="project-root" data-type="root" class="directory" data-path="/' + project_info.path + '">' + project_info.name + '</a></li></ul>');
-                filemanager.index('/' + project_info.path);
-                user.project(project_info.path);
-                message.success('Project Loaded');
-            }
-        });
-    },
+        init: function() {
+            this.loadCurrent();
+        },
 
-    //////////////////////////////////////////////////////////////////
-    // Open Project
-    //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        // Get Current Project
+        //////////////////////////////////////////////////////////////////
 
-    open: function(path) {
-        $.get(project.controller + '?action=open&path=' + path, function(data) {
-            var project_info = jsend.parse(data);
-            if (project_info != 'error') {
-                project.load_current();
-                modal.unload();
-                user.project(path);
-            }
-        });
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Open the project manager dialog
-    //////////////////////////////////////////////////////////////////
-
-    list: function() {
-        $('#modal-content form')
-            .die('submit'); // Prevent form bubbling
-        modal.load(500, project.dialog + '?action=list');
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Create Project
-    //////////////////////////////////////////////////////////////////
-
-    create: function() {
-        modal.load(500, project.dialog + '?action=create');
-        $('#modal-content form')
-            .live('submit', function(e) {
-            e.preventDefault();
-            var project_name = $('#modal-content form input[name="project_name"]')
-                .val();
-            $.get(project.controller + '?action=create&project_name=' + project_name, function(data) {
-                create_response = jsend.parse(data);
-                if (create_response != 'error') {
-                    project.open(create_response.path);
-                    modal.unload();
+        loadCurrent: function() {
+            $.get(this.controller + '?action=get_current', function(data) {
+                var projectInfo = codiad.jsend.parse(data);
+                if (projectInfo != 'error') {
+                    $('#file-manager')
+                        .html('')
+                        .append('<ul><li><a id="project-root" data-type="root" class="directory" data-path="/' + projectInfo.path + '">' + projectInfo.name + '</a></li></ul>');
+                    codiad.filemanager.index('/' + projectInfo.path);
+                    codiad.user.project(projectInfo.path);
+                    codiad.message.success('Project Loaded');
                 }
             });
-        });
-    },
+        },
 
-    //////////////////////////////////////////////////////////////////
-    // Delete Project
-    //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        // Open Project
+        //////////////////////////////////////////////////////////////////
 
-    delete: function(name, path) {
-        modal.load(500, project.dialog + '?action=delete&name=' + escape(name) + '&path=' + escape(path));
-        $('#modal-content form')
-            .live('submit', function(e) {
-            e.preventDefault();
-            var project_path = $('#modal-content form input[name="project_path"]')
-                .val();
-            $.get(project.controller + '?action=delete&project_path=' + project_path, function(data) {
-                delete_response = jsend.parse(data);
-                if (delete_response != 'error') {
-                    message.success('Project Deleted');
-                    $.get(filemanager.controller + '?action=delete&path=' + project_path);
-                    project.list();
-                    // Remove any active files that may be open
-                    $('#active-files a')
-                        .each(function() {
-                        var cur_path = $(this)
-                            .attr('data-path');
-                        if (cur_path.indexOf(project_path) == 0) {
-                            active.remove(cur_path);
-                        }
-                    });
+        open: function(path) {
+            var _this = this;
+            $.get(this.controller + '?action=open&path=' + path, function(data) {
+                var projectInfo = codiad.jsend.parse(data);
+                if (projectInfo != 'error') {
+                    _this.loadCurrent();
+                    codiad.modal.unload();
+                    codiad.user.project(path);
                 }
             });
-        });
-    },
+        },
 
-    //////////////////////////////////////////////////////////////////
-    // Get Current (Path)
-    //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        // Open the project manager dialog
+        //////////////////////////////////////////////////////////////////
 
-    get_current: function() {
-        $.get(project.controller + '?action=current', function(data) {
-            current_response = jsend.parse(data);
-            if (current_response != 'error') {
-                return current_response;
-            }
-        });
-    }
+        list: function() {
+            $('#modal-content form')
+                .die('submit'); // Prevent form bubbling
+            codiad.modal.load(500, this.dialog + '?action=list');
+        },
 
-};
+        //////////////////////////////////////////////////////////////////
+        // Create Project
+        //////////////////////////////////////////////////////////////////
+
+        create: function() {
+            var _this = this;
+            codiad.modal.load(500, this.dialog + '?action=create');
+            $('#modal-content form')
+                .live('submit', function(e) {
+                e.preventDefault();
+                var projectName = $('#modal-content form input[name="project_name"]')
+                    .val();
+                $.get(_this.controller + '?action=create&project_name=' + projectName, function(data) {
+                    createResponse = codiad.jsend.parse(data);
+                    if (createResponse != 'error') {
+                        _this.open(createResponse.path);
+                        codiad.modal.unload();
+                    }
+                });
+            });
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Delete Project
+        //////////////////////////////////////////////////////////////////
+
+        delete: function(name, path) {
+            var _this = this;
+            codiad.modal.load(500, this.dialog + '?action=delete&name=' + escape(name) + '&path=' + escape(path));
+            $('#modal-content form')
+                .live('submit', function(e) {
+                e.preventDefault();
+                var projectPath = $('#modal-content form input[name="project_path"]')
+                    .val();
+                $.get(_this.controller + '?action=delete&project_path=' + projectPath, function(data) {
+                    deleteResponse = codiad.jsend.parse(data);
+                    if (deleteResponse != 'error') {
+                        codiad.message.success('Project Deleted');
+                        $.get(codiad.filemanager.controller + '?action=delete&path=' + projectPath);
+                        _this.list();
+                        // Remove any active files that may be open
+                        $('#active-files a')
+                            .each(function() {
+                            var curPath = $(this)
+                                .attr('data-path');
+                            if (curPath.indexOf(projectPath) == 0) {
+                                codiad.active.remove(curPath);
+                            }
+                        });
+                    }
+                });
+            });
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Get Current (Path)
+        //////////////////////////////////////////////////////////////////
+
+        getCurrent: function() {
+            $.get(this.controller + '?action=current', function(data) {
+                currentResponse = codiad.jsend.parse(data);
+                if (currentResponse != 'error') {
+                    return currentResponse;
+                }
+            });
+        }
+    };
+})(this, jQuery);
+
