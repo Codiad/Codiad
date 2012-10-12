@@ -1,4 +1,20 @@
-<?php if(file_exists('config.php')){ require_once('config.php'); } ?>
+<?php 
+
+if(file_exists('config.php')){ require_once('config.php'); } 
+
+// Context Menu
+$context_menu = file_get_contents(COMPONENTS . "/filemanager/context_menu.json");
+$context_menu = json_decode($context_menu,true);
+
+// Right Bar
+$right_bar = file_get_contents(COMPONENTS . "/right_bar.json");
+$right_bar = json_decode($right_bar,true);
+
+// Components
+$components = file_get_contents(COMPONENTS . "/load.json");
+$components = json_decode($components,true);
+
+?>
 <!doctype html>
 
 <head>
@@ -7,6 +23,15 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/screen.css">
+    <?php
+    // Load Component CSS Files
+    foreach($components as $component){
+        if(file_exists(COMPONENTS . "/" . $component . "/screen.css")){
+            echo('<link rel="stylesheet" href="components/'.$component.'/screen.css">');
+        }
+    }
+    ?>
+    
 </head>
 
 <body>
@@ -87,8 +112,6 @@
                         // Load Context Menu
                         ////////////////////////////////////////////////////////////
 
-                        $context_menu = file_get_contents(COMPONENTS . "/filemanager/context_menu.json");
-                        $context_menu = json_decode($context_menu,true);
                         foreach($context_menu as $menu_item=>$data){
 
                             if($data['title']=='Break'){
@@ -139,8 +162,6 @@
                 // Load Right Bar
                 ////////////////////////////////////////////////////////////
 
-                $right_bar = file_get_contents(COMPONENTS . "/right_bar.json");
-                $right_bar = json_decode($right_bar,true);
                 foreach($right_bar as $item_rb=>$data){
 
                     if($data['title']=='break'){
@@ -174,21 +195,10 @@
         // LOAD COMPONENTS
         //////////////////////////////////////////////////////////////////
 
-        $components = file_get_contents(COMPONENTS . "/load.json");
-        $components = json_decode($components,true);
-
         // JS
         foreach($components as $component){
             if(file_exists(COMPONENTS . "/" . $component . "/init.js")){
                 echo('<script src="components/'.$component.'/init.js"></script>"');
-            }
-        }
-
-
-        // CSS
-        foreach($components as $component){
-            if(file_exists(COMPONENTS . "/" . $component . "/screen.css")){
-                echo('<link rel="stylesheet" href="components/'.$component.'/screen.css">');
             }
         }
 
