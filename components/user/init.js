@@ -83,7 +83,7 @@
                 if (password1 != password2) {
                     codiad.message.error('Passwords Do Not Match');
                 } else {
-                    $.get(this.controller + '?action=create&username=' + username + '&password=' + password1, function(data) {
+                    $.get(_this.controller + '?action=create&username=' + username + '&password=' + password1, function(data) {
                         var createResponse = codiad.jsend.parse(data);
                         if (createResponse != 'error') {
                             codiad.message.success('User Account Created');
