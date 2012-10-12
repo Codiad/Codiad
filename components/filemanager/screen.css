@@ -173,9 +173,7 @@
 #file-manager .file {
     background-image: url(images/file.png);
 }
-#file-manager .loading {
-    background-image: url(images/spinner.gif);
-}
+
 /* EXTENSIONS */
 #file-manager .ext-htaccess {
     background-image: url(images/config.png);
@@ -362,4 +360,8 @@
 }
 #file-manager .ext-zip {
     background-image: url(images/zip.png);
+}
+
+#file-manager .loading {
+    background-image: url(images/spinner.gif);
 }
