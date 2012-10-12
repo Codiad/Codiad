@@ -30,7 +30,7 @@ switch($_GET['action']){
     
     <pre><?php echo($path); ?></pre>
 
-    <button class="btn-left" onclick="save_and_close('<?php echo($path); ?>'); return false;">Save &amp; Close</button><button class="btn-mid" onclick="close_without_save('<?php echo($path); ?>'); return false;">Discard Changes</button><button class="btn-right" onclick="modal.unload(); return false;">Cancel</button>
+    <button class="btn-left" onclick="save_and_close('<?php echo($path); ?>'); return false;">Save &amp; Close</button><button class="btn-mid" onclick="close_without_save('<?php echo($path); ?>'); return false;">Discard Changes</button><button class="btn-right" onclick="codiad.modal.unload(); return false;">Cancel</button>
     <?php
     break;
     
@@ -41,21 +41,21 @@ switch($_GET['action']){
 <script>
 
     function save_and_close(path){
-        var id = editor.get_id(path);
-        var content = editor.get_content(id);        
-        filemanager.save_file(path,content, {
+        var id = codiad.editor.getId(path);
+        var content = codiad.editor.getContent(id);
+        codiad.filemanager.saveFile(path,content, {
             success: function(){
                 $('#active-files a[data-path="'+path+'"]').removeClass('changed');
-                active.remove_draft(path);
+                codiad.active.removeDraft(path);
             }
         });
-        active.close(path);        
-        modal.unload();
+        codiad.active.close(path);        
+        codiad.modal.unload();
     }
-    
+
     function close_without_save(path){
-        active.close(path);        
-        modal.unload();
+        codiad.active.close(path);        
+        codiad.modal.unload();
     }
 
 </script>

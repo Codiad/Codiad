@@ -2,7 +2,7 @@
     {
         "title": "Save File",
         "icon": "x",
-        "onclick": "active.save();"
+        "onclick": "codiad.active.save();"
     },
     {
         "title": "break",
@@ -12,7 +12,7 @@
     {
         "title": "Color Tool",
         "icon": "F",
-        "onclick": "color_picker.open();"
+        "onclick": "codiad.colorPicker.open();"
     },
     {
         "title": "break",
@@ -22,7 +22,7 @@
     {
         "title": "Terminal",
         "icon": "@",
-        "onclick": "terminal.open();"
+        "onclick": "codiad.terminal.open();"
     },
     {
         "title": "break",
@@ -32,7 +32,7 @@
     {
         "title": "Projects",
         "icon": "t",
-        "onclick": "project.list();"
+        "onclick": "codiad.project.list();"
     },
     {
         "title": "break",
@@ -42,7 +42,7 @@
     {
         "title": "Users",
         "icon": ",",
-        "onclick": "user.list();"
+        "onclick": "codiad.user.list();"
     },
     {
         "title": "break",
@@ -52,12 +52,12 @@
     {
         "title": "Editor",
         "icon": "l",
-        "onclick": "modal.load(400, 'components/editor/dialog.php?action=settings');modal.hide_overlay();"
+        "onclick": "codiad.modal.load(400, 'components/editor/dialog.php?action=settings');codiad.modal.hideOverlay();"
     },
     {
         "title": "Password",
         "icon": "A",
-        "onclick": "user.password();"
+        "onclick": "codiad.user.password();"
     },
     {
         "title": "break",
@@ -67,6 +67,6 @@
     {
         "title": "Logout",
         "icon": "/",
-        "onclick": "user.logout();"
+        "onclick": "codiad.user.logout();"
     }
 ]

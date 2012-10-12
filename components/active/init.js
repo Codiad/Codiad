@@ -4,405 +4,411 @@
  *  [root]/license.txt for more. This information must remain intact.
  */
 
-var EditSession = require('ace/edit_session').EditSession;
-var UndoManager = require("ace/undomanager").UndoManager;
+(function(global, $) {
 
-$(function() {
-    active.init();
-});
+    var EditSession = require('ace/edit_session')
+        .EditSession;
+    var UndoManager = require('ace/undomanager')
+        .UndoManager;
 
-var active = {
+    var codiad = global.codiad;
 
-    controller: 'components/active/controller.php',
+    $(function() {
+        codiad.active.init();
+    });
 
-    // Path to EditSession instance mapping
-    sessions: {},
+    //////////////////////////////////////////////////////////////////
+    //
+    // Active Files Component for Codiad
+    // ---------------------------------
+    // Track and manage EditSession instaces of files being edited.
+    //
+    //////////////////////////////////////////////////////////////////
 
-    is_open: function(path){
-        return !! this.sessions[path];
-    },
+    codiad.active = {
 
-    open: function(path, content, in_background){
-        if (this.is_open(path)) {
+        controller: 'components/active/controller.php',
+
+        // Path to EditSession instance mapping
+        sessions: {},
+
+        isOpen: function(path) {
+            return !!this.sessions[path];
+        },
+
+        open: function(path, content, inBackground) {
+            var _this = this;
+            if (this.isOpen(path)) {
+                this.focus(path);
+                return;
+            }
+            var ext = codiad.filemanager.getExtension(path);
+            var mode = codiad.editor.selectMode(ext);
+            var _this = this;
+
+            var fn = function() {
+                var Mode = require('ace/mode/' + mode)
+                    .Mode;
+
+                // TODO: Ask for user confirmation before recovering
+                // And maybe show a diff
+                var draft = _this.checkDraft(path);
+                if (draft) {
+                    content = draft;
+                    codiad.message.success('Recovered unsaved content for : ' + path);
+                }
+
+                var session = new EditSession(content, new Mode());
+                session.setUndoManager(new UndoManager());
+
+                session.path = path;
+                _this.sessions[path] = session;
+                if (!inBackground) {
+                    codiad.editor.setSession(session);
+                }
+                _this.add(path, session);
+            };
+
+            $.loadScript('components/editor/ace-editor/mode-' + mode + '.js',
+            fn);
+
+        },
+
+        init: function() {
+
+            var _this = this;
+
+            // Focus
+            $('#active-files a')
+                .live('click', function() {
+                _this.focus($(this)
+                    .attr('data-path'));
+            });
+
+            // Remove
+            $('#active-files a>span')
+                .live('click', function(e) {
+                e.stopPropagation();
+                _this.remove($(this)
+                    .parent('a')
+                    .attr('data-path'));
+            });
+
+            // Sortable
+            $('#active-files')
+                .sortable({
+                placeholder: 'active-sort-placeholder',
+                tolerance: 'intersect',
+                start: function(e, ui) {
+                    ui.placeholder.height(ui.item.height());
+                }
+            });
+
+            // Open saved-state active files on load
+            $.get(_this.controller + '?action=list', function(data) {
+                var listResponse = codiad.jsend.parse(data);
+                if (listResponse !== null) {
+                    $.each(listResponse, function(index, value) {
+                        codiad.filemanager.openFile(value);
+                    });
+                    // Run resize command to fix render issues
+                    codiad.editor.resize();
+                }
+            });
+
+            // Run resize on window resize
+            $(window)
+                .on('resize', function() {
+                codiad.editor.resize();
+            });
+
+            // Prompt if a user tries to close window without saving all filess
+            window.onbeforeunload = function(e) {
+                if ($('#active-files a.changed')
+                    .length > 0) {
+                    var e = e || window.event;
+                    var errMsg = 'You have unsaved files.';
+
+                    // For IE and Firefox prior to version 4
+                    if (e) {
+                        e.returnValue = errMsg;
+                    }
+
+                    // For rest
+                    return errMsg;
+                }
+            };
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Drafts
+        //////////////////////////////////////////////////////////////////
+
+        checkDraft: function(path) {
+            var draft = localStorage.getItem(path);
+            if (draft !== null) {
+                return draft;
+            } else {
+                return false;
+            }
+        },
+
+        removeDraft: function(path) {
+            localStorage.removeItem(path);
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Get active editor path
+        //////////////////////////////////////////////////////////////////
+
+        getPath: function() {
+            try {
+                return codiad.editor.getActive()
+                    .getSession()
+                    .path;
+            } catch (e) {
+                return null;
+            }
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Check if opened by another user
+        //////////////////////////////////////////////////////////////////
+
+        check: function(path) {
+            $.get(this.controller + '?action=check&path=' + path,
+
+            function(data) {
+                var checkResponse = codiad.jsend.parse(data);
+            });
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Add newly opened file to list
+        //////////////////////////////////////////////////////////////////
+
+        add: function(path, session) {
+            var thumb = $('<a data-path="' + path + '"><span></span><div>' + path + '</div></a>');
+            session.thumb = thumb;
+            $('#active-files')
+                .append($('<li>')
+                .append(thumb));
+            $.get(this.controller + '?action=add&path=' + path);
             this.focus(path);
-            return;
-        }
-        var ext = filemanager.get_extension(path);
-        var mode = editor.select_mode(ext);
-        var _this = this;
-
-        var fn = function(){
-            var Mode = require('ace/mode/'+mode).Mode;
-
-            // TODO: Ask for user confirmation before recovering
-            // And maybe show a diff
-            var draft = active.check_draft(path);
-            if (draft) {
-                content = draft;
-                message.success('Recovered unsaved content for : ' + path );
+            // Mark draft as changed
+            if (this.checkDraft(path)) {
+                this.markChanged(path);
             }
+        },
 
-            var session = new EditSession(content, new Mode());
-            session.setUndoManager(new UndoManager());
+        //////////////////////////////////////////////////////////////////
+        // Focus on opened file
+        //////////////////////////////////////////////////////////////////
 
-            session.path = path;
-            _this.sessions[path] = session;
-            if (! in_background) {
-                editor.set_session(session);
+        focus: function(path) {
+            $('#active-files a')
+                .removeClass('active');
+            this.sessions[path].thumb.addClass('active');
+            var session = this.sessions[path];
+            codiad.editor.setSession(session);
+            this.check(path);
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Mark changed
+        //////////////////////////////////////////////////////////////////
+
+        markChanged: function(path) {
+            this.sessions[path].thumb.addClass('changed');
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Save active editor
+        //////////////////////////////////////////////////////////////////
+
+        save: function(path) {
+            var _this = this;
+            if ((path && !this.isOpen(path)) || (!path && !codiad.editor.getActive())) {
+                codiad.message.error('No Open Files to save');
+                return;
             }
-            _this.add(path, session);
-        }
+            var session;
+            if (path) session = this.sessions[path];
+            else session = codiad.editor.getActive()
+                .getSession();
+            var content = session.getValue();
+            var path = session.path;
+            codiad.filemanager.saveFile(path, content, {
+                success: function() {
+                    session.thumb.removeClass('changed');
+                    _this.removeDraft(path);
+                }
+            });
+        },
 
-        $.loadScript('components/editor/ace-editor/mode-' + mode + '.js',
-                    fn );
+        //////////////////////////////////////////////////////////////////
+        // Remove file
+        //////////////////////////////////////////////////////////////////
 
-    },
-
-    init: function() {
-
-        // Focus
-        $('#active-files a')
-            .live('click', function() {
-            active.focus($(this)
-                .attr('data-path'));
-        });
-
-        // Remove
-        $('#active-files a>span')
-            .live('click', function(e) {
-            e.stopPropagation();
-            active.remove($(this)
-                .parent('a')
-                .attr('data-path'));
-        });
-
-        // Sortable
-        $('#active-files')
-            .sortable({
-            placeholder: 'active-sort-placeholder',
-            tolerance: 'intersect',
-            start: function(e, ui) {
-                ui.placeholder.height(ui.item.height());
+        remove: function(path) {
+            if (!this.isOpen(path)) return;
+            var session = this.sessions[path];
+            var closeFile = true;
+            if (session.thumb.hasClass('changed')) {
+                codiad.modal.load(450, 'components/active/dialog.php?action=confirm&path=' + path);
+                closeFile = false;
             }
-        });
-
-        // Open saved-state active files on load
-        $.get(active.controller + '?action=list', function(data) {
-            var list_response = jsend.parse(data);
-            if (list_response !== null) {
-                $.each(list_response, function(index, value) {
-                    filemanager.open_file(value);
-                });
-                // Run resize command to fix render issues
-                active.resize();
+            if (closeFile) {
+                this.close(path);
             }
-        });
+        },
 
-        // Run resize on window resize
-        $(window)
-            .on('resize', function() {
-            active.resize();
-        });
+        close: function(path) {
+            var session = this.sessions[path];
+            session.thumb.parent('li')
+                .remove();
+            var nextThumb = $('#active-files a[data-path]');
+            if (nextThumb.length == 0) {
+                codiad.editor.exterminate();
+            } else {
+                $(nextThumb[0])
+                    .addClass('active');
+                var nextPath = nextThumb.attr('data-path');
+                var nextSession = this.sessions[nextPath];
+                codiad.editor.removeSession(session, nextSession);
+            }
+            delete this.sessions[path];
+            $.get(this.controller + '?action=remove&path=' + path);
+            this.removeDraft(path);
+        },
 
-        // Prompt if a user tries to close window without saving all filess
-        window.onbeforeunload = function(e) {
-            if ($('#active-files a.changed')
-                .length > 0) {
-                var e = e || window.event;
-                var err_msg = "You have unsaved files."
+        //////////////////////////////////////////////////////////////////
+        // Process rename
+        //////////////////////////////////////////////////////////////////
 
-                // For IE and Firefox prior to version 4
-                if (e) {
-                    e.returnValue = err_msg;
+        rename: function(oldPath, newPath) {
+            var switchSessions = function(oldPath, newPath) {
+                var thumb = this.sessions[oldPath].thumb;
+                thumb.attr('data-path', newPath);
+                thumb.find('div')
+                    .text(newPath);
+                this.sessions[newPath] = this.sessions[oldPath];
+                this.sessions[newPath].path = newPath;
+                this.sessions[oldPath] = undefined;
+            };
+            if (this.sessions[oldPath]) {
+                // A file was renamed
+                switchSessions.apply(this, [oldPath, newPath]);
+                if (codiad.editor.getActive().session.path == oldPath) {
+                    codiad.editor.setActive(this.sessions[newPath]);
                 }
 
-                // For rest
-                return err_msg;
-            }
-        };
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Drafts
-    //////////////////////////////////////////////////////////////////
-
-    check_draft: function(path) {
-        var draft = localStorage.getItem(path);
-        if (draft !== null) {
-            return draft;
-        } else {
-            return false;
-        }
-    },
-
-    remove_draft: function(path) {
-        localStorage.removeItem(path);
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Get active editor path
-    //////////////////////////////////////////////////////////////////
-
-    get_path: function() {
-        try {
-            return editor.get_active().getSession().path;
-        } catch(e) {
-            return null;
-        }
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Check if opened by another user
-    //////////////////////////////////////////////////////////////////
-
-    check: function(path) {
-        $.get(active.controller + '?action=check&path=' + path, function(data) {
-            var check_response = jsend.parse(data);
-        });
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Add newly opened file to list
-    //////////////////////////////////////////////////////////////////
-
-    add: function(path, session) {
-        var thumb = $('<a data-path="' +
-                      path +
-                      '"><span></span><div>' +
-                      path +
-                      '</div></a>');
-        session.thumb = thumb;
-        $('#active-files').append($('<li>').append(thumb));
-        $.get(active.controller + '?action=add&path=' + path);
-        this.focus(path);
-        // Mark draft as changed
-        if (active.check_draft(path)) {
-            active.mark_changed(path);
-        }
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Focus on opened file
-    //////////////////////////////////////////////////////////////////
-
-    focus: function(path) {
-        $('#active-files a')
-            .removeClass('active');
-        this.sessions[path].thumb.addClass('active');
-        var session = this.sessions[path];
-        editor.set_session(session);
-        active.check(path);
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Mark changed
-    //////////////////////////////////////////////////////////////////
-
-    mark_changed: function(path) {
-        this.sessions[path].thumb.addClass('changed');
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Save active editor
-    //////////////////////////////////////////////////////////////////
-
-    save: function(path) {
-        if ((path && ! this.is_open(path)) || (!path && ! editor.get_active())){
-            message.error('No Open Files to save');
-            return;
-        }
-        var session;
-        if (path) session = this.sessions[path];
-        else session = editor.get_active().getSession();
-        var content = session.getValue();
-        var path = session.path;
-        filemanager.save_file(path, content, {
-            success: function(){
-                session.thumb.removeClass('changed');
-                active.remove_draft(path);
-            }
-        });
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Remove file
-    //////////////////////////////////////////////////////////////////
-
-    remove: function(path) {
-        if (! this.is_open(path)) return;
-        var session = this.sessions[path];
-        var close_file = true;
-        if (session.thumb.hasClass('changed')) {
-            modal.load(450, 'components/active/dialog.php?action=confirm&path=' + path);
-            close_file = false;
-        }
-        if (close_file) {
-            active.close(path);
-        }
-    },
-
-    close: function(path) {
-        var session = this.sessions[path];
-        session.thumb.parent('li').remove();
-        var next_thumb = $('#active-files a[data-path]');
-        if (next_thumb.length == 0) {
-            editor.exterminate();
-        } else {
-            $(next_thumb[0]).addClass('active');
-            var next_path = next_thumb.attr('data-path');
-            var next_session = this.sessions[next_path];
-            editor.remove_session(session, next_session);
-        }
-        delete this.sessions[path];
-        /*if ((session.thumb).hasClass('active')) {
-            $('#current-file')
-                .html('');
-            clearInterval(cursorpoll);
-            $('#cursor-position')
-                .html('Ln: 0 &middot; Col: 0');
-        }*/
-        $.get(active.controller + '?action=remove&path=' + path);
-        // Remove any draft content
-        active.remove_draft(path);
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Process rename
-    //////////////////////////////////////////////////////////////////
-
-    rename: function(old_path, new_path) {
-        var switch_sessions = function(old_path, new_path) {
-            var thumb = this.sessions[old_path].thumb;
-            thumb.attr("data-path", new_path);
-            thumb.find('div').text(new_path);
-            this.sessions[new_path] = this.sessions[old_path];
-            this.sessions[new_path].path = new_path;
-            this.sessions[old_path] = undefined; 
-        }
-        if (this.sessions[old_path]) {
-            // A file was renamed
-            switch_sessions.apply(this, [old_path, new_path]);
-            if (editor.get_active().session.path == old_path) {
-                editor.set_active(this.sessions[new_path]);
-            }
-            // Change Editor Mode    
-            var ext = filemanager.get_extension(new_path);
-            var mode = editor.select_mode(ext);  
-            this.sessions[new_path].setMode("ace/mode/" + mode);             
-        } else {
-            // A folder was renamed
-            var new_key;
-            for (var key in this.sessions) {
-                new_key = key.replace(old_path, new_path);
-                if (new_key !== key) {
-                    switch_sessions.apply(this, [key, new_key]);
-                }
-            }
-        }
-        $.get(active.controller + '?action=rename&old_path=' + old_path + '&new_path=' + new_path);
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Resize
-    //////////////////////////////////////////////////////////////////
-
-    resize: function() {
-        $('#active-files a')
-            .each(function() {
-            cur_path = $(this)
-                .attr('data-path');
-            editor.resize();
-        });
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Open in Browser
-    //////////////////////////////////////////////////////////////////
-
-    open_in_browser: function() {
-        var path = this.get_path();
-        if (path) {
-            filemanager.open_in_browser(path);
-        } else {
-            message.error('No Open Files');
-        }
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Get Selected Text
-    //////////////////////////////////////////////////////////////////
-
-    get_selected_text: function() {
-        var path = this.get_path();
-        var session = this.sessions[path]
-
-        // var id = this.get_id();
-        //if (path && id) {
-        if (path && this.is_open(path)) {
-            return session.getTextRange(
-                editor.get_active().getSelectionRange()
-            );
-        } else {
-            message.error('No Open Files or Selected Text');
-        }
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Insert Text
-    //////////////////////////////////////////////////////////////////
-
-    insert_text: function(val) {
-        editor.get_active().insert(val);
-        //editor.insert_text(active.get_id(), val);
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Goto Line
-    //////////////////////////////////////////////////////////////////
-
-    goto_line: function(line) {
-        editor.get_active().gotoLine(line, 0, true);
-        //editor.goto_line(active.get_id(), line);
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Move Up (Key Combo)
-    //////////////////////////////////////////////////////////////////
-
-    move: function(dir) {
-
-        var num = $('#active-files a')
-            .length;
-        if (num > 1) {
-            if (dir == 'up') {
-                // Move Up or rotate to bottom
-                new_active = $('#active-files li a.active')
-                    .parent('li')
-                    .prev('li')
-                    .children('a')
-                    .attr('data-path');
-                if (!new_active) {
-                    new_active = $('#active-files li:last-child a')
-                        .attr('data-path');
-                }
+                // Change Editor Mode
+                var ext = codiad.filemanager.getExtension(new_path);
+                var mode = codiad.editor.selectMode(ext);
+                this.sessions[newPath].setMode("ace/mode/" + mode);
 
             } else {
-                // Move down or rotate to top
-                new_active = $('#active-files li a.active')
-                    .parent('li')
-                    .next('li')
-                    .children('a')
-                    .attr('data-path');
-                if (!new_active) {
-                    new_active = $('#active-files li:first-child a')
+                // A folder was renamed
+                var newKey;
+                for (var key in this.sessions) {
+                    newKey = key.replace(oldPath, newPath);
+                    if (newKey !== key) {
+                        switchSessions.apply(this, [key, newKey]);
+                    }
+                }
+            }
+            $.get(this.controller + '?action=rename&old_path=' + oldPath + '&new_path=' + newPath);
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Open in Browser
+        //////////////////////////////////////////////////////////////////
+
+        openInBrowser: function() {
+            var path = this.getPath();
+            if (path) {
+                codiad.filemanager.openInBrowser(path);
+            } else {
+                codiad.message.error('No Open Files');
+            }
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Get Selected Text
+        //////////////////////////////////////////////////////////////////
+
+        getSelectedText: function() {
+            var path = this.getPath();
+            var session = this.sessions[path];
+
+            if (path && this.isOpen(path)) {
+                return session.getTextRange(
+                codiad.editor.getActive()
+                    .getSelectionRange());
+            } else {
+                codiad.message.error('No Open Files or Selected Text');
+            }
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Insert Text
+        //////////////////////////////////////////////////////////////////
+
+        insertText: function(val) {
+            codiad.editor.getActive()
+                .insert(val);
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Goto Line
+        //////////////////////////////////////////////////////////////////
+
+        gotoLine: function(line) {
+            codiad.editor.getActive()
+                .gotoLine(line, 0, true);
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Move Up (Key Combo)
+        //////////////////////////////////////////////////////////////////
+
+        move: function(dir) {
+
+            var num = $('#active-files a')
+                .length;
+            if (num > 1) {
+                if (dir == 'up') {
+                    // Move Up or rotate to bottom
+                    newActive = $('#active-files li a.active')
+                        .parent('li')
+                        .prev('li')
+                        .children('a')
                         .attr('data-path');
+                    if (!newActive) {
+                        newActive = $('#active-files li:last-child a')
+                            .attr('data-path');
+                    }
+
+                } else {
+                    // Move down or rotate to top
+                    newActive = $('#active-files li a.active')
+                        .parent('li')
+                        .next('li')
+                        .children('a')
+                        .attr('data-path');
+                    if (!newActive) {
+                        newActive = $('#active-files li:first-child a')
+                            .attr('data-path');
+                    }
+
                 }
 
+                this.focus(newActive);
             }
 
-            active.focus(new_active);
         }
 
-    }
+    };
 
-};
+})(this, jQuery);

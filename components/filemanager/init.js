@@ -4,543 +4,562 @@
  *  [root]/license.txt for more. This information must remain intact.
  */
 
-//////////////////////////////////////////////////////////////////////
-// Use window.load to delay until project scripts load
-//////////////////////////////////////////////////////////////////////
+(function(global, $){
 
-$(window)
-    .load(function() {
-    filemanager.init();
-});
+    var codiad = global.codiad;
 
-var filemanager = {
-
-    clipboard: '',
-
-    no_open: ['jpg', 'jpeg', 'png', 'gif', 'svg', 'bmp', 'exe', 'zip', 'tar', 'tar.gz'],
-
-    controller: 'components/filemanager/controller.php',
-    dialog: 'components/filemanager/dialog.php',
-    dialog_upload: 'components/filemanager/dialog_upload.php',
-
-    init: function() {
-        // Initialize node listener
-        this.node_listener();
-        // Load uploader
-        $.loadScript("components/filemanager/upload_scripts/jquery.ui.widget.js", true);
-        $.loadScript("components/filemanager/upload_scripts/jquery.iframe-transport.js", true);
-        $.loadScript("components/filemanager/upload_scripts/jquery.fileupload.js", true);
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Listen for dbclick events on nodes
-    //////////////////////////////////////////////////////////////////
-
-    node_listener: function() {
-        $('#file-manager a')
-            .live('dblclick', function() { // Open or Expand
-            if ($(this)
-                .hasClass('directory')) {
-                filemanager.index($(this)
-                    .attr('data-path'));
-            } else {
-                filemanager.open_file($(this)
-                    .attr('data-path'));
-            }
-        })
-            .live("contextmenu", function(e) { // Context Menu
-            e.preventDefault();
-            filemanager.context_menu_show(e, $(this)
-                .attr('data-path'), $(this)
-                .attr('data-type'));
-            $(this)
-                .addClass('context-menu-active');
+    $(window)
+        .load(function() {
+            codiad.filemanager.init();
         });
-    },
 
-    //////////////////////////////////////////////////////////////////
-    // Context Menu
-    //////////////////////////////////////////////////////////////////
+    codiad.filemanager = {
 
-    context_menu_show: function(e, path, type) {
-        // Selective options
-        switch (type) {
-        case 'directory':
-            $('#context-menu .directory-only, #context-menu .non-root')
-                .show();
-            $('#context-menu .file-only')
-                .hide();
-            break;
-        case 'file':
-            $('#context-menu .directory-only')
-                .hide();
-            $('#context-menu .file-only,#context-menu .non-root')
-                .show();
-            break;
-        case 'root':
-            $('#context-menu .directory-only')
-                .show();
-            $('#context-menu .non-root, #context-menu .file-only')
-                .hide();
-            break;
-        }
-        // Show menu
-        $('#context-menu')
-            .css({
-            'top': (e.pageY - 10) + 'px',
-            'left': (e.pageX - 10) + 'px'
-        })
-            .fadeIn(200)
-            .attr('data-path', path)
-            .attr('data-type', type);
-        // Show faded 'paste' if nothing in clipboard
-        if (this.clipboard === '') {
-            $('#context-menu a[content="Paste"]')
-                .addClass('disabled');
-        } else {
-            $('#context-menu a[data-action="paste"]')
-                .removeClass('disabled');
-        }
-        // Hide menu
-        $('#file-manager, #editor-region')
-            .on('mouseover', function() {
-            filemanager.context_menu_hide();
-        });
-        // Hide on click
-        $('#context-menu a')
-            .click(function() {
-            filemanager.context_menu_hide();
-        });
-    },
+        clipboard: '',
 
-    context_menu_hide: function() {
-        $('#context-menu')
-            .fadeOut(200);
-        $('#file-manager a')
-            .removeClass('context-menu-active');
-    },
+        noOpen: ['jpg', 'jpeg', 'png', 'gif', 'svg', 'bmp', 'exe', 'zip', 'tar', 'tar.gz'],
 
-    //////////////////////////////////////////////////////////////////
-    // Return the node name (sans path)
-    //////////////////////////////////////////////////////////////////
+        controller: 'components/filemanager/controller.php',
+        dialog: 'components/filemanager/dialog.php',
+        dialogUpload: 'components/filemanager/dialog_upload.php',
 
-    get_short_name: function(path) {
-        return path.split('/')
-            .pop();
-    },
+        init: function() {
+            // Initialize node listener
+            this.nodeListener();
+            // Load uploader
+            $.loadScript("components/filemanager/upload_scripts/jquery.ui.widget.js", true);
+            $.loadScript("components/filemanager/upload_scripts/jquery.iframe-transport.js", true);
+            $.loadScript("components/filemanager/upload_scripts/jquery.fileupload.js", true);
+        },
 
-    //////////////////////////////////////////////////////////////////
-    // Return extension
-    //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        // Listen for dbclick events on nodes
+        //////////////////////////////////////////////////////////////////
 
-    get_extension: function(path) {
-        return path.split('.')
-            .pop();
-    },
+        nodeListener: function() {
+            var _this = this;
 
-    //////////////////////////////////////////////////////////////////
-    // Return type
-    //////////////////////////////////////////////////////////////////
-
-    get_type: function(path) {
-        return $('#file-manager a[data-path="' + path + '"]')
-            .attr('data-type');
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Create node in file tree
-    //////////////////////////////////////////////////////////////////
-
-    create_object: function(parent, path, type) {
-        // NODE FORMAT: <li><a class="{type} {ext-file_extension}" data-type="{type}" data-path="{path}">{short_name}</a></li>
-        var parent_node = $('#file-manager a[data-path="' + parent + '"]');
-        if (!$('#file-manager a[data-path="' + path + '"]')
-            .length) { // Doesn't already exist
-            if (parent_node.hasClass('open') && parent_node.hasClass('directory')) { // Only append node if parent is open (and a directory)
-                var short_name = filemanager.get_short_name(path);
-                if (type == 'directory') {
-                    var appendage = '<li><a class="directory" data-type="directory" data-path="' + path + '">' + short_name + '</a></li>';
-                } else {
-                    var appendage = '<li><a class="file ext-' + filemanager.get_extension(short_name) + '" data-type="file" data-path="' + path + '">' + short_name + '</a></li>';
-                }
-                if (parent_node.siblings('ul')
-                    .length) { // UL exists, other children to play with
-                    parent_node.siblings('ul')
-                        .append(appendage);
-                } else {
-                    $('<ul>' + appendage + '</ul>')
-                        .insertAfter(parent_node);
-                }
-            }
-        }
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Loop out all files and folders in directory path
-    //////////////////////////////////////////////////////////////////
-
-    index: function(path, rescan) {
-        if (rescan === undefined) {
-            rescan = false;
-        }
-        node = $('#file-manager a[data-path="' + path + '"]');
-        if (node.hasClass('open') && !rescan) {
-            node.parent('li')
-                .children('ul')
-                .slideUp(300, function() {
-                $(this)
-                    .remove();
-                node.removeClass('open');
-            });
-        } else {
-            node.addClass('loading');
-            $.get(this.controller + '?action=index&path=' + path, function(data) {
-                node.addClass('open');
-                objects_response = jsend.parse(data);
-                if (objects_response != 'error') {
-                    files = objects_response.index;
-                    if (files.length > 0) {
-                        var display = 'display:none;';
-                        if (rescan) {
-                            display = '';
-                        }
-                        var appendage = '<ul style="' + display + '">';
-                        $.each(files, function(index) {
-                            var ext = '';
-                            var name = files[index].name.replace(path, '');
-                            name = name.split('/')
-                                .join(' ');
-                            if (files[index].type == 'file') {
-                                var ext = ' ext-' + name.split('.')
-                                    .pop();
-                            }
-                            appendage += '<li><a class="' + files[index].type + ext + '" data-type="' + files[index].type + '" data-path="' + files[index].name + '">' + name + '</a></li>';
-                        });
-                        appendage += '</ul>';
-                        if (rescan) {
-                            node.parent('li')
-                                .children('ul')
-                                .remove();
-                        }
-                        $(appendage)
-                            .insertAfter(node);
-                        if (!rescan) {
-                            node.siblings('ul')
-                                .slideDown(300);
-                        }
+            $('#file-manager a')
+                .live('dblclick', function() { // Open or Expand
+                    if ($(this)
+                        .hasClass('directory')) {
+                        _this.index($(this)
+                            .attr('data-path'));
+                    } else {
+                        _this.openFile($(this)
+                            .attr('data-path'));
                     }
-                }
-                node.removeClass('loading');
-                if (rescan && filemanager.rescan_children.length > filemanager.rescan_counter) {
-                    filemanager.rescan(filemanager.rescan_children[filemanager.rescan_counter++]);
-                } else {
-                    filemanager.rescan_children = [];
-                    filemanager.rescan_counter = 0;
-                }
-            });
-        }
-    },
-
-    rescan_children: [],
-
-    rescan_counter: 0,
-
-    rescan: function(path) {
-        if (filemanager.rescan_counter === 0) {
-            // Create array of open directories
-            node = $('#file-manager a[data-path="' + path + '"]');
-            node.parent()
-                .find('a.open')
-                .each(function() {
-                filemanager.rescan_children.push($(this)
-                    .attr('data-path'));
-            });
-        }
-
-        filemanager.index(path, true);
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Open File
-    //////////////////////////////////////////////////////////////////
-
-    open_file: function(path) {
-        var node = $('#file-manager a[data-path="' + path + '"]');
-        var ext = filemanager.get_extension(path);
-        if ($.inArray(ext, filemanager.no_open) < 0) {
-            node.addClass('loading');
-            $.get(this.controller + '?action=open&path=' + path, function(data) {
-                open_response = jsend.parse(data);
-                if (open_response != 'error') {
-                    node.removeClass('loading');
-                    active.open(path, open_response.content, false);
-                }
-            });
-        } else {
-            filemanager.download(path);
-        }
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Open in browser
-    //////////////////////////////////////////////////////////////////
-
-    open_in_browser: function(path) {
-        $.get(this.controller + '?action=open_in_browser&path=' + path, function(data) {
-            openib_response = jsend.parse(data);
-            if (openib_response != 'error') {
-                window.open(openib_response.url, '_newtab');
-            }
-        });
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Save file
-    //////////////////////////////////////////////////////////////////
-
-    save_file: function(path, content, callbacks) {
-        callbacks = callbacks || {};
-        var _this = this;
-        var notify_save_err = function() {
-            message.error('File could not be saved');
-            if (typeof callbacks.error === 'function') {
-                var context = callbacks.context || _this;
-                callbacks.error.apply(context, [data]);
-            }
-        }
-        $.post(this.controller + '?action=modify&path=' + path, {
-            content: content
-        }, function(data) {
-            save_response = jsend.parse(data);
-            if (save_response != 'error') {
-                message.success('File Saved');
-            }
-            if (typeof callbacks.success === 'function') {
-                var context = callbacks.context || _this;
-                callbacks.success.apply(context, [data]);
-            } else {
-                notify_save_err();
-            }
-        })
-            .error(notify_save_err);
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Create Object
-    //////////////////////////////////////////////////////////////////
-
-    create_node: function(path, type) {
-        modal.load(250, this.dialog + '?action=create&type=' + type + '&path=' + path);
-        $('#modal-content form')
-            .live('submit', function(e) {
-            e.preventDefault();
-            var short_name = $('#modal-content form input[name="object_name"]')
-                .val();
-            var path = $('#modal-content form input[name="path"]')
-                .val();
-            var type = $('#modal-content form input[name="type"]')
-                .val();
-            var create_path = path + '/' + short_name;
-            $.get(filemanager.controller + '?action=create&path=' + create_path + '&type=' + type, function(data) {
-                create_response = jsend.parse(data);
-                if (create_response != 'error') {
-                    message.success(type.charAt(0)
-                        .toUpperCase() + type.slice(1) + ' Created');
-                    modal.unload();
-                    // Add new element to filemanager screen
-                    filemanager.create_object(path, create_path, type);
-                }
-            });
-        });
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Copy to Clipboard
-    //////////////////////////////////////////////////////////////////
-
-    copy_node: function(path) {
-        this.clipboard = path;
-        message.success('Copied to Clipboard');
-    },
-
-    //////////////////////////////////////////////////////////////////
-    // Paste
-    //////////////////////////////////////////////////////////////////
-
-    paste_node: function(path) {
-        if (this.clipboard == '') {
-            message.error('Nothing in Your Clipboard');
-        } else if (path == filemanager.clipboard) {
-            message.error('Cannot Paste Directory Into Itself');
-        } else {
-            var short_name = filemanager.get_short_name(filemanager.clipboard);
-            if ($('#file-manager a[data-path="' + path + '/' + short_name + '"]')
-                .length) { // Confirm overwrite?
-                modal.load(400, this.dialog + '?action=overwrite&path=' + path + '/' + short_name);
-                $('#modal-content form')
-                    .live('submit', function(e) {
+                })
+                .live("contextmenu", function(e) { // Context Menu
                     e.preventDefault();
-                    filemanager.process_paste_node(path);
+                    _this.contextMenuShow(e, $(this)
+                        .attr('data-path'), $(this)
+                        .attr('data-type'));
+                    $(this)
+                        .addClass('context-menu-active');
                 });
-            } else { // No conflicts; proceed...
-                filemanager.process_paste_node(path);
-            }
-        }
-    },
+        },
 
-    process_paste_node: function(path) {
-        var short_name = filemanager.get_short_name(filemanager.clipboard);
-        var type = filemanager.get_type(filemanager.clipboard);
-        $.get(filemanager.controller + '?action=duplicate&path=' + filemanager.clipboard + '&destination=' + path + '/' + short_name, function(data) {
-            paste_response = jsend.parse(data);
-            if (paste_response != 'error') {
-                filemanager.create_object(path, path + '/' + short_name, type);
-                modal.unload();
-            }
-        });
-    },
+        //////////////////////////////////////////////////////////////////
+        // Context Menu
+        //////////////////////////////////////////////////////////////////
 
-    //////////////////////////////////////////////////////////////////
-    // Rename
-    //////////////////////////////////////////////////////////////////
+        contextMenuShow: function(e, path, type) {
 
-    rename_node: function(path) {
-        var short_name = filemanager.get_short_name(path);
-        var type = filemanager.get_type(path);
-        modal.load(250, this.dialog + '?action=rename&path=' + path + '&short_name=' + short_name + '&type=' + type);
-        $('#modal-content form')
-            .live('submit', function(e) {
-            e.preventDefault();
-            new_name = $('#modal-content form input[name="object_name"]')
-                .val();
-            // Build new path
-            var arr = path.split('/');
-            var temp = new Array();
-            for (i = 0; i < arr.length - 1; i++) {
-                temp.push(arr[i])
+            var _this = this;
+
+            // Selective options
+            switch (type) {
+            case 'directory':
+                $('#context-menu .directory-only, #context-menu .non-root')
+                    .show();
+                $('#context-menu .file-only')
+                    .hide();
+                break;
+            case 'file':
+                $('#context-menu .directory-only')
+                    .hide();
+                $('#context-menu .file-only,#context-menu .non-root')
+                    .show();
+                break;
+            case 'root':
+                $('#context-menu .directory-only')
+                    .show();
+                $('#context-menu .non-root, #context-menu .file-only')
+                    .hide();
+                break;
             }
-            new_path = temp.join('/') + '/' + new_name;
-            $.get(filemanager.controller + '?action=modify&path=' + path + '&new_name=' + new_name, function(data) {
-                rename_response = jsend.parse(data);
-                if (rename_response != 'error') {
-                    message.success(type.charAt(0)
-                        .toUpperCase() + type.slice(1) + ' Renamed');
-                    var node = $('#file-manager a[data-path="' + path + '"]');
-                    // Change pathing and name for node
-                    node.attr('data-path', new_path)
-                        .html(new_name);
-                    if (type == 'file') { // Change icons for file
-                        cur_ext_class = 'ext-' + filemanager.get_extension(path);
-                        new_ext_class = 'ext-' + filemanager.get_extension(new_path);
-                        $('#file-manager a[data-path="' + new_path + '"]')
-                            .removeClass(cur_ext_class)
-                            .addClass(new_ext_class);
-                    } else { // Change pathing on any sub-files/directories
-                        filemanager.repath_subs(path, new_path);
+            // Show menu
+            $('#context-menu')
+                .css({
+                'top': (e.pageY - 10) + 'px',
+                'left': (e.pageX - 10) + 'px'
+            })
+                .fadeIn(200)
+                .attr('data-path', path)
+                .attr('data-type', type);
+            // Show faded 'paste' if nothing in clipboard
+            if (this.clipboard === '') {
+                $('#context-menu a[content="Paste"]')
+                    .addClass('disabled');
+            } else {
+                $('#context-menu a[data-action="paste"]')
+                    .removeClass('disabled');
+            }
+            // Hide menu
+            $('#file-manager, #editor-region')
+                .on('mouseover', function() {
+                    _this.contextMenuHide();
+                });
+            // Hide on click
+            $('#context-menu a')
+                .click(function() {
+                    _this.contextMenuHide();
+                });
+        },
+
+        contextMenuHide: function() {
+            $('#context-menu')
+                .fadeOut(200);
+            $('#file-manager a')
+                .removeClass('context-menu-active');
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Return the node name (sans path)
+        //////////////////////////////////////////////////////////////////
+
+        getShortName: function(path) {
+            return path.split('/')
+                .pop();
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Return extension
+        //////////////////////////////////////////////////////////////////
+
+        getExtension: function(path) {
+            return path.split('.')
+                .pop();
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Return type
+        //////////////////////////////////////////////////////////////////
+
+        getType: function(path) {
+            return $('#file-manager a[data-path="' + path + '"]')
+                .attr('data-type');
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Create node in file tree
+        //////////////////////////////////////////////////////////////////
+
+        createObject: function(parent, path, type) {
+            // NODE FORMAT: <li><a class="{type} {ext-file_extension}" data-type="{type}" data-path="{path}">{short_name}</a></li>
+            var parentNode = $('#file-manager a[data-path="' + parent + '"]');
+            if (!$('#file-manager a[data-path="' + path + '"]')
+                .length) { // Doesn't already exist
+                if (parentNode.hasClass('open') && parentNode.hasClass('directory')) { // Only append node if parent is open (and a directory)
+                    var shortName = this.getShortName(path);
+                    if (type == 'directory') {
+                        var appendage = '<li><a class="directory" data-type="directory" data-path="' + path + '">' + shortName + '</a></li>';
+                    } else {
+                        var appendage = '<li><a class="file ext-' +
+                            this.getExtension(shortName) +
+                            '" data-type="file" data-path="' +
+                            path + '">' + shortName + '</a></li>';
                     }
-                    // Change any active files
-                    active.rename(path, new_path);
-                    modal.unload();
+                    if (parentNode.siblings('ul')
+                        .length) { // UL exists, other children to play with
+                        parentNode.siblings('ul')
+                            .append(appendage);
+                    } else {
+                        $('<ul>' + appendage + '</ul>')
+                            .insertAfter(parentNode);
+                    }
+                }
+            }
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Loop out all files and folders in directory path
+        //////////////////////////////////////////////////////////////////
+
+        index: function(path, rescan) {
+            if (rescan === undefined) {
+                rescan = false;
+            }
+            node = $('#file-manager a[data-path="' + path + '"]');
+            if (node.hasClass('open') && !rescan) {
+                node.parent('li')
+                    .children('ul')
+                    .slideUp(300, function() {
+                    $(this)
+                        .remove();
+                    node.removeClass('open');
+                });
+            } else {
+                node.addClass('loading');
+                $.get(this.controller + '?action=index&path=' + path, function(data) {
+                    node.addClass('open');
+                    var objectsResponse = codiad.jsend.parse(data);
+                    if (objectsResponse != 'error') {
+                        files = objectsResponse.index;
+                        if (files.length > 0) {
+                            var display = 'display:none;';
+                            if (rescan) {
+                                display = '';
+                            }
+                            var appendage = '<ul style="' + display + '">';
+                            $.each(files, function(index) {
+                                var ext = '';
+                                var name = files[index].name.replace(path, '');
+                                name = name.split('/')
+                                    .join(' ');
+                                if (files[index].type == 'file') {
+                                    var ext = ' ext-' + name.split('.')
+                                        .pop();
+                                }
+                                appendage += '<li><a class="' + files[index].type + ext + '" data-type="' + files[index].type + '" data-path="' + files[index].name + '">' + name + '</a></li>';
+                            });
+                            appendage += '</ul>';
+                            if (rescan) {
+                                node.parent('li')
+                                    .children('ul')
+                                    .remove();
+                            }
+                            $(appendage)
+                                .insertAfter(node);
+                            if (!rescan) {
+                                node.siblings('ul')
+                                    .slideDown(300);
+                            }
+                        }
+                    }
+                    node.removeClass('loading');
+                    if (rescan && this.rescanChildren.length > this.rescanCounter) {
+                        this.rescan(this.rescanChildren[this.rescanCounter++]);
+                    } else {
+                        this.rescanChildren = [];
+                        this.rescanCounter = 0;
+                    }
+                });
+            }
+        },
+
+        rescanChildren: [],
+
+        rescanCounter: 0,
+
+        rescan: function(path) {
+            var _this = this;
+            if (this.rescanCounter === 0) {
+                // Create array of open directories
+                node = $('#file-manager a[data-path="' + path + '"]');
+                node.parent()
+                    .find('a.open')
+                    .each(function() {
+                        _this.rescanChildren.push($(this)
+                            .attr('data-path'));
+                    });
+            }
+
+            this.index(path, true);
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Open File
+        //////////////////////////////////////////////////////////////////
+
+        openFile: function(path) {
+            var node = $('#file-manager a[data-path="' + path + '"]');
+            var ext = this.getExtension(path);
+            if ($.inArray(ext, this.noOpen) < 0) {
+                node.addClass('loading');
+                $.get(this.controller + '?action=open&path=' + path, function(data) {
+                    var openResponse = codiad.jsend.parse(data);
+                    if (openResponse != 'error') {
+                        node.removeClass('loading');
+                        codiad.active.open(path, openResponse.content, false);
+                    }
+                });
+            } else {
+                this.download(path);
+            }
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Open in browser
+        //////////////////////////////////////////////////////////////////
+
+        openInBrowser: function(path) {
+            $.get(this.controller + '?action=open_in_browser&path=' + path, function(data) {
+                var openIBResponse = codiad.jsend.parse(data);
+                if (openIBResponse != 'error') {
+                    window.open(openIBResponse.url, '_newtab');
                 }
             });
-        });
-    },
+        },
 
-    repath_subs: function(old_path, new_path) {
-        $('#file-manager a[data-path="' + new_path + '"]')
-            .siblings('ul')
-            .find('a')
-            .each(function() {
-            // Hit the children, hit 'em hard
-            var cur_path = $(this)
-                .attr('data-path');
-            var revised_path = cur_path.replace(old_path, new_path);
-            $(this)
-                .attr('data-path', revised_path);
-        });
-    },
+        //////////////////////////////////////////////////////////////////
+        // Save file
+        //////////////////////////////////////////////////////////////////
 
-    //////////////////////////////////////////////////////////////////
-    // Delete
-    //////////////////////////////////////////////////////////////////
+        saveFile: function(path, content, callbacks) {
+            callbacks = callbacks || {};
+            var _this = this;
+            var notifySaveErr = function() {
+                codiad.message.error('File could not be saved');
+                if (typeof callbacks.error === 'function') {
+                    var context = callbacks.context || _this;
+                    callbacks.error.apply(context, [data]);
+                }
+            }
+            $.post(this.controller + '?action=modify&path=' + path, {
+                    content: content
+                }, function(data) {
+                    var saveResponse = codiad.jsend.parse(data);
+                    if (saveResponse != 'error') {
+                        codiad.message.success('File Saved');
+                    }
+                    if (typeof callbacks.success === 'function') {
+                        var context = callbacks.context || _this;
+                        callbacks.success.apply(context, [data]);
+                    } else {
+                        notifySaveErr();
+                    }
+                })
+                .error(notifySaveErr);
+        },
 
-    delete_node: function(path) {
-        modal.load(400, this.dialog + '?action=delete&path=' + path);
-        $('#modal-content form')
-            .live('submit', function(e) {
-            e.preventDefault();
-            $.get(filemanager.controller + '?action=delete&path=' + path, function(data) {
-                delete_response = jsend.parse(data);
-                if (delete_response != 'error') {
-                    var node = $('#file-manager a[data-path="' + path + '"]');
-                    node.parent('li')
-                        .remove();
-                    // Close any active files
-                    $('#active-files a')
-                        .each(function() {
-                        var cur_path = $(this)
-                            .attr('data-path');
-                        if (cur_path.indexOf(path) == 0) {
-                            active.remove(cur_path);
+        //////////////////////////////////////////////////////////////////
+        // Create Object
+        //////////////////////////////////////////////////////////////////
+
+        createNode: function(path, type) {
+            codiad.modal.load(250, this.dialog + '?action=create&type=' + type + '&path=' + path);
+            $('#modal-content form')
+                .live('submit', function(e) {
+                    e.preventDefault();
+                    var shortName = $('#modal-content form input[name="object_name"]')
+                        .val();
+                    var path = $('#modal-content form input[name="path"]')
+                        .val();
+                    var type = $('#modal-content form input[name="type"]')
+                        .val();
+                    var createPath = path + '/' + shortName;
+                    $.get(codiad.filemanager.controller + '?action=create&path=' + createPath + '&type=' + type, function(data) {
+                        var createResponse = codiad.jsend.parse(data);
+                        if (createResponse != 'error') {
+                            codiad.message.success(type.charAt(0)
+                                .toUpperCase() + type.slice(1) + ' Created');
+                            codiad.modal.unload();
+                            // Add new element to filemanager screen
+                            codiad.filemanager.createObject(path, createPath, type);
                         }
                     });
-                }
-                modal.unload();
-            });
-        });
-    },
+                });
+        },
 
-    //////////////////////////////////////////////////////////////////
-    // Search
-    //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        // Copy to Clipboard
+        //////////////////////////////////////////////////////////////////
 
-    search: function(path) {
-        modal.load(500, this.dialog + '?action=search&path=' + path);
-        modal.hide_overlay();
-        $('#modal-content form')
-            .live('submit', function(e) {
-            $('#filemanager-search-processing')
-                .show();
-            e.preventDefault();
-            search_string = $('#modal-content form input[name="search_string"]')
-                .val();
-            $.post(filemanager.controller + '?action=search&path=' + path, {
-                search_string: search_string
-            }, function(data) {
-                search_response = jsend.parse(data);
-                if (search_response != 'error') {
-                    var results = '';
-                    $.each(search_response.index, function(key, val) {
-                        results += '<div><a onclick="filemanager.open_file(\'' + val['file'] + '\');setTimeout( function() { active.goto_line(' + val['line'] + '); }, 500);modal.unload();">Line ' + val['line'] + ': ' + val['file'] + '</a></div>';
+        copyNode: function(path) {
+            this.clipboard = path;
+            codiad.message.success('Copied to Clipboard');
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Paste
+        //////////////////////////////////////////////////////////////////
+
+        pasteNode: function(path) {
+            var _this = this;
+            if (this.clipboard == '') {
+                codiad.message.error('Nothing in Your Clipboard');
+            } else if (path == this.clipboard) {
+                codiad.message.error('Cannot Paste Directory Into Itself');
+            } else {
+                var shortName = _this.getShortName(_this.clipboard);
+                if ($('#file-manager a[data-path="' + path + '/' + shortName + '"]')
+                    .length) { // Confirm overwrite?
+                    codiad.modal.load(400, this.dialog + '?action=overwrite&path=' + path + '/' + shortName);
+                    $('#modal-content form')
+                        .live('submit', function(e) {
+                        e.preventDefault();
+                        _this.processPasteNode(path);
                     });
-                    $('#filemanager-search-results')
-                        .slideDown()
-                        .html(results);
-                } else {
-                    $('#filemanager-search-results')
-                        .slideUp();
+                } else { // No conflicts; proceed...
+                    _this.processPasteNode(path);
                 }
-                $('#filemanager-search-processing')
-                    .hide();
+            }
+        },
+
+        processPasteNode: function(path) {
+            var _this = this;
+            var shortName = this.getShortName(this.clipboard);
+            var type = this.getType(this.clipboard);
+            $.get(this.controller + '?action=duplicate&path=' +
+                this.clipboard + '&destination=' +
+                path + '/' + shortName, function(data) {
+                    var pasteResponse = codiad.jsend.parse(data);
+                    if (pasteResponse != 'error') {
+                        _this.createObject(path, path + '/' + shortName, type);
+                        codiad.modal.unload();
+                    }
+                });
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Rename
+        //////////////////////////////////////////////////////////////////
+
+        renameNode: function(path) {
+            var shortName = this.getShortName(path);
+            var type = this.getType(path);
+            var _this = this;
+            codiad.modal.load(250, this.dialog + '?action=rename&path=' + path + '&short_name=' + shortName + '&type=' + type);
+            $('#modal-content form')
+                .live('submit', function(e) {
+                    e.preventDefault();
+                    var newName = $('#modal-content form input[name="object_name"]')
+                        .val();
+                    // Build new path
+                    var arr = path.split('/');
+                    var temp = new Array();
+                    for (i = 0; i < arr.length - 1; i++) {
+                        temp.push(arr[i])
+                    }
+                    var newPath = temp.join('/') + '/' + newName;
+                    $.get(_this.controller + '?action=modify&path=' + path + '&new_name=' + newName, function(data) {
+                        var renameResponse = codiad.jsend.parse(data);
+                        if (renameResponse != 'error') {
+                            codiad.message.success(type.charAt(0)
+                                .toUpperCase() + type.slice(1) + ' Renamed');
+                            var node = $('#file-manager a[data-path="' + path + '"]');
+                            // Change pathing and name for node
+                            node.attr('data-path', newPath)
+                                .html(newName);
+                            if (type == 'file') { // Change icons for file
+                                curExtClass = 'ext-' + _this.getExtension(path);
+                                newExtClass = 'ext-' + _this.getExtension(newPath);
+                                $('#file-manager a[data-path="' + newPath + '"]')
+                                    .removeClass(curExtClass)
+                                    .addClass(newExtClass);
+                            } else { // Change pathing on any sub-files/directories
+                                _this.repathSubs(path, newPath);
+                            }
+                            // Change any active files
+                            codiad.active.rename(path, newPath);
+                            codiad.modal.unload();
+                        }
+                    });
+                });
+        },
+
+        repathSubs: function(oldPath, newPath) {
+            $('#file-manager a[data-path="' + newPath + '"]')
+                .siblings('ul')
+                .find('a')
+                .each(function() {
+                // Hit the children, hit 'em hard
+                var curPath = $(this)
+                    .attr('data-path');
+                var revisedPath = curPath.replace(oldPath, newPath);
+                $(this)
+                    .attr('data-path', revisedPath);
             });
-        });
-    },
+        },
 
-    //////////////////////////////////////////////////////////////////
-    // Upload
-    //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        // Delete
+        //////////////////////////////////////////////////////////////////
 
-    upload_to_node: function(path) {
-        modal.load(500, this.dialog_upload + '?path=' + path);
-    },
+        deleteNode: function(path) {
+            var _this = this;
+            codiad.modal.load(400, this.dialog + '?action=delete&path=' + path);
+            $('#modal-content form')
+                .live('submit', function(e) {
+                e.preventDefault();
+                $.get(_this.controller + '?action=delete&path=' + path, function(data) {
+                    var deleteResponse = codiad.jsend.parse(data);
+                    if (deleteResponse != 'error') {
+                        var node = $('#file-manager a[data-path="' + path + '"]');
+                        node.parent('li')
+                            .remove();
+                        // Close any active files
+                        $('#active-files a')
+                            .each(function() {
+                                var curPath = $(this)
+                                    .attr('data-path');
+                                if (curPath.indexOf(path) == 0) {
+                                    codiad.active.remove(curPath);
+                                }
+                            });
+                    }
+                    codiad.modal.unload();
+                });
+            });
+        },
 
-    //////////////////////////////////////////////////////////////////
-    // Download
-    //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        // Search
+        //////////////////////////////////////////////////////////////////
 
-    download: function(path) {
-        var type = filemanager.get_type(path);
-        $('#download')
-            .attr('src', 'components/filemanager/download.php?path=' + path + '&type=' + type);
-    }
-};
+        search: function(path) {
+            codiad.modal.load(500, this.dialog + '?action=search&path=' + path);
+            codiad.modal.hideOverlay();
+            var _this = this;
+            $('#modal-content form')
+                .live('submit', function(e) {
+                $('#filemanager-search-processing')
+                    .show();
+                e.preventDefault();
+                searchString = $('#modal-content form input[name="search_string"]')
+                    .val();
+                $.post(_this.controller + '?action=search&path=' + path, {
+                    search_string: searchString
+                }, function(data) {
+                    searchResponse = codiad.jsend.parse(data);
+                    if (searchResponse != 'error') {
+                        var results = '';
+                        $.each(searchResponse.index, function(key, val) {
+                            results += '<div><a onclick="codiad.filemanager.openFile(\'' + val['file'] + '\');setTimeout( function() { codiad.active.gotoLine(' + val['line'] + '); }, 500);codiad.modal.unload();">Line ' + val['line'] + ': ' + val['file'] + '</a></div>';
+                        });
+                        $('#filemanager-search-results')
+                            .slideDown()
+                            .html(results);
+                    } else {
+                        $('#filemanager-search-results')
+                            .slideUp();
+                    }
+                    $('#filemanager-search-processing')
+                        .hide();
+                });
+            });
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Upload
+        //////////////////////////////////////////////////////////////////
+
+        uploadToNode: function(path) {
+            codiad.modal.load(500, this.dialogUpload + '?path=' + path);
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Download
+        //////////////////////////////////////////////////////////////////
+
+        download: function(path) {
+            var type = this.getType(path);
+            $('#download')
+                .attr('src', 'components/filemanager/download.php?path=' + path + '&type=' + type);
+        }
+    };
+
+})(this, jQuery);
+

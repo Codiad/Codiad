@@ -33,7 +33,7 @@ checkSession();
 
 </div>
 
-<button onclick="modal.unload();">Close Uploader</button>
+<button onclick="codiad.modal.unload();">Close Uploader</button>
 
 <script>
 
@@ -51,7 +51,7 @@ $(function () {
         },
         done: function(e, data){
             $.each(data.result, function (index, file){
-                filemanager.create_object('<?php echo($_GET['path']); ?>','<?php echo($_GET['path']); ?>/'+file.name,'file');
+                codiad.filemanager.createObject('<?php echo($_GET['path']); ?>','<?php echo($_GET['path']); ?>/'+file.name,'file');
             });
             setTimeout(function(){
                 $('#upload-progress .bar').animate({'width':0},700);

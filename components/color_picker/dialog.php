@@ -8,15 +8,15 @@
 
 </div>
 
-<button class="right" onclick="modal.unload();">Close</button>
+<button class="right" onclick="codiad.modal.unload();">Close</button>
 
-<button class="btn-left" onclick="color_picker.insert('hex');">Insert HEX</button><button class="btn-right" onclick="color_picker.insert('rgb');">Insert RGB</button>
+<button class="btn-left" onclick="codiad.colorPicker.insert('hex');">Insert HEX</button><button class="btn-right" onclick="codiad.colorPicker.insert('rgb');">Insert RGB</button>
 
 <script>
 
     $(function(){
     
-        selected = active.get_selected_text();
+        selected = codiad.active.getSelectedText();
         
         if(selected==null){ 
             selected = '#45818a'; 

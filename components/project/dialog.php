@@ -50,18 +50,18 @@
                 if($show){
                 ?>
                 <tr>
-                    <td><a onclick="project.open('<?php echo($data['path']); ?>');" class="icon">s</a></td>
+                    <td><a onclick="codiad.project.open('<?php echo($data['path']); ?>');" class="icon">s</a></td>
                     <td><?php echo($data['name']); ?></td>
                     <td>/<?php echo($data['path']); ?></td>
                     <?php
                         if(!$projects_assigned){
                             if($_SESSION['project'] == $data['path']){
                             ?>
-                            <td><a onclick="message.error('Active Project Cannot Be Removed');" class="icon">^</a></td>
+                            <td><a onclick="codiad.message.error('Active Project Cannot Be Removed');" class="icon">^</a></td>
                             <?php
                             }else{
                             ?>
-                            <td><a onclick="project.delete('<?php echo($data['name']); ?>','<?php echo($data['path']); ?>');" class="icon">[</a></td>
+                            <td><a onclick="codiad.project.delete('<?php echo($data['name']); ?>','<?php echo($data['path']); ?>');" class="icon">[</a></td>
                             <?php
                             }
                         }
@@ -73,7 +73,7 @@
             ?>
             </table>
             </div>
-            <?php if(!$projects_assigned){ ?><button class="btn-left" onclick="project.create();">New Project</button><?php } ?><button class="<?php if(!$projects_assigned){ echo('btn-right'); } ?>" onclick="modal.unload();return false;">Close</button>
+            <?php if(!$projects_assigned){ ?><button class="btn-left" onclick="codiad.project.create();">New Project</button><?php } ?><button class="<?php if(!$projects_assigned){ echo('btn-right'); } ?>" onclick="codiad.modal.unload();return false;">Close</button>
             <?php
             
             break;
@@ -88,7 +88,7 @@
             <form>
             <label>Project Name</label>
             <input name="project_name" autofocus="autofocus" autocomplete="off">
-            <button class="btn-left">Create Project</button><button class="btn-right" onclick="project.list();return false;">Cancel</button>
+            <button class="btn-left">Create Project</button><button class="btn-right" onclick="codiad.project.list();return false;">Cancel</button>
             <form>
             <?php
             break;
@@ -104,7 +104,7 @@
             <input type="hidden" name="project_path" value="/<?php echo($_GET['path']); ?>">
             <label>Confirm Project Deletion</label>
             <pre>Name: <?php echo($_GET['name']); ?>, Path: /<?php echo($_GET['path']); ?></pre>
-            <button class="btn-left">Confirm</button><button class="btn-right" onclick="project.list();return false;">Cancel</button>
+            <button class="btn-left">Confirm</button><button class="btn-right" onclick="codiad.project.list();return false;">Cancel</button>
             <?php
             break;
         
