@@ -25,8 +25,6 @@ $components = json_decode($components,true);
     <link rel="stylesheet" href="css/screen.css">
     <?php
     // Load Component CSS Files
-    
-    // CSS
     foreach($components as $component){
         if(file_exists(COMPONENTS . "/" . $component . "/screen.css")){
             echo('<link rel="stylesheet" href="components/'.$component.'/screen.css">');
