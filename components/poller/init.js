@@ -4,73 +4,79 @@
  *  [root]/license.txt for more. This information must remain intact.
  */
 
-$(function() {
-    poller.init();
-});
+(function(global, $){
 
-var poller = {
+    var codiad = global.codiad;
 
-    controller: 'components/poller/controller.php',
-    interval: 10000,
+    $(function() {
+        codiad.poller.init();
+    });
 
-    init: function() {
+    codiad.poller = {
 
-        setInterval(function() {
+        controller: 'components/poller/controller.php',
+        interval: 10000,
 
-            poller.check_auth();
-            poller.save_drafts();
+        init: function() {
+            var _this = this;
+            setInterval(function() {
 
-        }, poller.interval);
+                _this.checkAuth();
+                _this.saveDrafts();
 
-    },
+            }, _this.interval);
 
-    //////////////////////////////////////////////////////////////////
-    // Poll authentication
-    //////////////////////////////////////////////////////////////////
+        },
 
-    check_auth: function() {
+        //////////////////////////////////////////////////////////////////
+        // Poll authentication
+        //////////////////////////////////////////////////////////////////
 
-        // Run controller to check session (also acts as keep-alive)
-        $.get(poller.controller + '?action=check_auth', function(data) {
+        checkAuth: function() {
 
-            if (data) {
-                parsed = jsend.parse(data);
-                if (parsed == 'error') {
-                    // Session not set, reload
-                    user.logout();
+            // Run controller to check session (also acts as keep-alive)
+            $.get(this.controller + '?action=check_auth', function(data) {
+
+                if (data) {
+                    parsed = codiad.jsend.parse(data);
+                    if (parsed == 'error') {
+                        // Session not set, reload
+                        codiad.user.logout();
+                    }
                 }
-            }
 
-        });
+            });
 
-        // Check user
-        $.get(user.controller + '?action=verify', function(data) {
-            if (data == 'false') {
-                user.logout();
-            }
-        });
+            // Check user
+            $.get(codiad.user.controller + '?action=verify', function(data) {
+                if (data == 'false') {
+                    codiad.user.logout();
+                }
+            });
 
-    },
+        },
 
-    //////////////////////////////////////////////////////////////////
-    // Poll For Auto-Save of drafts (persist)
-    //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        // Poll For Auto-Save of drafts (persist)
+        //////////////////////////////////////////////////////////////////
 
-    save_drafts: function() {
-        $('#active-files a.changed')
-            .each(function() {
+        saveDrafts: function() {
+            $('#active-files a.changed')
+                .each(function() {
 
-            // Get changed content and path
-            var path = $(this)
-                .attr('data-path');
-            var content = active.sessions[path].getValue();
+                // Get changed content and path
+                var path = $(this)
+                    .attr('data-path');
+                var content = codiad.active.sessions[path].getValue();
 
-            // TODO: Add some visual indication about draft getting saved.
+                // TODO: Add some visual indication about draft getting saved.
 
-            // Set localstorage
-            localStorage.setItem(path, content);
+                // Set localstorage
+                localStorage.setItem(path, content);
 
-        });
-    }
+            });
+        }
 
-};
+    };
+
+})(this, jQuery);

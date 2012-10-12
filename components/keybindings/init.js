@@ -4,71 +4,77 @@
  *  [root]/license.txt for more. This information must remain intact.
  */
 
-//////////////////////////////////////////////////////////////////////
-// CTRL Key Bind
-//////////////////////////////////////////////////////////////////////
+(function(global, $){
 
-$.ctrl = function(key, callback, args) {
-    $(document)
-        .keydown(function(e) {
-        if (!args) args = [];
-        if (e.keyCode == key && e.ctrlKey) {
-            callback.apply(this, args);
-            return false;
-        }
-    });
-};
+    var codiad = global.codiad;
 
-$(function() {
-    keybindings.init();
-});
+    //////////////////////////////////////////////////////////////////////
+    // CTRL Key Bind
+    //////////////////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////////
-// Bindings
-//////////////////////////////////////////////////////////////////////
-
-var keybindings = {
-
-    init: function() {
-
-        // Close Modals //////////////////////////////////////////////
+    $.ctrl = function(key, callback, args) {
         $(document)
-            .keyup(function(e) {
-            if (e.keyCode == 27) {
-                modal.unload();
+            .keydown(function(e) {
+            if (!args) args = [];
+            if (e.keyCode == key && e.ctrlKey) {
+                callback.apply(this, args);
+                return false;
             }
         });
+    };
 
-        // Save [CTRL+S] /////////////////////////////////////////////
-        $.ctrl('83', function() {
-            active.save();
-        });
+    $(function() {
+        codiad.keybindings.init();
+    });
 
-        // Open in browser [CTRL+O] //////////////////////////////////
-        $.ctrl('79', function() {
-            active.open_in_browser();
-        });
+    //////////////////////////////////////////////////////////////////////
+    // Bindings
+    //////////////////////////////////////////////////////////////////////
 
-        // Find [CTRL+F] /////////////////////////////////////////////
-        $.ctrl('70', function() {
-            editor.open_search('find');
-        });
+    codiad.keybindings = {
 
-        // Replace [CTRL+R] //////////////////////////////////////////
-        $.ctrl('82', function() {
-            editor.open_search('replace');
-        });
+        init: function() {
 
-        // Active List Up ////////////////////////////////////////////
-        $.ctrl('38', function() {
-            active.move('up');
-        });
+            // Close Modals //////////////////////////////////////////////
+            $(document)
+                .keyup(function(e) {
+                if (e.keyCode == 27) {
+                    codiad.modal.unload();
+                }
+            });
 
-        // Active List Down //////////////////////////////////////////
-        $.ctrl('40', function() {
-            active.move('down');
-        });
+            // Save [CTRL+S] /////////////////////////////////////////////
+            $.ctrl('83', function() {
+                codiad.active.save();
+            });
 
-    }
+            // Open in browser [CTRL+O] //////////////////////////////////
+            $.ctrl('79', function() {
+                codiad.active.openInBrowser();
+            });
 
-};
+            // Find [CTRL+F] /////////////////////////////////////////////
+            $.ctrl('70', function() {
+                codiad.editor.openSearch('find');
+            });
+
+            // Replace [CTRL+R] //////////////////////////////////////////
+            $.ctrl('82', function() {
+                codiad.editor.openSearch('replace');
+            });
+
+            // Active List Up ////////////////////////////////////////////
+            $.ctrl('38', function() {
+                codiad.active.move('up');
+            });
+
+            // Active List Down //////////////////////////////////////////
+            $.ctrl('40', function() {
+                codiad.active.move('down');
+            });
+
+        }
+
+    };
+
+})(this, jQuery);

@@ -21,7 +21,7 @@
     //////////////////////////////////////////////////////////////////
     
     if(!$terminal_enabled){
-        exit('<label style="padding: 50px 0 30px 0; text-align: center;">Terminal is currently disabled. Enable via /components/terminal/config.php</label><button onclick="modal.unload();">Close</button>');
+        exit('<label style="padding: 50px 0 30px 0; text-align: center;">Terminal is currently disabled. Enable via /components/terminal/config.php</label><button onclick="codiad.modal.unload();">Close</button>');
     }
     
     //////////////////////////////////////////////////////////////////
@@ -59,7 +59,7 @@
     <form id="terminal-auth">
     <label>Terminal Password</label>
     <input type="password" name="terminal_password">
-    <button class="btn-left">Authenticate</button><button class="btn-right" onclick="modal.unload(); return false;">Close</button>
+    <button class="btn-left">Authenticate</button><button class="btn-right" onclick="codiad.modal.unload(); return false;">Close</button>
     </form>
     
     <script>
@@ -74,7 +74,7 @@
         });
         <?php if($auth_fail){ ?>
         // Show auth fail message
-        message.error('Incorrect Password');
+        codiad.message.error('Incorrect Password');
         <?php } ?>
     });
     </script>
@@ -87,7 +87,7 @@
         <input type="text" id="term-command">
         <div id="term-command-icon">&gt;&gt;</div>
     </div>
-    <button onclick="modal.unload();">Close Terminal</button>
+    <button onclick="codiad.modal.unload();">Close Terminal</button>
     <script>
     
     $(function(){
@@ -98,7 +98,7 @@
         history_counter = -1;
         
         // Set Terminal Width
-        $('#modal').css({'width':terminal.term_width+'px','margin-left':'-'+Math.round(terminal.term_width/2)+'px'});
+        $('#modal').css({'width':codiad.terminal.termWidth+'px','margin-left':'-'+Math.round(codiad.terminal.termWidth/2)+'px'});
         
         // Set Terminal Height
         var new_height = $(window).height()-350;
@@ -113,7 +113,7 @@
                 if (command.trim() === '' || command.trim()== 'Processing...'){ return; }
                 command_history[++command_counter] = command;
                 history_counter = command_counter;
-                terminal.run_command(command); 
+                codiad.terminal.runCommand(command);
             // Up arrow - traverse history (reverse)
             }else if(code == 38){
                 if(history_counter>=0){

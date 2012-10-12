@@ -18,7 +18,10 @@
     <script src="js/jquery.easing.js"></script>
     <script src="js/localstorage.js"></script>
     <script src="js/system.js"></script>
-
+    <script src="js/sidebars.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/message.js"></script>
+    <script src="js/jsend.js"></script>
     <div id="message"></div>
 
     <?php

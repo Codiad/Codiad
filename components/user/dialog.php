@@ -27,7 +27,7 @@
             ?>
             <label>Restricted</label>
             <pre>You can not edit the user list</pre>
-            <button onclick="modal.unload();return false;">Close</button>
+            <button onclick="codiad.modal.unload();return false;">Close</button>
             <?php } else { ?>
             <label>User List</label>
             <div id="user-list">
@@ -46,16 +46,16 @@
             ?>
             <tr>
                 <td><?php echo($data['username']); ?></td>
-                <td><a onclick="user.password('<?php echo($data['username']); ?>');" class="icon">A</a></td>
-                <td><a onclick="user.projects('<?php echo($data['username']); ?>');" class="icon">t</a></td>
+                <td><a onclick="codiad.user.password('<?php echo($data['username']); ?>');" class="icon">A</a></td>
+                <td><a onclick="codiad.user.projects('<?php echo($data['username']); ?>');" class="icon">t</a></td>
                 <?php
                     if($_SESSION['user'] == $data['username']){
                     ?>
-                    <td><a onclick="message.error('You Cannot Delete Your Own Account');" class="icon">^</a></td>
+                    <td><a onclick="codiad.message.error('You Cannot Delete Your Own Account');" class="icon">^</a></td>
                     <?php
                     }else{
                     ?>
-                    <td><a onclick="user.delete('<?php echo($data['username']); ?>');" class="icon">[</a></td>
+                    <td><a onclick="codiad.user.delete('<?php echo($data['username']); ?>');" class="icon">[</a></td>
                     <?php
                     }
                     ?>
@@ -65,7 +65,7 @@
             ?>
             </table>
             </div>
-            <button class="btn-left" onclick="user.create_new();">New Account</button><button class="btn-right" onclick="modal.unload();return false;">Close</button>
+            <button class="btn-left" onclick="codiad.user.createNew();">New Account</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
             <?php
             }
             
@@ -85,7 +85,7 @@
             <input type="password" name="password1">
             <label>Confirm Password</label>
             <input type="password" name="password2">
-            <button class="btn-left">Create Account</button><button class="btn-right" onclick="user.list();return false;">Cancel</button>
+            <button class="btn-left">Create Account</button><button class="btn-right" onclick="codiad.user.list();return false;">Cancel</button>
             <form>
             <?php
             break;
@@ -124,7 +124,7 @@
                 ?>
                 </table>
             </div>
-            <button class="btn-left">Confirm</button><button class="btn-right" onclick="user.list();return false;">Cancel</button>
+            <button class="btn-left">Confirm</button><button class="btn-right" onclick="codiad.user.list();return false;">Cancel</button>
             <?php
             break;
         
@@ -139,7 +139,7 @@
             <input type="hidden" name="username" value="<?php echo($_GET['username']); ?>">
             <label>Confirm User Deletion</label>
             <pre>Account: <?php echo($_GET['username']); ?></pre>
-            <button class="btn-left">Confirm</button><button class="btn-right" onclick="user.list();return false;">Cancel</button>
+            <button class="btn-left">Confirm</button><button class="btn-right" onclick="codiad.user.list();return false;">Cancel</button>
             <?php
             break;
             
@@ -162,7 +162,7 @@
             <input type="password" name="password1" autofocus="autofocus">
             <label>Confirm Password</label>
             <input type="password" name="password2">
-            <button class="btn-left">Change <?php echo(ucfirst($username)); ?>&apos;s Password</button><button class="btn-right" onclick="modal.unload();return false;">Cancel</button>
+            <button class="btn-left">Change <?php echo(ucfirst($username)); ?>&apos;s Password</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Cancel</button>
             <?php
             break;
         

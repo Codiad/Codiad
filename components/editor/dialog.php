@@ -39,7 +39,7 @@ switch($_GET['action']){
     
     <?php } ?>
 
-    <button class="btn-left" onclick="editor.search('find');return false;">Find</button><?php if($type=='replace'){ ?><button class="btn-mid" onclick="editor.search('replace');return false;">Replace</button><button class="btn-mid" onclick="editor.search('replace_all');return false;">Replace ALL</button><?php } ?><button class="btn-right" onclick="modal.unload(); return false;">Cancel</button>
+    <button class="btn-left" onclick="codiad.editor.search('find');return false;">Find</button><?php if($type=='replace'){ ?><button class="btn-mid" onclick="codiad.editor.search('replace');return false;">Replace</button><button class="btn-mid" onclick="codiad.editor.search('replace_all');return false;">Replace ALL</button><?php } ?><button class="btn-right" onclick="codiad.modal.unload(); return false;">Cancel</button>
     <?php
     break;
     
@@ -162,7 +162,7 @@ switch($_GET['action']){
     </tr>
     </table>
     
-    <button onclick="modal.unload(); return false;">Close</button
+    <button onclick="codiad.modal.unload(); return false;">Close</button
     
     <?php
     
@@ -181,25 +181,25 @@ var editor_settings = {
     
     load_values : function(){
         $('select.setting').each(function(){
-            editor.get_settings();
+            codiad.editor.getSettings();
             switch($(this).data('setting')){
                 case 'theme':
-                    $(this).children('option[value="'+editor.settings.theme+'"]').prop('selected',true);
+                    $(this).children('option[value="'+codiad.editor.settings.theme+'"]').prop('selected',true);
                     break;
                 case 'font-size':
-                    $(this).children('option[value="'+editor.settings.font_size+'"]').prop('selected',true);
+                    $(this).children('option[value="'+codiad.editor.settings.fontSize+'"]').prop('selected',true);
                     break;
                 case 'highlight-line':
-                    $(this).children('option[value="'+editor.settings.highlight_line+'"]').prop('selected',true);
+                    $(this).children('option[value="'+codiad.editor.settings.highlightLine+'"]').prop('selected',true);
                     break;
                 case 'indent-guides':
-                    $(this).children('option[value="'+editor.settings.indent_guides+'"]').prop('selected',true);
+                    $(this).children('option[value="'+codiad.editor.settings.indentGuides+'"]').prop('selected',true);
                     break;
                 case 'print-margin':
-                    $(this).children('option[value="'+editor.settings.print_margin+'"]').prop('selected',true);
+                    $(this).children('option[value="'+codiad.editor.settings.printMargin+'"]').prop('selected',true);
                     break;
                 case 'wrap-mode':
-                    $(this).children('option[value="'+editor.settings.wrap_mode+'"]').prop('selected',true);
+                    $(this).children('option[value="'+codiad.editor.settings.wrapMode+'"]').prop('selected',true);
                     break;
             }
         });
@@ -211,30 +211,30 @@ var editor_settings = {
             var setting = $(this).data('setting');
             var val = $(this).val();
             if(val===null){
-                message.alert('You Must Choose A Value');
+                codiad.message.alert('You Must Choose A Value');
             }else{
                 switch($(this).data('setting')){
                     case 'theme':
-                        editor.set_theme(val);
+                        codiad.editor.setTheme(val);
                         break;
                     case 'font-size':
-                        editor.set_font_size(val);
+                        codiad.editor.setFontSize(val);
                         break;
                     case 'highlight-line':
                         var bool_val = (val == "true");
-                        editor.set_highlight_line(bool_val);
+                        codiad.editor.setHighlightLine(bool_val);
                         break;
                     case 'indent-guides':
                         var bool_val = (val == "true");
-                        editor.set_indent_guides(bool_val);
+                        codiad.editor.setIndentGuides(bool_val);
                         break;
                     case 'print-margin':
                         var bool_val = (val == "true");
-                        editor.set_print_margin(bool_val);
+                        codiad.editor.setPrintMargin(bool_val);
                         break;
                     case 'wrap-mode':
                         var bool_val = (val == "true");
-                        editor.set_wrap_mode(bool_val);
+                        codiad.editor.setWrapMode(bool_val);
                         break;
                 }
             }
@@ -245,7 +245,7 @@ var editor_settings = {
 
 $(function(){
     <?php if($_GET['action']=='search'){ ?>
-    $('input[name="find"]').val(active.get_selected_text());
+    $('input[name="find"]').val(codiad.active.getSelectedText());
     <?php } ?>
     editor_settings.init();   
 });

@@ -4,38 +4,37 @@
  *  [root]/license.txt for more. This information must remain intact.
  */
 
-var terminal = {
+(function(global, $){
+    global.codiad.terminal = {
 
-    term_width: $(window)
-        .outerWidth() - 500,
-    controller: 'components/terminal/controller.php',
+        termWidth: $(window)
+            .outerWidth() - 500,
+        controller: 'components/terminal/controller.php',
 
-    open: function() {
-        modal.load(terminal.term_width, 'components/terminal/dialog.php');
-    },
+        open: function() {
+            codiad.modal.load(this.termWidth, 'components/terminal/dialog.php');
+        },
 
-    run_command: function(c) {
-        cur_terminal = $('#terminal');
-        if (c == 'clear') {
-            cur_terminal.html('');
-            $('#term-command')
-                .val('')
-                .focus();
-        } else {
-            $('#term-command')
-                .val('Processing...');
-            $.get(terminal.controller + '?command=' + escape(c), function(data) {
-                cur_terminal.append('<pre class="output-command">&gt;&gt;&nbsp;' + c + '</pre>');
-                cur_terminal.append('<pre class="output-data">' + data + '</pre>');
-                cur_terminal.scrollTop(
-                cur_terminal[0].scrollHeight - cur_terminal.height() + 20);
+        runCommand: function(c) {
+            curTerminal = $('#terminal');
+            if (c == 'clear') {
+                curTerminal.html('');
                 $('#term-command')
                     .val('')
                     .focus();
-            });
+            } else {
+                $('#term-command')
+                    .val('Processing...');
+                $.get(this.controller + '?command=' + escape(c), function(data) {
+                    curTerminal.append('<pre class="output-command">&gt;&gt;&nbsp;' + c + '</pre>');
+                    curTerminal.append('<pre class="output-data">' + data + '</pre>');
+                    curTerminal.scrollTop(
+                    curTerminal[0].scrollHeight - curTerminal.height() + 20);
+                    $('#term-command')
+                        .val('')
+                        .focus();
+                });
+            }
         }
-    }
-
-
-
-};
+    };
+})(this, jQuery);
