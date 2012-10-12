@@ -221,7 +221,7 @@ var sidebars = {
 
         // Left Column Slider
         $("#sb-left")
-            .hover(function() {
+            .hoverIntent(function() {
             var timeout_r = $(this)
                 .data("timeout_r");
             if (timeout_r) {
@@ -261,7 +261,7 @@ var sidebars = {
 
         // Right Column Slider
         $("#sb-right")
-            .hover(function() {
+            .hoverIntent(function() {
             var timeout_r = $(this)
                 .data("timeout_r");
             if (timeout_r) {
