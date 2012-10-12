@@ -26,11 +26,12 @@
 
     codiad.editor = {
 
-        // Editor instances - One instance corresponds to an editor
-        // pane in the user interface. Different EditSessions (ace/edit_session)
+        /// Editor instances - One instance corresponds to an editor
+        /// pane in the user interface. Different EditSessions
+        /// (ace/edit_session)
         instances: [],
 
-        // Currently focussed editor
+        /// Currently focussed editor
         activeInstance: null,
 
         // Settings for Editor instances
@@ -77,6 +78,9 @@
         //
         // Create a new editor instance attached to given session
         //
+        // Parameters:
+        //   session - {EditSession} Session to be used for new Editor instance
+        //
         //////////////////////////////////////////////////////////////////
 
         addInstance: function(session) {
@@ -103,7 +107,7 @@
 
         //////////////////////////////////////////////////////////////////
         //
-        // Remove all Editor instances
+        // Remove all Editor instances and clean up the DOM
         //
         //////////////////////////////////////////////////////////////////
 
@@ -138,8 +142,7 @@
         // Convenience function to iterate over Editor instances
         //
         // Parameters:
-        //   fn - {Function} callback called with each member as an
-        //        argument
+        //   fn - {Function} callback called with each member as an argument
         //
         /////////////////////////////////////////////////////////////////
 
@@ -659,6 +662,9 @@
         //
         // Present the Search (Find + Replace) dialog box
         //
+        // Parameters:
+        //   type - {String} Optional, defaults to find. Provide 'replace' for replace dialog.
+        //
         //////////////////////////////////////////////////////////////////
 
         openSearch: function(type) {
@@ -675,6 +681,10 @@
         //////////////////////////////////////////////////////////////////
         //
         // Perform Search (Find + Replace) operation
+        //
+        // Parameters:
+        //   action - {String} find | replace | replaceAll
+        //   i - {Editor} Defaults to active Editor instance
         //
         //////////////////////////////////////////////////////////////////
 
