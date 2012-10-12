@@ -265,8 +265,10 @@ var filemanager = {
     //////////////////////////////////////////////////////////////////
 
     open_file: function(path) {
+        var node = $('#file-manager a[data-path="' + path + '"]');
         var ext = filemanager.get_extension(path);
         if ($.inArray(ext, filemanager.no_open) < 0) {
+            node.addClass('loading');
             $.get(this.controller + '?action=open&path=' + path, function(data) {
                 open_response = jsend.parse(data);
                 if (open_response != 'error') {
