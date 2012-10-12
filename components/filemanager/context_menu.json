@@ -18,18 +18,6 @@
         "onclick": null
     },
     {
-        "title": "New Folder",
-        "icon": "s",
-        "applies-to" : "directory-only",
-        "onclick": "codiad.filemanager.createNode($('#context-menu').attr('data-path'),'directory');"
-    },
-    {
-        "title": "Break",
-        "icon": null,
-        "applies-to" : "directory-only",
-        "onclick": null
-    },
-    {
         "title": "Search",
         "icon": "4",
         "applies-to" : "directory-only",
