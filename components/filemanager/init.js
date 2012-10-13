@@ -339,7 +339,11 @@
         //////////////////////////////////////////////////////////////////
 
         createNode: function(path, type) {
-            codiad.modal.load(250, this.dialog + '?action=create&type=' + type + '&path=' + path);
+            codiad.modal.load(250, this.dialog, {
+                action: 'create',
+                type: type,
+                path: path
+            });
             $('#modal-content form')
                 .live('submit', function(e) {
                     e.preventDefault();
@@ -386,7 +390,10 @@
                 var shortName = _this.getShortName(_this.clipboard);
                 if ($('#file-manager a[data-path="' + path + '/' + shortName + '"]')
                     .length) { // Confirm overwrite?
-                    codiad.modal.load(400, this.dialog + '?action=overwrite&path=' + path + '/' + shortName);
+                    codiad.modal.load(400, this.dialog, {
+                        action: 'overwrite',
+                        path: path + '/' + shortName
+                    });
                     $('#modal-content form')
                         .live('submit', function(e) {
                         e.preventDefault();
@@ -480,7 +487,10 @@
 
         deleteNode: function(path) {
             var _this = this;
-            codiad.modal.load(400, this.dialog + '?action=delete&path=' + path);
+            codiad.modal.load(400, this.dialog, {
+                action: 'delete',
+                path: path
+            });
             $('#modal-content form')
                 .live('submit', function(e) {
                 e.preventDefault();
@@ -510,7 +520,10 @@
         //////////////////////////////////////////////////////////////////
 
         search: function(path) {
-            codiad.modal.load(500, this.dialog + '?action=search&path=' + path);
+            codiad.modal.load(500, this.dialog,{
+                action: 'search',
+                path: path
+            });
             codiad.modal.hideOverlay();
             var _this = this;
             $('#modal-content form')
@@ -547,7 +560,7 @@
         //////////////////////////////////////////////////////////////////
 
         uploadToNode: function(path) {
-            codiad.modal.load(500, this.dialogUpload + '?path=' + path);
+            codiad.modal.load(500, this.dialogUpload, {path: path});
         },
 
         //////////////////////////////////////////////////////////////////

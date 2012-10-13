@@ -8,7 +8,7 @@
 
     codiad.modal = {
 
-        load: function(width, url, data) { // (Width, URL)
+        load: function(width, url, data) {
             data = data || {};
             $('#modal')
                 .css({
