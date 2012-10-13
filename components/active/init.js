@@ -32,6 +32,15 @@
         // Path to EditSession instance mapping
         sessions: {},
 
+        //////////////////////////////////////////////////////////////////
+        //
+        // Check if a file is open.
+        //
+        // Parameters:
+        //   path - {String}
+        //
+        //////////////////////////////////////////////////////////////////
+
         isOpen: function(path) {
             return !!this.sessions[path];
         },

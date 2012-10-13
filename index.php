@@ -139,7 +139,6 @@ $components = json_decode($components,true);
         <div id="cursor-position">Ln: 0 &middot; Col: 0</div>
 
         <div id="editor-region">
-            <div id="editor"></div>
             <div id="editor-bottom-bar">
                 <a id="settings"><span class="icon">l</span>Settings</a>
                 <div id="divider"></div>

@@ -84,7 +84,10 @@
         //////////////////////////////////////////////////////////////////
 
         addInstance: function(session) {
-            var i = ace.edit('editor');
+            var $el = $('<div class="editor">')
+                .appendTo($('#editor-region'));
+
+            var i = ace.edit($el[0]);
 
             // Check user-specified settings
             this.getSettings();
@@ -112,7 +115,7 @@
         //////////////////////////////////////////////////////////////////
 
         exterminate: function() {
-            $('#editor').remove();
+            $('.editor').remove();
             $('#editor-region').append($('<div>').attr('id', 'editor'));
             $('#current-file').html('');
             this.instances = [];
