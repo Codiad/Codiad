@@ -8,25 +8,26 @@
 
     codiad.modal = {
 
-        load: function(w, u) { // (Width, URL)
+        load: function(width, url, data) { // (Width, URL)
+            data = data || {};
             $('#modal')
                 .css({
                     'top': '15%',
                     'left': '50%',
-                    'width': w + 'px',
-                    'margin-left': '-' + Math.ceil(w / 2) + 'px'
+                    'width': width + 'px',
+                    'margin-left': '-' + Math.ceil(width / 2) + 'px'
                 })
                 .draggable({
                     handle: '#drag-handle'
                 });
             $('#modal-content')
                 .html('<div id="modal-loading"></div>');
-            $('#modal-content')
-                .load(u, function() {
-                    // Fix for Firefox autofocus goofiness
-                    $('input[autofocus="autofocus"]')
-                        .focus();
-                });
+            $.get(url, data, function(data) {
+                $('#modal-content').html(data);
+                // Fix for Firefox autofocus goofiness
+                $('input[autofocus="autofocus"]')
+                    .focus();
+            });
             $('#modal, #modal-overlay')
                 .fadeIn(200);
             codiad.sidebars.modalLock = true;

@@ -421,7 +421,7 @@
             var shortName = this.getShortName(path);
             var type = this.getType(path);
             var _this = this;
-            codiad.modal.load(250, this.dialog + '?action=rename&path=' + path + '&short_name=' + shortName + '&type=' + type);
+            codiad.modal.load(250, this.dialog, { action: 'rename', path: path, short_name: shortName, type: type});
             $('#modal-content form')
                 .live('submit', function(e) {
                     e.preventDefault();
@@ -434,7 +434,7 @@
                         temp.push(arr[i])
                     }
                     var newPath = temp.join('/') + '/' + newName;
-                    $.get(_this.controller + '?action=modify&path=' + path + '&new_name=' + newName, function(data) {
+                    $.get(_this.controller, { action: 'modify', path: path, new_name: newName} , function(data) {                    
                         var renameResponse = codiad.jsend.parse(data);
                         if (renameResponse != 'error') {
                             codiad.message.success(type.charAt(0)

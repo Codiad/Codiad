@@ -304,7 +304,7 @@
                 }
 
                 // Change Editor Mode
-                var ext = codiad.filemanager.getExtension(new_path);
+                var ext = codiad.filemanager.getExtension(newPath);
                 var mode = codiad.editor.selectMode(ext);
                 this.sessions[newPath].setMode("ace/mode/" + mode);
 
