@@ -134,13 +134,12 @@
                 $('input:checkbox[name="project"]:checked').each(function(){
                     projects.push($(this).val());
                 });
-                console.log(projects);
                 if(accessLevel==0){ projects = 0; }
                 // Check and make sure if access level not full that at least on project is selected
                 if (accessLevel==1 && !projects) {
                     codiad.message.error('At Least One Project Must Be Selected');
                 } else {
-                    $.post(this.controller + '?action=project_access&username=' + username,{projects: projects}, function(data) {
+                    $.post(_this.controller + '?action=project_access&username=' + username,{projects: projects}, function(data) {
                         var projectsResponse = codiad.jsend.parse(data);
                         if (projectsResponse != 'error') {
                             codiad.message.success('Account Modified');

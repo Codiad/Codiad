@@ -112,7 +112,7 @@
                 <option value="0" <?php if(!$projects_assigned){ echo('selected="selected"'); } ?>>Access ALL Projects</option>
                 <option value="1" <?php if($projects_assigned){ echo('selected="selected"'); } ?>>Only Selected Projects</option>
             </select>
-            <div id="project_selector" <?php if(!$projects_assigned){ echo('style="display: none;"'); }  ?>>
+            <div id="project-selector" <?php if(!$projects_assigned){ echo('style="display: none;"'); }  ?>>
                 <table>
                 <?php
                     // Build list

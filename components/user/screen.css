@@ -1,9 +1,10 @@
-#project_selector { max-height: 250px; background: #404040;
+#project-selector { max-height: 250px; background: #404040;
     margin: 10px 0 5px 0;
     border-radius: 5px;
     box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, .5);
-    overflow: scroll; 
+    overflow: scroll;
+    max-height: 200px;
 }
 
-#project_selector table td { border: none; border-bottom: 1px solid #666; }
-#project_selector table tr:last-child td { border: none; }
+#project-selector table td { border: none; border-bottom: 1px solid #666; }
+#project-selector table tr:last-child td { border: none; }
