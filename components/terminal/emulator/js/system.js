@@ -40,9 +40,9 @@ var terminal = {
                     }else{
                         terminal.command_history[++terminal.command_counter] = command;
                         terminal.history_counter = terminal.command_counter;
-                        terminal.process_command();   
+                        terminal.process_command();
+                        terminal.command.val('Processing...').focus();
                     }
-                    terminal.command.val('Processing...').focus();
                     break;
                 // Up arrow, reverse history
                 case 38:
@@ -101,7 +101,7 @@ var terminal = {
     
     clear : function(){
         terminal.output.html('');
-        terminal.command.css({ 'color':'#fff' });
+        terminal.command.css({ 'color':'#fff' }).val('');
     }
     
 };
