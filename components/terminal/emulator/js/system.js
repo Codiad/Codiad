@@ -42,7 +42,7 @@ var terminal = {
                         terminal.history_counter = terminal.command_counter;
                         terminal.process_command();   
                     }
-                    terminal.command.val('').focus();
+                    terminal.command.val('Processing...').focus();
                     break;
                 // Up arrow, reverse history
                 case 38:
@@ -61,8 +61,9 @@ var terminal = {
     },
     
     process_command : function(){
-        var command = terminal.get_command();  
+        var command = terminal.get_command();
         $.post(terminal.controller,{command:command},function(data){
+            terminal.command.val('').focus();
             switch(data){
                 case '[CLEAR]':
                     terminal.clear();
