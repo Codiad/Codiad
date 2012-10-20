@@ -9,6 +9,7 @@
     // Classes from Ace
     var VirtualRenderer = require('ace/virtual_renderer').VirtualRenderer;
     var Editor = require('ace/editor').Editor;
+    var EditSession = require('ace/edit_session').EditSession;
 
     // Editor modes that have been loaded
     var editorModes = {};
@@ -358,6 +359,17 @@
             }
 
             i.el = el;
+            if (! this.isOpen(session)) {
+                i.setSession(session);
+            } else {
+
+                // Proxy session is required because scroll-position and
+                // cursor position etc. are shared among sessions.
+
+                var proxySession = new EditSession(session.getDocument());
+                proxySession.path = session.path;
+                i.setSession(proxySession);
+            }
 
             // Check user-specified settings
             this.getSettings();
@@ -375,6 +387,11 @@
             this.bindKeys(i);
 
             this.instances.push(i);
+
+            i.on('focus', function(){
+                _this.focus(i);
+            });
+
             return i;
         },
 
@@ -401,13 +418,22 @@
 
         removeSession: function(session, replacementSession) {
             for (var k = 0; k < this.instances.length; k++) {
-                if (this.instances[k].getSession() === session) {
+                if (this.instances[k].getSession().path === session.path) {
                     this.instances[k].setSession(replacementSession);
                 }
             }
             if ($('#current-file').text() === session.path) {
                 $('#current-file').text(replacementSession.path);
             }
+        },
+
+        isOpen: function(session){
+            for (var k = 0; k < this.instances.length; k++) {
+                if (this.instances[k].getSession().path === session.path) {
+                    return true;
+                }
+            }
+            return false;
         },
 
         /////////////////////////////////////////////////////////////////
@@ -845,6 +871,7 @@
             this.setActive(i);
             if (! i) return;
             i.focus();
+            codiad.active.focus(i.getSession().path);
         },
 
         //////////////////////////////////////////////////////////////////
