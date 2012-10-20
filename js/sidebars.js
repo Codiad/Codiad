@@ -111,8 +111,9 @@
                             .width(newWidth + 10);
                     },
                     stop: function() {
-                        $(window)
-                            .resize();
+                        $(window).resize();
+                        $('#editor-region')
+                            .trigger('h-resize-init');
                     }
                 });
         }

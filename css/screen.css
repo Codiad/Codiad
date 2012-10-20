@@ -294,6 +294,21 @@ table .icon {
     margin-left: 300px;
     position: relative;
 }
+.editor-wrapper {
+    position: absolute;
+}
+.editor-wrapper-horizontal > .editor {
+    top: 0;
+}
+.editor-wrapper-horizontal > .editor-wrapper {
+    top: 0;
+}
+.editor-wrapper-vertical > .editor {
+    left: 0;
+}
+.editor-wrapper-vertical > .editor-wrapper {
+    left: 0;
+}
 .editor {
     position: absolute;
     top: 0;
@@ -314,7 +329,16 @@ table .icon {
     width: 100%;
     box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .9);
 }
-
+.splitter {
+    background-color: black;
+    z-index: 9999;
+}
+.h-splitter {
+    cursor: col-resize;
+}
+.v-splitter {
+    cursor: row-resize;
+}
 #cursor-position {
     position: absolute;
     right: 30px;

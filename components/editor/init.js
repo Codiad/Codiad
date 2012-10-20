@@ -16,6 +16,218 @@
     var codiad = global.codiad;
     codiad._cursorPoll = null;
 
+    var separatorWidth = 3;
+
+    $('#editor-region').on('h-resize-init', function(){
+        $('#editor-region > .editor-wrapper')
+            .width($(this).width())
+            .trigger('h-resize');
+
+    }).on('v-resize-init', function(){
+        $('#editor-region > .editor-wrapper')
+            .height($(this).height())
+            .trigger('v-resize');
+    });
+
+    $(window).resize(function(){
+        var er = $('#editor-region');
+        $('#editor-region')
+            .trigger('h-resize-init')
+            .trigger('v-resize-init');
+    });
+
+    function SplitContainer(root, children, splitType) {
+        var _this = this;
+
+        this.root = root;
+        this.splitType = splitType;
+        this.childContainers = {};
+        this.childElements = {};
+        this.splitProp = 0.5;
+
+        this.setChild(0, children[0]);
+        this.setChild(1, children[1]);
+
+        this.splitter = $('<div>')
+            .addClass('splitter')
+            .appendTo(root)
+            .draggable({
+                axis: (splitType === 'horizontal' ? 'x' : 'y'),
+                drag: function(e, ui){
+                    if (_this.splitType === 'horizontal') {
+                        var w1, w2;
+                        w1 = ui.position.left - separatorWidth/2;
+                        w2 = _this.root.width() - ui.position.left
+                            - separatorWidth/2;
+                        _this.splitProp = w1 / _this.root.width();
+                        _this.childElements[0]
+                            .width(w1)
+                            .trigger('h-resize');
+                        _this.childElements[1]
+                            .width(w2)
+                            .css('left', w1 + separatorWidth + 'px')
+                            .trigger('h-resize');
+                        _this.splitProp = ui.position.left / _this.root.width();
+                    } else {
+                        var h1, h2;
+                        h1 = ui.position.top - separatorWidth/2;
+                        h2 = _this.root.width() - ui.position.top
+                            - separatorWidth/2;
+                        _this.splitProp = h1 / _this.root.height();
+                        _this.childElements[0]
+                            .height(h1)
+                            .trigger('v-resize');
+                        _this.childElements[1]
+                            .height(h2)
+                            .css('top', h1 + separatorWidth + 'px')
+                            .trigger('v-resize');
+                    }
+                }
+            });
+
+        if (splitType === 'horizontal') {
+            this.splitter
+                .addClass('h-splitter')
+                .width(separatorWidth)
+                .height(root.height());
+        } else if (splitType === 'vertical') {
+            this.splitter
+                .addClass('v-splitter')
+                .height(separatorWidth)
+                .width(root.width());
+        }
+
+        this.root.on('h-resize', function(e){
+            e.stopPropagation();
+            if (_this.splitType === 'horizontal') {
+                var w1, w2;
+                w1 = _this.root.width() * _this.splitProp
+                    - separatorWidth / 2;
+                w2 = _this.root.width() * (1 - _this.splitProp)
+                    - separatorWidth / 2;
+                _this.childElements[0]
+                    .width(w1);
+                _this.childElements[1]
+                    .width(w2)
+                    .css('left', w1 + separatorWidth);
+                _this.splitter.css('left', w1);
+            } else if (_this.splitType === 'vertical') {
+                var w = _this.root.width();
+                _this.childElements[0]
+                    .width(w);
+                _this.childElements[1]
+                    .width(w);
+                _this.splitter.width(w);
+            }
+            if (_this.childContainers[0]) {
+                _this.childContainers[0].root.trigger('h-resize');
+            } else if (_this.childContainers[1]) {
+                _this.childContainers[1].root.trigger('h-resize');
+            }
+        });
+
+        this.root.on('v-resize', function(e){
+            e.stopPropagation();
+            if (_this.splitType === 'horizontal') {
+                var h = _this.root.height();
+                _this.childElements[0]
+                    .height(h);
+                _this.childElements[1]
+                    .height(h);
+                _this.splitter.height(h);
+            } else if (_this.splitType === 'vertical') {
+                var h1 = _this.root.height() * _this.splitProp
+                    - separatorWidth / 2;
+                var h2 = _this.root.height() * (1 - _this.splitProp)
+                    - separatorWidth / 2;
+                _this.childElements[0]
+                    .height(h1);
+                _this.childElements[1]
+                    .height(h2)
+                    .css('top', h1+separatorWidth);
+                _this.splitter.css('top', h1);
+            }
+            if (_this.childContainers[0]) {
+                _this.childContainers[0].root.trigger('v-resize');
+            } else if (_this.childContainers[1]) {
+                _this.childContainers[1].root.trigger('v-resize');
+            }
+        });
+
+        this.root
+            .trigger('h-resize')
+            .trigger('v-resize');
+    }
+
+    SplitContainer.prototype = {
+        setChild: function(idx, el){
+
+            if (el instanceof SplitContainer) {
+                this.childElements[idx] = el.root;
+                this.childContainers[idx] = el;
+                el.idx = idx;
+            } else {
+                this.childElements[idx] = el;
+            }
+
+            this.childElements[idx].appendTo(this.root);
+            this.cssInit(this.childElements[idx], idx);
+        },
+        cssInit: function(el, idx){
+            var props = {};
+            var h1, h2, w1, w2, rh, rw;
+
+            rh = this.root.height();
+            rw = this.root.width();
+
+            if (this.splitType === 'horizontal') {
+
+                w1 = rw * this.splitProp - separatorWidth / 2;
+                w2 = rw * (1 - this.splitProp) - separatorWidth / 2;
+
+                if (idx === 0) {
+                    props = {
+                        left: 0,
+                        width: w1,
+                        height: rh,
+                        top: 0
+                    };
+                } else {
+                    props = {
+                        left: w1 + separatorWidth,
+                        width: w2,
+                        height: rh,
+                        top: 0
+                    };
+                }
+
+            } else if (this.splitType === 'vertical') {
+
+                h1 = rh * this.splitProp - separatorWidth / 2;
+                h2 = rh * (1 - this.splitProp) - separatorWidth / 2;
+
+                if (idx === 0) {
+                    props = {
+                        top: 0,
+                        height: h1,
+                        width: rw,
+                        left: 0
+                    };
+                } else {
+                    props = {
+                        top: h1 + separatorWidth,
+                        height: h2,
+                        width: rw,
+                        left: 0
+                    };
+                }
+
+            }
+
+            el.css(props);
+        }
+    }
+
     //////////////////////////////////////////////////////////////////
     //
     // Editor Component for Codiad
@@ -43,6 +255,8 @@
             indentGuides: true,
             wrapMode: false
         },
+
+        rootContainer: null,
 
         //////////////////////////////////////////////////////////////////
         //
@@ -83,11 +297,67 @@
         //
         //////////////////////////////////////////////////////////////////
 
-        addInstance: function(session) {
-            var $el = $('<div class="editor">')
-                .appendTo($('#editor-region'));
+        addInstance: function(session, where) {
+            var el = $('<div class="editor">');
+            var chType, chArr = [], sc, chIdx;
+            var _this = this;
 
-            var i = ace.edit($el[0]);
+            if (this.instances.length == 0) {
+                el.appendTo($('#editor-region'));
+            } else {
+
+                var ch = this.activeInstance.el;
+                var root;
+
+                chIdx = (where === 'top' || where === 'left') ? 0 : 1;
+                chType = (where === 'top' || where === 'bottom') ?
+                    'vertical' : 'horizontal';
+
+                chArr[chIdx] = el;
+                chArr[1 - chIdx] = ch;
+
+                root = $('<div class="editor-wrapper">')
+                    .height(ch.height())
+                    .width(ch.width())
+                    .addClass('editor-wrapper-' + chType)
+                    .appendTo(ch.parent());
+
+                sc = new SplitContainer(root, chArr, chType);
+
+                if (this.instances.length > 1) {
+                    var pContainer = this.activeInstance.splitContainer;
+                    var idx = this.activeInstance.splitIdx;
+                    pContainer.setChild(idx, sc);
+                }
+            }
+
+            var i = ace.edit(el[0]);
+            var resizeEditor = function(){
+                i.resize();
+            }
+
+            if (sc) {
+                i.splitContainer = sc;
+                i.splitIdx = chIdx;
+
+                this.activeInstance.splitContainer = sc;
+                this.activeInstance.splitIdx = 1 - chIdx;
+
+                sc.root
+                    .on('h-resize', resizeEditor)
+                    .on('v-resize', resizeEditor);
+
+                if (this.instances.length === 1) {
+                    var re = function(){
+                        _this.instances[0].resize();
+                    }
+                    sc.root
+                        .on('h-resize', re)
+                        .on('v-resize', re);
+                }
+            }
+
+            i.el = el;
 
             // Check user-specified settings
             this.getSettings();
