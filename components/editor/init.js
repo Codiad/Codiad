@@ -402,12 +402,12 @@
 
             $('#split-horizontally a').click(function(e){
                 e.stopPropagation();
-                _this.addInstance(_this.activeInstance.getSession(), 'top');
+                _this.addInstance(_this.activeInstance.getSession(), 'right');
             });
 
             $('#split-vertically a').click(function(e){
                 e.stopPropagation();
-                _this.addInstance(_this.activeInstance.getSession(), 'right');
+                _this.addInstance(_this.activeInstance.getSession(), 'bottom');
             });
 
             $('#merge-all a').click(function(e){
@@ -922,6 +922,7 @@
             if (! i) return;
             i.focus();
             codiad.active.highlightEntry(i.getSession().path);
+            this.cursorTracking(i);
         },
 
         //////////////////////////////////////////////////////////////////
