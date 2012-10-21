@@ -433,7 +433,7 @@ table .icon {
     position: fixed;
     top: 0;
     height: 100%;
-    z-index: 99;
+    z-index: 99999;
     -moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;
@@ -449,13 +449,13 @@ table .icon {
 .sidebar#sb-right {
     width: 200px;
     right: -190px;
-    z-index: 999;
+    z-index: 99999;
 }
 
 .sidebar-handle {
     width: 10px;
     height: 100%;
-    z-index: 999;
+    z-index: 99999;
     margin: 0;
     padding: 0;
     background-image: linear-gradient(left , rgb(120,120,120) 29%, rgb(77,77,77) 77%);
