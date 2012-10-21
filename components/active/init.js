@@ -32,6 +32,15 @@
         // Path to EditSession instance mapping
         sessions: {},
 
+        //////////////////////////////////////////////////////////////////
+        //
+        // Check if a file is open.
+        //
+        // Parameters:
+        //   path - {String}
+        //
+        //////////////////////////////////////////////////////////////////
+
         isOpen: function(path) {
             return !!this.sessions[path];
         },
@@ -206,12 +215,16 @@
         //////////////////////////////////////////////////////////////////
 
         focus: function(path) {
-            $('#active-files a')
-                .removeClass('active');
-            this.sessions[path].thumb.addClass('active');
+            this.highlightEntry(path);
             var session = this.sessions[path];
             codiad.editor.setSession(session);
             this.check(path);
+        },
+
+        highlightEntry: function(path){
+            $('#active-files a')
+                .removeClass('active');
+            this.sessions[path].thumb.addClass('active');
         },
 
         //////////////////////////////////////////////////////////////////

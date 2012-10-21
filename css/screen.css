@@ -294,7 +294,22 @@ table .icon {
     margin-left: 300px;
     position: relative;
 }
-#editor {
+.editor-wrapper {
+    position: absolute;
+}
+.editor-wrapper-horizontal > .editor {
+    top: 0;
+}
+.editor-wrapper-horizontal > .editor-wrapper {
+    top: 0;
+}
+.editor-wrapper-vertical > .editor {
+    left: 0;
+}
+.editor-wrapper-vertical > .editor-wrapper {
+    left: 0;
+}
+.editor {
     position: absolute;
     top: 0;
     left: 0;
@@ -314,7 +329,38 @@ table .icon {
     width: 100%;
     box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .9);
 }
-
+.options-menu {
+    position: absolute;
+    z-index: 9999;
+    background-color: #2E2E2E;
+    border: 3px solid #666666;
+    border-radius: 5px;
+    display: none;
+}
+.options-menu li {
+    border-bottom: 1px solid black;
+    padding: 10px;
+}
+.options-menu li a {
+    color: #7F7F7F;
+    text-decoration: none;
+}
+.options-menu li:hover {
+    background-color: #7F7F7F;
+}
+.options-menu li:hover a {
+    color: white;
+}
+.splitter {
+    background-color: black;
+    z-index: 9999;
+}
+.h-splitter {
+    cursor: col-resize;
+}
+.v-splitter {
+    cursor: row-resize;
+}
 #cursor-position {
     position: absolute;
     right: 30px;
@@ -338,24 +384,29 @@ table .icon {
     box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, .5);
 }
 
-#settings {
+.ico-wrapper {
     display: block;
     position: relative;
     float: left;
-    padding: 0 0 0 10px;
+    padding: 0 0 0 12px;
     font-size: 13px;
     line-height: 100%;
 }
 
-#settings:hover { color: #fff; }
+.ico-wrapper:hover { color: #fff; }
 
-#settings .icon {
+.ico-wrapper .icon {
     position: absolute;
     width: 12px;
     height: 12px;
     font-size: 22px;
-    margin: -5px 0 0 -14px;
     padding: 0;
+}
+#split .icon {
+    margin: -5px 0 0 -10px;
+}
+#settings .icon {
+    margin: -5px 0 0 -16px;
 }
 
 .settings td { border: none; border-bottom: 1px solid #666; padding: 10px 0; }
