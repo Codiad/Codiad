@@ -426,7 +426,7 @@
                 $('#split-options-menu').css({
                     display: 'block',
                     bottom: (wh - e.pageY + 10) + 'px',
-                    left: (e.pageX - 10) + 'px'
+                    left: (e.pageX - 20) + 'px'
                 });
                 var fn = function(){
                     _splitOptionsMenu.hide();
