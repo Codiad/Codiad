@@ -147,9 +147,9 @@ $components = json_decode($components,true);
                 <div id="current-file"></div>
             </div>
             <ul id="split-options-menu" class="options-menu">
-              <li id="split-horizontally"><a href="#"> Split Horizontally </a></li>
-              <li id="split-vertically"><a href="#"> Split Vertically </a></li>
-              <li id="merge-all"><a href="#"> Merge all </a></li>
+              <li id="split-horizontally"><a> Split Horizontally </a></li>
+              <li id="split-vertically"><a> Split Vertically </a></li>
+              <li id="merge-all"><a> Merge all </a></li>
             </ul>
         </div>
 
