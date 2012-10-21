@@ -2,7 +2,7 @@
 
 /*
 *  Copyright (c) Codiad & Kent Safranski (codiad.com), distributed
-*  as-is and without warranty under the MIT License. See 
+*  as-is and without warranty under the MIT License. See
 *  [root]/license.txt for more. This information must remain intact.
 */
 
@@ -11,7 +11,7 @@ class Filemanager {
     //////////////////////////////////////////////////////////////////
     // PROPERTIES
     //////////////////////////////////////////////////////////////////
-    
+
     public $root          = "";
     public $project       = "";
     public $rel_path      = "";
@@ -24,25 +24,25 @@ class Filemanager {
     public $controller    = "";
     public $upload_json   = "";
     public $search_string = "";
-    
+
     // JSEND Return Contents
     public $status        = "";
     public $data          = "";
     public $message       = "";
-    
+
     //////////////////////////////////////////////////////////////////
     // METHODS
     //////////////////////////////////////////////////////////////////
-    
+
     // -----------------------------||----------------------------- //
-        
+
     //////////////////////////////////////////////////////////////////
     // Construct
     //////////////////////////////////////////////////////////////////
-    
+
     public function __construct($get,$post,$files) {
         $this->rel_path = $get['path'];
-        if($this->rel_path!="/"){ $this->rel_path .= "/"; } 
+        if($this->rel_path!="/"){ $this->rel_path .= "/"; }
         $this->root = $get['root'];
         $this->path = $this->root . $get['path'];
         // Search
@@ -51,9 +51,9 @@ class Filemanager {
         if(!empty($get['type'])){ $this->type = $get['type']; }
         // Modify\Create
         if(!empty($get['new_name'])){ $this->new_name = $get['new_name']; }
-        if(!empty($post['content'])){ 
+        if(!empty($post['content'])){
             if(get_magic_quotes_gpc()){
-                $this->content = stripslashes($post['content']); 
+                $this->content = stripslashes($post['content']);
             }else{
                 $this->content = $post['content'];
             }
@@ -65,9 +65,9 @@ class Filemanager {
     //////////////////////////////////////////////////////////////////
     // INDEX (Returns list of files and directories)
     //////////////////////////////////////////////////////////////////
-        
+
     public function index(){
-    
+
         if(file_exists($this->path)){
             $index = array();
             if(is_dir($this->path) && $handle = opendir($this->path)){
@@ -82,7 +82,7 @@ class Filemanager {
                         );
                     }
                 }
-                
+
                 $folders = array();
                 $files = array();
                 foreach($index as $item=>$data){
@@ -93,14 +93,14 @@ class Filemanager {
                         $files[] = array("name"=>$data['name'],"type"=>$data['type'],"size"=>$data['type']);
                     }
                 }
-                
+
                 function sorter($a, $b, $key = 'name') { return strnatcmp($a[$key], $b[$key]); }
-                
+
                 usort($folders,"sorter");
                 usort($files,"sorter");
-                
+
                 $output = array_merge($folders,$files);
-                
+
                 $this->status = "success";
                 $this->data = '"index":' . json_encode($output);
             }else{
@@ -111,14 +111,14 @@ class Filemanager {
             $this->status = "error";
             $this->message = "Path Does Not Exist";
         }
-            
+
         $this->respond();
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // SEARCH
     //////////////////////////////////////////////////////////////////
-    
+
     public function search(){
         if(!function_exists('shell_exec')){
             $this->status = "error";
@@ -155,11 +155,11 @@ class Filemanager {
         }
         $this->respond();
     }
-        
+
     //////////////////////////////////////////////////////////////////
     // OPEN (Returns the contents of a file)
     //////////////////////////////////////////////////////////////////
-        
+
     public function open(){
         if(is_file($this->path)){
             $this->status = "success";
@@ -171,11 +171,11 @@ class Filemanager {
 
         $this->respond();
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // OPEN IN BROWSER (Return URL)
     //////////////////////////////////////////////////////////////////
-    
+
     public function openinbrowser(){
         $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         $domainName = $_SERVER['HTTP_HOST'];
@@ -184,13 +184,13 @@ class Filemanager {
         $this->data = '"url":' . json_encode(rtrim($url,"/"));
         $this->respond();
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // CREATE (Creates a new file or directory)
     //////////////////////////////////////////////////////////////////
-        
+
     public function create(){
-    
+
         // Create file
         if($this->type=="file"){
             if(!file_exists($this->path)){
@@ -208,7 +208,7 @@ class Filemanager {
                 $this->message = "File Already Exists";
             }
         }
-        
+
         // Create directory
         if($this->type=="directory"){
             if(!is_dir($this->path)){
@@ -219,38 +219,38 @@ class Filemanager {
                 $this->message = "Directory Already Exists";
             }
         }
-    
-        $this->respond();        
+
+        $this->respond();
     }
-        
+
     //////////////////////////////////////////////////////////////////
     // DELETE (Deletes a file or directory (+contents))
     //////////////////////////////////////////////////////////////////
-        
+
     public function delete(){
-    
+
         function rrmdir($path){
             return is_file($path)?
             @unlink($path):
             @array_map('rrmdir',glob($path.'/*'))==@rmdir($path);
         }
-        
-        if(file_exists($this->path)){ rrmdir($this->path); 
-            $this->status = "success"; 
-        }else{ 
+
+        if(file_exists($this->path)){ rrmdir($this->path);
+            $this->status = "success";
+        }else{
             $this->status = "error";
             $this->message = "Path Does Not Exist";
         }
-        
+
         $this->respond();
     }
-        
+
     //////////////////////////////////////////////////////////////////
     // MODIFY (Modifies a file name/contents or directory name)
     //////////////////////////////////////////////////////////////////
-    
+
     public function modify(){
-    
+
         // Change name
         if($this->new_name){
             $explode = explode('/',$this->path);
@@ -269,12 +269,12 @@ class Filemanager {
                 $this->message = "Path Already Exists";
             }
         }
-        
+
         // Change content
         if($this->content){
             if($this->content==' '){ $this->content=''; } // Blank out file
             if(is_file($this->path)){
-                if($file = fopen($this->path, 'w')){            
+                if($file = fopen($this->path, 'w')){
                     fwrite($file, $this->content);
                     fclose($file);
                     $this->status = "success";
@@ -287,39 +287,39 @@ class Filemanager {
                 $this->message = "Not A File";
             }
         }
-        
-        $this->respond();        
+
+        $this->respond();
     }
-        
+
     //////////////////////////////////////////////////////////////////
     // DUPLICATE (Creates a duplicate of the object - (cut/copy/paste)
     //////////////////////////////////////////////////////////////////
-    
+
     public function duplicate(){
-        
-        if(!file_exists($this->path)){ 
+
+        if(!file_exists($this->path)){
             $this->status = "error";
             $this->message = "Invalid Source";
         }
-        
-        function recurse_copy($src,$dst) { 
-            $dir = opendir($src); 
-            @mkdir($dst); 
-            while(false !== ( $file = readdir($dir)) ) { 
-                if (( $file != '.' ) && ( $file != '..' )) { 
-                    if ( is_dir($src . '/' . $file) ) { 
-                        recurse_copy($src . '/' . $file,$dst . '/' . $file); 
-                    } 
-                    else { 
-                        copy($src . '/' . $file,$dst . '/' . $file); 
-                    } 
-                } 
-            } 
-            closedir($dir); 
+
+        function recurse_copy($src,$dst) {
+            $dir = opendir($src);
+            @mkdir($dst);
+            while(false !== ( $file = readdir($dir)) ) {
+                if (( $file != '.' ) && ( $file != '..' )) {
+                    if ( is_dir($src . '/' . $file) ) {
+                        recurse_copy($src . '/' . $file,$dst . '/' . $file);
+                    }
+                    else {
+                        copy($src . '/' . $file,$dst . '/' . $file);
+                    }
+                }
+            }
+            closedir($dir);
         }
-        
+
         if($this->status!="error"){
-        
+
             if(is_file($this->path)){
                 copy($this->path,$this->destination);
                 $this->status = "success";
@@ -327,20 +327,20 @@ class Filemanager {
                 recurse_copy($this->path,$this->destination);
                 if(!$this->response){ $this->status = "success"; }
             }
-            
+
         }
 
         $this->respond();
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // UPLOAD (Handles uploads to the specified directory)
     //////////////////////////////////////////////////////////////////
-    
+
     public function upload(){
-    
+
         // Check that the path is a directory
-        if(is_file($this->path)){ 
+        if(is_file($this->path)){
             $this->status = "error";
             $this->message = "Path Not A Directory";
         }else{
@@ -351,7 +351,7 @@ class Filemanager {
                     $filename = $value;
                     $add = $this->path."/$filename";
                     if(@move_uploaded_file($_FILES['upload']['tmp_name'][$key], $add)){
-                        
+
                         $info[] = array(
                             "name"=>$value,
                             "size"=>filesize($add),
@@ -363,18 +363,18 @@ class Filemanager {
                     }
                 }
             }
-            $this->upload_json = json_encode($info);       
+            $this->upload_json = json_encode($info);
         }
 
-        $this->respond();        
+        $this->respond();
     }
-        
+
     //////////////////////////////////////////////////////////////////
     // RESPOND (Outputs data in JSON [JSEND] format)
     //////////////////////////////////////////////////////////////////
-    
-    public function respond(){ 
-        
+
+    public function respond(){
+
         // Success ///////////////////////////////////////////////
         if($this->status=="success"){
             if($this->data){
@@ -382,22 +382,22 @@ class Filemanager {
             }else{
                 $json = '{"status":"success","data":null}';
             }
-        
+
         // Upload JSON ///////////////////////////////////////////
-        
+
         }elseif($this->upload_json!=''){
             $json = $this->upload_json;
-        
+
         // Error /////////////////////////////////////////////////
         }else{
             $json = '{"status":"error","message":"'.$this->message.'"}';
         }
-        
+
         // Output ////////////////////////////////////////////////
-        echo($json); 
-        
+        echo($json);
+
     }
-    
+
 }
-    
+
 ?>
