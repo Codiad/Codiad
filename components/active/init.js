@@ -215,12 +215,16 @@
         //////////////////////////////////////////////////////////////////
 
         focus: function(path) {
-            $('#active-files a')
-                .removeClass('active');
-            this.sessions[path].thumb.addClass('active');
+            this.highlightEntry(path);
             var session = this.sessions[path];
             codiad.editor.setSession(session);
             this.check(path);
+        },
+
+        highlightEntry: function(path){
+            $('#active-files a')
+                .removeClass('active');
+            this.sessions[path].thumb.addClass('active');
         },
 
         //////////////////////////////////////////////////////////////////

@@ -19,22 +19,8 @@
 
     var separatorWidth = 3;
 
-    $('#editor-region').on('h-resize-init', function(){
-        $('#editor-region > .editor-wrapper')
-            .width($(this).width())
-            .trigger('h-resize');
-
-    }).on('v-resize-init', function(){
-        $('#editor-region > .editor-wrapper')
-            .height($(this).height())
-            .trigger('v-resize');
-    });
-
-    $(window).resize(function(){
-        var er = $('#editor-region');
-        $('#editor-region')
-            .trigger('h-resize-init')
-            .trigger('v-resize-init');
+    $(function(){
+        codiad.editor.init();
     });
 
     function SplitContainer(root, children, splitType) {
@@ -259,6 +245,30 @@
 
         rootContainer: null,
 
+        init: function(){
+            this.createSplitMenu();
+
+            var er = $('#editor-region');
+
+            er.on('h-resize-init', function(){
+                $('#editor-region > .editor-wrapper')
+                    .width($(this).width())
+                    .trigger('h-resize');
+
+            }).on('v-resize-init', function(){
+                $('#editor-region > .editor-wrapper')
+                    .height($(this).height())
+                    .trigger('v-resize');
+            });
+
+
+            $(window).resize(function(){
+                $('#editor-region')
+                    .trigger('h-resize-init')
+                    .trigger('v-resize-init');
+            });
+        },
+
         //////////////////////////////////////////////////////////////////
         //
         // Retrieve editor settings from localStorage
@@ -359,17 +369,7 @@
             }
 
             i.el = el;
-            if (! this.isOpen(session)) {
-                i.setSession(session);
-            } else {
-
-                // Proxy session is required because scroll-position and
-                // cursor position etc. are shared among sessions.
-
-                var proxySession = new EditSession(session.getDocument());
-                proxySession.path = session.path;
-                i.setSession(proxySession);
-            }
+            this.setSession(session, i);
 
             // Check user-specified settings
             this.getSettings();
@@ -395,6 +395,43 @@
             return i;
         },
 
+        createSplitMenu: function(){
+            var _this = this;
+            $('#split-options-menu').appendTo($('body'));
+            var wh = $(window).height();
+
+            $('#split-horizontally a').click(function(e){
+                e.stopPropagation();
+                _this.addInstance(_this.activeInstance.getSession(), 'top');
+            });
+
+            $('#split-vertically a').click(function(e){
+                e.stopPropagation();
+                _this.addInstance(_this.activeInstance.getSession(), 'right');
+            });
+
+            $('#merge-all a').click(function(e){
+                e.stopPropagation();
+                var s = _this.activeInstance.getSession();
+                _this.exterminate();
+                _this.addInstance(s);
+            })
+
+            $('#split').click(function(e){
+                e.stopPropagation();
+                $('#split-options-menu').css({
+                    display: 'block',
+                    bottom: (wh - e.pageY + 10) + 'px',
+                    left: (e.pageX - 10) + 'px'
+                });
+                var fn = function(){
+                    $('#split-options-menu').hide();
+                    $(window).off('click', fn)
+                }
+                $(window).on('click', fn);
+            });
+        },
+
         //////////////////////////////////////////////////////////////////
         //
         // Remove all Editor instances and clean up the DOM
@@ -403,6 +440,7 @@
 
         exterminate: function() {
             $('.editor').remove();
+            $('.editor-wrapper').remove();
             $('#editor-region').append($('<div>').attr('id', 'editor'));
             $('#current-file').html('');
             this.instances = [];
@@ -494,7 +532,19 @@
             if (! i) {
                 i = this.addInstance(session);
             }
-            i.setSession(session);
+            if (! this.isOpen(session)) {
+                i.setSession(session);
+            } else {
+                // Proxy session is required because scroll-position and
+                // cursor position etc. are shared among sessions.
+
+                var proxySession = new EditSession(session.getDocument(),
+                                                   session.getMode());
+                proxySession.path = session.path;
+                proxySession.thumb = session.thumb;
+                i.setSession(proxySession);
+
+            }
             this.setActive(i);
         },
 
@@ -871,7 +921,7 @@
             this.setActive(i);
             if (! i) return;
             i.focus();
-            codiad.active.focus(i.getSession().path);
+            codiad.active.highlightEntry(i.getSession().path);
         },
 
         //////////////////////////////////////////////////////////////////

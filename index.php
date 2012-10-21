@@ -140,11 +140,17 @@ $components = json_decode($components,true);
 
         <div id="editor-region">
             <div id="editor-bottom-bar">
-                <a id="settings"><span class="icon">l</span>Settings</a>
+                <a id="split" class="ico-wrapper"><span class="icon">n</span> &nbsp;</a>
+                <div id="divider"></div>
+                <a id="settings" class="ico-wrapper"><span class="icon">l</span>Settings</a>
                 <div id="divider"></div>
                 <div id="current-file"></div>
             </div>
-
+            <ul id="split-options-menu" class="options-menu">
+              <li id="split-horizontally"><a href="#"> Split Horizontally </a></li>
+              <li id="split-vertically"><a href="#"> Split Vertically </a></li>
+              <li id="merge-all"><a href="#"> Merge all </a></li>
+            </ul>
         </div>
 
 
