@@ -398,16 +398,19 @@
         createSplitMenu: function(){
             var _this = this;
             $('#split-options-menu').appendTo($('body'));
+            var _splitOptionsMenu = $('#split-options-menu');
             var wh = $(window).height();
 
             $('#split-horizontally a').click(function(e){
                 e.stopPropagation();
                 _this.addInstance(_this.activeInstance.getSession(), 'top');
+                _splitOptionsMenu.hide();
             });
 
             $('#split-vertically a').click(function(e){
                 e.stopPropagation();
                 _this.addInstance(_this.activeInstance.getSession(), 'right');
+                _splitOptionsMenu.hide();
             });
 
             $('#merge-all a').click(function(e){
@@ -415,6 +418,7 @@
                 var s = _this.activeInstance.getSession();
                 _this.exterminate();
                 _this.addInstance(s);
+                _splitOptionsMenu.hide();
             })
 
             $('#split').click(function(e){
@@ -425,7 +429,7 @@
                     left: (e.pageX - 10) + 'px'
                 });
                 var fn = function(){
-                    $('#split-options-menu').hide();
+                    _splitOptionsMenu.hide();
                     $(window).off('click', fn)
                 }
                 $(window).on('click', fn);
