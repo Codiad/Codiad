@@ -47,7 +47,9 @@
                         'margin-left': sbarWidth + 'px',
                         'width': ($('body')
                             .outerWidth() - sbarWidth - 10) + 'px'
-                    }, 300, 'easeOutQuart');
+                        }, 300, 'easeOutQuart', function(){
+                            $(this).trigger('h-resize-init');
+                        });
                     $(this)
                         .animate({
                         'left': '0px'
@@ -67,7 +69,9 @@
                                     'margin-left': '10px',
                                     'width': ($('body')
                                         .outerWidth() - 20) + 'px'
-                                }, 300, 'easeOutQuart');
+                                }, 300, 'easeOutQuart', function(){
+                                    $(this).trigger('h-resize-init');
+                                });
                         }
                     }, this), 500));
                 });
