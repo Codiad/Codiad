@@ -9,12 +9,211 @@
     // Classes from Ace
     var VirtualRenderer = require('ace/virtual_renderer').VirtualRenderer;
     var Editor = require('ace/editor').Editor;
+    var EditSession = require('ace/edit_session').EditSession;
 
     // Editor modes that have been loaded
     var editorModes = {};
 
     var codiad = global.codiad;
     codiad._cursorPoll = null;
+
+    var separatorWidth = 3;
+
+    $(function(){
+        codiad.editor.init();
+    });
+
+    function SplitContainer(root, children, splitType) {
+        var _this = this;
+
+        this.root = root;
+        this.splitType = splitType;
+        this.childContainers = {};
+        this.childElements = {};
+        this.splitProp = 0.5;
+
+        this.setChild(0, children[0]);
+        this.setChild(1, children[1]);
+
+        this.splitter = $('<div>')
+            .addClass('splitter')
+            .appendTo(root)
+            .draggable({
+                axis: (splitType === 'horizontal' ? 'x' : 'y'),
+                drag: function(e, ui){
+                    if (_this.splitType === 'horizontal') {
+                        var w1, w2;
+                        w1 = ui.position.left - separatorWidth/2;
+                        w2 = _this.root.width() - ui.position.left
+                            - separatorWidth/2;
+                        _this.splitProp = w1 / _this.root.width();
+                        _this.childElements[0]
+                            .width(w1)
+                            .trigger('h-resize');
+                        _this.childElements[1]
+                            .width(w2)
+                            .css('left', w1 + separatorWidth + 'px')
+                            .trigger('h-resize');
+                        _this.splitProp = ui.position.left / _this.root.width();
+                    } else {
+                        var h1, h2;
+                        h1 = ui.position.top - separatorWidth/2;
+                        h2 = _this.root.width() - ui.position.top
+                            - separatorWidth/2;
+                        _this.splitProp = h1 / _this.root.height();
+                        _this.childElements[0]
+                            .height(h1)
+                            .trigger('v-resize');
+                        _this.childElements[1]
+                            .height(h2)
+                            .css('top', h1 + separatorWidth + 'px')
+                            .trigger('v-resize');
+                    }
+                }
+            });
+
+        if (splitType === 'horizontal') {
+            this.splitter
+                .addClass('h-splitter')
+                .width(separatorWidth)
+                .height(root.height());
+        } else if (splitType === 'vertical') {
+            this.splitter
+                .addClass('v-splitter')
+                .height(separatorWidth)
+                .width(root.width());
+        }
+
+        this.root.on('h-resize', function(e){
+            e.stopPropagation();
+            if (_this.splitType === 'horizontal') {
+                var w1, w2;
+                w1 = _this.root.width() * _this.splitProp
+                    - separatorWidth / 2;
+                w2 = _this.root.width() * (1 - _this.splitProp)
+                    - separatorWidth / 2;
+                _this.childElements[0]
+                    .width(w1);
+                _this.childElements[1]
+                    .width(w2)
+                    .css('left', w1 + separatorWidth);
+                _this.splitter.css('left', w1);
+            } else if (_this.splitType === 'vertical') {
+                var w = _this.root.width();
+                _this.childElements[0]
+                    .width(w);
+                _this.childElements[1]
+                    .width(w);
+                _this.splitter.width(w);
+            }
+            if (_this.childContainers[0]) {
+                _this.childContainers[0].root.trigger('h-resize');
+            } else if (_this.childContainers[1]) {
+                _this.childContainers[1].root.trigger('h-resize');
+            }
+        });
+
+        this.root.on('v-resize', function(e){
+            e.stopPropagation();
+            if (_this.splitType === 'horizontal') {
+                var h = _this.root.height();
+                _this.childElements[0]
+                    .height(h);
+                _this.childElements[1]
+                    .height(h);
+                _this.splitter.height(h);
+            } else if (_this.splitType === 'vertical') {
+                var h1 = _this.root.height() * _this.splitProp
+                    - separatorWidth / 2;
+                var h2 = _this.root.height() * (1 - _this.splitProp)
+                    - separatorWidth / 2;
+                _this.childElements[0]
+                    .height(h1);
+                _this.childElements[1]
+                    .height(h2)
+                    .css('top', h1+separatorWidth);
+                _this.splitter.css('top', h1);
+            }
+            if (_this.childContainers[0]) {
+                _this.childContainers[0].root.trigger('v-resize');
+            } else if (_this.childContainers[1]) {
+                _this.childContainers[1].root.trigger('v-resize');
+            }
+        });
+
+        this.root
+            .trigger('h-resize')
+            .trigger('v-resize');
+    }
+
+    SplitContainer.prototype = {
+        setChild: function(idx, el){
+
+            if (el instanceof SplitContainer) {
+                this.childElements[idx] = el.root;
+                this.childContainers[idx] = el;
+                el.idx = idx;
+            } else {
+                this.childElements[idx] = el;
+            }
+
+            this.childElements[idx].appendTo(this.root);
+            this.cssInit(this.childElements[idx], idx);
+        },
+        cssInit: function(el, idx){
+            var props = {};
+            var h1, h2, w1, w2, rh, rw;
+
+            rh = this.root.height();
+            rw = this.root.width();
+
+            if (this.splitType === 'horizontal') {
+
+                w1 = rw * this.splitProp - separatorWidth / 2;
+                w2 = rw * (1 - this.splitProp) - separatorWidth / 2;
+
+                if (idx === 0) {
+                    props = {
+                        left: 0,
+                        width: w1,
+                        height: rh,
+                        top: 0
+                    };
+                } else {
+                    props = {
+                        left: w1 + separatorWidth,
+                        width: w2,
+                        height: rh,
+                        top: 0
+                    };
+                }
+
+            } else if (this.splitType === 'vertical') {
+
+                h1 = rh * this.splitProp - separatorWidth / 2;
+                h2 = rh * (1 - this.splitProp) - separatorWidth / 2;
+
+                if (idx === 0) {
+                    props = {
+                        top: 0,
+                        height: h1,
+                        width: rw,
+                        left: 0
+                    };
+                } else {
+                    props = {
+                        top: h1 + separatorWidth,
+                        height: h2,
+                        width: rw,
+                        left: 0
+                    };
+                }
+
+            }
+
+            el.css(props);
+        }
+    }
 
     //////////////////////////////////////////////////////////////////
     //
@@ -42,6 +241,32 @@
             highlightLine: true,
             indentGuides: true,
             wrapMode: false
+        },
+
+        rootContainer: null,
+
+        init: function(){
+            this.createSplitMenu();
+
+            var er = $('#editor-region');
+
+            er.on('h-resize-init', function(){
+                $('#editor-region > .editor-wrapper')
+                    .width($(this).width())
+                    .trigger('h-resize');
+
+            }).on('v-resize-init', function(){
+                $('#editor-region > .editor-wrapper')
+                    .height($(this).height())
+                    .trigger('v-resize');
+            });
+
+
+            $(window).resize(function(){
+                $('#editor-region')
+                    .trigger('h-resize-init')
+                    .trigger('v-resize-init');
+            });
         },
 
         //////////////////////////////////////////////////////////////////
@@ -83,8 +308,68 @@
         //
         //////////////////////////////////////////////////////////////////
 
-        addInstance: function(session) {
-            var i = ace.edit('editor');
+        addInstance: function(session, where) {
+            var el = $('<div class="editor">');
+            var chType, chArr = [], sc, chIdx;
+            var _this = this;
+
+            if (this.instances.length == 0) {
+                el.appendTo($('#editor-region'));
+            } else {
+
+                var ch = this.activeInstance.el;
+                var root;
+
+                chIdx = (where === 'top' || where === 'left') ? 0 : 1;
+                chType = (where === 'top' || where === 'bottom') ?
+                    'vertical' : 'horizontal';
+
+                chArr[chIdx] = el;
+                chArr[1 - chIdx] = ch;
+
+                root = $('<div class="editor-wrapper">')
+                    .height(ch.height())
+                    .width(ch.width())
+                    .addClass('editor-wrapper-' + chType)
+                    .appendTo(ch.parent());
+
+                sc = new SplitContainer(root, chArr, chType);
+
+                if (this.instances.length > 1) {
+                    var pContainer = this.activeInstance.splitContainer;
+                    var idx = this.activeInstance.splitIdx;
+                    pContainer.setChild(idx, sc);
+                }
+            }
+
+            var i = ace.edit(el[0]);
+            var resizeEditor = function(){
+                i.resize();
+            }
+
+            if (sc) {
+                i.splitContainer = sc;
+                i.splitIdx = chIdx;
+
+                this.activeInstance.splitContainer = sc;
+                this.activeInstance.splitIdx = 1 - chIdx;
+
+                sc.root
+                    .on('h-resize', resizeEditor)
+                    .on('v-resize', resizeEditor);
+
+                if (this.instances.length === 1) {
+                    var re = function(){
+                        _this.instances[0].resize();
+                    }
+                    sc.root
+                        .on('h-resize', re)
+                        .on('v-resize', re);
+                }
+            }
+
+            i.el = el;
+            this.setSession(session, i);
 
             // Check user-specified settings
             this.getSettings();
@@ -102,7 +387,49 @@
             this.bindKeys(i);
 
             this.instances.push(i);
+
+            i.on('focus', function(){
+                _this.focus(i);
+            });
+
             return i;
+        },
+
+        createSplitMenu: function(){
+            var _this = this;
+            $('#split-options-menu').appendTo($('body'));
+            var wh = $(window).height();
+
+            $('#split-horizontally a').click(function(e){
+                e.stopPropagation();
+                _this.addInstance(_this.activeInstance.getSession(), 'top');
+            });
+
+            $('#split-vertically a').click(function(e){
+                e.stopPropagation();
+                _this.addInstance(_this.activeInstance.getSession(), 'right');
+            });
+
+            $('#merge-all a').click(function(e){
+                e.stopPropagation();
+                var s = _this.activeInstance.getSession();
+                _this.exterminate();
+                _this.addInstance(s);
+            })
+
+            $('#split').click(function(e){
+                e.stopPropagation();
+                $('#split-options-menu').css({
+                    display: 'block',
+                    bottom: (wh - e.pageY + 10) + 'px',
+                    left: (e.pageX - 10) + 'px'
+                });
+                var fn = function(){
+                    $('#split-options-menu').hide();
+                    $(window).off('click', fn)
+                }
+                $(window).on('click', fn);
+            });
         },
 
         //////////////////////////////////////////////////////////////////
@@ -112,7 +439,8 @@
         //////////////////////////////////////////////////////////////////
 
         exterminate: function() {
-            $('#editor').remove();
+            $('.editor').remove();
+            $('.editor-wrapper').remove();
             $('#editor-region').append($('<div>').attr('id', 'editor'));
             $('#current-file').html('');
             this.instances = [];
@@ -128,13 +456,22 @@
 
         removeSession: function(session, replacementSession) {
             for (var k = 0; k < this.instances.length; k++) {
-                if (this.instances[k].getSession() === session) {
+                if (this.instances[k].getSession().path === session.path) {
                     this.instances[k].setSession(replacementSession);
                 }
             }
             if ($('#current-file').text() === session.path) {
                 $('#current-file').text(replacementSession.path);
             }
+        },
+
+        isOpen: function(session){
+            for (var k = 0; k < this.instances.length; k++) {
+                if (this.instances[k].getSession().path === session.path) {
+                    return true;
+                }
+            }
+            return false;
         },
 
         /////////////////////////////////////////////////////////////////
@@ -195,7 +532,19 @@
             if (! i) {
                 i = this.addInstance(session);
             }
-            i.setSession(session);
+            if (! this.isOpen(session)) {
+                i.setSession(session);
+            } else {
+                // Proxy session is required because scroll-position and
+                // cursor position etc. are shared among sessions.
+
+                var proxySession = new EditSession(session.getDocument(),
+                                                   session.getMode());
+                proxySession.path = session.path;
+                proxySession.thumb = session.thumb;
+                i.setSession(proxySession);
+
+            }
             this.setActive(i);
         },
 
@@ -572,6 +921,7 @@
             this.setActive(i);
             if (! i) return;
             i.focus();
+            codiad.active.highlightEntry(i.getSession().path);
         },
 
         //////////////////////////////////////////////////////////////////
