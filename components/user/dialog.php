@@ -108,7 +108,7 @@
             <form>
             <input type="hidden" name="username" value="<?php echo($_GET['username']); ?>">
             <label>Project Access for <?php echo(ucfirst($_GET['username'])); ?></label>
-            <select name="access_level" onchange="if($(this).val()=='0'){ $('#project_selector').slideUp(300); }else{ $('#project_selector').slideDown(300); }">
+            <select name="access_level" onchange="if($(this).val()=='0'){ $('#project-selector').slideUp(300); }else{ $('#project-selector').slideDown(300); }">
                 <option value="0" <?php if(!$projects_assigned){ echo('selected="selected"'); } ?>>Access ALL Projects</option>
                 <option value="1" <?php if($projects_assigned){ echo('selected="selected"'); } ?>>Only Selected Projects</option>
             </select>
