@@ -39,7 +39,7 @@ switch($_GET['action']){
     
     <?php } ?>
 
-    <button class="btn-left" onclick="codiad.editor.search('find');return false;">Find</button><?php if($type=='replace'){ ?><button class="btn-mid" onclick="codiad.editor.search('replace');return false;">Replace</button><button class="btn-mid" onclick="codiad.editor.search('replace_all');return false;">Replace ALL</button><?php } ?><button class="btn-right" onclick="codiad.modal.unload(); return false;">Cancel</button>
+    <button class="btn-left" onclick="codiad.editor.search('find');return false;">Find</button><?php if($type=='replace'){ ?><button class="btn-mid" onclick="codiad.editor.search('replace');return false;">Replace</button><button class="btn-mid" onclick="codiad.editor.search('replaceAll');return false;">Replace ALL</button><?php } ?><button class="btn-right" onclick="codiad.modal.unload(); return false;">Cancel</button>
     <?php
     break;
     

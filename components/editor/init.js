@@ -10,6 +10,7 @@
     var VirtualRenderer = require('ace/virtual_renderer').VirtualRenderer;
     var Editor = require('ace/editor').Editor;
     var EditSession = require('ace/edit_session').EditSession;
+    var UndoManager = require("ace/undomanager").UndoManager;
 
     // Editor modes that have been loaded
     var editorModes = {};
@@ -398,7 +399,7 @@
 
             this.changeListener(i);
             this.cursorTracking(i);
-            this.bindKeys(i);
+            this.bindKeys(i);            
 
             this.instances.push(i);
 
@@ -440,7 +441,7 @@
                 $('#split-options-menu').css({
                     display: 'block',
                     bottom: (wh - e.pageY + 10) + 'px',
-                    left: (e.pageX - 10) + 'px'
+                    left: (e.pageX - 20) + 'px'
                 });
                 var fn = function(){
                     _splitOptionsMenu.hide();
@@ -558,9 +559,11 @@
 
                 var proxySession = new EditSession(session.getDocument(),
                                                    session.getMode());
+                proxySession.setUndoManager(new UndoManager());
                 proxySession.path = session.path;
                 proxySession.thumb = session.thumb;
                 i.setSession(proxySession);
+                
 
             }
             this.setActive(i);

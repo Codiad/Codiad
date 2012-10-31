@@ -140,9 +140,9 @@ $components = json_decode($components,true);
 
         <div id="editor-region">
             <div id="editor-bottom-bar">
-                <a id="split" class="ico-wrapper"><span class="icon">n</span> &nbsp;</a>
-                <div id="divider"></div>
                 <a id="settings" class="ico-wrapper"><span class="icon">l</span>Settings</a>
+                <div id="divider"></div>
+                <a id="split" class="ico-wrapper"><span class="icon">k</span>Split</a>
                 <div id="divider"></div>
                 <div id="current-file"></div>
             </div>
