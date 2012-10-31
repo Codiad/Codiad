@@ -10,6 +10,7 @@
     var VirtualRenderer = require('ace/virtual_renderer').VirtualRenderer;
     var Editor = require('ace/editor').Editor;
     var EditSession = require('ace/edit_session').EditSession;
+    var UndoManager = require("ace/undomanager").UndoManager;
 
     // Editor modes that have been loaded
     var editorModes = {};
@@ -49,25 +50,25 @@
                         _this.splitProp = w1 / _this.root.width();
                         _this.childElements[0]
                             .width(w1)
-                            .trigger('h-resize');
+                            .trigger('h-resize', [true, true]);
                         _this.childElements[1]
                             .width(w2)
                             .css('left', w1 + separatorWidth + 'px')
-                            .trigger('h-resize');
+                            .trigger('h-resize', [true, true]);
                         _this.splitProp = ui.position.left / _this.root.width();
                     } else {
                         var h1, h2;
-                        h1 = ui.position.top - separatorWidth/2;
+                         h1 = ui.position.top - separatorWidth/2;
                         h2 = _this.root.width() - ui.position.top
                             - separatorWidth/2;
                         _this.splitProp = h1 / _this.root.height();
                         _this.childElements[0]
                             .height(h1)
-                            .trigger('v-resize');
+                            .trigger('v-resize', [true, true]);
                         _this.childElements[1]
                             .height(h2)
                             .css('top', h1 + separatorWidth + 'px')
-                            .trigger('v-resize');
+                            .trigger('v-resize', [true, true]);
                     }
                 }
             });
@@ -84,7 +85,7 @@
                 .width(root.width());
         }
 
-        this.root.on('h-resize', function(e){
+        this.root.on('h-resize', function(e, percolateUp, percolateDown){
             e.stopPropagation();
             if (_this.splitType === 'horizontal') {
                 var w1, w2;
@@ -106,14 +107,21 @@
                     .width(w);
                 _this.splitter.width(w);
             }
+            if (percolateUp) {
+                _this.root.parent('.editor-wrapper')
+                    .trigger('h-resize', [true ,false]);
+            }
+            if (! percolateDown) return;
             if (_this.childContainers[0]) {
-                _this.childContainers[0].root.trigger('h-resize');
+                _this.childContainers[0].root
+                    .trigger('h-resize', [false, true]);
             } else if (_this.childContainers[1]) {
-                _this.childContainers[1].root.trigger('h-resize');
+                _this.childContainers[1].root
+                    .trigger('h-resize', [false, true]);
             }
         });
 
-        this.root.on('v-resize', function(e){
+        this.root.on('v-resize', function(e, percolateUp, percolateDown){
             e.stopPropagation();
             if (_this.splitType === 'horizontal') {
                 var h = _this.root.height();
@@ -134,16 +142,23 @@
                     .css('top', h1+separatorWidth);
                 _this.splitter.css('top', h1);
             }
+            if (percolateUp) {
+                _this.root.parent('.editor-wrapper')
+                    .trigger('v-resize', [true ,false]);
+            }
+            if (! percolateDown) return;
             if (_this.childContainers[0]) {
-                _this.childContainers[0].root.trigger('v-resize');
+                _this.childContainers[0].root
+                    .trigger('v-resize', [false, true]);
             } else if (_this.childContainers[1]) {
-                _this.childContainers[1].root.trigger('v-resize');
+                _this.childContainers[1].root
+                    .trigger('v-resize', [false, true]);
             }
         });
 
         this.root
-            .trigger('h-resize')
-            .trigger('v-resize');
+            .trigger('h-resize', [false, false])
+            .trigger('v-resize', [false, false]);
     }
 
     SplitContainer.prototype = {
@@ -384,7 +399,7 @@
 
             this.changeListener(i);
             this.cursorTracking(i);
-            this.bindKeys(i);
+            this.bindKeys(i);            
 
             this.instances.push(i);
 
@@ -426,7 +441,7 @@
                 $('#split-options-menu').css({
                     display: 'block',
                     bottom: (wh - e.pageY + 10) + 'px',
-                    left: (e.pageX - 10) + 'px'
+                    left: (e.pageX - 20) + 'px'
                 });
                 var fn = function(){
                     _splitOptionsMenu.hide();
@@ -533,6 +548,7 @@
 
         setSession: function(session, i) {
             i = i || this.getActive();
+            if (i && i.session.path == session.path) return;
             if (! i) {
                 i = this.addInstance(session);
             }
@@ -544,10 +560,10 @@
 
                 var proxySession = new EditSession(session.getDocument(),
                                                    session.getMode());
+                proxySession.setUndoManager(new UndoManager());
                 proxySession.path = session.path;
                 proxySession.thumb = session.thumb;
                 i.setSession(proxySession);
-
             }
             this.setActive(i);
         },

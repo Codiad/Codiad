@@ -417,10 +417,7 @@ table .icon {
     font-size: 22px;
     padding: 0;
 }
-#split .icon {
-    margin: -5px 0 0 -10px;
-}
-#settings .icon {
+#split .icon, #settings .icon {
     margin: -5px 0 0 -16px;
 }
 
