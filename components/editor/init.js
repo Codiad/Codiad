@@ -603,6 +603,12 @@
                 return 'sql';
             case 'md':
                 return 'markdown';
+            case 'cpp':
+                return 'c_cpp';
+            case 'py':
+                return 'python';
+            case 'rb':
+                return 'ruby';
             default:
                 return 'text';
             }
