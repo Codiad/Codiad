@@ -397,18 +397,25 @@
                     $('#modal-content form')
                         .live('submit', function(e) {
                         e.preventDefault();
-                        _this.processPasteNode(path);
+                        var duplicate = false;
+                        if($('#modal-content form select[name="or_action"]').val()==1){ 
+                            duplicate=true; console.log('Dup!'); 
+                        }
+                        _this.processPasteNode(path,duplicate);
                     });
                 } else { // No conflicts; proceed...
-                    _this.processPasteNode(path);
+                    _this.processPasteNode(path,false);
                 }
             }
         },
 
-        processPasteNode: function(path) {
+        processPasteNode: function(path,duplicate) {
             var _this = this;
             var shortName = this.getShortName(this.clipboard);
             var type = this.getType(this.clipboard);
+            if(duplicate){ 
+                shortName = "copy_of_"+shortName;
+            }
             $.get(this.controller + '?action=duplicate&path=' +
                 this.clipboard + '&destination=' +
                 path + '/' + shortName, function(data) {
