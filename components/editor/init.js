@@ -548,7 +548,7 @@
 
         setSession: function(session, i) {
             i = i || this.getActive();
-            if (i && i.session.path == session.path) return;
+            //if (i && i.session.path == session.path) return;
             if (! i) {
                 i = this.addInstance(session);
             }
