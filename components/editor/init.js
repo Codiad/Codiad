@@ -603,6 +603,7 @@
                 return 'sql';
             case 'md':
                 return 'markdown';
+            case 'c':
             case 'cpp':
                 return 'c_cpp';
             case 'py':
