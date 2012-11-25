@@ -610,6 +610,8 @@
                 return 'python';
             case 'rb':
                 return 'ruby';
+            case 'jade':
+                return 'jade';
             default:
                 return 'text';
             }
