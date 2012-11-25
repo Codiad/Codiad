@@ -99,7 +99,7 @@
             }
             
             // Replace text editors with cat
-            $editors = array('vi','vim','nano');
+            $editors = array('vim','vi','nano');
             $this->command = str_replace($editors,'cat',$this->command);
             
             // Handle blocked commands
