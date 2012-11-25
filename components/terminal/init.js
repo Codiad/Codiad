@@ -12,6 +12,7 @@
 
         open: function() {
             codiad.modal.load(this.termWidth, 'components/terminal/dialog.php');
+            codiad.modal.hideOverlay();
         }
         
     };
