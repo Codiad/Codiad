@@ -41,14 +41,15 @@ switch($_GET['action']){
 <script>
 
     function save_and_close(path){
-        var id = codiad.editor.getId(path);
+        /*var id = codiad.editor.getId(path);
         var content = codiad.editor.getContent(id);
         codiad.filemanager.saveFile(path,content, {
             success: function(){
                 $('#active-files a[data-path="'+path+'"]').removeClass('changed');
                 codiad.active.removeDraft(path);
             }
-        });
+        });*/
+        codiad.active.save(path);
         codiad.active.close(path);        
         codiad.modal.unload();
     }

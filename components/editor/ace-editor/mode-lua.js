@@ -1,54 +1,46 @@
 /* ***** BEGIN LICENSE BLOCK *****
-* Version: MPL 1.1/GPL 2.0/LGPL 2.1
-*
-* The contents of this file are subject to the Mozilla Public License Version
-* 1.1 (the "License"); you may not use this file except in compliance with
-* the License. You may obtain a copy of the License at
-* http://www.mozilla.org/MPL/
-*
-* Software distributed under the License is distributed on an "AS IS" basis,
-* WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
-* for the specific language governing rights and limitations under the
-* License.
-*
-* The Original Code is Ajax.org Code Editor (ACE).
-*
-* The Initial Developer of the Original Code is
-* Ajax.org B.V.
-* Portions created by the Initial Developer are Copyright (C) 2010
-* the Initial Developer. All Rights Reserved.
-*
-* Contributor(s):
-*      Fabian Jakobs <fabian AT ajax DOT org>
-*      Colin Gourlay <colin DOT j DOT gourlay AT gmail DOT com>
-*      Lee Gao
-*      Tim Starling
-*
-* Alternatively, the contents of this file may be used under the terms of
-* either the GNU General Public License Version 2 or later (the "GPL"), or
-* the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
-* in which case the provisions of the GPL or the LGPL are applicable instead
-* of those above. If you wish to allow use of your version of this file only
-* under the terms of either the GPL or the LGPL, and not to allow others to
-* use your version of this file under the terms of the MPL, indicate your
-* decision by deleting the provisions above and replace them with the notice
-* and other provisions required by the GPL or the LGPL. If you do not delete
-* the provisions above, a recipient may use your version of this file under
-* the terms of any one of the MPL, the GPL or the LGPL.
-*
-* ***** END LICENSE BLOCK ***** */
+ * Distributed under the BSD license:
+ *
+ * Copyright (c) 2010, Ajax.org B.V.
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of Ajax.org B.V. nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL AJAX.ORG B.V. BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * ***** END LICENSE BLOCK ***** */
 
-define('ace/mode/lua', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/text', 'ace/tokenizer', 'ace/mode/lua_highlight_rules', 'ace/range'], function(require, exports, module) {
+define('ace/mode/lua', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/text', 'ace/tokenizer', 'ace/mode/lua_highlight_rules', 'ace/mode/folding/lua', 'ace/range'], function(require, exports, module) {
 
 
 var oop = require("../lib/oop");
 var TextMode = require("./text").Mode;
 var Tokenizer = require("../tokenizer").Tokenizer;
 var LuaHighlightRules = require("./lua_highlight_rules").LuaHighlightRules;
+var LuaFoldMode = require("./folding/lua").FoldMode;
 var Range = require("../range").Range;
 
 var Mode = function() {
     this.$tokenizer = new Tokenizer(new LuaHighlightRules().getRules());
+    this.foldingRules = new LuaFoldMode();
 };
 oop.inherits(Mode, TextMode);
 
@@ -61,7 +53,7 @@ oop.inherits(Mode, TextMode);
         "elseif": 1,
         "repeat": 1,
         "end": -1,
-        "until": -1,
+        "until": -1
     };
     var outdentKeywords = [
         "else",
@@ -72,8 +64,6 @@ oop.inherits(Mode, TextMode);
 
     function getNetIndentLevel(tokens) {
         var level = 0;
-        // Support single-line blocks by decrementing the indent level if
-        // an ending token is found
         for (var i in tokens){
             var token = tokens[i];
             if (token.type == "keyword") {
@@ -86,8 +76,6 @@ oop.inherits(Mode, TextMode);
                 level --;
             }
         }
-        // Limit the level to +/- 1 since usually users only indent one level
-        // at a time regardless of the logical nesting level
         if (level < 0) {
             return -1;
         } else if (level > 0) {
@@ -110,7 +98,6 @@ oop.inherits(Mode, TextMode);
         if (level > 0) {
             return indent + tab;
         } else if (level < 0 && indent.substr(indent.length - tab.length) == tab) {
-            // Don't do a next-line outdent if we're going to do a real outdent of this line
             if (!this.checkOutdent(state, line, "\n")) {
                 return indent.substr(0, indent.length - tab.length);
             }
@@ -141,7 +128,6 @@ oop.inherits(Mode, TextMode);
         var expectedIndent = prevIndent + tabLength * getNetIndentLevel(prevTokens);
         var curIndent = this.$getIndent(session.getLine(row)).length;
         if (curIndent < expectedIndent) {
-            // User already outdented //
             return;
         }
         session.outdentRows(new Range(row, 0, row + 2, 0));
@@ -152,26 +138,23 @@ oop.inherits(Mode, TextMode);
 exports.Mode = Mode;
 });
 
-define('ace/mode/lua_highlight_rules', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/lib/lang', 'ace/mode/text_highlight_rules'], function(require, exports, module) {
+define('ace/mode/lua_highlight_rules', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/text_highlight_rules'], function(require, exports, module) {
 
 
 var oop = require("../lib/oop");
-var lang = require("../lib/lang");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 
 var LuaHighlightRules = function() {
 
-    var keywords = lang.arrayToMap(
-        ("break|do|else|elseif|end|for|function|if|in|local|repeat|"+
-         "return|then|until|while|or|and|not").split("|")
+    var keywords = (
+        "break|do|else|elseif|end|for|function|if|in|local|repeat|"+
+         "return|then|until|while|or|and|not"
     );
 
-    var builtinConstants = lang.arrayToMap(
-        ("true|false|nil|_G|_VERSION").split("|")
-    );
+    var builtinConstants = ("true|false|nil|_G|_VERSION");
 
-    var builtinFunctions = lang.arrayToMap(
-        ("string|xpcall|package|tostring|print|os|unpack|require|"+
+    var functions = (
+        "string|xpcall|package|tostring|print|os|unpack|require|"+
         "getfenv|setmetatable|next|assert|tonumber|io|rawequal|"+
         "collectgarbage|getmetatable|module|rawset|math|debug|"+
         "pcall|table|newproxy|type|coroutine|_G|select|gcinfo|"+
@@ -190,25 +173,26 @@ var LuaHighlightRules = function() {
         "gethook|setmetatable|setlocal|traceback|setfenv|getinfo|"+
         "setupvalue|getlocal|getregistry|getfenv|setn|insert|getn|"+
         "foreachi|maxn|foreach|concat|sort|remove|resume|yield|"+
-        "status|wrap|create|running").split("|")
-    );
-    
-    var stdLibaries = lang.arrayToMap(
-        ("string|package|os|io|math|debug|table|coroutine").split("|")
-    );
-    
-    var metatableMethods = lang.arrayToMap(
-        ("__add|__sub|__mod|__unm|__concat|__lt|__index|__call|__gc|__metatable|"+
-         "__mul|__div|__pow|__len|__eq|__le|__newindex|__tostring|__mode|__tonumber").split("|")
+        "status|wrap|create|running|"+
+        "__add|__sub|__mod|__unm|__concat|__lt|__index|__call|__gc|__metatable|"+
+         "__mul|__div|__pow|__len|__eq|__le|__newindex|__tostring|__mode|__tonumber"
     );
 
-    var futureReserved = lang.arrayToMap(
-        ("").split("|")
-    );
-    
-    var deprecatedIn5152 = lang.arrayToMap(
-        ("setn|foreach|foreachi|gcinfo|log10|maxn").split("|")
-    );
+    var stdLibaries = ("string|package|os|io|math|debug|table|coroutine");
+
+    var futureReserved = "";
+
+    var deprecatedIn5152 = ("setn|foreach|foreachi|gcinfo|log10|maxn");
+
+    var keywordMapper = this.createKeywordMapper({
+        "keyword": keywords,
+        "support.function": functions,
+        "invalid.deprecated": deprecatedIn5152,
+        "constant.library": stdLibaries,
+        "constant.language": builtinConstants,
+        "invalid.illegal": futureReserved,
+        "variable.language": "this"
+    }, "identifier");
 
     var strPre = "";
 
@@ -220,14 +204,11 @@ var LuaHighlightRules = function() {
     var intPart = "(?:\\d+)";
     var pointFloat = "(?:(?:" + intPart + "?" + fraction + ")|(?:" + intPart + "\\.))";
     var floatNumber = "(?:" + pointFloat + ")";
-    
-    var comment_stack = [];
-    
-    this.$rules = {
-        "start" : 
 
-        
-        // bracketed comments
+    var comment_stack = [];
+
+    this.$rules = {
+        "start" :
         [{
             token : "comment",           // --[[ comment
             regex : strPre + '\\-\\-\\[\\[.*\\]\\]'
@@ -247,8 +228,6 @@ var LuaHighlightRules = function() {
             token : "comment",           // --[====+[ comment
             regex : strPre + '\\-\\-\\[\\={5}\\=*\\[.*\\]\\={5}\\=*\\]'
         },
-        
-        // multiline bracketed comments
         {
             token : "comment",           // --[[ comment
             regex : strPre + '\\-\\-\\[\\[.*$',
@@ -276,29 +255,20 @@ var LuaHighlightRules = function() {
             next  : "qcomment4"
         }, {
             token : function(value){     // --[====+[ comment
-                // WARNING: EXTREMELY SLOW, but this is the only way to circumvent the
-                // limits imposed by the current automaton.
-                // I've never personally seen any practical code where 5 or more '='s are
-                // used for string or commenting, so this will rarely be invoked.
                 var pattern = /\-\-\[(\=+)\[/, match;
-                // you can never be too paranoid ;)
                 if ((match = pattern.exec(value)) != null && (match = match[1]) != undefined)
                     comment_stack.push(match.length);
-                
+
                 return "comment";
             },
             regex : strPre + '\\-\\-\\[\\={5}\\=*\\[.*$',
             merge : true,
             next  : "qcomment5"
         },
-        
-        // single line comments
         {
             token : "comment",
             regex : "\\-\\-.*$"
-        }, 
-        
-        // bracketed strings
+        },
         {
             token : "string",           // [[ string
             regex : strPre + '\\[\\[.*\\]\\]'
@@ -318,8 +288,6 @@ var LuaHighlightRules = function() {
             token : "string",           // [====+[ string
             regex : strPre + '\\[\\={5}\\=*\\[.*\\]\\={5}\\=*\\]'
         },
-        
-        // multiline bracketed strings
         {
             token : "string",           // [[ string
             regex : strPre + '\\[\\[.*$',
@@ -347,18 +315,17 @@ var LuaHighlightRules = function() {
             next  : "qstring4"
         }, {
             token : function(value){     // --[====+[ string
-                // WARNING: EXTREMELY SLOW, see above.
                 var pattern = /\[(\=+)\[/, match;
                 if ((match = pattern.exec(value)) != null && (match = match[1]) != undefined)
                     comment_stack.push(match.length);
-                
+
                 return "string";
             },
             regex : strPre + '\\[\\={5}\\=*\\[.*$',
             merge : true,
             next  : "qstring5"
-        }, 
-        
+        },
+
         {
             token : "string",           // " string
             regex : strPre + '"(?:[^\\\\]|\\\\.)*?"'
@@ -372,24 +339,7 @@ var LuaHighlightRules = function() {
             token : "constant.numeric", // integer
             regex : integer + "\\b"
         }, {
-            token : function(value) {
-                if (keywords.hasOwnProperty(value))
-                    return "keyword";
-                else if (builtinConstants.hasOwnProperty(value))
-                    return "constant.language";
-                else if (futureReserved.hasOwnProperty(value))
-                    return "invalid.illegal";
-                else if (stdLibaries.hasOwnProperty(value))
-                    return "constant.library";
-                else if (deprecatedIn5152.hasOwnProperty(value))
-                    return "invalid.deprecated";
-                else if (builtinFunctions.hasOwnProperty(value))
-                    return "support.function";
-                else if (metatableMethods.hasOwnProperty(value))
-                    return "support.function";
-                else
-                    return "identifier";
-            },
+            token : keywordMapper,
             regex : "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
         }, {
             token : "keyword.operator",
@@ -404,7 +354,7 @@ var LuaHighlightRules = function() {
             token : "text",
             regex : "\\s+"
         } ],
-        
+
         "qcomment": [ {
             token : "comment",
             regex : "(?:[^\\\\]|\\\\.)*?\\]\\]",
@@ -451,8 +401,7 @@ var LuaHighlightRules = function() {
             regex : '.+'
         } ],
         "qcomment5": [ {
-            token : function(value){ 
-                // very hackish, mutates the qcomment5 field on the fly.
+            token : function(value){
                 var pattern = /\](\=+)\]/, rule = this.rules.qcomment5[0], match;
                 rule.next = "start";
                 if ((match = pattern.exec(value)) != null && (match = match[1]) != undefined){
@@ -462,7 +411,7 @@ var LuaHighlightRules = function() {
                         rule.next = "qcomment5";
                     }
                 }
-                
+
                 return "comment";
             },
             regex : "(?:[^\\\\]|\\\\.)*?\\]\\={5}\\=*\\]",
@@ -472,7 +421,7 @@ var LuaHighlightRules = function() {
             merge : true,
             regex : '.+'
         } ],
-        
+
         "qstring": [ {
             token : "string",
             regex : "(?:[^\\\\]|\\\\.)*?\\]\\]",
@@ -519,8 +468,7 @@ var LuaHighlightRules = function() {
             regex : '.+'
         } ],
         "qstring5": [ {
-            token : function(value){ 
-                // very hackish, mutates the qstring5 field on the fly.
+            token : function(value){
                 var pattern = /\](\=+)\]/, rule = this.rules.qstring5[0], match;
                 rule.next = "start";
                 if ((match = pattern.exec(value)) != null && (match = match[1]) != undefined){
@@ -530,7 +478,7 @@ var LuaHighlightRules = function() {
                         rule.next = "qstring5";
                     }
                 }
-                
+
                 return "string";
             },
             regex : "(?:[^\\\\]|\\\\.)*?\\]\\={5}\\=*\\]",
@@ -540,7 +488,7 @@ var LuaHighlightRules = function() {
             merge : true,
             regex : '.+'
         } ]
-        
+
     };
 
 }
@@ -548,4 +496,138 @@ var LuaHighlightRules = function() {
 oop.inherits(LuaHighlightRules, TextHighlightRules);
 
 exports.LuaHighlightRules = LuaHighlightRules;
+});
+
+define('ace/mode/folding/lua', ['require', 'exports', 'module' , 'ace/lib/oop', 'ace/mode/folding/fold_mode', 'ace/range', 'ace/token_iterator'], function(require, exports, module) {
+
+
+var oop = require("../../lib/oop");
+var BaseFoldMode = require("./fold_mode").FoldMode;
+var Range = require("../../range").Range;
+var TokenIterator = require("ace/token_iterator").TokenIterator;
+
+
+var FoldMode = exports.FoldMode = function() {};
+
+oop.inherits(FoldMode, BaseFoldMode);
+
+(function() {
+
+    this.foldingStartMarker = /\b(function|then|do|repeat)\b|{\s*$|(\[=*\[)/;
+    this.foldingStopMarker = /\bend\b|^\s*}|\]=*\]/;
+
+    this.getFoldWidget = function(session, foldStyle, row) {
+        var line = session.getLine(row);
+        var isStart = this.foldingStartMarker.test(line);
+        var isEnd = this.foldingStopMarker.test(line);
+
+        if (isStart && !isEnd) {
+            var match = line.match(this.foldingStartMarker);
+            if (match[1] == "then" && /\belseif\b/.test(line))
+                return;
+            if (match[1]) {
+                if (session.getTokenAt(row, match.index + 1).type === "keyword")
+                    return "start";
+            } else if (match[2]) {
+                var type = session.bgTokenizer.getState(row) || "";
+                if (type.indexOf("comment") != -1 || type.indexOf("string") != -1)
+                    return "start";
+            } else {
+                return "start";
+            }
+        }
+        if (foldStyle != "markbeginend" || !isEnd || isStart && isEnd)
+            return "";
+
+        var match = line.match(this.foldingStopMarker);
+        if (match[0] === "end") {
+            if (session.getTokenAt(row, match.index + 1).type === "keyword")
+                return "end";
+        } else if (match[0][0] === "]") {
+            var type = session.bgTokenizer.getState(row - 1) || "";
+            if (type.indexOf("comment") != -1 || type.indexOf("string") != -1)
+                return "end";
+        } else
+            return "end";
+    };
+
+    this.getFoldWidgetRange = function(session, foldStyle, row) {
+        var line = session.doc.getLine(row);
+        var match = this.foldingStartMarker.exec(line);
+        if (match) {
+            if (match[1])
+                return this.luaBlock(session, row, match.index + 1);
+
+            if (match[2])
+                return session.getCommentFoldRange(row, match.index + 1);
+
+            return this.openingBracketBlock(session, "{", row, match.index);
+        }
+
+        var match = this.foldingStopMarker.exec(line);
+        if (match) {
+            if (match[0] === "end") {
+                if (session.getTokenAt(row, match.index + 1).type === "keyword")
+                    return this.luaBlock(session, row, match.index + 1);
+            }
+
+            if (match[0][0] === "]")
+                return session.getCommentFoldRange(row, match.index + 1);
+
+            return this.closingBracketBlock(session, "}", row, match.index + match[0].length);
+        }
+    };
+
+    this.luaBlock = function(session, row, column) {
+        var stream = new TokenIterator(session, row, column);
+        var indentKeywords = {
+            "function": 1,
+            "do": 1,
+            "then": 1,
+            "elseif": -1,
+            "end": -1,
+            "repeat": 1,
+            "until": -1,
+        };
+
+        var token = stream.getCurrentToken();
+        if (!token || token.type != "keyword")
+            return;
+
+        var val = token.value;
+        var stack = [val];
+        var dir = indentKeywords[val];
+
+        if (!dir)
+            return;
+
+        var startColumn = dir === -1 ? stream.getCurrentTokenColumn() : session.getLine(row).length;
+        var startRow = row;
+
+        stream.step = dir === -1 ? stream.stepBackward : stream.stepForward;
+        while(token = stream.step()) {
+            if (token.type !== "keyword")
+                continue;
+            var level = dir * indentKeywords[token.value];
+
+            if (level > 0) {
+                stack.unshift(token.value);
+            } else if (level <= 0) {
+                stack.shift();
+                if (!stack.length && token.value != "elseif")
+                    break;
+                if (level === 0)
+                    stack.unshift(token.value);
+            }
+        }
+
+        var row = stream.getCurrentTokenRow();
+        if (dir === -1)
+            return new Range(row, session.getLine(row).length, startRow, startColumn);
+        else
+            return new Range(startRow, startColumn, row, stream.getCurrentTokenColumn());
+    };
+
+}).call(FoldMode.prototype);
+
 });

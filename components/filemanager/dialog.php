@@ -65,9 +65,13 @@ switch($_GET['action']){
     case 'overwrite':
     ?>
     <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">    
-    <label>Are you sure you wish to overwrite the following:</label>
+    <label>Would you like to overwrite or duplicate the following:</label>
     <pre><?php echo($_GET['path']); ?></pre>
-    <button class="btn-left">Overwrite</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Cancel</button>
+    <select name="or_action">
+        <option value="0">Overwrite Original</option>
+        <option value="1">Create Duplicate</option>
+    </select>
+    <button class="btn-left">Continue</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Cancel</button>
     <?php
     break;
     

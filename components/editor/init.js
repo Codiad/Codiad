@@ -548,7 +548,7 @@
 
         setSession: function(session, i) {
             i = i || this.getActive();
-            if (i && i.session.path == session.path) return;
+            //if (i && i.session.path == session.path) return;
             if (! i) {
                 i = this.addInstance(session);
             }
@@ -603,6 +603,15 @@
                 return 'sql';
             case 'md':
                 return 'markdown';
+            case 'c':
+            case 'cpp':
+                return 'c_cpp';
+            case 'py':
+                return 'python';
+            case 'rb':
+                return 'ruby';
+            case 'jade':
+                return 'jade';
             default:
                 return 'text';
             }
