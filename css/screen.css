@@ -319,6 +319,19 @@ table .icon {
     width: 100%;
     box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .9);
 }
+#editor-top-bar {
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    height: 25px;
+    padding: 5px 15px;
+    background: #303030;
+    font-size: 12px;
+    color: #999;
+    border-top: 2px solid #202020;
+    width: 100%;
+    box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .9);
+}
 .options-menu {
     position: absolute;
     z-index: 9999;
