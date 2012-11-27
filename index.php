@@ -140,22 +140,13 @@ $components = json_decode($components,true);
 
         <div id="editor-region">
             <div id="editor-top-bar">
-                <div id="tabs-bar">
-                    <ul>
-                        <li id="tab1">
-                            <a href="#tab1">Tab 1</a>
-                        </li>
-                        <li id="tab2">
-                            <a href="#tab2">Tab 2</a>
-                        </li>
-                        <li id="tab3">
-                            <a href="#tab3">Tab 3</a>
-                        </li>
-                        <li id="tab4">
-                            <a href="#tab4">Tab 4</a>
-                        </li>
-                    </ul>
-                </div>
+                <a id="settings" class="ico-wrapper"><span class="icon">l</span>Tab 1</a>
+                <div id="divider"></div>
+                <a id="settings" class="ico-wrapper"><span class="icon">l</span>Tab 2</a>
+                <div id="divider"></div>
+                <a id="settings" class="ico-wrapper"><span class="icon">l</span>Tab 3</a>
+                <div id="divider"></div>
+                <a id="settings" class="ico-wrapper"><span class="icon">l</span>Tab 4</a>
             </div>
             <div id="editor-bottom-bar">
                 <a id="settings" class="ico-wrapper"><span class="icon">l</span>Settings</a>
@@ -170,8 +161,6 @@ $components = json_decode($components,true);
               <li id="merge-all"><a> Merge all </a></li>
             </ul>
         </div>
-
-
 
         <div id="sb-right" class="sidebar">
 

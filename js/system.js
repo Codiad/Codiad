@@ -76,7 +76,7 @@
                 'width': ($('body')
                     .outerWidth() - reduction) + 'px',
                 'height': ($('body')
-                    .outerHeight() - 25) + 'px'
+                    .outerHeight() - 50) + 'px'
             });
 
         });
