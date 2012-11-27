@@ -385,7 +385,11 @@ table .icon {
     color: #999;
 }
 
-#current-file {
+#current-file{
+    float: left;
+}
+
+#current-mode {
     float: left;
 }
 

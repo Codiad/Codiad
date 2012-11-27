@@ -24,6 +24,12 @@
         codiad.editor.init();
     });
 
+    function setModeDisplay(session){
+            var currMode = session.getMode().$id;
+            currMode = currMode.substring(currMode.lastIndexOf('/') + 1);
+            $('#current-mode').html(currMode);
+    }
+
     function SplitContainer(root, children, splitType) {
         var _this = this;
 
@@ -462,6 +468,7 @@
             $('.editor-wrapper').remove();
             $('#editor-region').append($('<div>').attr('id', 'editor'));
             $('#current-file').html('');
+            $('#current-mode').html('');
             this.instances = [];
             this.activeInstance = null;
         },
@@ -482,6 +489,8 @@
             if ($('#current-file').text() === session.path) {
                 $('#current-file').text(replacementSession.path);
             }
+
+            setModeDisplay(session);
         },
 
         isOpen: function(session){
@@ -534,6 +543,7 @@
             if (! i) return;
             this.activeInstance = i;
             $('#current-file').text(i.getSession().path);
+            setModeDisplay(i.getSession());
         },
 
         /////////////////////////////////////////////////////////////////
