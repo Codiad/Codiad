@@ -338,7 +338,7 @@ table .icon {
     background: #303030;
     font-size: 12px;
     color: #999;
-    border-top: 2px solid #202020;
+    border-bottom: 2px solid #202020;
     width: 100%;
     box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .9);
 }
