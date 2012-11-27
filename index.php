@@ -139,6 +139,24 @@ $components = json_decode($components,true);
         <div id="cursor-position">Ln: 0 &middot; Col: 0</div>
 
         <div id="editor-region">
+            <div id="editor-top-bar">
+                <div id="tabs-bar">
+                    <ul>
+                        <li id="tab1">
+                            <a href="#tab1">Tab 1</a>
+                        </li>
+                        <li id="tab2">
+                            <a href="#tab2">Tab 2</a>
+                        </li>
+                        <li id="tab3">
+                            <a href="#tab3">Tab 3</a>
+                        </li>
+                        <li id="tab4">
+                            <a href="#tab4">Tab 4</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
             <div id="editor-bottom-bar">
                 <a id="settings" class="ico-wrapper"><span class="icon">l</span>Settings</a>
                 <div id="divider"></div>
