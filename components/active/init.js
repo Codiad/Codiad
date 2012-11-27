@@ -56,8 +56,8 @@
             var _this = this;
 
             var fn = function() {
-                var Mode = require('ace/mode/' + mode)
-                    .Mode;
+                //var Mode = require('ace/mode/' + mode)
+                //    .Mode;
 
                 // TODO: Ask for user confirmation before recovering
                 // And maybe show a diff
@@ -67,7 +67,9 @@
                     codiad.message.success('Recovered unsaved content for : ' + path);
                 }
 
-                var session = new EditSession(content, new Mode());
+                //var session = new EditSession(content, new Mode());
+                var session = new EditSession(content);
+                session.setMode("ace/mode/" + mode);
                 session.setUndoManager(new UndoManager());
 
                 session.path = path;
@@ -78,6 +80,7 @@
                 _this.add(path, session);
             };
 
+            // Assuming the mode file has no dependencies
             $.loadScript('components/editor/ace-editor/mode-' + mode + '.js',
             fn);
 
