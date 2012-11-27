@@ -282,6 +282,7 @@
                 cosnole.log("SAVE FULL PATH : ===>");
             }
             codiad.workerManager.addTask({
+                taskType: 'diff',
                 id: path,
                 original: _this.pureContents[path],
                 changed: newContent
