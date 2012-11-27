@@ -31,6 +31,8 @@
 
         // Path to EditSession instance mapping
         sessions: {},
+        pureContents: {},
+        timeStamps: {},
 
         //////////////////////////////////////////////////////////////////
         //
@@ -74,6 +76,7 @@
 
                 session.path = path;
                 _this.sessions[path] = session;
+                _this.pureContents[path] = content.slice(0);
                 if (!inBackground) {
                     codiad.editor.setSession(session);
                 }
@@ -254,12 +257,52 @@
                 .getSession();
             var content = session.getValue();
             var path = session.path;
-            codiad.filemanager.saveFile(path, content, {
+
+            var unmark = function(){
+                session.thumb.removeClass('changed');
+                _this.removeDraft(path);
+            }
+            // HERE BE DRAGONS ==============>
+            var newContent = content.slice(0);
+            var handleFailure = function(err){
+                if (err.msg === 'diff-corruption') {
+                    // resend the complete file
+                } else if (err.msg === 'outdated') {
+                    // fetch the more recent copy and
+                    // perform a local merge
+                }
+            }
+            var handleSuccess = function(obj){
+                // record obj.timestamp
+                _this.pureContents[path]= newContent;
+                unmark();
+            }
+            var saveComplete = function(){
+                //codiad.filemanager.saveFile('')
+                cosnole.log("SAVE FULL PATH : ===>");
+            }
+            codiad.workerManager.addTask({
+                id: path,
+                original: _this.pureContents[path],
+                changed: newContent
+            }, function(success, diff){
+                if (success) {
+                    /*codiad.filemanager.saveDiff(path, diff, {
+                        success: handleSuccess,
+                        error: handleFailure
+                    })*/
+                    console.log("GENERATED DIFF : ====> ");
+                    console.log(diff);
+                } else {
+                }
+            }, this);
+            
+            /*codiad.filemanager.saveFile(path, content, {
                 success: function() {
                     session.thumb.removeClass('changed');
                     _this.removeDraft(path);
                 }
-            });
+            });*/
         },
 
         //////////////////////////////////////////////////////////////////
