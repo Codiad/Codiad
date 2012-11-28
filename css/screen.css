@@ -385,12 +385,22 @@ table .icon {
     color: #999;
 }
 
-#current-file{
+#settings, #split, #current-mode {
+    /* Disable text selection on buttons clicks */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;  
+}
+
+#current-file, #current-mode{
     float: left;
 }
 
-#current-mode {
-    float: left;
+#current-mode:hover { 
+    color: #fff; 
 }
 
 #divider {
