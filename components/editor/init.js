@@ -24,6 +24,35 @@
         codiad.editor.init();
     });
 
+    // modes available for selecting
+    var availableTextModes = new Array(
+        'html',
+        'javascript',
+        'css',
+        'scss',
+        'less',
+        'php',
+        'json',
+        'xml',
+        'sql',
+        'markdown',
+        'c_cpp',
+        'python',
+        'ruby',
+        'jade',
+        'text'
+    );
+
+    function setModeDisplay(session){
+            var currMode = session.getMode().$id;
+            if(currMode){
+                currMode = currMode.substring(currMode.lastIndexOf('/') + 1);
+                $('#current-mode').html(currMode);
+            }  else {
+                $('#current-mode').html('undefined');
+            }  
+    }
+
     function SplitContainer(root, children, splitType) {
         var _this = this;
 
@@ -262,6 +291,7 @@
 
         init: function(){
             this.createSplitMenu();
+            this.createModeMenu();
 
             var er = $('#editor-region');
 
@@ -412,9 +442,9 @@
 
         createSplitMenu: function(){
             var _this = this;
-            $('#split-options-menu').appendTo($('body'));
             var _splitOptionsMenu = $('#split-options-menu');
-            var wh = $(window).height();
+
+            this.initMenuHandler($('#split'),_splitOptionsMenu);
 
             $('#split-horizontally a').click(function(e){
                 e.stopPropagation();
@@ -435,20 +465,74 @@
                 _this.addInstance(s);
                 _splitOptionsMenu.hide();
             })
+        },
 
-            $('#split').click(function(e){
+        createModeMenu: function(){
+            var _this = this;
+            var _thisMenu = $('#changemode-menu');            
+            var modeOptions = '';
+
+            this.initMenuHandler($('#current-mode'),_thisMenu);
+
+            availableTextModes.sort();
+            $.each(availableTextModes, function(i){
+                modeOptions += '<li><a>'+availableTextModes[i]+'</a></li>';
+            });
+
+            _thisMenu.html(modeOptions);
+
+            $('#changemode-menu a').click(function(e){
                 e.stopPropagation();
-                $('#split-options-menu').css({
-                    display: 'block',
-                    bottom: (wh - e.pageY + 10) + 'px',
-                    left: (e.pageX - 20) + 'px'
+                var newMode = "ace/mode/" + e.srcElement.text;
+                var actSession = _this.activeInstance.getSession();
+                
+                // handle async mode change
+                actSession.on("changeMode", function(){
+                    setModeDisplay(actSession);
                 });
+
+                actSession.setMode(newMode);
+                _thisMenu.hide();
+
+            });            
+        },  
+
+        initMenuHandler: function(button,menu){
+            var _this = this;
+            var thisButton = button;
+            var thisMenu = menu;
+
+            thisMenu.appendTo($('body'));
+
+            thisButton.click(function(e){
+                var wh = $(window).height();
+
+                e.stopPropagation();
+
+                // close other menus
+                _this.closeMenus(thisMenu);
+
+                thisMenu.css({
+                    // display: 'block',
+                    bottom: ( (wh - $(this).offset().top) + 22) + 'px',
+                    left: ($(this).offset().left - 13) + 'px'
+                });
+                
+                thisMenu.toggle('fast');
+
+                // handle click-out autoclosing
                 var fn = function(){
-                    _splitOptionsMenu.hide();
+                    thisMenu.hide();
                     $(window).off('click', fn)
                 }
                 $(window).on('click', fn);
-            });
+            });            
+        },
+
+        closeMenus: function(exclude){
+            var menuId = exclude.attr("id");
+            if(menuId != 'split-options-menu') $('#split-options-menu').hide();
+            if(menuId != 'changemode-menu') $('#changemode-menu').hide();    
         },
 
         //////////////////////////////////////////////////////////////////
@@ -462,6 +546,7 @@
             $('.editor-wrapper').remove();
             $('#editor-region').append($('<div>').attr('id', 'editor'));
             $('#current-file').html('');
+            $('#current-mode').html('');
             this.instances = [];
             this.activeInstance = null;
         },
@@ -482,6 +567,8 @@
             if ($('#current-file').text() === session.path) {
                 $('#current-file').text(replacementSession.path);
             }
+
+            setModeDisplay(session);
         },
 
         isOpen: function(session){
@@ -534,6 +621,7 @@
             if (! i) return;
             this.activeInstance = i;
             $('#current-file').text(i.getSession().path);
+            setModeDisplay(i.getSession());
         },
 
         /////////////////////////////////////////////////////////////////

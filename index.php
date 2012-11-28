@@ -144,16 +144,18 @@ $components = json_decode($components,true);
                 <div id="divider"></div>
                 <a id="split" class="ico-wrapper"><span class="icon">k</span>Split</a>
                 <div id="divider"></div>
+                <a id="current-mode"></a>                
+                <div id="divider"></div>                
                 <div id="current-file"></div>
             </div>
+            <ul id="changemode-menu" class="options-menu">
+            </ul>
             <ul id="split-options-menu" class="options-menu">
               <li id="split-horizontally"><a> Split Horizontally </a></li>
               <li id="split-vertically"><a> Split Vertically </a></li>
               <li id="merge-all"><a> Merge all </a></li>
             </ul>
         </div>
-
-
 
         <div id="sb-right" class="sidebar">
 
