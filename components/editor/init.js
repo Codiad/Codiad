@@ -43,16 +43,6 @@
         'text'
     );
 
-    function setModeDisplay(session){
-            var currMode = session.getMode().$id;
-            if(currMode){
-                currMode = currMode.substring(currMode.lastIndexOf('/') + 1);
-                $('#current-mode').html(currMode);
-            }  else {
-                $('#current-mode').html('undefined');
-            }  
-    }
-
     function SplitContainer(root, children, splitType) {
         var _this = this;
 
@@ -487,9 +477,11 @@
                 var actSession = _this.activeInstance.getSession();
                 
                 // handle async mode change
-                actSession.on("changeMode", function(){
-                    setModeDisplay(actSession);
-                });
+                var fn = function(){
+                   _this.setModeDisplay(actSession);
+                   actSession.removeListener('changeMode', fn);                   
+                }
+                actSession.on("changeMode", fn);
 
                 actSession.setMode(newMode);
                 _thisMenu.hide();
@@ -535,6 +527,16 @@
             if(menuId != 'changemode-menu') $('#changemode-menu').hide();    
         },
 
+        setModeDisplay: function(session){
+                var currMode = session.getMode().$id;
+                if(currMode){
+                    currMode = currMode.substring(currMode.lastIndexOf('/') + 1);
+                    $('#current-mode').html(currMode);
+                }  else {
+                    $('#current-mode').html('text');
+                }  
+        },
+
         //////////////////////////////////////////////////////////////////
         //
         // Remove all Editor instances and clean up the DOM
@@ -568,7 +570,7 @@
                 $('#current-file').text(replacementSession.path);
             }
 
-            setModeDisplay(session);
+            this.setModeDisplay(replacementSession);
         },
 
         isOpen: function(session){
@@ -621,7 +623,7 @@
             if (! i) return;
             this.activeInstance = i;
             $('#current-file').text(i.getSession().path);
-            setModeDisplay(i.getSession());
+            this.setModeDisplay(i.getSession());
         },
 
         /////////////////////////////////////////////////////////////////
