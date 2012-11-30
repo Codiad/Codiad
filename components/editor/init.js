@@ -506,11 +506,11 @@
 
                 thisMenu.css({
                     // display: 'block',
-                    bottom: ( (wh - $(this).offset().top) + 22) + 'px',
+                    bottom: ( (wh - $(this).offset().top) + 8) + 'px',
                     left: ($(this).offset().left - 13) + 'px'
                 });
                 
-                thisMenu.toggle('fast');
+                thisMenu.slideToggle('fast');
 
                 // handle click-out autoclosing
                 var fn = function(){

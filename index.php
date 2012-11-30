@@ -144,7 +144,7 @@ $components = json_decode($components,true);
                 <div id="divider"></div>
                 <a id="split" class="ico-wrapper"><span class="icon">k</span>Split</a>
                 <div id="divider"></div>
-                <a id="current-mode"></a>                
+                <a id="current-mode"><span class="icon">k</span></a>                
                 <div id="divider"></div>                
                 <div id="current-file"></div>
             </div>
