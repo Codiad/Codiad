@@ -200,7 +200,7 @@
         //////////////////////////////////////////////////////////////////
 
         add: function(path, session) {
-            var thumb = $('<a data-path="' + path + '"><span></span><div>' + path + '</div></a>');
+            var thumb = $('<a title="'+path+'" data-path="' + path + '"><span></span><div>' + path.substring(1) + '</div></a>');
             session.thumb = thumb;
             $('#active-files')
                 .append($('<li>')
@@ -307,7 +307,7 @@
                 var thumb = this.sessions[oldPath].thumb;
                 thumb.attr('data-path', newPath);
                 thumb.find('div')
-                    .text(newPath);
+                    .text(newPath.substring(1));
                 this.sessions[newPath] = this.sessions[oldPath];
                 this.sessions[newPath].path = newPath;
                 this.sessions[oldPath] = undefined;
