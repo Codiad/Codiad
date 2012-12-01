@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-if(file_exists('config.php')){ require_once('config.php'); } 
+if(file_exists('config.php')){ require_once('config.php'); }
 
 // Context Menu
 $context_menu = file_get_contents(COMPONENTS . "/filemanager/context_menu.json");
@@ -31,7 +31,7 @@ $components = json_decode($components,true);
         }
     }
     ?>
-    
+
 </head>
 
 <body>
@@ -140,13 +140,13 @@ $components = json_decode($components,true);
 
         <div id="editor-region">
             <div id="editor-top-bar">
-                <a id="settings" class="ico-wrapper"><span class="icon">l</span>Tab 1</a>
+                <a id="settings" class="ico-wrapper">Tab 1<span class="icon">X</span></a>
                 <div id="divider"></div>
-                <a id="settings" class="ico-wrapper"><span class="icon">l</span>Tab 2</a>
+                <a id="settings" class="ico-wrapper">Tab 2<span class="icon">X</span></a>
                 <div id="divider"></div>
-                <a id="settings" class="ico-wrapper"><span class="icon">l</span>Tab 3</a>
+                <a id="settings" class="ico-wrapper">Tab 3<span class="icon">X</span></a>
                 <div id="divider"></div>
-                <a id="settings" class="ico-wrapper"><span class="icon">l</span>Tab 4</a>
+                <a id="settings" class="ico-wrapper">Tab 4<span class="icon">X</span></a>
             </div>
             <div id="editor-bottom-bar">
                 <a id="settings" class="ico-wrapper"><span class="icon">l</span>Settings</a>
