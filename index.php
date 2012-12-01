@@ -140,13 +140,31 @@ $components = json_decode($components,true);
 
         <div id="editor-region">
             <div id="editor-top-bar">
-                <a id="settings" class="ico-wrapper">Tab 1<span class="icon">X</span></a>
-                <div id="divider"></div>
-                <a id="settings" class="ico-wrapper">Tab 2<span class="icon">X</span></a>
-                <div id="divider"></div>
-                <a id="settings" class="ico-wrapper">Tab 3<span class="icon">X</span></a>
-                <div id="divider"></div>
-                <a id="settings" class="ico-wrapper">Tab 4<span class="icon">X</span></a>
+                <!-- TODO this should go in components/active/ -->
+                <ul class="tab-list">
+                    <li class="tab-item">
+                        <a id="tab1" class="tab">Tab 1<span class="icon">X</span></a>
+                        <div class="left-mask">
+                            <span></span>
+                            <div class="right-mask"><span></span></div>
+                        </div>
+                    </li>
+                    <li class="tab-item current">
+                        <a id="tab2" class="tab">Tab 2<span class="icon">X</span></a>
+                        <div class="left-mask">
+                            <span></span>
+                            <div class="right-mask"><span></span></div>
+                        </div>
+                    </li>
+                    <li class="tab-item">
+                        <a id="tab3" class="tab">Tab 3<span class="icon">X</span></a>
+                        <div class="left-mask">
+                            <span></span>
+                            <div class="right-mask"><span></span></div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
             </div>
             <div id="editor-bottom-bar">
                 <a id="settings" class="ico-wrapper"><span class="icon">l</span>Settings</a>
