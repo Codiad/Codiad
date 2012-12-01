@@ -95,7 +95,7 @@ label {
     display: block;
     padding: 0 0 5px 0;
     font-size: 14px;
-    font-weight: bold;
+    font-weight: normal;
     text-shadow: 0 1px 1px #000;
 }
 
@@ -103,20 +103,22 @@ label .icon {
     font-weight: normal;
     font-size: 180%;
     padding-right: 4px;
+    display: none;
 }
 
 input, textarea, select, button {
     display: block;
     width: 100%;
-    padding: 5px 10px;
+    padding: 7px 10px;
     margin: 5px 0 10px 0;
-    background: #edeaed;
-    color: #808080;
-    font-family: 'Ubuntu', sans-serif;
-    border: 1px solid #999;
-    border-radius: 3px;
-    box-shadow: inset 0px 3px 10px 0px rgba(0, 0, 0, .3);
+    background: #242424;
+    border: none;
+    border-bottom: 2px solid #595959;
+    color: #fff;
+    border-radius: 2px;
 }
+
+select option { background: #242424; }
 
 textarea {
     min-height: 100px;
@@ -124,10 +126,8 @@ textarea {
 
 input:focus, textarea:focus, select:focus {
     outline: none;
-    color: #000;
-    border: 1px solid #fff;
-    background: #fff;
-    box-shadow: inset 0px 1px 5px 0px rgba(0, 0, 0, .2);
+    background: #242424;
+    border-bottom: 2px solid #ccc;
 }
 
 input[type="checkbox"] {
@@ -140,42 +140,32 @@ button {
     display: inline-block;
     width: auto;
     margin: 10px 0 5px 0;
-    padding: 7px 15px 6px 15px;
+    padding: 6px 15px 5px 15px;
     color: #666;
     font-size: 13px;
     font-weight: bold;
     text-shadow: 0 1px 1px #fff;
-    background-color: #f3f3f3;
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f3f3f3), color-stop(50%, #dddddd), color-stop(50%, #d2d2d2), color-stop(100%, #dfdfdf));
-    background-image: -webkit-linear-gradient(top, #f3f3f3 0%, #dddddd 50%, #d2d2d2 50%, #dfdfdf 100%);
-    background-image: -moz-linear-gradient(top, #f3f3f3 0%, #dddddd 50%, #d2d2d2 50%, #dfdfdf 100%);
-    background-image: -ms-linear-gradient(top, #f3f3f3 0%, #dddddd 50%, #d2d2d2 50%, #dfdfdf 100%);
-    background-image: -o-linear-gradient(top, #f3f3f3 0%, #dddddd 50%, #d2d2d2 50%, #dfdfdf 100%);
-    background-image: linear-gradient(top, #f3f3f3 0%, #dddddd 50%, #d2d2d2 50%, #dfdfdf 100%);
-    border-right: 1px solid #dfdfdf;
-    border-bottom: 1px solid #b4b4b4;
-    border-radius: 3px;
-    box-shadow: none;
+    background-color: #c9c9c9;
+    border-radius: 2px;
+    border: 1px solid #7d7d7d;
+    border-bottom: 2px solid #7d7d7d;
 }
 
 button:hover {
     color: #333;
-    background-color: #e5e5e5;
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e5e5e5), color-stop(50%, #d1d1d1), color-stop(50%, #c4c4c4), color-stop(100%, #b8b8b8));
-    background-image: -webkit-linear-gradient(top, #e5e5e5 0%, #d1d1d1 50%, #c4c4c4 50%, #b8b8b8 100%);
-    background-image: -moz-linear-gradient(top, #e5e5e5 0%, #d1d1d1 50%, #c4c4c4 50%, #b8b8b8 100%);
-    background-image: -ms-linear-gradient(top, #e5e5e5 0%, #d1d1d1 50%, #c4c4c4 50%, #b8b8b8 100%);
-    background-image: -o-linear-gradient(top, #e5e5e5 0%, #d1d1d1 50%, #c4c4c4 50%, #b8b8b8 100%);
-    background-image: linear-gradient(top, #e5e5e5 0%, #d1d1d1 50%, #c4c4c4 50%, #b8b8b8 100%);
+    background-color: #f3f3f3;
     cursor: pointer;
+    border-bottom: 2px solid #919191;
 }
 
 button.btn-left {
     border-radius: 3px 0px 0px 3px;
+    border-right: none;
 }
 
 button.btn-mid {
     border-radius: 0;
+    border-right: none;
 }
 
 button.btn-right {
@@ -334,8 +324,8 @@ table .icon {
     z-index: 9999;
     background-color: #2E2E2E;
     border: 3px solid #666666;
-    border-radius: 5px;
     display: none;
+    border-radius: 2px;
 }
 .options-menu li {
     border-bottom: 1px solid black;
@@ -385,8 +375,22 @@ table .icon {
     color: #999;
 }
 
-#current-file {
+#settings, #split, #current-mode {
+    /* Disable text selection on buttons clicks */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;  
+}
+
+#current-file, #current-mode{
     float: left;
+}
+
+#current-mode:hover { 
+    color: #fff; 
 }
 
 #divider {
@@ -450,17 +454,12 @@ table .icon {
 }
 
 .sidebar-handle {
-    width: 10px;
+    width: 12px;
     height: 100%;
     z-index: 99999;
     margin: 0;
     padding: 0;
-    background-image: linear-gradient(left , rgb(120,120,120) 29%, rgb(77,77,77) 77%);
-    background-image: -o-linear-gradient(left , rgb(120,120,120) 29%, rgb(77,77,77) 77%);
-    background-image: -moz-linear-gradient(left , rgb(120,120,120) 29%, rgb(77,77,77) 77%);
-    background-image: -webkit-linear-gradient(left , rgb(120,120,120) 29%, rgb(77,77,77) 77%);
-    background-image: -ms-linear-gradient(left , rgb(120,120,120) 29%, rgb(77,77,77) 77%);
-    background-image: -webkit-gradient(linear,left top,right top,color-stop(0.29, rgb(120,120,120)),color-stop(0.77, rgb(77,77,77)));
+    background: #474747;
     box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .9);
     cursor: 'ne-resize';
 }
@@ -468,7 +467,7 @@ table .icon {
 .sidebar-handle span {
     display: block;
     position: absolute;
-    width: 9px;
+    width: 10px;
     top: 50%;
     text-align: center;
     letter-spacing: -1px;
@@ -511,7 +510,7 @@ table .icon {
 }
 
 .sb-right-content {
-    width: 190px;
+    width: 185px;
     float: left;
     height: 100%;
     padding: 15px;
@@ -523,7 +522,7 @@ table .icon {
     min-width: 100%;
     cursor: pointer;
     padding: 3px 5px 7px 5px;
-    border-radius: 5px;
+    border-radius: 3px;
 }
 
 #sb-right a span {
@@ -567,7 +566,7 @@ table .icon {
     background-clip: content-box;
     border: 3px solid rgba(255, 255, 255, 0.5);
     box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .9);
-    border-radius: 5px;
+    border-radius: 2px;
 }
 
 #modal #drag-handle {

@@ -203,7 +203,7 @@
         //////////////////////////////////////////////////////////////////
 
         add: function(path, session) {
-            var thumb = $('<a data-path="' + path + '"><span></span><div>' + path + '</div></a>');
+            var thumb = $('<a title="'+path+'" data-path="' + path + '"><span></span><div>' + path.substring(1) + '</div></a>');
             session.thumb = thumb;
             $('#active-files')
                 .append($('<li>')
@@ -351,7 +351,7 @@
                 var thumb = this.sessions[oldPath].thumb;
                 thumb.attr('data-path', newPath);
                 thumb.find('div')
-                    .text(newPath);
+                    .text(newPath.substring(1));
                 this.sessions[newPath] = this.sessions[oldPath];
                 this.sessions[newPath].path = newPath;
                 this.sessions[oldPath] = undefined;
@@ -359,14 +359,27 @@
             if (this.sessions[oldPath]) {
                 // A file was renamed
                 switchSessions.apply(this, [oldPath, newPath]);
-                if (codiad.editor.getActive().session.path == oldPath) {
-                    codiad.editor.setActive(this.sessions[newPath]);
+                // pass new sessions instance to setactive
+                for (var k = 0; k < codiad.editor.instances.length; k++) {
+                    if (codiad.editor.instances[k].getSession().path === newPath) {
+                        codiad.editor.setActive(codiad.editor.instances[k]);
+                    }
                 }
+
+                var newSession = this.sessions[newPath];
 
                 // Change Editor Mode
                 var ext = codiad.filemanager.getExtension(newPath);
                 var mode = codiad.editor.selectMode(ext);
-                this.sessions[newPath].setMode("ace/mode/" + mode);
+
+                // handle async mode change
+                var fn = function(){
+                   codiad.editor.setModeDisplay(newSession);
+                   newSession.removeListener('changeMode', fn);                   
+                }
+
+                newSession.on("changeMode", fn);
+                newSession.setMode("ace/mode/" + mode);
 
             } else {
                 // A folder was renamed
