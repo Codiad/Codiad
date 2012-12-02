@@ -76,7 +76,12 @@
                 'width': ($('body')
                     .outerWidth() - reduction) + 'px',
                 'height': ($('body')
-                    .outerHeight() - 50) + 'px'
+                    .outerHeight()) + 'px'
+            });
+            $('#root-editor-wrapper')
+                .css({
+                'height': ($('body')
+                    .outerHeight() - 75) + 'px' // TODO Adjust '75' in function of the final tabs height.
             });
 
         });

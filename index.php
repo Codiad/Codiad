@@ -164,8 +164,12 @@ $components = json_decode($components,true);
                         </div>
                     </li>
                 </ul>
+                <div class="bar"></div>
                 <div class="clearfix"></div>
             </div>
+
+            <div id="root-editor-wrapper"></div>
+
             <div id="editor-bottom-bar">
                 <a id="settings" class="ico-wrapper"><span class="icon">l</span>Settings</a>
                 <div id="divider"></div>

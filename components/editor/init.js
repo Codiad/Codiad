@@ -349,7 +349,8 @@
             var _this = this;
 
             if (this.instances.length == 0) {
-                el.appendTo($('#editor-region'));
+                // el.appendTo($('#editor-region'));
+                el.appendTo($('#root-editor-wrapper'));
             } else {
 
                 var ch = this.activeInstance.el;
