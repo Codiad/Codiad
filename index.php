@@ -164,7 +164,6 @@ $components = json_decode($components,true);
                         </div>
                     </li>
                 </ul>
-                <div class="bar"></div>
                 <div class="clearfix"></div>
             </div>
 
