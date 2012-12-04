@@ -119,12 +119,12 @@
             // Tab Sortable
             $('.tab-list')
                 .sortable({
+                items: '> li',
                 axis: 'x',
                 zIndex: 3,
-                placeholder: '.tab-item',
                 tolerance: 'intersect',
                 start: function(e, ui) {
-                    ui.placeholder.height(ui.item.height());
+                    ui.placeholder.css('background', 'transparent');
                 }
             });
 

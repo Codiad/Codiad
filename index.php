@@ -144,24 +144,12 @@ $components = json_decode($components,true);
                 <ul class="tab-list">
                     <li class="tab-item">
                         <a id="tab1" class="tab">Tab 1<span class="close">x</span></a>
-                        <div class="left-mask">
-                            <span></span>
-                            <div class="right-mask"><span></span></div>
-                        </div>
                     </li>
                     <li class="tab-item current">
                         <a id="tab2" class="tab">Tab 2<span class="close">x</span></a>
-                        <div class="left-mask">
-                            <span></span>
-                            <div class="right-mask"><span></span></div>
-                        </div>
                     </li>
                     <li class="tab-item">
                         <a id="tab3" class="tab">Tab 3<span class="close">x</span></a>
-                        <div class="left-mask">
-                            <span></span>
-                            <div class="right-mask"><span></span></div>
-                        </div>
                     </li>
                 </ul>
                 <div class="bar"></div>
