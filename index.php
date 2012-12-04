@@ -143,21 +143,21 @@ $components = json_decode($components,true);
                 <!-- TODO this should go in components/active/ -->
                 <ul class="tab-list">
                     <li class="tab-item">
-                        <a id="tab1" class="tab">Tab 1<span class="icon">X</span></a>
+                        <a id="tab1" class="tab">Tab 1<span class="close">x</span></a>
                         <div class="left-mask">
                             <span></span>
                             <div class="right-mask"><span></span></div>
                         </div>
                     </li>
                     <li class="tab-item current">
-                        <a id="tab2" class="tab">Tab 2<span class="icon">X</span></a>
+                        <a id="tab2" class="tab">Tab 2<span class="close">x</span></a>
                         <div class="left-mask">
                             <span></span>
                             <div class="right-mask"><span></span></div>
                         </div>
                     </li>
                     <li class="tab-item">
-                        <a id="tab3" class="tab">Tab 3<span class="icon">X</span></a>
+                        <a id="tab3" class="tab">Tab 3<span class="close">x</span></a>
                         <div class="left-mask">
                             <span></span>
                             <div class="right-mask"><span></span></div>
@@ -165,7 +165,6 @@ $components = json_decode($components,true);
                     </li>
                 </ul>
                 <div class="bar"></div>
-                <div class="clearfix"></div>
             </div>
 
             <div id="root-editor-wrapper"></div>
