@@ -105,6 +105,15 @@
                     .parent('a')
                     .attr('data-path'));
             });
+            
+            // Tab Remove
+            $('.tab-list a.close')
+                .live('click', function(e) {
+                e.stopPropagation();
+                _this.remove($(this)
+                    .parent('a')
+                    .attr('data-path'));
+            });
 
             // Sortable
             $('#active-files')
@@ -121,7 +130,6 @@
                 .sortable({
                 items: '> li',
                 axis: 'x',
-                zIndex: 3,
                 tolerance: 'intersect',
                 start: function(e, ui) {
                     ui.placeholder.css('background', 'transparent');
@@ -218,6 +226,12 @@
                 .append($('<li>')
                 .append(thumb));
             $.get(this.controller + '?action=add&path=' + path);
+            
+            var tabThumb = $('<li class="tab-item"><a class="content" title="'+path+'" data-path="'+path+'">' + path.substring(1) + '</a><a class="close">x</a></li>');
+            $('.tab-list')
+                .append(tabThumb);
+            session.tabThumb = tabThumb;            
+            
             this.focus(path);
             // Mark draft as changed
             if (this.checkDraft(path)) {
@@ -240,6 +254,13 @@
             $('#active-files a')
                 .removeClass('active');
             this.sessions[path].thumb.addClass('active');
+            
+            $('.tab-list')
+                .removeClass('active');
+            $('.tab-list li')
+                .removeClass('active');
+            this.sessions[path].tabThumb.addClass('active');
+            this.sessions[path].tabThumb.find('li').addClass('active');
         },
 
         //////////////////////////////////////////////////////////////////
@@ -295,6 +316,7 @@
             var session = this.sessions[path];
             session.thumb.parent('li')
                 .remove();
+            session.tabThumb.remove();
             var nextThumb = $('#active-files a[data-path]');
             if (nextThumb.length == 0) {
                 codiad.editor.exterminate();

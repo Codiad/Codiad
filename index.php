@@ -142,15 +142,6 @@ $components = json_decode($components,true);
             <div id="editor-top-bar">
                 <!-- TODO this should go in components/active/ -->
                 <ul class="tab-list">
-                    <li class="tab-item">
-                        <a id="tab1" class="tab">Tab 1<span class="close">x</span></a>
-                    </li>
-                    <li class="tab-item current">
-                        <a id="tab2" class="tab">Tab 2<span class="close">x</span></a>
-                    </li>
-                    <li class="tab-item">
-                        <a id="tab3" class="tab">Tab 3<span class="close">x</span></a>
-                    </li>
                 </ul>
                 <div class="bar"></div>
             </div>
