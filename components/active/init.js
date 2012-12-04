@@ -115,6 +115,18 @@
                     ui.placeholder.height(ui.item.height());
                 }
             });
+            
+            // Tab Sortable
+            $('.tab-list')
+                .sortable({
+                axis: 'x',
+                zIndex: 3,
+                placeholder: '.tab-item',
+                tolerance: 'intersect',
+                start: function(e, ui) {
+                    ui.placeholder.height(ui.item.height());
+                }
+            });
 
             // Open saved-state active files on load
             $.get(_this.controller + '?action=list', function(data) {
