@@ -150,8 +150,14 @@
                 items: '> li',
                 axis: 'x',
                 tolerance: 'intersect',
+                containment: 'parent',
                 start: function(e, ui) {
                     ui.placeholder.css('background', 'transparent');
+                },
+                stop: function(e, ui) {
+                    // Reset css
+                    ui.item.css('z-index', '')
+                    ui.item.css('position', '')
                 }
             });
 
