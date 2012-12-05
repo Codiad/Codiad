@@ -108,18 +108,30 @@
             $('#active-files a>span')
                 .live('click', function(e) {
                 e.stopPropagation();
-                _this.remove($(this)
-                    .parent('a')
-                    .attr('data-path'));
+                /* Get the active editor before removing anything. Remove the
+                 * tab, then put back the focus on the previously active
+                 * editor if it was not removed. */
+                var activePath = _this.getPath();
+                var pathToRemove = $(this).parent('a').attr('data-path');
+                _this.remove(pathToRemove);
+                if (activePath !== null && activePath !== pathToRemove) {
+                    _this.focus(activePath);
+                }
             });
             
             // Tab Remove
             $('.tab-list a.close')
                 .live('click', function(e) {
                 e.stopPropagation();
-                _this.remove($(this)
-                    .parent('li')
-                    .attr('data-path'));
+                /* Get the active editor before removing anything. Remove the
+                 * tab, then put back the focus on the previously active
+                 * editor if it was not removed. */
+                var activePath = _this.getPath();
+                var pathToRemove = $(this).parent('li').attr('data-path');
+                _this.remove(pathToRemove);
+                if (activePath !== null && activePath !== pathToRemove) {
+                    _this.focus(activePath);
+                }
             });
 
             // Sortable
