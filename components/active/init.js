@@ -99,7 +99,7 @@
 
             // Tab Focus
             $('.tab-list li.tab-item')
-                .live('click', function() {
+                .live('mousedown', function() {
                 _this.focus($(this)
                     .attr('data-path'));
             });

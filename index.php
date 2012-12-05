@@ -141,8 +141,7 @@ $components = json_decode($components,true);
         <div id="editor-region">
             <div id="editor-top-bar">
                 <!-- TODO this should go in components/active/ -->
-                <ul class="tab-list">
-                </ul>
+                <ul class="tab-list"></ul>
                 <div class="bar"></div>
             </div>
 
