@@ -241,7 +241,7 @@ table .icon {
 #message {
     display: none;
     position: fixed;
-    top: 0;
+    top: 35px;
     left: 50%;
     width: 500px;
     margin-left: -250px;
