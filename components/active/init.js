@@ -97,6 +97,13 @@
                     .attr('data-path'));
             });
 
+            // Tab Focus
+            $('.tab-list li.tab-item')
+                .live('click', function() {
+                _this.focus($(this)
+                    .attr('data-path'));
+            });
+
             // Remove
             $('#active-files a>span')
                 .live('click', function(e) {
