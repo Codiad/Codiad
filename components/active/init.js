@@ -32,6 +32,14 @@
         // Path to EditSession instance mapping
         sessions: {},
 
+        // Helper function to put the tabs dropdown menu at the end of the tabs list.
+        // TODO this will also update the content of the menu.
+        _updateTabsDropdownMenu: function() {
+            /* First remove the dropdown, then add it back to the end of tab list. */
+            $('#tab-dropdown-wrapper').remove();
+            $('.tab-list').append($('<div id="tab-dropdown-wrapper" class="divider"><a id="tab-dropdown" class="icon">i</a></div>'));
+        },
+
         //////////////////////////////////////////////////////////////////
         //
         // Check if a file is open.
@@ -132,6 +140,7 @@
                 if (activePath !== null && activePath !== pathToRemove) {
                     _this.focus(activePath);
                 }
+                _this._updateTabsDropdownMenu();
             });
 
             // Sortable
@@ -259,10 +268,10 @@
             $.get(this.controller + '?action=add&path=' + path);
             
             var tabThumb = $('<li class="tab-item" data-path="'+path+'"><a class="content" title="'+path+'">' + path.substring(1) + '</a><a class="close">x</a></li>');
-            $('.tab-list')
-                .append(tabThumb);
+            $('.tab-list').append(tabThumb);
             session.tabThumb = tabThumb;
-            
+            this._updateTabsDropdownMenu();
+
             this.focus(path);
             // Mark draft as changed
             if (this.checkDraft(path)) {

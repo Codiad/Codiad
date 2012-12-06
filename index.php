@@ -142,6 +142,10 @@ $components = json_decode($components,true);
             <div id="editor-top-bar">
                 <!-- TODO this should go in components/active/ -->
                 <ul class="tab-list"></ul>
+<!--
+                    <div class="divider"></div>
+                    <a id="split" class="ico-wrapper"><span class="icon">k</span>Split</a>
+-->
                 <div class="bar"></div>
             </div>
 
@@ -149,11 +153,11 @@ $components = json_decode($components,true);
 
             <div id="editor-bottom-bar">
                 <a id="settings" class="ico-wrapper"><span class="icon">l</span>Settings</a>
-                <div id="divider"></div>
+                <div class="divider"></div>
                 <a id="split" class="ico-wrapper"><span class="icon">k</span>Split</a>
-                <div id="divider"></div>
-                <a id="current-mode"><span class="icon">k</span></a>                
-                <div id="divider"></div>                
+                <div class="divider"></div>
+                <a id="current-mode"><span class="icon">k</span></a>
+                <div class="divider"></div>
                 <div id="current-file"></div>
             </div>
             <ul id="changemode-menu" class="options-menu">
