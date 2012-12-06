@@ -331,6 +331,7 @@
             codiad.filemanager.saveFile(path, content, {
                 success: function() {
                     session.thumb.removeClass('changed');
+                    session.tabThumb.removeClass('changed');
                     _this.removeDraft(path);
                 }
             });

@@ -662,8 +662,9 @@ table .icon {
     direction: rtl;
 }
 
-.tab-list li.changed a.label{
-    font-weight: bold;
+.tab-list li.changed {
+    /*font-weight: bold;*/
+    border-top: 2px solid #3BA628;
 }
 
 .tab-list li a.close {
