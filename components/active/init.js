@@ -162,6 +162,7 @@
                 containment: 'parent',
                 start: function(e, ui) {
                     ui.placeholder.css('background', 'transparent');
+                    ui.helper.css('width', '200px');
                 },
                 stop: function(e, ui) {
                     // Reset css

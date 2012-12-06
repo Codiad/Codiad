@@ -682,7 +682,7 @@ table .icon {
     background-color: #000;
 }
 
-.bar{
+.bar {
     z-index: 2;
     position: relative;
     height: 10px;
