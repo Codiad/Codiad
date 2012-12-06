@@ -300,7 +300,6 @@
             $('.tab-list li')
                 .removeClass('active');
             this.sessions[path].tabThumb.addClass('active');
-            this.sessions[path].tabThumb.find('li').addClass('active');
         },
 
         //////////////////////////////////////////////////////////////////
@@ -309,6 +308,7 @@
 
         markChanged: function(path) {
             this.sessions[path].thumb.addClass('changed');
+            this.sessions[path].tabThumb.addClass('changed');
         },
 
         //////////////////////////////////////////////////////////////////

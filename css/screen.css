@@ -662,6 +662,10 @@ table .icon {
     direction: rtl;
 }
 
+.tab-list li.changed a.label{
+    font-weight: bold;
+}
+
 .tab-list li a.close {
     display: block;
     float: right;
