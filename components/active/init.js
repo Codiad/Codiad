@@ -149,7 +149,7 @@
                 .sortable({
                 items: '> li',
                 axis: 'x',
-                tolerance: 'intersect',
+                tolerance: 'pointer',
                 containment: 'parent',
                 start: function(e, ui) {
                     ui.placeholder.css('background', 'transparent');
@@ -160,6 +160,12 @@
                     ui.item.css('position', '')
                 }
             });
+            /* Woaw, so tricky! At initialization, the .tab-list is empty, so
+             * it is not marked as float so it is not detected as an horizontal
+             * list by the sortable plugin. Workaround is to mark it as
+             * floating at initialization time. See bug report
+             * http://bugs.jqueryui.com/ticket/6702. */
+            $('.tab-list').data('sortable').floating = true;
 
             // Open saved-state active files on load
             $.get(_this.controller + '?action=list', function(data) {
