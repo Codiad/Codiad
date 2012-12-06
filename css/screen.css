@@ -637,6 +637,7 @@ table .icon {
     border-top-right-radius: 20px 60px;
     border-top-left-radius: 20px 60px;
     margin-left: -15px;
+    padding-left: 20px;
     z-index: 1;
     box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .9);
 }
@@ -649,16 +650,16 @@ table .icon {
     z-index: 3;
 } 
 
-.tab-list li a.content{
+.tab-list li a.label{
     display: block;
     float: left;
-    width: 150px;
+    width: 140px;
     line-height: 25px;
-    padding-top: 2px;
-    padding-left: 24px;
+    padding-top: 1px;
     color: #919191;
-    text-decoration: none;
     overflow: hidden;
+    text-decoration: none;
+    direction: rtl;
 }
 
 .tab-list li a.close {

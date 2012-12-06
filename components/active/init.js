@@ -267,7 +267,7 @@
                 .append(thumb));
             $.get(this.controller + '?action=add&path=' + path);
             
-            var tabThumb = $('<li class="tab-item" data-path="'+path+'"><a class="content" title="'+path+'">' + path.substring(1) + '</a><a class="close">x</a></li>');
+            var tabThumb = $('<li class="tab-item" data-path="'+path+'"><a class="label" title="'+path+'">' + path.substring(1) + '</a><a class="close">x</a></li>');
             $('.tab-list').append(tabThumb);
             session.tabThumb = tabThumb;
             this._updateTabsDropdownMenu();
