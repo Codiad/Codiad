@@ -36,8 +36,8 @@
         // TODO this will also update the content of the menu.
         _updateTabsDropdownMenu: function() {
             /* First remove the dropdown, then add it back to the end of tab list. */
-            $('#tab-dropdown-wrapper').remove();
-            $('.tab-list').append($('<div id="tab-dropdown-wrapper" class="divider"><a id="tab-dropdown" class="icon">i</a></div>'));
+            /*$('#tab-dropdown-wrapper').remove();
+            $('.tab-list').append($('<div id="tab-dropdown-wrapper" class="divider"><a id="tab-dropdown" class="icon">i</a></div>'));*/
         },
 
         //////////////////////////////////////////////////////////////////
