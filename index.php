@@ -143,7 +143,7 @@ $components = json_decode($components,true);
             <div id="editor-top-bar">
                 <ul class="tab-list"> </ul>
                 <div id="tab-dropdown" class="divider"><a id="tab-dropdown-button" class="icon">i</a></div>
-                <ul id="tab-dropdown-menu" class="options-menu"></ul>
+                <ul id="tab-dropdown-menu"></ul>
                 <div class="bar"></div>
             </div>
 

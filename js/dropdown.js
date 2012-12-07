@@ -16,7 +16,7 @@
 
             this.menus.push(thisMenu);
             thisMenu.appendTo($('body'));
-
+            
             thisButton.click(function(e){
                 var wh = $(window).height();
 
@@ -27,9 +27,10 @@
 
                 thisMenu.css({
                     top: $("#editor-top-bar").height() + 'px',
-                    left: ($(this).offset().left - 35) + 'px'
+                    right: '20px',
+                    width: '200px'
                 });
-                
+
                 thisMenu.slideToggle('fast');
 
                 // handle click-out autoclosing

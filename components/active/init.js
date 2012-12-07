@@ -174,14 +174,14 @@
               
                 if(_this.isTabListOverflowed()) {
                     var tab = $('.tab-list li:last-child');
-                    _this.moveTabToDropdownMenu(tab);
+                    if(tab.length == 1) _this.moveTabToDropdownMenu(tab);
                 }
                 else
                 {
                     if(!_this.isTabListOverflowed(true))
                     {
                         var menu = $('#tab-dropdown-menu li:first-child');
-                        _this.moveDropdownMenuToTab(menu);
+                        if(menu.length == 1) _this.moveDropdownMenuToTab(menu);
                     }
                 }
                 
@@ -294,9 +294,11 @@
             }
             else
             {
-                var tabThumb = $('<li class="tab-item" data-path="'+path+'"><a class="label" title="'+path+'">' + path.substring(1) + '</a><a class="close">x</a></li>');
-                $('#tab-dropdown-menu').append(tabThumb);
-                session.tabThumb = tabThumb;
+                var thumb = $('<a title="'+path+'" data-path="' + path + '"><span></span><div>' + path.substring(1) + '</div></a>');
+                $('#tab-dropdown-menu')
+                    .append($('<li>')
+                    .append(thumb));
+                session.tabThumb = thumb;
             }
 
             this.focus(path);
@@ -559,13 +561,15 @@
             tab.remove();
             path = tab.attr('data-path');
             
-            var tabThumb = $('<li class="tab-item" data-path="'+path+'"><a class="label" title="'+path+'">' + path.substring(1) + '</a><a class="close">x</a></li>');
-            $('#tab-dropdown-menu').append(tabThumb);
+            var thumb = $('<a title="'+path+'" data-path="' + path + '"><span></span><div>' + path.substring(1) + '</div></a>');
+            $('#tab-dropdown-menu')
+                .append($('<li>')
+                .append(thumb));
         },
         
         moveDropdownMenuToTab: function(menu){
             menu.remove();
-            path = menu.attr('data-path');
+            path = menu.find('a').attr('data-path');
             
             var tabThumb = $('<li class="tab-item" data-path="'+path+'"><a class="label" title="'+path+'">' + path.substring(1) + '</a><a class="close">x</a></li>');
             $('.tab-list').append(tabThumb);
