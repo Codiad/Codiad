@@ -48,6 +48,7 @@ $components = json_decode($components,true);
     <script src="js/modal.js"></script>
     <script src="js/message.js"></script>
     <script src="js/jsend.js"></script>
+    <script src="js/dropdown.js"></script>
     <div id="message"></div>
 
     <?php
@@ -144,11 +145,12 @@ $components = json_decode($components,true);
                 <ul class="tab-list">
                    
                 </ul>
-<!--
-                    <div class="divider"></div>
-                    <a id="split" class="ico-wrapper"><span class="icon">k</span>Split</a>
--->
-                <div id="tab-dropdown" class="divider"><a class="icon">i</a></div>
+                <div id="tab-dropdown" class="divider"><a id="tab-dropdown-button" class="icon">i</a></div>
+                <ul id="tab-dropdown-menu" class="options-menu">
+                  <li id="toto"><a> toto </a></li>
+                  <li id="titi"><a> titi </a></li>
+                  <li id="tutu"><a> tutu </a></li>
+                </ul>
                 <div class="bar"></div>
             </div>
 

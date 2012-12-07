@@ -98,6 +98,8 @@
 
             var _this = this;
 
+            _this.createTabDropdownMenu();
+
             // Focus
             $('#active-files a')
                 .live('click', function() {
@@ -514,7 +516,15 @@
                 this.focus(newActive);
             }
 
-        }
+        },
+
+        createTabDropdownMenu: function(){
+            var _this = this;
+            var _tabMenu = $('#tab-dropdown-menu');
+
+            console.log(codiad.dropdown);
+            codiad.dropdown.initMenuHandler($('#tab-dropdown-button'),_tabMenu);
+        },
 
     };
 
