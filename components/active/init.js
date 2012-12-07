@@ -543,6 +543,7 @@
             
             var thumb = this.createMenuThumb(path);
             $('#tab-dropdown-menu').append(thumb);
+            this.sessions[path].thumb = thumb;
         },
         
         moveDropdownMenuToTab: function(menu){
@@ -551,6 +552,7 @@
             
             var thumb = this.createTabThumb(path);
             $('.tab-list').append(thumb);
+            this.sessions[path].thumb = thumb;
         },
         
         isTabListOverflowed: function(includeFictiveTab){
