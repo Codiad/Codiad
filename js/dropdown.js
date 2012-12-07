@@ -18,7 +18,6 @@
             thisMenu.appendTo($('body'));
 
             thisButton.click(function(e){
-                alert('click for dropdown');
                 var wh = $(window).height();
 
                 e.stopPropagation();
@@ -27,9 +26,8 @@
                 _this.closeMenus(thisMenu);
 
                 thisMenu.css({
-                    // display: 'block',
-                    bottom: ( (wh - $(this).offset().top) + 8) + 'px',
-                    left: ($(this).offset().left - 13) + 'px'
+                    top: $("#editor-top-bar").height() + 'px',
+                    left: ($(this).offset().left - 35) + 'px'
                 });
                 
                 thisMenu.slideToggle('fast');

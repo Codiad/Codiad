@@ -32,14 +32,6 @@
         // Path to EditSession instance mapping
         sessions: {},
 
-        // Helper function to put the tabs dropdown menu at the end of the tabs list.
-        // TODO this will also update the content of the menu.
-        _updateTabsDropdownMenu: function() {
-            /* First remove the dropdown, then add it back to the end of tab list. */
-            /*$('#tab-dropdown-wrapper').remove();
-            $('.tab-list').append($('<div id="tab-dropdown-wrapper" class="divider"><a id="tab-dropdown" class="icon">i</a></div>'));*/
-        },
-
         //////////////////////////////////////////////////////////////////
         //
         // Check if a file is open.
@@ -141,7 +133,6 @@
                 if (activePath !== null && activePath !== pathToRemove) {
                     _this.focus(activePath);
                 }
-                _this._updateTabsDropdownMenu();
             });
 
             // Sortable
@@ -177,6 +168,32 @@
              * floating at initialization time. See bug report
              * http://bugs.jqueryui.com/ticket/6702. */
             $('.tab-list').data('sortable').floating = true;
+            
+            // Manage the dropdown menu for tab
+            $(window).resize(function() {
+              
+                if(_this.isTabListOverflowed()) {
+                    var tab = $('.tab-list li:last-child');
+                    _this.moveTabToDropdownMenu(tab);
+                }
+                else
+                {
+                    if(!_this.isTabListOverflowed(true))
+                    {
+                        var menu = $('#tab-dropdown-menu li:first-child');
+                        _this.moveDropdownMenuToTab(menu);
+                    }
+                }
+                
+                if($('#tab-dropdown-menu li').length > 0)
+                {
+                    $('#tab-dropdown').show();
+                }
+                else
+                {
+                    $('#tab-dropdown').hide();
+                }
+            });
 
             // Open saved-state active files on load
             $.get(_this.controller + '?action=list', function(data) {
@@ -269,10 +286,18 @@
                 .append(thumb));
             $.get(this.controller + '?action=add&path=' + path);
             
-            var tabThumb = $('<li class="tab-item" data-path="'+path+'"><a class="label" title="'+path+'">' + path.substring(1) + '</a><a class="close">x</a></li>');
-            $('.tab-list').append(tabThumb);
-            session.tabThumb = tabThumb;
-            this._updateTabsDropdownMenu();
+            if(!this.isTabListOverflowed(true))
+            {
+                var tabThumb = $('<li class="tab-item" data-path="'+path+'"><a class="label" title="'+path+'">' + path.substring(1) + '</a><a class="close">x</a></li>');
+                $('.tab-list').append(tabThumb);
+                session.tabThumb = tabThumb;
+            }
+            else
+            {
+                var tabThumb = $('<li class="tab-item" data-path="'+path+'"><a class="label" title="'+path+'">' + path.substring(1) + '</a><a class="close">x</a></li>');
+                $('#tab-dropdown-menu').append(tabThumb);
+                session.tabThumb = tabThumb;
+            }
 
             this.focus(path);
             // Mark draft as changed
@@ -517,6 +542,10 @@
             }
 
         },
+        
+        //////////////////////////////////////////////////////////////////
+        // Dropdown Menu
+        //////////////////////////////////////////////////////////////////
 
         createTabDropdownMenu: function(){
             var _this = this;
@@ -524,6 +553,36 @@
 
             console.log(codiad.dropdown);
             codiad.dropdown.initMenuHandler($('#tab-dropdown-button'),_tabMenu);
+        },
+        
+        moveTabToDropdownMenu: function(tab){
+            tab.remove();
+            path = tab.attr('data-path');
+            
+            var tabThumb = $('<li class="tab-item" data-path="'+path+'"><a class="label" title="'+path+'">' + path.substring(1) + '</a><a class="close">x</a></li>');
+            $('#tab-dropdown-menu').append(tabThumb);
+        },
+        
+        moveDropdownMenuToTab: function(menu){
+            menu.remove();
+            path = menu.attr('data-path');
+            
+            var tabThumb = $('<li class="tab-item" data-path="'+path+'"><a class="label" title="'+path+'">' + path.substring(1) + '</a><a class="close">x</a></li>');
+            $('.tab-list').append(tabThumb);
+        },
+        
+        isTabListOverflowed: function(includeFictiveTab){
+            if(typeof includeFictiveTab == 'undefined'){
+                includeFictiveTab = false;
+            }
+            
+            var tab = $('.tab-list li:last-child');
+            if(tab.length == 0) return false;
+            
+            var coef = 1;
+            if(includeFictiveTab) coef = 2;
+            
+            return (tab.position().left + coef*tab.outerWidth() >= $('.tab-list').width() - 320);
         },
 
     };

@@ -141,16 +141,9 @@ $components = json_decode($components,true);
 
         <div id="editor-region">
             <div id="editor-top-bar">
-                <!-- TODO this should go in components/active/ -->
-                <ul class="tab-list">
-                   
-                </ul>
+                <ul class="tab-list"> </ul>
                 <div id="tab-dropdown" class="divider"><a id="tab-dropdown-button" class="icon">i</a></div>
-                <ul id="tab-dropdown-menu" class="options-menu">
-                  <li id="toto"><a> toto </a></li>
-                  <li id="titi"><a> titi </a></li>
-                  <li id="tutu"><a> tutu </a></li>
-                </ul>
+                <ul id="tab-dropdown-menu" class="options-menu"></ul>
                 <div class="bar"></div>
             </div>
 
