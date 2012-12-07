@@ -93,7 +93,7 @@
             _this.createTabDropdownMenu();
 
             // Focus
-            $('#active-files a')
+            $('#tab-dropdown-menu a')
                 .live('click', function() {
                 _this.focus($(this)
                     .attr('data-path'));
@@ -106,7 +106,7 @@
             });
 
             // Remove
-            $('#active-files a>span')
+            $('#tab-dropdown-menu a>span')
                 .live('click', function(e) {
                 e.stopPropagation();
                 /* Get the active editor before removing anything. Remove the
@@ -136,7 +136,7 @@
             });
 
             // Sortable
-            $('#active-files')
+            $('#tab-dropdown-menu')
                 .sortable({
                 placeholder: 'active-sort-placeholder',
                 tolerance: 'intersect',
@@ -279,27 +279,20 @@
         //////////////////////////////////////////////////////////////////
 
         add: function(path, session) {
-            var thumb = $('<a title="'+path+'" data-path="' + path + '"><span></span><div>' + path.substring(1) + '</div></a>');
-            session.thumb = thumb;
-            $('#active-files')
-                .append($('<li>')
-                .append(thumb));
-            $.get(this.controller + '?action=add&path=' + path);
-            
             if(!this.isTabListOverflowed(true))
             {
-                var tabThumb = $('<li class="tab-item" data-path="'+path+'"><a class="label" title="'+path+'">' + path.substring(1) + '</a><a class="close">x</a></li>');
-                $('.tab-list').append(tabThumb);
-                session.tabThumb = tabThumb;
+                var thumb = this.createTabThumb(path);
+                $('.tab-list').append(thumb);
+                session.thumb = thumb;
             }
             else
             {
-                var thumb = $('<a title="'+path+'" data-path="' + path + '"><span></span><div>' + path.substring(1) + '</div></a>');
-                $('#tab-dropdown-menu')
-                    .append($('<li>')
-                    .append(thumb));
-                session.tabThumb = thumb;
+                var thumb = this.createMenuThumb(path);
+                $('#tab-dropdown-menu').append(thumb);
+                session.thumb = thumb;
             }
+            
+            $.get(this.controller + '?action=add&path=' + path);
 
             this.focus(path);
             // Mark draft as changed
@@ -319,16 +312,10 @@
             this.check(path);
         },
 
-        highlightEntry: function(path){
-            $('#active-files a')
-                .removeClass('active');
-            this.sessions[path].thumb.addClass('active');
-            
-            $('.tab-list')
-                .removeClass('active');
+        highlightEntry: function(path) {            
             $('.tab-list li')
                 .removeClass('active');
-            this.sessions[path].tabThumb.addClass('active');
+            this.sessions[path].thumb.addClass('active');
         },
 
         //////////////////////////////////////////////////////////////////
@@ -337,7 +324,6 @@
 
         markChanged: function(path) {
             this.sessions[path].thumb.addClass('changed');
-            this.sessions[path].tabThumb.addClass('changed');
         },
 
         //////////////////////////////////////////////////////////////////
@@ -359,7 +345,6 @@
             codiad.filemanager.saveFile(path, content, {
                 success: function() {
                     session.thumb.removeClass('changed');
-                    session.tabThumb.removeClass('changed');
                     _this.removeDraft(path);
                 }
             });
@@ -384,17 +369,12 @@
 
         close: function(path) {
             var session = this.sessions[path];
-            session.thumb.parent('li')
-                .remove();
-            session.tabThumb.remove();
-            var nextThumb = $('#active-files a[data-path]');
+            session.thumb.remove();
+            var nextThumb = $('.tab-list li[data-path]');
             if (nextThumb.length == 0) {
                 codiad.editor.exterminate();
             } else {
                 $(nextThumb[0])
-                    .addClass('active');
-                // TODO : Change this when finilizing tabs.
-                 $($('.tab-list li[data-path]')[0])
                     .addClass('active');
                 var nextPath = nextThumb.attr('data-path');
                 var nextSession = this.sessions[nextPath];
@@ -413,7 +393,7 @@
             var switchSessions = function(oldPath, newPath) {
                 var thumb = this.sessions[oldPath].thumb;
                 thumb.attr('data-path', newPath);
-                thumb.find('div')
+                thumb.find('.label')
                     .text(newPath.substring(1));
                 this.sessions[newPath] = this.sessions[oldPath];
                 this.sessions[newPath].path = newPath;
@@ -561,18 +541,16 @@
             tab.remove();
             path = tab.attr('data-path');
             
-            var thumb = $('<a title="'+path+'" data-path="' + path + '"><span></span><div>' + path.substring(1) + '</div></a>');
-            $('#tab-dropdown-menu')
-                .append($('<li>')
-                .append(thumb));
+            var thumb = this.createMenuThumb(path);
+            $('#tab-dropdown-menu').append(thumb);
         },
         
         moveDropdownMenuToTab: function(menu){
             menu.remove();
-            path = menu.find('a').attr('data-path');
+            path = menu.attr('data-path');
             
-            var tabThumb = $('<li class="tab-item" data-path="'+path+'"><a class="label" title="'+path+'">' + path.substring(1) + '</a><a class="close">x</a></li>');
-            $('.tab-list').append(tabThumb);
+            var thumb = this.createTabThumb(path);
+            $('.tab-list').append(thumb);
         },
         
         isTabListOverflowed: function(includeFictiveTab){
@@ -587,6 +565,18 @@
             if(includeFictiveTab) coef = 2;
             
             return (tab.position().left + coef*tab.outerWidth() >= $('.tab-list').width() - 320);
+        },
+        
+        //////////////////////////////////////////////////////////////////
+        // Factory
+        //////////////////////////////////////////////////////////////////
+    
+        createTabThumb: function(path) {
+            return $('<li class="tab-item" data-path="'+path+'"><a class="label" title="'+path+'">' + path.substring(1) + '</a><a class="close">x</a></li>');
+        },
+        
+        createMenuThumb: function(path) {
+            return thumb = $('<li data-path="'+path+'"><a title="'+path+'"><span></span><div class="label">' + path.substring(1) + '</div></a></li>');
         },
 
     };

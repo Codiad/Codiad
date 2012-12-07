@@ -129,8 +129,6 @@ $components = json_decode($components,true);
 
                 <div id="file-manager"></div>
 
-                <ul id="active-files"></ul>
-
             </div>
 
             <div class="sidebar-handle"><span>||</span></div>
