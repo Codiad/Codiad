@@ -106,10 +106,9 @@
             });
 
             // Tab Focus
-            $('.tab-list li.tab-item')
+            $('.tab-list li.tab-item>a.label')
                 .live('mousedown', function() {
-                _this.focus($(this)
-                    .attr('data-path'));
+                _this.focus($(this).parent('li').attr('data-path'));
             });
 
             // Remove
