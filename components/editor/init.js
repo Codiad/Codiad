@@ -439,13 +439,13 @@
 
             $('#split-horizontally a').click(function(e){
                 e.stopPropagation();
-                _this.addInstance(_this.activeInstance.getSession(), 'right');
+                _this.addInstance(_this.activeInstance.getSession(), 'bottom');
                 _splitOptionsMenu.hide();
             });
 
             $('#split-vertically a').click(function(e){
                 e.stopPropagation();
-                _this.addInstance(_this.activeInstance.getSession(), 'bottom');
+                _this.addInstance(_this.activeInstance.getSession(), 'right');
                 _splitOptionsMenu.hide();
             });
 
