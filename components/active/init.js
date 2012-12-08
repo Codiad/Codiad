@@ -597,13 +597,13 @@
                 includeFictiveTab = false;
             }
 
-            var tab = $('#tab-list li');
-            if (tab.length <= 1) return false;
-            var count = tab.length;
+            var tab = $('#tab-list li:last-child');
+            if (tab.length == 0) return false;
 
-            if (includeFictiveTab) count += 1;
+            var coef = 1;
+            if (includeFictiveTab) coef = 2;
 
-            return ($('#tab-list').position().left + count * tab.outerWidth() >= $('#tab-list').width() - 300);
+            return (tab.position().left + coef * tab.outerWidth() >= $('#tab-list').width() - 320);
         },
 
         updateTabDropdownVisibility: function() {
