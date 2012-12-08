@@ -509,10 +509,11 @@ table [class^="icon-"], [class*=" icon-"] {
     display: block;
     position: absolute;
     cursor: pointer;
-    font-size: 30px;
+    font-size: 15px;
     color: #666;
     z-index: 99999;
     right: 20px;
+    top: 6px;
 }
 
 #lock-left-sidebar:hover {

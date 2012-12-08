@@ -21,13 +21,15 @@
 
                     _this.userLock = false;
                     $('#lock-left-sidebar')
-                        .html('V');
+                        .removeClass('icon-lock')
+                        .addClass('icon-lock-open');
 
                 } else {
 
                     _this.userLock = true;
                     $('#lock-left-sidebar')
-                        .html('U');
+                        .removeClass('icon-lock-open')
+                        .addClass('icon-lock');
 
                 }
             });
