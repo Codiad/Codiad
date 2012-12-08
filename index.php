@@ -102,7 +102,7 @@ $components = json_decode($components,true);
 
             <div class="sb-left-content">
 
-                <a id="lock-left-sidebar" class="icon">U</a>
+                <a id="lock-left-sidebar" class="icon-lock">U</i></a>
 
                 <div id="context-menu" data-path="" data-type="">
 
