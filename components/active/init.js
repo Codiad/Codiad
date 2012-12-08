@@ -83,7 +83,6 @@
             // Assuming the mode file has no dependencies
             $.loadScript('components/editor/ace-editor/mode-' + mode + '.js',
             fn);
-
         },
 
         init: function() {
@@ -91,21 +90,29 @@
             var _this = this;
 
             _this.createTabDropdownMenu();
+            _this.updateTabDropdownVisibility();
 
-            // Focus
+            // Focus from dropdown.
             $('#tab-dropdown-menu a')
                 .live('click', function() {
-                _this.focus($(this)
-                    .attr('data-path'));
+                /* Get the menu item as a tab, and put the first tab in
+                 * dropdown. */
+                var menuItem = $(this).parent('li');
+                _this.moveDropdownMenuItemToTab(menuItem);
+
+                var tab = $('.tab-list li:first-child');
+                _this.moveTabToDropdownMenu(tab);
+
+                _this.focus($(this).parent('li').attr('data-path'));
             });
 
-            // Tab Focus
+            // Focus from tab.
             $('.tab-list li.tab-item>a.label')
                 .live('mousedown', function() {
                 _this.focus($(this).parent('li').attr('data-path'));
             });
 
-            // Remove
+            // Remove from dropdown.
             $('#tab-dropdown-menu a>span')
                 .live('click', function(e) {
                 e.stopPropagation();
@@ -118,9 +125,10 @@
                 if (activePath !== null && activePath !== pathToRemove) {
                     _this.focus(activePath);
                 }
+                _this.updateTabDropdownVisibility();
             });
-            
-            // Tab Remove
+
+            // Remove from tab.
             $('.tab-list a.close')
                 .live('click', function(e) {
                 e.stopPropagation();
@@ -133,19 +141,20 @@
                 if (activePath !== null && activePath !== pathToRemove) {
                     _this.focus(activePath);
                 }
+                _this.updateTabDropdownVisibility();
             });
 
-            // Sortable
+            // Make dropdown sortable.
             $('#tab-dropdown-menu')
                 .sortable({
                 placeholder: 'active-sort-placeholder',
-                tolerance: 'intersect',
+                tolerance: 'pointer',
                 start: function(e, ui) {
                     ui.placeholder.height(ui.item.height());
                 }
             });
-            
-            // Tab Sortable
+
+            // Make tabs sortable.
             $('.tab-list')
                 .sortable({
                 items: '> li',
@@ -168,32 +177,6 @@
              * floating at initialization time. See bug report
              * http://bugs.jqueryui.com/ticket/6702. */
             $('.tab-list').data('sortable').floating = true;
-            
-            // Manage the dropdown menu for tab
-            $(window).resize(function() {
-              
-                if(_this.isTabListOverflowed()) {
-                    var tab = $('.tab-list li:last-child');
-                    if(tab.length == 1) _this.moveTabToDropdownMenu(tab);
-                }
-                else
-                {
-                    if(!_this.isTabListOverflowed(true))
-                    {
-                        var menu = $('#tab-dropdown-menu li:first-child');
-                        if(menu.length == 1) _this.moveDropdownMenuToTab(menu);
-                    }
-                }
-                
-                if($('#tab-dropdown-menu li').length > 0)
-                {
-                    $('#tab-dropdown').show();
-                }
-                else
-                {
-                    $('#tab-dropdown').hide();
-                }
-            });
 
             // Open saved-state active files on load
             $.get(_this.controller + '?action=list', function(data) {
@@ -208,9 +191,9 @@
             });
 
             // Run resize on window resize
-            $(window)
-                .on('resize', function() {
+            $(window).on('resize', function() {
                 codiad.editor.resize();
+                _this.updateTabDropdownVisibility();
             });
 
             // Prompt if a user tries to close window without saving all filess
@@ -279,19 +262,19 @@
         //////////////////////////////////////////////////////////////////
 
         add: function(path, session) {
-            if(!this.isTabListOverflowed(true))
-            {
-                var thumb = this.createTabThumb(path);
-                $('.tab-list').append(thumb);
-                session.thumb = thumb;
+            /* If the tab list would overflow with the new tab. Move the
+             * first tab to dropdown, then add a new tab. */
+            if (this.isTabListOverflowed(true)) {
+                var tab = $('.tab-list li:first-child');
+                this.moveTabToDropdownMenu(tab);
             }
-            else
-            {
-                var thumb = this.createMenuThumb(path);
-                $('#tab-dropdown-menu').append(thumb);
-                session.thumb = thumb;
-            }
-            
+
+            var thumb = this.createTabThumb(path);
+            $('.tab-list').append(thumb);
+            session.thumb = thumb;
+
+            this.updateTabDropdownVisibility();
+
             $.get(this.controller + '?action=add&path=' + path);
 
             this.focus(path);
@@ -312,7 +295,7 @@
             this.check(path);
         },
 
-        highlightEntry: function(path) {            
+        highlightEntry: function(path) {
             $('.tab-list li')
                 .removeClass('active');
             this.sessions[path].thumb.addClass('active');
@@ -416,9 +399,9 @@
                 var mode = codiad.editor.selectMode(ext);
 
                 // handle async mode change
-                var fn = function(){
-                   codiad.editor.setModeDisplay(newSession);
-                   newSession.removeListener('changeMode', fn);                   
+                var fn = function() {
+                    codiad.editor.setModeDisplay(newSession);
+                    newSession.removeListener('changeMode', fn);
                 }
 
                 newSession.on("changeMode", fn);
@@ -524,61 +507,79 @@
             }
 
         },
-        
+
         //////////////////////////////////////////////////////////////////
         // Dropdown Menu
         //////////////////////////////////////////////////////////////////
 
-        createTabDropdownMenu: function(){
+        createTabDropdownMenu: function() {
             var _this = this;
             var _tabMenu = $('#tab-dropdown-menu');
 
-            console.log(codiad.dropdown);
-            codiad.dropdown.initMenuHandler($('#tab-dropdown-button'),_tabMenu);
+            codiad.dropdown.initMenuHandler($('#tab-dropdown-button'), _tabMenu);
         },
-        
-        moveTabToDropdownMenu: function(tab){
+
+        moveTabToDropdownMenu: function(tab) {
             tab.remove();
             path = tab.attr('data-path');
-            
+
             var thumb = this.createMenuThumb(path);
             $('#tab-dropdown-menu').append(thumb);
             this.sessions[path].thumb = thumb;
         },
-        
-        moveDropdownMenuToTab: function(menu){
-            menu.remove();
-            path = menu.attr('data-path');
-            
+
+        moveDropdownMenuItemToTab: function(menuItem) {
+            menuItem.remove();
+            path = menuItem.attr('data-path');
+
             var thumb = this.createTabThumb(path);
             $('.tab-list').append(thumb);
             this.sessions[path].thumb = thumb;
         },
-        
-        isTabListOverflowed: function(includeFictiveTab){
-            if(typeof includeFictiveTab == 'undefined'){
+
+        isTabListOverflowed: function(includeFictiveTab) {
+            if (typeof includeFictiveTab == 'undefined') {
                 includeFictiveTab = false;
             }
-            
+
             var tab = $('.tab-list li:last-child');
-            if(tab.length == 0) return false;
-            
+            if (tab.length == 0) return false;
+
             var coef = 1;
-            if(includeFictiveTab) coef = 2;
-            
-            return (tab.position().left + coef*tab.outerWidth() >= $('.tab-list').width() - 320);
+            if (includeFictiveTab) coef = 2;
+
+            return (tab.position().left + coef * tab.outerWidth() >= $('.tab-list').width() - 320);
         },
-        
+
+        updateTabDropdownVisibility: function() {
+            if (this.isTabListOverflowed()) {
+                var tab = $('.tab-list li:last-child');
+                // FIXME why the tab length test?
+                if (tab.length == 1) this.moveTabToDropdownMenu(tab);
+            } else {
+                if (!this.isTabListOverflowed(true)) {
+                    var menuItem = $('#tab-dropdown-menu li:first-child');
+                    if (menuItem.length == 1) this.moveDropdownMenuItemToTab(menuItem);
+                }
+            }
+
+            if ($('#tab-dropdown-menu li').length > 0) {
+                $('#tab-dropdown').show();
+            } else {
+                $('#tab-dropdown').hide();
+            }
+        },
+
         //////////////////////////////////////////////////////////////////
         // Factory
         //////////////////////////////////////////////////////////////////
-    
+
         createTabThumb: function(path) {
-            return $('<li class="tab-item" data-path="'+path+'"><a class="label" title="'+path+'">' + path.substring(1) + '</a><a class="close">x</a></li>');
+            return $('<li class="tab-item" data-path="' + path + '"><a class="label" title="' + path + '">' + path.substring(1) + '</a><a class="close">x</a></li>');
         },
-        
+
         createMenuThumb: function(path) {
-            return thumb = $('<li data-path="'+path+'"><a title="'+path+'"><span></span><div class="label">' + path.substring(1) + '</div></a></li>');
+            return thumb = $('<li data-path="' + path + '"><a title="' + path + '"><span></span><div class="label">' + path.substring(1) + '</div></a></li>');
         },
 
     };
