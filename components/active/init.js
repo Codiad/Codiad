@@ -95,12 +95,12 @@
             // Focus from dropdown.
             $('#tab-dropdown-menu a')
                 .live('click', function() {
-                /* Get the menu item as a tab, and put the first tab in
+                /* Get the menu item as a tab, and put the last tab in
                  * dropdown. */
                 var menuItem = $(this).parent('li');
-                _this.moveDropdownMenuItemToTab(menuItem);
+                _this.moveDropdownMenuItemToTab(menuItem, true);
 
-                var tab = $('.tab-list li:first-child');
+                var tab = $('.tab-list li:last-child');
                 _this.moveTabToDropdownMenu(tab);
 
                 _this.focus($(this).parent('li').attr('data-path'));
@@ -556,12 +556,17 @@
             this.sessions[path].thumb = thumb;
         },
 
-        moveDropdownMenuItemToTab: function(menuItem) {
+        moveDropdownMenuItemToTab: function(menuItem, prepend) {
+            if (typeof prepend == 'undefined') {
+                prepend = false;
+            }
+            
             menuItem.remove();
             path = menuItem.attr('data-path');
 
             var thumb = this.createTabThumb(path);
-            $('.tab-list').append(thumb);
+            if(prepend) $('.tab-list').prepend(thumb);
+            else $('.tab-list').append(thumb);
             this.sessions[path].thumb = thumb;
         },
 
