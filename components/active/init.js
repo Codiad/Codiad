@@ -554,12 +554,17 @@
             this.initMenuHandler($('#tab-dropdown-button'), _tabMenu);
         },
 
-        moveTabToDropdownMenu: function(tab) {
+        moveTabToDropdownMenu: function(tab) {        
             tab.remove();
             path = tab.attr('data-path');
 
             var thumb = this.createMenuItemThumb(path);
             $('#tab-dropdown-menu').append(thumb);
+            
+            if(tab.hasClass("changed")) {
+                thumb.addClass("changed");
+            }
+            
             this.sessions[path].thumb = thumb;
         },
 
@@ -574,6 +579,11 @@
             var thumb = this.createTabThumb(path);
             if(prepend) $('#tab-list').prepend(thumb);
             else $('#tab-list').append(thumb);
+
+            if(menuItem.hasClass("changed")) {
+                thumb.addClass("changed");
+            }
+            
             this.sessions[path].thumb = thumb;
         },
 
