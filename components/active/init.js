@@ -597,13 +597,15 @@
                 includeFictiveTab = false;
             }
 
-            var tab = $('#tab-list li:last-child');
-            if (tab.length == 0) return false;
+            var tabs = $('#tab-list li');
+            var count = tabs.length
+            if (count == 0) return false;
+            var tab = $(tabs[0]);
 
-            var coef = 1;
-            if (includeFictiveTab) coef = 2;
+            if (includeFictiveTab) count += 1;
 
-            return (tab.position().left + coef * tab.outerWidth() >= $('#tab-list').width() - 320);
+            // Ajuste computation with the negative margin of tabs.
+            return (count * (tab.outerWidth() - 15) >= $('#tab-list').width() - 360);
         },
 
         updateTabDropdownVisibility: function() {
