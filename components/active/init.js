@@ -120,7 +120,7 @@
                  * tab, then put back the focus on the previously active
                  * editor if it was not removed. */
                 var activePath = _this.getPath();
-                var pathToRemove = $(this).parent('a').attr('data-path');
+                var pathToRemove = $(this).parents('li').attr('data-path');
                 _this.remove(pathToRemove);
                 if (activePath !== null && activePath !== pathToRemove) {
                     _this.focus(activePath);
