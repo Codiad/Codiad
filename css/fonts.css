@@ -21,34 +21,6 @@
   font-weight: normal; font-style: normal;
 }
 
-/* .icon { */
-    /* display: inline-block; */
-    /* margin: 0; */
-    /* padding: 0 3px; */
-    /* font-family: 'Icons'; */
-    /* font-size: 145%; */
-    /* line-height: 95%; */
-/* } */
-
-[class^="icon-"], [class*=" icon-"] {
-  font-family: entypo;
-  font-style: normal;
-  font-size: 90%;
-
-  display: inline-block;
-  /* line-height: 95%;   */
-  /* width: 1.1em; */
-  /* margin-right: .1em; */
-  padding-right: 3px; 
-  text-align: center;
-}
-
-.the-icons li {
-  font-size: 14px;
-  line-height: 24px;
-  height: 24px;
-}
-
 .icon-note:before { content: "\266a"; } /* '\266a' */
 .icon-note-beamed:before { content: "\266b"; } /* '\266b' */
 .icon-music:before { content: "🎵"; } /* '\1f3b5' */

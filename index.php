@@ -181,7 +181,7 @@ $components = json_decode($components,true);
                     if($data['title']=='break'){
                         echo("<hr>");
                     }else{
-                        echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].'"></span>'.$data['title'].'</a>');
+                        echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].' bigger-icon"></span>'.$data['title'].'</a>');
                     }
 
                 }
