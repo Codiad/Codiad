@@ -100,14 +100,14 @@
                 var menuItem = $(this).parent('li');
                 _this.moveDropdownMenuItemToTab(menuItem, true);
 
-                var tab = $('.tab-list li:last-child');
+                var tab = $('#tab-list li:last-child');
                 _this.moveTabToDropdownMenu(tab);
 
                 _this.focus($(this).parent('li').attr('data-path'));
             });
 
             // Focus from tab.
-            $('.tab-list li.tab-item>a.label')
+            $('#tab-list li.tab-item>a.label')
                 .live('mousedown', function() {
                 _this.focus($(this).parent('li').attr('data-path'));
             });
@@ -129,7 +129,7 @@
             });
 
             // Remove from tab.
-            $('.tab-list a.close')
+            $('#tab-list a.close')
                 .live('click', function(e) {
                 e.stopPropagation();
                 /* Get the active editor before removing anything. Remove the
@@ -155,7 +155,7 @@
             });
 
             // Make tabs sortable.
-            $('.tab-list')
+            $('#tab-list')
                 .sortable({
                 items: '> li',
                 axis: 'x',
@@ -171,12 +171,12 @@
                     ui.item.css('position', '')
                 }
             });
-            /* Woaw, so tricky! At initialization, the .tab-list is empty, so
+            /* Woaw, so tricky! At initialization, the tab-list is empty, so
              * it is not marked as float so it is not detected as an horizontal
              * list by the sortable plugin. Workaround is to mark it as
              * floating at initialization time. See bug report
              * http://bugs.jqueryui.com/ticket/6702. */
-            $('.tab-list').data('sortable').floating = true;
+            $('#tab-list').data('sortable').floating = true;
 
             // Open saved-state active files on load
             $.get(_this.controller + '?action=list', function(data) {
@@ -265,12 +265,12 @@
             /* If the tab list would overflow with the new tab. Move the
              * first tab to dropdown, then add a new tab. */
             if (this.isTabListOverflowed(true)) {
-                var tab = $('.tab-list li:first-child');
+                var tab = $('#tab-list li:first-child');
                 this.moveTabToDropdownMenu(tab);
             }
 
             var thumb = this.createTabThumb(path);
-            $('.tab-list').append(thumb);
+            $('#tab-list').append(thumb);
             session.thumb = thumb;
 
             this.updateTabDropdownVisibility();
@@ -296,7 +296,7 @@
         },
 
         highlightEntry: function(path) {
-            $('.tab-list li')
+            $('#tab-list li')
                 .removeClass('active');
             this.sessions[path].thumb.addClass('active');
         },
@@ -353,7 +353,7 @@
         close: function(path) {
             var session = this.sessions[path];
             session.thumb.remove();
-            var nextThumb = $('.tab-list li[data-path]');
+            var nextThumb = $('#tab-list li[data-path]');
             if (nextThumb.length == 0) {
                 codiad.editor.exterminate();
             } else {
@@ -565,8 +565,8 @@
             path = menuItem.attr('data-path');
 
             var thumb = this.createTabThumb(path);
-            if(prepend) $('.tab-list').prepend(thumb);
-            else $('.tab-list').append(thumb);
+            if(prepend) $('#tab-list').prepend(thumb);
+            else $('#tab-list').append(thumb);
             this.sessions[path].thumb = thumb;
         },
 
@@ -575,18 +575,18 @@
                 includeFictiveTab = false;
             }
 
-            var tab = $('.tab-list li:last-child');
+            var tab = $('#tab-list li:last-child');
             if (tab.length == 0) return false;
 
             var coef = 1;
             if (includeFictiveTab) coef = 2;
 
-            return (tab.position().left + coef * tab.outerWidth() >= $('.tab-list').width() - 320);
+            return (tab.position().left + coef * tab.outerWidth() >= $('#tab-list').width() - 320);
         },
 
         updateTabDropdownVisibility: function() {
             while(this.isTabListOverflowed()) {
-                var tab = $('.tab-list li:last-child');
+                var tab = $('#tab-list li:last-child');
                 // FIXME why the tab length test?
                 if (tab.length == 1) this.moveTabToDropdownMenu(tab);
                 else break;
