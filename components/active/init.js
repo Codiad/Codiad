@@ -580,17 +580,19 @@
         },
 
         updateTabDropdownVisibility: function() {
-            if (this.isTabListOverflowed()) {
+            while(this.isTabListOverflowed()) {
                 var tab = $('.tab-list li:last-child');
                 // FIXME why the tab length test?
                 if (tab.length == 1) this.moveTabToDropdownMenu(tab);
-            } else {
-                if (!this.isTabListOverflowed(true)) {
-                    var menuItem = $('#tab-dropdown-menu li:first-child');
-                    if (menuItem.length == 1) this.moveDropdownMenuItemToTab(menuItem);
-                }
+                else break;
             }
-
+            
+            while(!this.isTabListOverflowed(true)) {
+                var menuItem = $('#tab-dropdown-menu li:first-child');
+                if (menuItem.length == 1) this.moveDropdownMenuItemToTab(menuItem);
+                else break;
+            }
+            
             if ($('#tab-dropdown-menu li').length > 0) {
                 $('#tab-dropdown').show();
             } else {
