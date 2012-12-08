@@ -597,6 +597,8 @@
                 $('#tab-dropdown').show();
             } else {
                 $('#tab-dropdown').hide();
+                // Be sure to hide the menu if it is opened.
+                $('#tab-dropdown-menu').hide();
             }
         },
 
