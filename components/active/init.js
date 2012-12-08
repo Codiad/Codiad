@@ -601,10 +601,16 @@
             var count = tabs.length
             if (includeFictiveTab) count += 1;
             if (count <= 1) return false;
-            var tab = $(tabs[0]);
+            
+            var size = 0;
+            tabs.each(function(index) {
+                size += $(this).outerWidth(true);
+            })
+            if (includeFictiveTab) {
+                size += $(tabs[tabs.length-1]).outerWidth(true);
+            }
 
-            // Ajuste computation with the negative margin of tabs.
-            return (count * (tab.outerWidth() - 15) >= $('#tab-list').width() - 360);
+            return (size >= $('#tab-list').width() - 340);
         },
 
         updateTabDropdownVisibility: function() {
