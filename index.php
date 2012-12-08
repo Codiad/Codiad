@@ -73,10 +73,10 @@ $components = json_decode($components,true);
 
             <form id="login" method="post" style="position: fixed; width: 350px; top: 30%; left: 50%; margin-left: -175px; padding: 35px;">
 
-                <label><span class="icon">+</span> Username</label>
+                <label><span class="icon-user"></span> Username</label>
                 <input type="text" name="username" autofocus="autofocus" autocomplete="off">
 
-                <label><span class="icon">U</span> Password</label>
+                <label><span class="icon-lock"></span> Password</label>
                 <input type="password" name="password">
 
                 <button>Login</button>
@@ -102,7 +102,7 @@ $components = json_decode($components,true);
 
             <div class="sb-left-content">
 
-                <a id="lock-left-sidebar" class="icon-lock">U</i></a>
+                <a id="lock-left-sidebar" class="icon-lock"></a>
 
                 <div id="context-menu" data-path="" data-type="">
 
@@ -117,7 +117,7 @@ $components = json_decode($components,true);
                             if($data['title']=='Break'){
                                 echo('<hr class="'.$data['applies-to'].'">');
                             }else{
-                                echo('<a class="'.$data['applies-to'].'" onclick="'.$data['onclick'].'"><span class="icon">'.$data['icon'].'</span>'.$data['title'].'</a>');
+                                echo('<a class="'.$data['applies-to'].'" onclick="'.$data['onclick'].'"><span class="'.$data['icon'].'"></span>'.$data['title'].'</a>');
                             }
 
                         }
@@ -139,7 +139,7 @@ $components = json_decode($components,true);
         <div id="editor-region">
             <div id="editor-top-bar">
                 <ul class="tab-list"> </ul>
-                <div id="tab-dropdown" class="divider"><a id="tab-dropdown-button" class="icon">i</a></div>
+                <div id="tab-dropdown" class="divider"><a id="tab-dropdown-button" class="icon-down-open"></a></div>
                 <ul id="tab-dropdown-menu"></ul>
                 <div class="bar"></div>
             </div>
@@ -147,11 +147,11 @@ $components = json_decode($components,true);
             <div id="root-editor-wrapper"></div>
 
             <div id="editor-bottom-bar">
-                <a id="settings" class="ico-wrapper"><span class="icon">l</span>Settings</a>
+                <a id="settings" class="ico-wrapper"><span class="icon-doc-text"></span>Settings</a>
                 <div class="divider"></div>
-                <a id="split" class="ico-wrapper"><span class="icon">k</span>Split</a>
+                <a id="split" class="ico-wrapper"><span class="icon-layout"></span>Split</a>
                 <div class="divider"></div>
-                <a id="current-mode"><span class="icon">k</span></a>
+                <a id="current-mode"><span class="icon-layout"></span></a>
                 <div class="divider"></div>
                 <div id="current-file"></div>
             </div>
@@ -181,7 +181,7 @@ $components = json_decode($components,true);
                     if($data['title']=='break'){
                         echo("<hr>");
                     }else{
-                        echo('<a onclick="'.$data['onclick'].'"><span class="icon">'.$data['icon'].'</span>'.$data['title'].'</a>');
+                        echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].'"></span>'.$data['title'].'</a>');
                     }
 
                 }
@@ -195,7 +195,7 @@ $components = json_decode($components,true);
     </div>
 
     <div id="modal-overlay"></div>
-    <div id="modal"><div id="drag-handle" class="icon">0</div><div id="modal-content"></div></div>
+    <div id="modal"><div id="drag-handle" class="icon-location"></div><div id="modal-content"></div></div>
 
     <iframe id="download"></iframe>
 

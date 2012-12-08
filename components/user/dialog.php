@@ -46,16 +46,16 @@
             ?>
             <tr>
                 <td><?php echo($data['username']); ?></td>
-                <td><a onclick="codiad.user.password('<?php echo($data['username']); ?>');" class="icon">A</a></td>
-                <td><a onclick="codiad.user.projects('<?php echo($data['username']); ?>');" class="icon">t</a></td>
+                <td><a onclick="codiad.user.password('<?php echo($data['username']); ?>');" class="icon-flashlight"></a></td>
+                <td><a onclick="codiad.user.projects('<?php echo($data['username']); ?>');" class="icon-archive"></a></td>
                 <?php
                     if($_SESSION['user'] == $data['username']){
                     ?>
-                    <td><a onclick="codiad.message.error('You Cannot Delete Your Own Account');" class="icon">^</a></td>
+                    <td><a onclick="codiad.message.error('You Cannot Delete Your Own Account');" class="icon-block"></a></td>
                     <?php
                     }else{
                     ?>
-                    <td><a onclick="codiad.user.delete('<?php echo($data['username']); ?>');" class="icon">[</a></td>
+                    <td><a onclick="codiad.user.delete('<?php echo($data['username']); ?>');" class="icon-cancel-circled"></a></td>
                     <?php
                     }
                     ?>

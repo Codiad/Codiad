@@ -1,13 +1,13 @@
 [
     {
         "title": "New File",
-        "icon": "l",
+        "icon": "icon-doc-text",
         "applies-to" : "directory-only",
         "onclick": "codiad.filemanager.createNode($('#context-menu').attr('data-path'),'file');"
     },
     {
         "title": "New Folder",
-        "icon": "s",
+        "icon": "icon-folder",
         "applies-to" : "directory-only",
         "onclick": "codiad.filemanager.createNode($('#context-menu').attr('data-path'),'directory');"
     },
@@ -19,7 +19,7 @@
     },
     {
         "title": "Search",
-        "icon": "4",
+        "icon": "icon-target",
         "applies-to" : "directory-only",
         "onclick": "codiad.filemanager.search($('#context-menu').attr('data-path'));"
     },
@@ -31,7 +31,7 @@
     },
     {
         "title": "Upload Files",
-        "icon": "v",
+        "icon": "icon-upload",
         "applies-to" : "directory-only",
         "onclick": "codiad.filemanager.uploadToNode($('#context-menu').attr('data-path'));"
     },
@@ -43,13 +43,13 @@
     },
     {
         "title": "Copy",
-        "icon": "m",
+        "icon": "icon-doc",
         "applies-to" : "both",
         "onclick": "codiad.filemanager.copyNode($('#context-menu').attr('data-path'));"
     },
     {
         "title": "Paste",
-        "icon": "n",
+        "icon": "icon-docs",
         "applies-to" : "directory-only",
         "onclick": "codiad.filemanager.pasteNode($('#context-menu').attr('data-path'));"
     },
@@ -61,7 +61,7 @@
     },
     {
         "title": "Rename",
-        "icon": "&amp;",
+        "icon": "icon-pencil",
         "applies-to" : "non-root",
         "onclick": "codiad.filemanager.renameNode($('#context-menu').attr('data-path'));"
     },
@@ -73,7 +73,7 @@
     },
     {
         "title": "Delete",
-        "icon": "[",
+        "icon": "icon-cancel-circled",
         "applies-to" : "non-root",
         "onclick": "codiad.filemanager.deleteNode($('#context-menu').attr('data-path'));"
     },
@@ -85,7 +85,7 @@
     },
     {
         "title": "Download",
-        "icon": "x",
+        "icon": "icon-download",
         "applies-to" : "both",
         "onclick": "codiad.filemanager.download($('#context-menu').attr('data-path'));"
     },
@@ -97,7 +97,7 @@
     },
     {
         "title": "Rescan",
-        "icon": "d",
+        "icon": "icon-arrows-ccw",
         "applies-to" : "directory-only",
         "onclick": "codiad.filemanager.rescan($('#context-menu').attr('data-path'));"
     }
