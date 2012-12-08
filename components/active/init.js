@@ -599,10 +599,9 @@
 
             var tabs = $('#tab-list li');
             var count = tabs.length
-            if (count == 0) return false;
-            var tab = $(tabs[0]);
-
             if (includeFictiveTab) count += 1;
+            if (count <= 1) return false;
+            var tab = $(tabs[0]);
 
             // Ajuste computation with the negative margin of tabs.
             return (count * (tab.outerWidth() - 15) >= $('#tab-list').width() - 360);
