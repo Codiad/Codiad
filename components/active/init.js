@@ -512,11 +512,39 @@
         // Dropdown Menu
         //////////////////////////////////////////////////////////////////
 
-        createTabDropdownMenu: function() {
+        initMenuHandler: function(button, menu) {
             var _this = this;
+            var thisButton = button;
+            var thisMenu = menu;
+
+            thisMenu.appendTo($('body'));
+
+            thisButton.click(function(e) {
+                var wh = $(window).height();
+
+                e.stopPropagation();
+
+                thisMenu.css({
+                    top: $("#editor-top-bar").height() + 'px',
+                    right: '20px',
+                    width: '200px'
+                });
+
+                thisMenu.slideToggle('fast');
+
+                // handle click-out autoclosing
+                var fn = function() {
+                    thisMenu.hide();
+                    $(window).off('click', fn)
+                }
+                $(window).on('click', fn);
+            });
+        },
+
+        createTabDropdownMenu: function() {
             var _tabMenu = $('#tab-dropdown-menu');
 
-            codiad.dropdown.initMenuHandler($('#tab-dropdown-button'), _tabMenu);
+            this.initMenuHandler($('#tab-dropdown-button'), _tabMenu);
         },
 
         moveTabToDropdownMenu: function(tab) {

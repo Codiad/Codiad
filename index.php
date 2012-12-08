@@ -48,7 +48,6 @@ $components = json_decode($components,true);
     <script src="js/modal.js"></script>
     <script src="js/message.js"></script>
     <script src="js/jsend.js"></script>
-    <script src="js/dropdown.js"></script>
     <div id="message"></div>
 
     <?php
