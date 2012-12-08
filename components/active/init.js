@@ -95,19 +95,11 @@
             // Focus from dropdown.
             $('#tab-dropdown-menu a')
                 .live('click', function() {
-                /* Get the menu item as a tab, and put the first tab in
-                 * dropdown. */
-                var menuItem = $(this).parent('li');
-                _this.moveDropdownMenuItemToTab(menuItem);
-
-                var tab = $('.tab-list li:first-child');
-                _this.moveTabToDropdownMenu(tab);
-
                 _this.focus($(this).parent('li').attr('data-path'));
             });
 
             // Focus from tab.
-            $('.tab-list li.tab-item>a.label')
+            $('#tab-list li.tab-item>a.label')
                 .live('mousedown', function() {
                 _this.focus($(this).parent('li').attr('data-path'));
             });
@@ -129,7 +121,7 @@
             });
 
             // Remove from tab.
-            $('.tab-list a.close')
+            $('#tab-list a.close')
                 .live('click', function(e) {
                 e.stopPropagation();
                 /* Get the active editor before removing anything. Remove the
@@ -155,7 +147,7 @@
             });
 
             // Make tabs sortable.
-            $('.tab-list')
+            $('#tab-list')
                 .sortable({
                 items: '> li',
                 axis: 'x',
@@ -171,12 +163,12 @@
                     ui.item.css('position', '')
                 }
             });
-            /* Woaw, so tricky! At initialization, the .tab-list is empty, so
+            /* Woaw, so tricky! At initialization, the tab-list is empty, so
              * it is not marked as float so it is not detected as an horizontal
              * list by the sortable plugin. Workaround is to mark it as
              * floating at initialization time. See bug report
              * http://bugs.jqueryui.com/ticket/6702. */
-            $('.tab-list').data('sortable').floating = true;
+            $('#tab-list').data('sortable').floating = true;
 
             // Open saved-state active files on load
             $.get(_this.controller + '?action=list', function(data) {
@@ -191,10 +183,15 @@
             });
 
             // Run resize on window resize
-            $(window).on('resize', function() {
+            $(window).resize(function() {
                 codiad.editor.resize();
                 _this.updateTabDropdownVisibility();
             });
+            
+            // FIXME : Run resize on editor-region h-resize
+            //$('#editor-region').bind('h-resize', function() {
+            //    _this.updateTabDropdownVisibility();
+            //});
 
             // Prompt if a user tries to close window without saving all filess
             window.onbeforeunload = function(e) {
@@ -265,12 +262,12 @@
             /* If the tab list would overflow with the new tab. Move the
              * first tab to dropdown, then add a new tab. */
             if (this.isTabListOverflowed(true)) {
-                var tab = $('.tab-list li:first-child');
+                var tab = $('#tab-list li:first-child');
                 this.moveTabToDropdownMenu(tab);
             }
 
             var thumb = this.createTabThumb(path);
-            $('.tab-list').append(thumb);
+            $('#tab-list').append(thumb);
             session.thumb = thumb;
 
             this.updateTabDropdownVisibility();
@@ -296,9 +293,24 @@
         },
 
         highlightEntry: function(path) {
-            $('.tab-list li')
+            
+            $('#tab-list li')
                 .removeClass('active');
-            this.sessions[path].thumb.addClass('active');
+                
+            var session = this.sessions[path];
+            
+            if($('#tab-dropdown-menu').has(session.thumb).length > 0) {
+                 /* Get the menu item as a tab, and put the last tab in
+                 * dropdown. */
+                var menuItem = session.thumb;
+                this.moveDropdownMenuItemToTab(menuItem, true);
+    
+                var tab = $('#tab-list li:last-child');
+                this.moveTabToDropdownMenu(tab);
+            }
+                           
+            
+            session.thumb.addClass('active');
         },
 
         //////////////////////////////////////////////////////////////////
@@ -353,7 +365,7 @@
         close: function(path) {
             var session = this.sessions[path];
             session.thumb.remove();
-            var nextThumb = $('.tab-list li[data-path]');
+            var nextThumb = $('#tab-list li[data-path]');
             if (nextThumb.length == 0) {
                 codiad.editor.exterminate();
             } else {
@@ -547,21 +559,36 @@
             this.initMenuHandler($('#tab-dropdown-button'), _tabMenu);
         },
 
-        moveTabToDropdownMenu: function(tab) {
+        moveTabToDropdownMenu: function(tab) {        
             tab.remove();
             path = tab.attr('data-path');
 
-            var thumb = this.createMenuThumb(path);
+            var thumb = this.createMenuItemThumb(path);
             $('#tab-dropdown-menu').append(thumb);
+            
+            if(tab.hasClass("changed")) {
+                thumb.addClass("changed");
+            }
+            
             this.sessions[path].thumb = thumb;
         },
 
-        moveDropdownMenuItemToTab: function(menuItem) {
+        moveDropdownMenuItemToTab: function(menuItem, prepend) {
+            if (typeof prepend == 'undefined') {
+                prepend = false;
+            }
+            
             menuItem.remove();
             path = menuItem.attr('data-path');
 
             var thumb = this.createTabThumb(path);
-            $('.tab-list').append(thumb);
+            if(prepend) $('#tab-list').prepend(thumb);
+            else $('#tab-list').append(thumb);
+
+            if(menuItem.hasClass("changed")) {
+                thumb.addClass("changed");
+            }
+            
             this.sessions[path].thumb = thumb;
         },
 
@@ -570,31 +597,41 @@
                 includeFictiveTab = false;
             }
 
-            var tab = $('.tab-list li:last-child');
-            if (tab.length == 0) return false;
+            var tabs = $('#tab-list li');
+            var count = tabs.length
+            if (includeFictiveTab) count += 1;
+            if (count <= 1) return false;
+            
+            var size = 0;
+            tabs.each(function(index) {
+                size += $(this).outerWidth(true);
+            })
+            if (includeFictiveTab) {
+                size += $(tabs[tabs.length-1]).outerWidth(true);
+            }
 
-            var coef = 1;
-            if (includeFictiveTab) coef = 2;
-
-            return (tab.position().left + coef * tab.outerWidth() >= $('.tab-list').width() - 320);
+            return (size >= $('#tab-list').width() - 340);
         },
 
         updateTabDropdownVisibility: function() {
-            if (this.isTabListOverflowed()) {
-                var tab = $('.tab-list li:last-child');
-                // FIXME why the tab length test?
+            while(this.isTabListOverflowed()) {
+                var tab = $('#tab-list li:last-child');
                 if (tab.length == 1) this.moveTabToDropdownMenu(tab);
-            } else {
-                if (!this.isTabListOverflowed(true)) {
-                    var menuItem = $('#tab-dropdown-menu li:first-child');
-                    if (menuItem.length == 1) this.moveDropdownMenuItemToTab(menuItem);
-                }
+                else break;
             }
-
+            
+            while(!this.isTabListOverflowed(true)) {
+                var menuItem = $('#tab-dropdown-menu li:first-child');
+                if (menuItem.length == 1) this.moveDropdownMenuItemToTab(menuItem);
+                else break;
+            }
+            
             if ($('#tab-dropdown-menu li').length > 0) {
                 $('#tab-dropdown').show();
             } else {
                 $('#tab-dropdown').hide();
+                // Be sure to hide the menu if it is opened.
+                $('#tab-dropdown-menu').hide();
             }
         },
 
@@ -606,8 +643,8 @@
             return $('<li class="tab-item" data-path="' + path + '"><a class="label" title="' + path + '">' + path.substring(1) + '</a><a class="close">x</a></li>');
         },
 
-        createMenuThumb: function(path) {
-            return thumb = $('<li data-path="' + path + '"><a title="' + path + '"><span></span><div class="label">' + path.substring(1) + '</div></a></li>');
+        createMenuItemThumb: function(path) {
+            return $('<li data-path="' + path + '"><a title="' + path + '"><span></span><div class="label">' + path.substring(1) + '</div></a></li>');
         },
 
     };
