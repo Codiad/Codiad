@@ -183,10 +183,15 @@
             });
 
             // Run resize on window resize
-            $(window).on('resize', function() {
+            $(window).resize(function() {
                 codiad.editor.resize();
                 _this.updateTabDropdownVisibility();
             });
+            
+            // FIXME : Run resize on editor-region h-resize
+            //$('#editor-region').bind('h-resize', function() {
+            //    _this.updateTabDropdownVisibility();
+            //});
 
             // Prompt if a user tries to close window without saving all filess
             window.onbeforeunload = function(e) {
@@ -604,7 +609,6 @@
         updateTabDropdownVisibility: function() {
             while(this.isTabListOverflowed()) {
                 var tab = $('#tab-list li:last-child');
-                // FIXME why the tab length test?
                 if (tab.length == 1) this.moveTabToDropdownMenu(tab);
                 else break;
             }
