@@ -95,14 +95,6 @@
             // Focus from dropdown.
             $('#tab-dropdown-menu a')
                 .live('click', function() {
-                /* Get the menu item as a tab, and put the last tab in
-                 * dropdown. */
-                var menuItem = $(this).parent('li');
-                _this.moveDropdownMenuItemToTab(menuItem, true);
-
-                var tab = $('#tab-list li:last-child');
-                _this.moveTabToDropdownMenu(tab);
-
                 _this.focus($(this).parent('li').attr('data-path'));
             });
 
@@ -296,9 +288,24 @@
         },
 
         highlightEntry: function(path) {
+            
             $('#tab-list li')
                 .removeClass('active');
-            this.sessions[path].thumb.addClass('active');
+                
+            var session = this.sessions[path];
+            
+            if($('#tab-dropdown-menu').has(session.thumb).length > 0) {
+                 /* Get the menu item as a tab, and put the last tab in
+                 * dropdown. */
+                var menuItem = session.thumb;
+                this.moveDropdownMenuItemToTab(menuItem, true);
+    
+                var tab = $('#tab-list li:last-child');
+                this.moveTabToDropdownMenu(tab);
+            }
+                           
+            
+            session.thumb.addClass('active');
         },
 
         //////////////////////////////////////////////////////////////////
