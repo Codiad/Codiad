@@ -551,7 +551,7 @@
             tab.remove();
             path = tab.attr('data-path');
 
-            var thumb = this.createMenuThumb(path);
+            var thumb = this.createMenuItemThumb(path);
             $('#tab-dropdown-menu').append(thumb);
             this.sessions[path].thumb = thumb;
         },
@@ -610,8 +610,8 @@
             return $('<li class="tab-item" data-path="' + path + '"><a class="label" title="' + path + '">' + path.substring(1) + '</a><a class="close">x</a></li>');
         },
 
-        createMenuThumb: function(path) {
-            return thumb = $('<li data-path="' + path + '"><a title="' + path + '"><span></span><div class="label">' + path.substring(1) + '</div></a></li>');
+        createMenuItemThumb: function(path) {
+            return $('<li data-path="' + path + '"><a title="' + path + '"><span></span><div class="label">' + path.substring(1) + '</div></a></li>');
         },
 
     };
