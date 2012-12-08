@@ -97,6 +97,15 @@ a:hover,a:active {;
     margin-right: 6px;
 }
 
+/* Fix bad margin at some sizes for icon-doc-text. */
+.icon-doc-text {
+    padding-right: 3px;
+}
+
+.icon-doc.text.bigger-icon {
+    padding-right: 0px;
+}
+
 /* FORMS */
 
 label {
