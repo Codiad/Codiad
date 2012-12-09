@@ -592,29 +592,47 @@
             this.sessions[path].thumb = thumb;
         },
 
-        isTabListOverflowed: function(includeFictiveTab) {
-            if (typeof includeFictiveTab == 'undefined') {
-                includeFictiveTab = false;
-            }
+    isTabListOverflowed: function(includeFictiveTab) {
+        if (typeof includeFictiveTab == 'undefined') {
+            includeFictiveTab = false;
+        }
 
-            var tabs = $('#tab-list li');
-            var count = tabs.length
-            if (includeFictiveTab) count += 1;
-            if (count <= 1) return false;
-            
-            var size = 0;
-            tabs.each(function(index) {
-                size += $(this).outerWidth(true);
-            })
-            if (includeFictiveTab) {
-                size += $(tabs[tabs.length-1]).outerWidth(true);
-            }
+        var tabs = $('#tab-list li');
+        var count = tabs.length
+        if (includeFictiveTab) count += 1;
+        if (count <= 1) return false;
+        
+        var width = 0;
+        tabs.each(function(index) {
+            width += $(this).outerWidth(true);
+        })
+        if (includeFictiveTab) {
+            width += $(tabs[tabs.length-1]).outerWidth(true);
+        }
 
-            return (size >= $('#tab-list').width() - 340);
-        },
+        /* If we subtract the width of the left side bar, of the right side
+         * bar handle and of the tab dropdown handle to the window width,
+         * do we have enough room for the tab list? Its kind of complicated
+         * to handle all the offsets, so afterwards we add a fixed offset
+         * just t be sure. */
+        var lsbarWidth = $(".sidebar-handle").width();
+        if (codiad.sidebars.isLeftSidebarOpen) {
+            lsbarWidth = $("#sb-left").width();
+        }
 
-        updateTabDropdownVisibility: function() {
-            while(this.isTabListOverflowed()) {
+        var rsbarWidth = $(".sidebar-handle").width();
+        if (codiad.sidebars.isRightSidebarOpen) {
+            rsbarWidth = $("#sb-left").width();
+        }
+
+        var tabListWidth = $("#tab-list").width();
+        var dropdownWidth = $('#tab-dropdown').width();
+        var room = window.innerWidth - lsbarWidth - rsbarWidth - dropdownWidth - width - 30;
+        return (room < 0);
+    },
+
+    updateTabDropdownVisibility: function() {
+        while(this.isTabListOverflowed()) {
                 var tab = $('#tab-list li:last-child');
                 if (tab.length == 1) this.moveTabToDropdownMenu(tab);
                 else break;
