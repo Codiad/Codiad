@@ -95,19 +95,26 @@
             // Focus from list.
             $('#list-active-files a')
                 .live('click', function() {
-                _this.focus($(this).parent('li').attr('data-path'));
+                    e.stopPropagation();
+                    _this.focus($(this).parent('li').attr('data-path'));
             });
 
-            // Focus from dropdown.
+            // Focus on left button click from dropdown.
             $('#dropdown-list-active-files a')
-                .live('click', function() {
-                _this.focus($(this).parent('li').attr('data-path'));
+                .live('click', function(e) {
+                    if(e.which == 1) {
+                        e.stopPropagation();
+                        _this.focus($(this).parent('li').attr('data-path'));
+                    }
             });
 
-            // Focus from tab.
+            // Focus on left button mousedown from tab.
             $('#tab-list-active-files li.tab-item>a.label')
-                .live('mousedown', function() {
-                _this.focus($(this).parent('li').attr('data-path'));
+                .live('mousedown', function(e) {
+                    if(e.which == 1) {
+                        e.stopPropagation();
+                        _this.focus($(this).parent('li').attr('data-path'));
+                    }
             });
 
             // Remove fom list.
