@@ -255,7 +255,7 @@ table [class^="icon-"], [class*=" icon-"] {
 #message {
     display: none;
     position: fixed;
-    top: 35px;
+    top: 0px;
     left: 50%;
     width: 500px;
     margin-left: -250px;
