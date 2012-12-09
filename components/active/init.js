@@ -333,6 +333,9 @@
             $('#tab-list li')
                 .removeClass('active');
                 
+            $('#tab-dropdown-menu li')
+                .removeClass('active');
+                
             var session = this.sessions[path];
             
             if($('#tab-dropdown-menu').has(session.thumb).length > 0) {
@@ -595,15 +598,24 @@
             this.initMenuHandler($('#tab-dropdown-button'), _tabMenu);
         },
 
-        moveTabToDropdownMenu: function(tab) {        
+        moveTabToDropdownMenu: function(tab, prepend) {
+            if (typeof prepend == 'undefined') {
+                prepend = false;
+            }
+            
             tab.remove();
             path = tab.attr('data-path');
 
             var thumb = this.createMenuItemThumb(path);
-            $('#tab-dropdown-menu').append(thumb);
+            if(prepend) $('#tab-dropdown-menu').prepend(thumb);
+            else $('#tab-dropdown-menu').append(thumb);
             
             if(tab.hasClass("changed")) {
                 thumb.addClass("changed");
+            }
+            
+            if(tab.hasClass("active")) {
+                thumb.addClass("active");
             }
             
             this.sessions[path].thumb = thumb;
@@ -625,52 +637,56 @@
                 thumb.addClass("changed");
             }
             
+            if(menuItem.hasClass("active")) {
+                thumb.addClass("active");
+            }
+            
             this.sessions[path].thumb = thumb;
         },
-
-    isTabListOverflowed: function(includeFictiveTab) {
-        if (typeof includeFictiveTab == 'undefined') {
-            includeFictiveTab = false;
-        }
-
-        var tabs = $('#tab-list li');
-        var count = tabs.length
-        if (includeFictiveTab) count += 1;
-        if (count <= 1) return false;
-        
-        var width = 0;
-        tabs.each(function(index) {
-            width += $(this).outerWidth(true);
-        })
-        if (includeFictiveTab) {
-            width += $(tabs[tabs.length-1]).outerWidth(true);
-        }
-
-        /* If we subtract the width of the left side bar, of the right side
-         * bar handle and of the tab dropdown handle to the window width,
-         * do we have enough room for the tab list? Its kind of complicated
-         * to handle all the offsets, so afterwards we add a fixed offset
-         * just t be sure. */
-        var lsbarWidth = $(".sidebar-handle").width();
-        if (codiad.sidebars.isLeftSidebarOpen) {
-            lsbarWidth = $("#sb-left").width();
-        }
-
-        var rsbarWidth = $(".sidebar-handle").width();
-        if (codiad.sidebars.isRightSidebarOpen) {
-            rsbarWidth = $("#sb-left").width();
-        }
-
-        var tabListWidth = $("#tab-list").width();
-        var dropdownWidth = $('#tab-dropdown').width();
-        var room = window.innerWidth - lsbarWidth - rsbarWidth - dropdownWidth - width - 30;
-        return (room < 0);
-    },
-
-    updateTabDropdownVisibility: function() {
-        while(this.isTabListOverflowed()) {
+    
+        isTabListOverflowed: function(includeFictiveTab) {
+            if (typeof includeFictiveTab == 'undefined') {
+                includeFictiveTab = false;
+            }
+    
+            var tabs = $('#tab-list li');
+            var count = tabs.length
+            if (includeFictiveTab) count += 1;
+            if (count <= 1) return false;
+            
+            var width = 0;
+            tabs.each(function(index) {
+                width += $(this).outerWidth(true);
+            })
+            if (includeFictiveTab) {
+                width += $(tabs[tabs.length-1]).outerWidth(true);
+            }
+    
+            /* If we subtract the width of the left side bar, of the right side
+             * bar handle and of the tab dropdown handle to the window width,
+             * do we have enough room for the tab list? Its kind of complicated
+             * to handle all the offsets, so afterwards we add a fixed offset
+             * just t be sure. */
+            var lsbarWidth = $(".sidebar-handle").width();
+            if (codiad.sidebars.isLeftSidebarOpen) {
+                lsbarWidth = $("#sb-left").width();
+            }
+    
+            var rsbarWidth = $(".sidebar-handle").width();
+            if (codiad.sidebars.isRightSidebarOpen) {
+                rsbarWidth = $("#sb-left").width();
+            }
+    
+            var tabListWidth = $("#tab-list").width();
+            var dropdownWidth = $('#tab-dropdown').width();
+            var room = window.innerWidth - lsbarWidth - rsbarWidth - dropdownWidth - width - 30;
+            return (room < 0);
+        },
+    
+        updateTabDropdownVisibility: function() {
+            while(this.isTabListOverflowed()) {
                 var tab = $('#tab-list li:last-child');
-                if (tab.length == 1) this.moveTabToDropdownMenu(tab);
+                if (tab.length == 1) this.moveTabToDropdownMenu(tab, true);
                 else break;
             }
             
