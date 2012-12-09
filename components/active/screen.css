@@ -46,6 +46,7 @@
     overflow: hidden;
     text-decoration: none;
     direction: rtl;
+    white-space: nowrap;
 }
 
 #tab-list-active-files li.changed {
