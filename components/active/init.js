@@ -136,6 +136,42 @@
                 _this.updateTabDropdownVisibility();
             });
 
+            // Remove from middle button click on dropdown.
+            $('#tab-dropdown-menu li')
+                .live('mouseup', function(e) {
+                    if (e.which == 2) {
+                        e.stopPropagation();
+                        /* Get the active editor before removing anything. Remove the
+                         * tab, then put back the focus on the previously active
+                         * editor if it was not removed. */
+                        var activePath = _this.getPath();
+                        var pathToRemove = $(this).attr('data-path');
+                        _this.remove(pathToRemove);
+                        if (activePath !== null && activePath !== pathToRemove) {
+                            _this.focus(activePath);
+                        }
+                        _this.updateTabDropdownVisibility();
+                    }
+            });
+
+            // Remove from middle button click on tab.
+            $('.tab-item')
+                .live('mouseup', function(e) {
+                    if (e.which == 2) {
+                        e.stopPropagation();
+                        /* Get the active editor before removing anything. Remove the
+                         * tab, then put back the focus on the previously active
+                         * editor if it was not removed. */
+                        var activePath = _this.getPath();
+                        var pathToRemove = $(this).attr('data-path');
+                        _this.remove(pathToRemove);
+                        if (activePath !== null && activePath !== pathToRemove) {
+                            _this.focus(activePath);
+                        }
+                        _this.updateTabDropdownVisibility();
+                    }
+            });
+
             // Make dropdown sortable.
             $('#tab-dropdown-menu')
                 .sortable({
