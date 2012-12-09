@@ -653,7 +653,8 @@
                                                    session.getMode());
                 proxySession.setUndoManager(new UndoManager());
                 proxySession.path = session.path;
-                proxySession.thumb = session.thumb;
+                proxySession.listThumb = session.listThumb;
+                proxySession.tabThumb = session.tabThumb;
                 i.setSession(proxySession);
             }
             this.setActive(i);
