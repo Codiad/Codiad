@@ -28,7 +28,7 @@ switch($_GET['action']){
     ?>
     <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">   
     <input type="hidden" name="type" value="<?php echo($_GET['type']); ?>">
-    <label><span class="icon">&amp;</span><?php echo(ucfirst($_GET['type'])); ?> Name</label>    
+    <label><span class="icon-pencil"></span><?php echo(ucfirst($_GET['type'])); ?> Name</label>    
     <input type="text" name="object_name" autofocus="autofocus" autocomplete="off">  
     <button class="btn-left">Create</button><button class="btn-right" onclick="codiad.modal.unload(); return false;">Cancel</button>
     <?php
@@ -41,7 +41,7 @@ switch($_GET['action']){
     ?>
     <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">
     <input type="hidden" name="type" value="<?php echo($_GET['type']); ?>"> 
-    <label><span class="icon">&amp;</span>Rename <?php echo(ucfirst($_GET['type'])); ?></label>    
+    <label><span class="icon-pencil"></span>Rename <?php echo(ucfirst($_GET['type'])); ?></label>    
     <input type="text" name="object_name" autofocus="autofocus" autocomplete="off" value="<?php echo($_GET['short_name']); ?>">  
     <button class="btn-left">Rename</button><button class="btn-right" onclick="codiad.modal.unload(); return false;">Cancel</button>
     <?php

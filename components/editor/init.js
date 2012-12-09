@@ -349,7 +349,8 @@
             var _this = this;
 
             if (this.instances.length == 0) {
-                el.appendTo($('#editor-region'));
+                // el.appendTo($('#editor-region'));
+                el.appendTo($('#root-editor-wrapper'));
             } else {
 
                 var ch = this.activeInstance.el;
@@ -438,13 +439,13 @@
 
             $('#split-horizontally a').click(function(e){
                 e.stopPropagation();
-                _this.addInstance(_this.activeInstance.getSession(), 'right');
+                _this.addInstance(_this.activeInstance.getSession(), 'bottom');
                 _splitOptionsMenu.hide();
             });
 
             $('#split-vertically a').click(function(e){
                 e.stopPropagation();
-                _this.addInstance(_this.activeInstance.getSession(), 'bottom');
+                _this.addInstance(_this.activeInstance.getSession(), 'right');
                 _splitOptionsMenu.hide();
             });
 
@@ -652,7 +653,8 @@
                                                    session.getMode());
                 proxySession.setUndoManager(new UndoManager());
                 proxySession.path = session.path;
-                proxySession.thumb = session.thumb;
+                proxySession.listThumb = session.listThumb;
+                proxySession.tabThumb = session.tabThumb;
                 i.setSession(proxySession);
             }
             this.setActive(i);
