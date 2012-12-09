@@ -83,31 +83,120 @@
             // Assuming the mode file has no dependencies
             $.loadScript('components/editor/ace-editor/mode-' + mode + '.js',
             fn);
-
         },
 
         init: function() {
 
             var _this = this;
 
-            // Focus
-            $('#active-files a')
+            _this.createTabDropdownMenu();
+            _this.updateTabDropdownVisibility();
+            
+            // Focus from list.
+            $('#list-active-files a')
                 .live('click', function() {
-                _this.focus($(this)
-                    .attr('data-path'));
+                    e.stopPropagation();
+                    _this.focus($(this).parent('li').attr('data-path'));
             });
 
-            // Remove
-            $('#active-files a>span')
+            // Focus on left button click from dropdown.
+            $('#dropdown-list-active-files a')
+                .live('click', function(e) {
+                    if(e.which == 1) {
+                        e.stopPropagation();
+                        _this.focus($(this).parent('li').attr('data-path'));
+                    }
+            });
+
+            // Focus on left button mousedown from tab.
+            $('#tab-list-active-files li.tab-item>a.label')
+                .live('mousedown', function(e) {
+                    if(e.which == 1) {
+                        e.stopPropagation();
+                        _this.focus($(this).parent('li').attr('data-path'));
+                    }
+            });
+
+            // Remove fom list.
+            $('#list-active-files a>span')
                 .live('click', function(e) {
                 e.stopPropagation();
                 _this.remove($(this)
                     .parent('a')
+                    .parent('li')
                     .attr('data-path'));
             });
+            
+            // Remove from dropdown.
+            $('#dropdown-list-active-files a>span')
+                .live('click', function(e) {
+                e.stopPropagation();
+                /* Get the active editor before removing anything. Remove the
+                 * tab, then put back the focus on the previously active
+                 * editor if it was not removed. */
+                var activePath = _this.getPath();
+                var pathToRemove = $(this).parents('li').attr('data-path');
+                _this.remove(pathToRemove);
+                if (activePath !== null && activePath !== pathToRemove) {
+                    _this.focus(activePath);
+                }
+                _this.updateTabDropdownVisibility();
+            });
 
-            // Sortable
-            $('#active-files')
+            // Remove from tab.
+            $('#tab-list-active-files a.close')
+                .live('click', function(e) {
+                e.stopPropagation();
+                /* Get the active editor before removing anything. Remove the
+                 * tab, then put back the focus on the previously active
+                 * editor if it was not removed. */
+                var activePath = _this.getPath();
+                var pathToRemove = $(this).parent('li').attr('data-path');
+                _this.remove(pathToRemove);
+                if (activePath !== null && activePath !== pathToRemove) {
+                    _this.focus(activePath);
+                }
+                _this.updateTabDropdownVisibility();
+            });
+
+            // Remove from middle button click on dropdown.
+            $('#dropdown-list-active-files li')
+                .live('mouseup', function(e) {
+                    if (e.which == 2) {
+                        e.stopPropagation();
+                        /* Get the active editor before removing anything. Remove the
+                         * tab, then put back the focus on the previously active
+                         * editor if it was not removed. */
+                        var activePath = _this.getPath();
+                        var pathToRemove = $(this).attr('data-path');
+                        _this.remove(pathToRemove);
+                        if (activePath !== null && activePath !== pathToRemove) {
+                            _this.focus(activePath);
+                        }
+                        _this.updateTabDropdownVisibility();
+                    }
+            });
+
+            // Remove from middle button click on tab.
+            $('.tab-item')
+                .live('mouseup', function(e) {
+                    if (e.which == 2) {
+                        e.stopPropagation();
+                        /* Get the active editor before removing anything. Remove the
+                         * tab, then put back the focus on the previously active
+                         * editor if it was not removed. */
+                        var activePath = _this.getPath();
+                        var pathToRemove = $(this).attr('data-path');
+                        _this.remove(pathToRemove);
+                        if (activePath !== null && activePath !== pathToRemove) {
+                            _this.focus(activePath);
+                        }
+                        _this.updateTabDropdownVisibility();
+                    }
+            });
+            
+            // Make list sortable
+            $('#list-active-files')
                 .sortable({
                 placeholder: 'active-sort-placeholder',
                 tolerance: 'intersect',
@@ -115,6 +204,40 @@
                     ui.placeholder.height(ui.item.height());
                 }
             });
+
+            // Make dropdown sortable.
+            $('#dropdown-list-active-files')
+                .sortable({
+                placeholder: 'active-sort-placeholder',
+                tolerance: 'pointer',
+                start: function(e, ui) {
+                    ui.placeholder.height(ui.item.height());
+                }
+            });
+
+            // Make tabs sortable.
+            $('#tab-list-active-files')
+                .sortable({
+                items: '> li',
+                axis: 'x',
+                tolerance: 'pointer',
+                containment: 'parent',
+                start: function(e, ui) {
+                    ui.placeholder.css('background', 'transparent');
+                    ui.helper.css('width', '200px');
+                },
+                stop: function(e, ui) {
+                    // Reset css
+                    ui.item.css('z-index', '')
+                    ui.item.css('position', '')
+                }
+            });
+            /* Woaw, so tricky! At initialization, the tab-list is empty, so
+             * it is not marked as float so it is not detected as an horizontal
+             * list by the sortable plugin. Workaround is to mark it as
+             * floating at initialization time. See bug report
+             * http://bugs.jqueryui.com/ticket/6702. */
+            $('#tab-list-active-files').data('sortable').floating = true;
 
             // Open saved-state active files on load
             $.get(_this.controller + '?action=list', function(data) {
@@ -129,14 +252,14 @@
             });
 
             // Run resize on window resize
-            $(window)
-                .on('resize', function() {
+            $(window).resize(function() {
                 codiad.editor.resize();
+                _this.updateTabDropdownVisibility();
             });
 
             // Prompt if a user tries to close window without saving all filess
             window.onbeforeunload = function(e) {
-                if ($('#active-files a.changed')
+                if ($('#list-active-files li.changed')
                     .length > 0) {
                     var e = e || window.event;
                     var errMsg = 'You have unsaved files.';
@@ -200,12 +323,26 @@
         //////////////////////////////////////////////////////////////////
 
         add: function(path, session) {
-            var thumb = $('<a title="'+path+'" data-path="' + path + '"><span></span><div>' + path.substring(1) + '</div></a>');
-            session.thumb = thumb;
-            $('#active-files')
-                .append($('<li>')
-                .append(thumb));
+            
+            var listThumb = this.createListThumb(path);
+            session.listThumb = listThumb;
+            $('#list-active-files').append(listThumb);
+                
+            /* If the tab list would overflow with the new tab. Move the
+             * first tab to dropdown, then add a new tab. */
+            if (this.isTabListOverflowed(true)) {
+                var tab = $('#tab-list-active-files li:first-child');
+                this.moveTabToDropdownMenu(tab);
+            }
+
+            var tabThumb = this.createTabThumb(path);
+            $('#tab-list-active-files').append(tabThumb);
+            session.tabThumb = tabThumb;
+
+            this.updateTabDropdownVisibility();
+
             $.get(this.controller + '?action=add&path=' + path);
+
             this.focus(path);
             // Mark draft as changed
             if (this.checkDraft(path)) {
@@ -224,10 +361,31 @@
             this.check(path);
         },
 
-        highlightEntry: function(path){
-            $('#active-files a')
+        highlightEntry: function(path) {
+            
+            $('#list-active-files li')
                 .removeClass('active');
-            this.sessions[path].thumb.addClass('active');
+            
+            $('#tab-list-active-files li')
+                .removeClass('active');
+                
+            $('#dropdown-list-active-files li')
+                .removeClass('active');
+                
+            var session = this.sessions[path];
+            
+            if($('#dropdown-list-active-files').has(session.tabThumb).length > 0) {
+                 /* Get the menu item as a tab, and put the last tab in
+                 * dropdown. */
+                var menuItem = session.tabThumb;
+                this.moveDropdownMenuItemToTab(menuItem, true);
+    
+                var tab = $('#tab-list-active-files li:last-child');
+                this.moveTabToDropdownMenu(tab);
+            }
+                           
+            session.tabThumb.addClass('active');
+            session.listThumb.addClass('active');
         },
 
         //////////////////////////////////////////////////////////////////
@@ -235,7 +393,8 @@
         //////////////////////////////////////////////////////////////////
 
         markChanged: function(path) {
-            this.sessions[path].thumb.addClass('changed');
+            this.sessions[path].listThumb.addClass('changed');
+            this.sessions[path].tabThumb.addClass('changed');
         },
 
         //////////////////////////////////////////////////////////////////
@@ -256,7 +415,8 @@
             var path = session.path;
             codiad.filemanager.saveFile(path, content, {
                 success: function() {
-                    session.thumb.removeClass('changed');
+                    session.listThumb.removeClass('changed');
+                    session.tabThumb.removeClass('changed');
                     _this.removeDraft(path);
                 }
             });
@@ -270,7 +430,7 @@
             if (!this.isOpen(path)) return;
             var session = this.sessions[path];
             var closeFile = true;
-            if (session.thumb.hasClass('changed')) {
+            if (session.listThumb.hasClass('changed')) {
                 codiad.modal.load(450, 'components/active/dialog.php?action=confirm&path=' + path);
                 closeFile = false;
             }
@@ -281,17 +441,18 @@
 
         close: function(path) {
             var session = this.sessions[path];
-            session.thumb.parent('li')
-                .remove();
-            var nextThumb = $('#active-files a[data-path]');
-            if (nextThumb.length == 0) {
+            session.listThumb.remove();
+            session.tabThumb.remove();
+            var nexttabThumb = $('#tab-list-active-files li[data-path]');
+            if (nexttabThumb.length == 0) {
                 codiad.editor.exterminate();
             } else {
-                $(nextThumb[0])
-                    .addClass('active');
-                var nextPath = nextThumb.attr('data-path');
+                var nextPath = nexttabThumb.attr('data-path');
                 var nextSession = this.sessions[nextPath];
                 codiad.editor.removeSession(session, nextSession);
+                
+                nextSession.listThumb.addClass('active');
+                nextSession.tabThumb.addClass('active');
             }
             delete this.sessions[path];
             $.get(this.controller + '?action=remove&path=' + path);
@@ -304,9 +465,9 @@
 
         rename: function(oldPath, newPath) {
             var switchSessions = function(oldPath, newPath) {
-                var thumb = this.sessions[oldPath].thumb;
-                thumb.attr('data-path', newPath);
-                thumb.find('div')
+                var tabThumb = this.sessions[oldPath].tabThumb;
+                tabThumb.attr('data-path', newPath);
+                tabThumb.find('.label')
                     .text(newPath.substring(1));
                 this.sessions[newPath] = this.sessions[oldPath];
                 this.sessions[newPath].path = newPath;
@@ -329,9 +490,9 @@
                 var mode = codiad.editor.selectMode(ext);
 
                 // handle async mode change
-                var fn = function(){
-                   codiad.editor.setModeDisplay(newSession);
-                   newSession.removeListener('changeMode', fn);                   
+                var fn = function() {
+                    codiad.editor.setModeDisplay(newSession);
+                    newSession.removeListener('changeMode', fn);
                 }
 
                 newSession.on("changeMode", fn);
@@ -404,30 +565,26 @@
 
         move: function(dir) {
 
-            var num = $('#active-files a')
+            var num = $('#list-active-files li')
                 .length;
             if (num > 1) {
                 if (dir == 'up') {
                     // Move Up or rotate to bottom
-                    newActive = $('#active-files li a.active')
-                        .parent('li')
+                    newActive = $('#list-active-files li.active')
                         .prev('li')
-                        .children('a')
                         .attr('data-path');
                     if (!newActive) {
-                        newActive = $('#active-files li:last-child a')
+                        newActive = $('#list-active-files li:last-child')
                             .attr('data-path');
                     }
 
                 } else {
                     // Move down or rotate to top
-                    newActive = $('#active-files li a.active')
-                        .parent('li')
+                    newActive = $('#list-active-files li.active')
                         .next('li')
-                        .children('a')
                         .attr('data-path');
                     if (!newActive) {
-                        newActive = $('#active-files li:first-child a')
+                        newActive = $('#list-active-files li:first-child')
                             .attr('data-path');
                     }
 
@@ -436,7 +593,169 @@
                 this.focus(newActive);
             }
 
-        }
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Dropdown Menu
+        //////////////////////////////////////////////////////////////////
+
+        initMenuHandler: function(button, menu) {
+            var _this = this;
+            var thisButton = button;
+            var thisMenu = menu;
+
+            thisMenu.appendTo($('body'));
+
+            thisButton.click(function(e) {
+                var wh = $(window).height();
+
+                e.stopPropagation();
+
+                thisMenu.css({
+                    top: $("#editor-top-bar").height() + 'px',
+                    right: '20px',
+                    width: '200px'
+                });
+
+                thisMenu.slideToggle('fast');
+
+                // handle click-out autoclosing
+                var fn = function() {
+                    thisMenu.hide();
+                    $(window).off('click', fn)
+                }
+                $(window).on('click', fn);
+            });
+        },
+
+        createTabDropdownMenu: function() {
+            var _tabMenu = $('#dropdown-list-active-files');
+
+            this.initMenuHandler($('#tab-dropdown-button'), _tabMenu);
+        },
+
+        moveTabToDropdownMenu: function(tab, prepend) {
+            if (typeof prepend == 'undefined') {
+                prepend = false;
+            }
+            
+            tab.remove();
+            path = tab.attr('data-path');
+
+            var tabThumb = this.createMenuItemThumb(path);
+            if(prepend) $('#dropdown-list-active-files').prepend(tabThumb);
+            else $('#dropdown-list-active-files').append(tabThumb);
+            
+            if(tab.hasClass("changed")) {
+                tabThumb.addClass("changed");
+            }
+            
+            if(tab.hasClass("active")) {
+                tabThumb.addClass("active");
+            }
+            
+            this.sessions[path].tabThumb = tabThumb;
+        },
+
+        moveDropdownMenuItemToTab: function(menuItem, prepend) {
+            if (typeof prepend == 'undefined') {
+                prepend = false;
+            }
+            
+            menuItem.remove();
+            path = menuItem.attr('data-path');
+
+            var tabThumb = this.createTabThumb(path);
+            if(prepend) $('#tab-list-active-files').prepend(tabThumb);
+            else $('#tab-list-active-files').append(tabThumb);
+
+            if(menuItem.hasClass("changed")) {
+                tabThumb.addClass("changed");
+            }
+            
+            if(menuItem.hasClass("active")) {
+                tabThumb.addClass("active");
+            }
+            
+            this.sessions[path].tabThumb = tabThumb;
+        },
+    
+        isTabListOverflowed: function(includeFictiveTab) {
+            if (typeof includeFictiveTab == 'undefined') {
+                includeFictiveTab = false;
+            }
+    
+            var tabs = $('#tab-list-active-files li');
+            var count = tabs.length
+            if (includeFictiveTab) count += 1;
+            if (count <= 1) return false;
+            
+            var width = 0;
+            tabs.each(function(index) {
+                width += $(this).outerWidth(true);
+            })
+            if (includeFictiveTab) {
+                width += $(tabs[tabs.length-1]).outerWidth(true);
+            }
+    
+            /* If we subtract the width of the left side bar, of the right side
+             * bar handle and of the tab dropdown handle to the window width,
+             * do we have enough room for the tab list? Its kind of complicated
+             * to handle all the offsets, so afterwards we add a fixed offset
+             * just t be sure. */
+            var lsbarWidth = $(".sidebar-handle").width();
+            if (codiad.sidebars.isLeftSidebarOpen) {
+                lsbarWidth = $("#sb-left").width();
+            }
+    
+            var rsbarWidth = $(".sidebar-handle").width();
+            if (codiad.sidebars.isRightSidebarOpen) {
+                rsbarWidth = $("#sb-left").width();
+            }
+    
+            var tabListWidth = $("#tab-list-active-files").width();
+            var dropdownWidth = $('#tab-dropdown').width();
+            var room = window.innerWidth - lsbarWidth - rsbarWidth - dropdownWidth - width - 30;
+            return (room < 0);
+        },
+    
+        updateTabDropdownVisibility: function() {
+            while(this.isTabListOverflowed()) {
+                var tab = $('#tab-list-active-files li:last-child');
+                if (tab.length == 1) this.moveTabToDropdownMenu(tab, true);
+                else break;
+            }
+            
+            while(!this.isTabListOverflowed(true)) {
+                var menuItem = $('#dropdown-list-active-files li:first-child');
+                if (menuItem.length == 1) this.moveDropdownMenuItemToTab(menuItem);
+                else break;
+            }
+            
+            if ($('#dropdown-list-active-files li').length > 0) {
+                $('#tab-dropdown').show();
+            } else {
+                $('#tab-dropdown').hide();
+                // Be sure to hide the menu if it is opened.
+                $('#dropdown-list-active-files').hide();
+            }
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Factory
+        //////////////////////////////////////////////////////////////////
+
+        createListThumb: function(path) {
+            return $('<li data-path="' + path + '"><a title="'+path+'"><span></span><div>' + path.substring(1) + '</div></a></li>');
+        },
+        
+        createTabThumb: function(path) {
+            return $('<li class="tab-item" data-path="' + path + '"><a class="label" title="' + path + '">' + path.substring(1) + '</a><a class="close">x</a></li>');
+        },
+
+        createMenuItemThumb: function(path) {
+            return $('<li data-path="' + path + '"><a title="' + path + '"><span></span><div class="label">' + path.substring(1) + '</div></a></li>');
+        },
 
     };
 

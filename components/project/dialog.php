@@ -50,18 +50,18 @@
                 if($show){
                 ?>
                 <tr>
-                    <td><a onclick="codiad.project.open('<?php echo($data['path']); ?>');" class="icon">s</a></td>
+                    <td><a onclick="codiad.project.open('<?php echo($data['path']); ?>');" class="icon-folder bigger-icon"></a></td>
                     <td><?php echo($data['name']); ?></td>
                     <td>/<?php echo($data['path']); ?></td>
                     <?php
                         if(!$projects_assigned){
                             if($_SESSION['project'] == $data['path']){
                             ?>
-                            <td><a onclick="codiad.message.error('Active Project Cannot Be Removed');" class="icon">^</a></td>
+                            <td><a onclick="codiad.message.error('Active Project Cannot Be Removed');" class="icon-block bigger-icon"></a></td>
                             <?php
                             }else{
                             ?>
-                            <td><a onclick="codiad.project.delete('<?php echo($data['name']); ?>','<?php echo($data['path']); ?>');" class="icon">[</a></td>
+                            <td><a onclick="codiad.project.delete('<?php echo($data['name']); ?>','<?php echo($data['path']); ?>');" class="icon-cancel-circled bigger-icon"></a></td>
                             <?php
                             }
                         }

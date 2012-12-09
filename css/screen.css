@@ -80,13 +80,30 @@ a:hover,a:active {;
 
 /* ICONS */
 
-.icon {
-    display: inline-block;
-    margin: 0;
-    padding: 0 3px;
-    font-family: 'Icons';
-    font-size: 145%;
-    line-height: 95%;
+[class^="icon-"], [class*=" icon-"] {
+  font-family: entypo;
+  font-style: normal;
+  font-size: 75%;
+
+  display: inline-block;
+  margin-right: 8px; 
+  text-align: center;
+  vertical-align: top;
+}
+
+/* Useful size modifiers for icons. */
+.bigger-icon {
+    font-size: 95%;
+    margin-right: 6px;
+}
+
+/* Fix bad margin at some sizes for icon-doc-text. */
+.icon-doc-text {
+    padding-right: 3px;
+}
+
+.icon-doc.text.bigger-icon {
+    padding-right: 0px;
 }
 
 /* FORMS */
@@ -206,11 +223,8 @@ table th {
     padding-top: 8px;
 }
 
-table .icon {
-    display: block;
-    font-size: 24px;
-    padding-bottom: 5px;
-    text-align: center;
+table [class^="icon-"], [class*=" icon-"] {
+    display: block; 
 }
 
 /* INSTALLER */
@@ -241,7 +255,7 @@ table .icon {
 #message {
     display: none;
     position: fixed;
-    top: 0;
+    top: 0px;
     left: 50%;
     width: 500px;
     margin-left: -250px;
@@ -284,6 +298,13 @@ table .icon {
     margin-left: 300px;
     position: relative;
 }
+
+#root-editor-wrapper {
+    /* Adjust this size depending on the final editor-top-bar height. */
+    top: 35px;
+    position: relative;
+}
+
 .editor-wrapper {
     position: absolute;
 }
@@ -299,6 +320,7 @@ table .icon {
 .editor-wrapper-vertical > .editor-wrapper {
     left: 0;
 }
+
 .editor {
     position: absolute;
     top: 0;
@@ -306,6 +328,7 @@ table .icon {
     right: 0;
     bottom: 0;
 }
+
 #editor-bottom-bar {
     position: fixed;
     bottom: 0;
@@ -319,6 +342,19 @@ table .icon {
     width: 100%;
     box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .9);
 }
+
+#editor-top-bar {
+    top: 0;
+    position: fixed;
+    height: 35px;
+    width: 100%;
+    font-size: 12px;
+    color: #999;
+    background: #303030;
+    box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .9);
+    overflow: hidden;
+}
+
 .options-menu {
     position: absolute;
     z-index: 9999;
@@ -393,7 +429,7 @@ table .icon {
     color: #fff; 
 }
 
-#divider {
+.divider {
     display: block;
     float: left;
     height: 14px;
@@ -407,23 +443,11 @@ table .icon {
     display: block;
     position: relative;
     float: left;
-    padding: 0 0 0 12px;
     font-size: 13px;
     line-height: 100%;
 }
 
 .ico-wrapper:hover { color: #fff; }
-
-.ico-wrapper .icon {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    font-size: 22px;
-    padding: 0;
-}
-#split .icon, #settings .icon {
-    margin: -5px 0 0 -16px;
-}
 
 .settings td { border: none; border-bottom: 1px solid #666; padding: 10px 0; }
 .settings td:first-child { padding-right: 20px; font-weight: bold; }
@@ -494,10 +518,11 @@ table .icon {
     display: block;
     position: absolute;
     cursor: pointer;
-    font-size: 30px;
+    font-size: 15px;
     color: #666;
     z-index: 99999;
     right: 20px;
+    top: 6px;
 }
 
 #lock-left-sidebar:hover {
@@ -571,8 +596,8 @@ table .icon {
 
 #modal #drag-handle {
     float: right;
-    font-size: 34px;
-    margin: -9px 2px 0 0;
+    font-size: 20px; 
+    margin: -4px 2px 0 0;
     padding: 5px;
     cursor: move;
     color: #999;
