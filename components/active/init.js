@@ -91,21 +91,37 @@
 
             _this.createTabDropdownMenu();
             _this.updateTabDropdownVisibility();
+            
+            // Focus from list
+            $('#list-active-files a')
+                .live('click', function() {
+                _this.focus($(this).parent('li').attr('data-path'));
+            });
 
             // Focus from dropdown.
-            $('#tab-dropdown-menu a')
+            $('#dropdown-list-active-files a')
                 .live('click', function() {
                 _this.focus($(this).parent('li').attr('data-path'));
             });
 
             // Focus from tab.
-            $('#tab-list li.tab-item>a.label')
+            $('#tab-list-active-files li.tab-item>a.label')
                 .live('mousedown', function() {
                 _this.focus($(this).parent('li').attr('data-path'));
             });
 
+            // Remove fom list.
+            $('#list-active-files a>span')
+                .live('click', function(e) {
+                e.stopPropagation();
+                _this.remove($(this)
+                    .parent('a')
+                    .parent('li')
+                    .attr('data-path'));
+            });
+            
             // Remove from dropdown.
-            $('#tab-dropdown-menu a>span')
+            $('#dropdown-list-active-files a>span')
                 .live('click', function(e) {
                 e.stopPropagation();
                 /* Get the active editor before removing anything. Remove the
@@ -121,7 +137,7 @@
             });
 
             // Remove from tab.
-            $('#tab-list a.close')
+            $('#tab-list-active-files a.close')
                 .live('click', function(e) {
                 e.stopPropagation();
                 /* Get the active editor before removing anything. Remove the
@@ -137,7 +153,7 @@
             });
 
             // Remove from middle button click on dropdown.
-            $('#tab-dropdown-menu li')
+            $('#dropdown-list-active-files li')
                 .live('mouseup', function(e) {
                     if (e.which == 2) {
                         e.stopPropagation();
@@ -173,7 +189,7 @@
             });
 
             // Make dropdown sortable.
-            $('#tab-dropdown-menu')
+            $('#dropdown-list-active-files')
                 .sortable({
                 placeholder: 'active-sort-placeholder',
                 tolerance: 'pointer',
@@ -183,7 +199,7 @@
             });
 
             // Make tabs sortable.
-            $('#tab-list')
+            $('#tab-list-active-files')
                 .sortable({
                 items: '> li',
                 axis: 'x',
@@ -204,7 +220,7 @@
              * list by the sortable plugin. Workaround is to mark it as
              * floating at initialization time. See bug report
              * http://bugs.jqueryui.com/ticket/6702. */
-            $('#tab-list').data('sortable').floating = true;
+            $('#tab-list-active-files').data('sortable').floating = true;
 
             // Open saved-state active files on load
             $.get(_this.controller + '?action=list', function(data) {
@@ -295,16 +311,21 @@
         //////////////////////////////////////////////////////////////////
 
         add: function(path, session) {
+            
+            var listThumb = $('<li data-path="' + path + '"><a title="'+path+'"><span></span><div>' + path.substring(1) + '</div></a></li>');
+            session.listThumb = listThumb;
+            $('#list-active-files').append(listThumb);
+                
             /* If the tab list would overflow with the new tab. Move the
              * first tab to dropdown, then add a new tab. */
             if (this.isTabListOverflowed(true)) {
-                var tab = $('#tab-list li:first-child');
+                var tab = $('#tab-list-active-files li:first-child');
                 this.moveTabToDropdownMenu(tab);
             }
 
-            var thumb = this.createTabThumb(path);
-            $('#tab-list').append(thumb);
-            session.thumb = thumb;
+            var tabThumb = this.createTabtabThumb(path);
+            $('#tab-list-active-files').append(tabThumb);
+            session.tabThumb = tabThumb;
 
             this.updateTabDropdownVisibility();
 
@@ -330,26 +351,29 @@
 
         highlightEntry: function(path) {
             
-            $('#tab-list li')
+            $('#list-active-files li')
+                .removeClass('active');
+            
+            $('#tab-list-active-files li')
                 .removeClass('active');
                 
-            $('#tab-dropdown-menu li')
+            $('#dropdown-list-active-files li')
                 .removeClass('active');
                 
             var session = this.sessions[path];
             
-            if($('#tab-dropdown-menu').has(session.thumb).length > 0) {
+            if($('#dropdown-list-active-files').has(session.tabThumb).length > 0) {
                  /* Get the menu item as a tab, and put the last tab in
                  * dropdown. */
-                var menuItem = session.thumb;
+                var menuItem = session.tabThumb;
                 this.moveDropdownMenuItemToTab(menuItem, true);
     
-                var tab = $('#tab-list li:last-child');
+                var tab = $('#tab-list-active-files li:last-child');
                 this.moveTabToDropdownMenu(tab);
             }
                            
-            
-            session.thumb.addClass('active');
+            session.tabThumb.addClass('active');
+            session.listThumb.addClass('active');
         },
 
         //////////////////////////////////////////////////////////////////
@@ -357,7 +381,8 @@
         //////////////////////////////////////////////////////////////////
 
         markChanged: function(path) {
-            this.sessions[path].thumb.addClass('changed');
+            this.sessions[path].listThumb.addClass('changed');
+            this.sessions[path].tabThumb.addClass('changed');
         },
 
         //////////////////////////////////////////////////////////////////
@@ -378,7 +403,8 @@
             var path = session.path;
             codiad.filemanager.saveFile(path, content, {
                 success: function() {
-                    session.thumb.removeClass('changed');
+                    session.listThumb.removeClass('changed');
+                    session.tabThumb.removeClass('changed');
                     _this.removeDraft(path);
                 }
             });
@@ -392,7 +418,7 @@
             if (!this.isOpen(path)) return;
             var session = this.sessions[path];
             var closeFile = true;
-            if (session.thumb.hasClass('changed')) {
+            if (session.tabThumb.hasClass('changed')) {
                 codiad.modal.load(450, 'components/active/dialog.php?action=confirm&path=' + path);
                 closeFile = false;
             }
@@ -403,14 +429,15 @@
 
         close: function(path) {
             var session = this.sessions[path];
-            session.thumb.remove();
-            var nextThumb = $('#tab-list li[data-path]');
-            if (nextThumb.length == 0) {
+            session.listThumb.remove();
+            session.tabThumb.remove();
+            var nexttabThumb = $('#tab-list-active-files li[data-path]');
+            if (nexttabThumb.length == 0) {
                 codiad.editor.exterminate();
             } else {
-                $(nextThumb[0])
+                $(nexttabThumb[0])
                     .addClass('active');
-                var nextPath = nextThumb.attr('data-path');
+                var nextPath = nexttabThumb.attr('data-path');
                 var nextSession = this.sessions[nextPath];
                 codiad.editor.removeSession(session, nextSession);
             }
@@ -425,9 +452,9 @@
 
         rename: function(oldPath, newPath) {
             var switchSessions = function(oldPath, newPath) {
-                var thumb = this.sessions[oldPath].thumb;
-                thumb.attr('data-path', newPath);
-                thumb.find('.label')
+                var tabThumb = this.sessions[oldPath].tabThumb;
+                tabThumb.attr('data-path', newPath);
+                tabThumb.find('.label')
                     .text(newPath.substring(1));
                 this.sessions[newPath] = this.sessions[oldPath];
                 this.sessions[newPath].path = newPath;
@@ -533,10 +560,9 @@
                     newActive = $('#active-files li a.active')
                         .parent('li')
                         .prev('li')
-                        .children('a')
                         .attr('data-path');
                     if (!newActive) {
-                        newActive = $('#active-files li:last-child a')
+                        newActive = $('#active-files li:last-child')
                             .attr('data-path');
                     }
 
@@ -545,10 +571,9 @@
                     newActive = $('#active-files li a.active')
                         .parent('li')
                         .next('li')
-                        .children('a')
                         .attr('data-path');
                     if (!newActive) {
-                        newActive = $('#active-files li:first-child a')
+                        newActive = $('#active-files li:first-child')
                             .attr('data-path');
                     }
 
@@ -593,7 +618,7 @@
         },
 
         createTabDropdownMenu: function() {
-            var _tabMenu = $('#tab-dropdown-menu');
+            var _tabMenu = $('#dropdown-list-active-files');
 
             this.initMenuHandler($('#tab-dropdown-button'), _tabMenu);
         },
@@ -606,19 +631,19 @@
             tab.remove();
             path = tab.attr('data-path');
 
-            var thumb = this.createMenuItemThumb(path);
-            if(prepend) $('#tab-dropdown-menu').prepend(thumb);
-            else $('#tab-dropdown-menu').append(thumb);
+            var tabThumb = this.createMenuItemtabThumb(path);
+            if(prepend) $('#dropdown-list-active-files').prepend(tabThumb);
+            else $('#dropdown-list-active-files').append(tabThumb);
             
             if(tab.hasClass("changed")) {
-                thumb.addClass("changed");
+                tabThumb.addClass("changed");
             }
             
             if(tab.hasClass("active")) {
-                thumb.addClass("active");
+                tabThumb.addClass("active");
             }
             
-            this.sessions[path].thumb = thumb;
+            this.sessions[path].tabThumb = tabThumb;
         },
 
         moveDropdownMenuItemToTab: function(menuItem, prepend) {
@@ -629,19 +654,19 @@
             menuItem.remove();
             path = menuItem.attr('data-path');
 
-            var thumb = this.createTabThumb(path);
-            if(prepend) $('#tab-list').prepend(thumb);
-            else $('#tab-list').append(thumb);
+            var tabThumb = this.createTabtabThumb(path);
+            if(prepend) $('#tab-list-active-files').prepend(tabThumb);
+            else $('#tab-list-active-files').append(tabThumb);
 
             if(menuItem.hasClass("changed")) {
-                thumb.addClass("changed");
+                tabThumb.addClass("changed");
             }
             
             if(menuItem.hasClass("active")) {
-                thumb.addClass("active");
+                tabThumb.addClass("active");
             }
             
-            this.sessions[path].thumb = thumb;
+            this.sessions[path].tabThumb = tabThumb;
         },
     
         isTabListOverflowed: function(includeFictiveTab) {
@@ -649,7 +674,7 @@
                 includeFictiveTab = false;
             }
     
-            var tabs = $('#tab-list li');
+            var tabs = $('#tab-list-active-files li');
             var count = tabs.length
             if (includeFictiveTab) count += 1;
             if (count <= 1) return false;
@@ -677,7 +702,7 @@
                 rsbarWidth = $("#sb-left").width();
             }
     
-            var tabListWidth = $("#tab-list").width();
+            var tabListWidth = $("#tab-list-active-files").width();
             var dropdownWidth = $('#tab-dropdown').width();
             var room = window.innerWidth - lsbarWidth - rsbarWidth - dropdownWidth - width - 30;
             return (room < 0);
@@ -685,23 +710,23 @@
     
         updateTabDropdownVisibility: function() {
             while(this.isTabListOverflowed()) {
-                var tab = $('#tab-list li:last-child');
+                var tab = $('#tab-list-active-files li:last-child');
                 if (tab.length == 1) this.moveTabToDropdownMenu(tab, true);
                 else break;
             }
             
             while(!this.isTabListOverflowed(true)) {
-                var menuItem = $('#tab-dropdown-menu li:first-child');
+                var menuItem = $('#dropdown-list-active-files li:first-child');
                 if (menuItem.length == 1) this.moveDropdownMenuItemToTab(menuItem);
                 else break;
             }
             
-            if ($('#tab-dropdown-menu li').length > 0) {
+            if ($('#dropdown-list-active-files li').length > 0) {
                 $('#tab-dropdown').show();
             } else {
                 $('#tab-dropdown').hide();
                 // Be sure to hide the menu if it is opened.
-                $('#tab-dropdown-menu').hide();
+                $('#dropdown-list-active-files').hide();
             }
         },
 
@@ -709,11 +734,11 @@
         // Factory
         //////////////////////////////////////////////////////////////////
 
-        createTabThumb: function(path) {
+        createTabtabThumb: function(path) {
             return $('<li class="tab-item" data-path="' + path + '"><a class="label" title="' + path + '">' + path.substring(1) + '</a><a class="close">x</a></li>');
         },
 
-        createMenuItemThumb: function(path) {
+        createMenuItemtabThumb: function(path) {
             return $('<li data-path="' + path + '"><a title="' + path + '"><span></span><div class="label">' + path.substring(1) + '</div></a></li>');
         },
 
