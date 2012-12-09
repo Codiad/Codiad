@@ -111,13 +111,15 @@
             // Focus on left button mousedown from tab.
             $('#tab-list-active-files li.tab-item>a.label')
                 .live('mousedown', function(e) {
+                    console.log('focus tab');
                     if(e.which == 1) {
+                        console.log('focus tab left');
                         e.stopPropagation();
                         _this.focus($(this).parent('li').attr('data-path'));
                     }
             });
 
-            // Remove fom list.
+            // Remove from list.
             $('#list-active-files a>span')
                 .live('click', function(e) {
                 e.stopPropagation();
@@ -146,6 +148,7 @@
             // Remove from tab.
             $('#tab-list-active-files a.close')
                 .live('click', function(e) {
+                    console.log('remove tab');
                 e.stopPropagation();
                 /* Get the active editor before removing anything. Remove the
                  * tab, then put back the focus on the previously active
@@ -162,7 +165,9 @@
             // Remove from middle button click on dropdown.
             $('#dropdown-list-active-files li')
                 .live('mouseup', function(e) {
+                    console.log('list');
                     if (e.which == 2) {
+                    console.log('list middle');
                         e.stopPropagation();
                         /* Get the active editor before removing anything. Remove the
                          * tab, then put back the focus on the previously active
@@ -180,7 +185,9 @@
             // Remove from middle button click on tab.
             $('.tab-item')
                 .live('mouseup', function(e) {
+                    console.log('remove middle tab?');
                     if (e.which == 2) {
+                    console.log('remove middle tab middle');
                         e.stopPropagation();
                         /* Get the active editor before removing anything. Remove the
                          * tab, then put back the focus on the previously active
@@ -440,9 +447,24 @@
         },
 
         close: function(path) {
+            var _this = this;
             var session = this.sessions[path];
+
+            /* Animate only if the tabThumb if a tab, not a dropdown item. */
+            if(session.tabThumb.hasClass('tab-item')) {
+                session.tabThumb.css({'z-index': 1});
+                session.tabThumb.animate({
+                    top: session.tabThumb.height() + 'px'
+                }, 600, function() {
+                    session.tabThumb.remove();
+                    _this.updateTabDropdownVisibility();
+                });
+            } else {
+                session.tabThumb.remove();
+                _this.updateTabDropdownVisibility();
+            }
+
             session.listThumb.remove();
-            session.tabThumb.remove();
             var nexttabThumb = $('#tab-list-active-files li[data-path]');
             if (nexttabThumb.length == 0) {
                 codiad.editor.exterminate();
