@@ -92,7 +92,7 @@
             _this.createTabDropdownMenu();
             _this.updateTabDropdownVisibility();
             
-            // Focus from list
+            // Focus from list.
             $('#list-active-files a')
                 .live('click', function() {
                 _this.focus($(this).parent('li').attr('data-path'));
@@ -187,6 +187,16 @@
                         _this.updateTabDropdownVisibility();
                     }
             });
+            
+            // Make list sortable
+            $('#list-active-files')
+                .sortable({
+                placeholder: 'active-sort-placeholder',
+                tolerance: 'intersect',
+                start: function(e, ui) {
+                    ui.placeholder.height(ui.item.height());
+                }
+            });
 
             // Make dropdown sortable.
             $('#dropdown-list-active-files')
@@ -239,15 +249,10 @@
                 codiad.editor.resize();
                 _this.updateTabDropdownVisibility();
             });
-            
-            // FIXME : Run resize on editor-region h-resize
-            //$('#editor-region').bind('h-resize', function() {
-            //    _this.updateTabDropdownVisibility();
-            //});
 
             // Prompt if a user tries to close window without saving all filess
             window.onbeforeunload = function(e) {
-                if ($('#active-files a.changed')
+                if ($('#list-active-files li.changed')
                     .length > 0) {
                     var e = e || window.event;
                     var errMsg = 'You have unsaved files.';
@@ -312,7 +317,7 @@
 
         add: function(path, session) {
             
-            var listThumb = $('<li data-path="' + path + '"><a title="'+path+'"><span></span><div>' + path.substring(1) + '</div></a></li>');
+            var listThumb = this.createListThumb(path);
             session.listThumb = listThumb;
             $('#list-active-files').append(listThumb);
                 
@@ -323,7 +328,7 @@
                 this.moveTabToDropdownMenu(tab);
             }
 
-            var tabThumb = this.createTabtabThumb(path);
+            var tabThumb = this.createTabThumb(path);
             $('#tab-list-active-files').append(tabThumb);
             session.tabThumb = tabThumb;
 
@@ -418,7 +423,7 @@
             if (!this.isOpen(path)) return;
             var session = this.sessions[path];
             var closeFile = true;
-            if (session.tabThumb.hasClass('changed')) {
+            if (session.listThumb.hasClass('changed')) {
                 codiad.modal.load(450, 'components/active/dialog.php?action=confirm&path=' + path);
                 closeFile = false;
             }
@@ -435,11 +440,12 @@
             if (nexttabThumb.length == 0) {
                 codiad.editor.exterminate();
             } else {
-                $(nexttabThumb[0])
-                    .addClass('active');
                 var nextPath = nexttabThumb.attr('data-path');
                 var nextSession = this.sessions[nextPath];
                 codiad.editor.removeSession(session, nextSession);
+                
+                nextSession.listThumb.addClass('active');
+                nextSession.tabThumb.addClass('active');
             }
             delete this.sessions[path];
             $.get(this.controller + '?action=remove&path=' + path);
@@ -552,28 +558,26 @@
 
         move: function(dir) {
 
-            var num = $('#active-files a')
+            var num = $('#list-active-files li')
                 .length;
             if (num > 1) {
                 if (dir == 'up') {
                     // Move Up or rotate to bottom
-                    newActive = $('#active-files li a.active')
-                        .parent('li')
+                    newActive = $('#list-active-files li.active')
                         .prev('li')
                         .attr('data-path');
                     if (!newActive) {
-                        newActive = $('#active-files li:last-child')
+                        newActive = $('#list-active-files li:last-child')
                             .attr('data-path');
                     }
 
                 } else {
                     // Move down or rotate to top
-                    newActive = $('#active-files li a.active')
-                        .parent('li')
+                    newActive = $('#list-active-files li.active')
                         .next('li')
                         .attr('data-path');
                     if (!newActive) {
-                        newActive = $('#active-files li:first-child')
+                        newActive = $('#list-active-files li:first-child')
                             .attr('data-path');
                     }
 
@@ -631,7 +635,7 @@
             tab.remove();
             path = tab.attr('data-path');
 
-            var tabThumb = this.createMenuItemtabThumb(path);
+            var tabThumb = this.createMenuItemThumb(path);
             if(prepend) $('#dropdown-list-active-files').prepend(tabThumb);
             else $('#dropdown-list-active-files').append(tabThumb);
             
@@ -654,7 +658,7 @@
             menuItem.remove();
             path = menuItem.attr('data-path');
 
-            var tabThumb = this.createTabtabThumb(path);
+            var tabThumb = this.createTabThumb(path);
             if(prepend) $('#tab-list-active-files').prepend(tabThumb);
             else $('#tab-list-active-files').append(tabThumb);
 
@@ -734,11 +738,15 @@
         // Factory
         //////////////////////////////////////////////////////////////////
 
-        createTabtabThumb: function(path) {
+        createListThumb: function(path) {
+            return $('<li data-path="' + path + '"><a title="'+path+'"><span></span><div>' + path.substring(1) + '</div></a></li>');
+        },
+        
+        createTabThumb: function(path) {
             return $('<li class="tab-item" data-path="' + path + '"><a class="label" title="' + path + '">' + path.substring(1) + '</a><a class="close">x</a></li>');
         },
 
-        createMenuItemtabThumb: function(path) {
+        createMenuItemThumb: function(path) {
             return $('<li data-path="' + path + '"><a title="' + path + '"><span></span><div class="label">' + path.substring(1) + '</div></a></li>');
         },
 
