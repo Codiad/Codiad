@@ -24,6 +24,25 @@
         codiad.editor.init();
     });
 
+    // modes available for selecting
+    var availableTextModes = new Array(
+        'html',
+        'javascript',
+        'css',
+        'scss',
+        'less',
+        'php',
+        'json',
+        'xml',
+        'sql',
+        'markdown',
+        'c_cpp',
+        'python',
+        'ruby',
+        'jade',
+        'text'
+    );
+
     function SplitContainer(root, children, splitType) {
         var _this = this;
 
@@ -262,6 +281,7 @@
 
         init: function(){
             this.createSplitMenu();
+            this.createModeMenu();
 
             var er = $('#editor-region');
 
@@ -329,7 +349,8 @@
             var _this = this;
 
             if (this.instances.length == 0) {
-                el.appendTo($('#editor-region'));
+                // el.appendTo($('#editor-region'));
+                el.appendTo($('#root-editor-wrapper'));
             } else {
 
                 var ch = this.activeInstance.el;
@@ -412,19 +433,19 @@
 
         createSplitMenu: function(){
             var _this = this;
-            $('#split-options-menu').appendTo($('body'));
             var _splitOptionsMenu = $('#split-options-menu');
-            var wh = $(window).height();
+
+            this.initMenuHandler($('#split'),_splitOptionsMenu);
 
             $('#split-horizontally a').click(function(e){
                 e.stopPropagation();
-                _this.addInstance(_this.activeInstance.getSession(), 'right');
+                _this.addInstance(_this.activeInstance.getSession(), 'bottom');
                 _splitOptionsMenu.hide();
             });
 
             $('#split-vertically a').click(function(e){
                 e.stopPropagation();
-                _this.addInstance(_this.activeInstance.getSession(), 'bottom');
+                _this.addInstance(_this.activeInstance.getSession(), 'right');
                 _splitOptionsMenu.hide();
             });
 
@@ -435,20 +456,86 @@
                 _this.addInstance(s);
                 _splitOptionsMenu.hide();
             })
+        },
 
-            $('#split').click(function(e){
+        createModeMenu: function(){
+            var _this = this;
+            var _thisMenu = $('#changemode-menu');            
+            var modeOptions = '';
+
+            this.initMenuHandler($('#current-mode'),_thisMenu);
+
+            availableTextModes.sort();
+            $.each(availableTextModes, function(i){
+                modeOptions += '<li><a>'+availableTextModes[i]+'</a></li>';
+            });
+
+            _thisMenu.html(modeOptions);
+
+            $('#changemode-menu a').click(function(e){
                 e.stopPropagation();
-                $('#split-options-menu').css({
-                    display: 'block',
-                    bottom: (wh - e.pageY + 10) + 'px',
-                    left: (e.pageX - 20) + 'px'
-                });
+                var newMode = "ace/mode/" + e.srcElement.text;
+                var actSession = _this.activeInstance.getSession();
+                
+                // handle async mode change
                 var fn = function(){
-                    _splitOptionsMenu.hide();
+                   _this.setModeDisplay(actSession);
+                   actSession.removeListener('changeMode', fn);                   
+                }
+                actSession.on("changeMode", fn);
+
+                actSession.setMode(newMode);
+                _thisMenu.hide();
+
+            });            
+        },  
+
+        initMenuHandler: function(button,menu){
+            var _this = this;
+            var thisButton = button;
+            var thisMenu = menu;
+
+            thisMenu.appendTo($('body'));
+
+            thisButton.click(function(e){
+                var wh = $(window).height();
+
+                e.stopPropagation();
+
+                // close other menus
+                _this.closeMenus(thisMenu);
+
+                thisMenu.css({
+                    // display: 'block',
+                    bottom: ( (wh - $(this).offset().top) + 8) + 'px',
+                    left: ($(this).offset().left - 13) + 'px'
+                });
+                
+                thisMenu.slideToggle('fast');
+
+                // handle click-out autoclosing
+                var fn = function(){
+                    thisMenu.hide();
                     $(window).off('click', fn)
                 }
                 $(window).on('click', fn);
-            });
+            });            
+        },
+
+        closeMenus: function(exclude){
+            var menuId = exclude.attr("id");
+            if(menuId != 'split-options-menu') $('#split-options-menu').hide();
+            if(menuId != 'changemode-menu') $('#changemode-menu').hide();    
+        },
+
+        setModeDisplay: function(session){
+                var currMode = session.getMode().$id;
+                if(currMode){
+                    currMode = currMode.substring(currMode.lastIndexOf('/') + 1);
+                    $('#current-mode').html(currMode);
+                }  else {
+                    $('#current-mode').html('text');
+                }  
         },
 
         //////////////////////////////////////////////////////////////////
@@ -462,6 +549,7 @@
             $('.editor-wrapper').remove();
             $('#editor-region').append($('<div>').attr('id', 'editor'));
             $('#current-file').html('');
+            $('#current-mode').html('');
             this.instances = [];
             this.activeInstance = null;
         },
@@ -482,6 +570,8 @@
             if ($('#current-file').text() === session.path) {
                 $('#current-file').text(replacementSession.path);
             }
+
+            this.setModeDisplay(replacementSession);
         },
 
         isOpen: function(session){
@@ -534,6 +624,7 @@
             if (! i) return;
             this.activeInstance = i;
             $('#current-file').text(i.getSession().path);
+            this.setModeDisplay(i.getSession());
         },
 
         /////////////////////////////////////////////////////////////////
@@ -562,7 +653,8 @@
                                                    session.getMode());
                 proxySession.setUndoManager(new UndoManager());
                 proxySession.path = session.path;
-                proxySession.thumb = session.thumb;
+                proxySession.listThumb = session.listThumb;
+                proxySession.tabThumb = session.tabThumb;
                 i.setSession(proxySession);
             }
             this.setActive(i);

@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-if(file_exists('config.php')){ require_once('config.php'); } 
+if(file_exists('config.php')){ require_once('config.php'); }
 
 // Context Menu
 $context_menu = file_get_contents(COMPONENTS . "/filemanager/context_menu.json");
@@ -31,7 +31,7 @@ $components = json_decode($components,true);
         }
     }
     ?>
-    
+
 </head>
 
 <body>
@@ -73,10 +73,10 @@ $components = json_decode($components,true);
 
             <form id="login" method="post" style="position: fixed; width: 350px; top: 30%; left: 50%; margin-left: -175px; padding: 35px;">
 
-                <label><span class="icon">+</span> Username</label>
+                <label><span class="icon-user"></span> Username</label>
                 <input type="text" name="username" autofocus="autofocus" autocomplete="off">
 
-                <label><span class="icon">U</span> Password</label>
+                <label><span class="icon-lock"></span> Password</label>
                 <input type="password" name="password">
 
                 <button>Login</button>
@@ -102,7 +102,7 @@ $components = json_decode($components,true);
 
             <div class="sb-left-content">
 
-                <a id="lock-left-sidebar" class="icon">U</a>
+                <a id="lock-left-sidebar" class="icon-lock"></a>
 
                 <div id="context-menu" data-path="" data-type="">
 
@@ -117,7 +117,7 @@ $components = json_decode($components,true);
                             if($data['title']=='Break'){
                                 echo('<hr class="'.$data['applies-to'].'">');
                             }else{
-                                echo('<a class="'.$data['applies-to'].'" onclick="'.$data['onclick'].'"><span class="icon">'.$data['icon'].'</span>'.$data['title'].'</a>');
+                                echo('<a class="'.$data['applies-to'].'" onclick="'.$data['onclick'].'"><span class="'.$data['icon'].'"></span>'.$data['title'].'</a>');
                             }
 
                         }
@@ -127,8 +127,8 @@ $components = json_decode($components,true);
                 </div>
 
                 <div id="file-manager"></div>
-
-                <ul id="active-files"></ul>
+                
+                <ul id="list-active-files"></ul>
 
             </div>
 
@@ -139,21 +139,32 @@ $components = json_decode($components,true);
         <div id="cursor-position">Ln: 0 &middot; Col: 0</div>
 
         <div id="editor-region">
+            <div id="editor-top-bar">
+                <ul id="tab-list-active-files"> </ul>
+                <div id="tab-dropdown"><a id="tab-dropdown-button" class="icon-down-open"></a></div>
+                <ul id="dropdown-list-active-files"></ul>
+                <div class="bar"></div>
+            </div>
+
+            <div id="root-editor-wrapper"></div>
+
             <div id="editor-bottom-bar">
-                <a id="settings" class="ico-wrapper"><span class="icon">l</span>Settings</a>
-                <div id="divider"></div>
-                <a id="split" class="ico-wrapper"><span class="icon">k</span>Split</a>
-                <div id="divider"></div>
+                <a id="settings" class="ico-wrapper"><span class="icon-doc-text"></span>Settings</a>
+                <div class="divider"></div>
+                <a id="split" class="ico-wrapper"><span class="icon-layout"></span>Split</a>
+                <div class="divider"></div>
+                <a id="current-mode"><span class="icon-layout"></span></a>
+                <div class="divider"></div>
                 <div id="current-file"></div>
             </div>
+            <ul id="changemode-menu" class="options-menu">
+            </ul>
             <ul id="split-options-menu" class="options-menu">
               <li id="split-horizontally"><a> Split Horizontally </a></li>
               <li id="split-vertically"><a> Split Vertically </a></li>
               <li id="merge-all"><a> Merge all </a></li>
             </ul>
         </div>
-
-
 
         <div id="sb-right" class="sidebar">
 
@@ -172,7 +183,7 @@ $components = json_decode($components,true);
                     if($data['title']=='break'){
                         echo("<hr>");
                     }else{
-                        echo('<a onclick="'.$data['onclick'].'"><span class="icon">'.$data['icon'].'</span>'.$data['title'].'</a>');
+                        echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].' bigger-icon"></span>'.$data['title'].'</a>');
                     }
 
                 }
@@ -186,7 +197,7 @@ $components = json_decode($components,true);
     </div>
 
     <div id="modal-overlay"></div>
-    <div id="modal"><div id="drag-handle" class="icon">0</div><div id="modal-content"></div></div>
+    <div id="modal"><div id="drag-handle" class="icon-location"></div><div id="modal-content"></div></div>
 
     <iframe id="download"></iframe>
 
