@@ -73,10 +73,10 @@ $components = json_decode($components,true);
 
             <form id="login" method="post" style="position: fixed; width: 350px; top: 30%; left: 50%; margin-left: -175px; padding: 35px;">
 
-                <label><span class="icon-user"></span> Username</label>
+                <label><span class="icon-user login-icon"></span> Username</label>
                 <input type="text" name="username" autofocus="autofocus" autocomplete="off">
 
-                <label><span class="icon-lock"></span> Password</label>
+                <label><span class="icon-lock login-icon"></span> Password</label>
                 <input type="password" name="password">
 
                 <button>Login</button>
