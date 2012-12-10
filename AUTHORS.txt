@@ -1,0 +1,9 @@
+Authors Ordered By First Contribution
+--------------------------------------------------
+
+Kent Safranski - @fluidbyte <kent@fluidbyte.net>
+Tim Holum - @tholum
+Gaurab Paul - @lorefnon
+Shawn A - @tablatronix
+Florrent Galland - @Flolagale
+Luc Verdier - @verdier
