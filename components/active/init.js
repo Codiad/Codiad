@@ -91,10 +91,10 @@
 
             _this.createTabDropdownMenu();
             _this.updateTabDropdownVisibility();
-            
+
             // Focus from list.
             $('#list-active-files a')
-                .live('click', function() {
+                .live('click', function(e) {
                     e.stopPropagation();
                     _this.focus($(this).parent('li').attr('data-path'));
             });
@@ -111,9 +111,7 @@
             // Focus on left button mousedown from tab.
             $('#tab-list-active-files li.tab-item>a.label')
                 .live('mousedown', function(e) {
-                    console.log('focus tab');
                     if(e.which == 1) {
-                        console.log('focus tab left');
                         e.stopPropagation();
                         _this.focus($(this).parent('li').attr('data-path'));
                     }
@@ -128,7 +126,7 @@
                     .parent('li')
                     .attr('data-path'));
             });
-            
+
             // Remove from dropdown.
             $('#dropdown-list-active-files a>span')
                 .live('click', function(e) {
@@ -148,7 +146,6 @@
             // Remove from tab.
             $('#tab-list-active-files a.close')
                 .live('click', function(e) {
-                    console.log('remove tab');
                 e.stopPropagation();
                 /* Get the active editor before removing anything. Remove the
                  * tab, then put back the focus on the previously active
@@ -165,9 +162,7 @@
             // Remove from middle button click on dropdown.
             $('#dropdown-list-active-files li')
                 .live('mouseup', function(e) {
-                    console.log('list');
                     if (e.which == 2) {
-                    console.log('list middle');
                         e.stopPropagation();
                         /* Get the active editor before removing anything. Remove the
                          * tab, then put back the focus on the previously active
@@ -185,9 +180,7 @@
             // Remove from middle button click on tab.
             $('.tab-item')
                 .live('mouseup', function(e) {
-                    console.log('remove middle tab?');
                     if (e.which == 2) {
-                    console.log('remove middle tab middle');
                         e.stopPropagation();
                         /* Get the active editor before removing anything. Remove the
                          * tab, then put back the focus on the previously active
@@ -201,7 +194,7 @@
                         _this.updateTabDropdownVisibility();
                     }
             });
-            
+
             // Make list sortable
             $('#list-active-files')
                 .sortable({
@@ -330,11 +323,11 @@
         //////////////////////////////////////////////////////////////////
 
         add: function(path, session) {
-            
+
             var listThumb = this.createListThumb(path);
             session.listThumb = listThumb;
             $('#list-active-files').append(listThumb);
-                
+
             /* If the tab list would overflow with the new tab. Move the
              * first tab to dropdown, then add a new tab. */
             if (this.isTabListOverflowed(true)) {
@@ -369,28 +362,28 @@
         },
 
         highlightEntry: function(path) {
-            
+
             $('#list-active-files li')
                 .removeClass('active');
-            
+
             $('#tab-list-active-files li')
                 .removeClass('active');
-                
+
             $('#dropdown-list-active-files li')
                 .removeClass('active');
-                
+
             var session = this.sessions[path];
-            
+
             if($('#dropdown-list-active-files').has(session.tabThumb).length > 0) {
                  /* Get the menu item as a tab, and put the last tab in
                  * dropdown. */
                 var menuItem = session.tabThumb;
                 this.moveDropdownMenuItemToTab(menuItem, true);
-    
+
                 var tab = $('#tab-list-active-files li:last-child');
                 this.moveTabToDropdownMenu(tab);
             }
-                           
+
             session.tabThumb.addClass('active');
             session.listThumb.addClass('active');
         },
@@ -465,14 +458,17 @@
             }
 
             session.listThumb.remove();
-            var nexttabThumb = $('#tab-list-active-files li[data-path]');
-            if (nexttabThumb.length == 0) {
+
+            /* Select all the tab tumbs except the one which is to be removed. */
+            var nextTabThumb = $('#tab-list-active-files li[data-path!="' + path + '"]');
+
+            if (nextTabThumb.length == 0) {
                 codiad.editor.exterminate();
             } else {
-                var nextPath = nexttabThumb.attr('data-path');
+                var nextPath = nextTabThumb.attr('data-path');
                 var nextSession = this.sessions[nextPath];
                 codiad.editor.removeSession(session, nextSession);
-                
+
                 nextSession.listThumb.addClass('active');
                 nextSession.tabThumb.addClass('active');
             }
@@ -660,22 +656,22 @@
             if (typeof prepend == 'undefined') {
                 prepend = false;
             }
-            
+
             tab.remove();
             path = tab.attr('data-path');
 
             var tabThumb = this.createMenuItemThumb(path);
             if(prepend) $('#dropdown-list-active-files').prepend(tabThumb);
             else $('#dropdown-list-active-files').append(tabThumb);
-            
+
             if(tab.hasClass("changed")) {
                 tabThumb.addClass("changed");
             }
-            
+
             if(tab.hasClass("active")) {
                 tabThumb.addClass("active");
             }
-            
+
             this.sessions[path].tabThumb = tabThumb;
         },
 
@@ -683,7 +679,7 @@
             if (typeof prepend == 'undefined') {
                 prepend = false;
             }
-            
+
             menuItem.remove();
             path = menuItem.attr('data-path');
 
@@ -694,24 +690,24 @@
             if(menuItem.hasClass("changed")) {
                 tabThumb.addClass("changed");
             }
-            
+
             if(menuItem.hasClass("active")) {
                 tabThumb.addClass("active");
             }
-            
+
             this.sessions[path].tabThumb = tabThumb;
         },
-    
+
         isTabListOverflowed: function(includeFictiveTab) {
             if (typeof includeFictiveTab == 'undefined') {
                 includeFictiveTab = false;
             }
-    
+
             var tabs = $('#tab-list-active-files li');
             var count = tabs.length
             if (includeFictiveTab) count += 1;
             if (count <= 1) return false;
-            
+
             var width = 0;
             tabs.each(function(index) {
                 width += $(this).outerWidth(true);
@@ -719,7 +715,7 @@
             if (includeFictiveTab) {
                 width += $(tabs[tabs.length-1]).outerWidth(true);
             }
-    
+
             /* If we subtract the width of the left side bar, of the right side
              * bar handle and of the tab dropdown handle to the window width,
              * do we have enough room for the tab list? Its kind of complicated
@@ -729,31 +725,31 @@
             if (codiad.sidebars.isLeftSidebarOpen) {
                 lsbarWidth = $("#sb-left").width();
             }
-    
+
             var rsbarWidth = $(".sidebar-handle").width();
             if (codiad.sidebars.isRightSidebarOpen) {
                 rsbarWidth = $("#sb-left").width();
             }
-    
+
             var tabListWidth = $("#tab-list-active-files").width();
             var dropdownWidth = $('#tab-dropdown').width();
             var room = window.innerWidth - lsbarWidth - rsbarWidth - dropdownWidth - width - 30;
             return (room < 0);
         },
-    
+
         updateTabDropdownVisibility: function() {
             while(this.isTabListOverflowed()) {
                 var tab = $('#tab-list-active-files li:last-child');
                 if (tab.length == 1) this.moveTabToDropdownMenu(tab, true);
                 else break;
             }
-            
+
             while(!this.isTabListOverflowed(true)) {
                 var menuItem = $('#dropdown-list-active-files li:first-child');
                 if (menuItem.length == 1) this.moveDropdownMenuItemToTab(menuItem);
                 else break;
             }
-            
+
             if ($('#dropdown-list-active-files li').length > 0) {
                 $('#tab-dropdown').show();
             } else {
@@ -770,7 +766,7 @@
         createListThumb: function(path) {
             return $('<li data-path="' + path + '"><a title="'+path+'"><span></span><div>' + path.substring(1) + '</div></a></li>');
         },
-        
+
         createTabThumb: function(path) {
             return $('<li class="tab-item" data-path="' + path + '"><a class="label" title="' + path + '">' + path.substring(1) + '</a><a class="close">x</a></li>');
         },
