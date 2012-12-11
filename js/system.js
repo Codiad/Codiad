@@ -56,6 +56,9 @@
         // Sliding sidebars
         codiad.sidebars.init();
         var handleWidth = 10;
+        
+        // Messages
+        codiad.message.init();
 
         $(window)
             .on('load resize', function() {
