@@ -208,7 +208,7 @@
             // Make dropdown sortable.
             $('#dropdown-list-active-files')
                 .sortable({
-                placeholder: 'active-sort-placeholder',
+                axis: 'y',
                 tolerance: 'pointer',
                 start: function(e, ui) {
                     ui.placeholder.height(ui.item.height());
