@@ -1,8 +1,8 @@
-(function(global, $) {
+(function (global, $) {
 
     var codiad = global.codiad;
 
-    $(function() {
+    $(function () {
         codiad.autocomplete.init();
     });
 
@@ -10,56 +10,95 @@
     //
     // Autocomplete Component for Codiad
     // ---------------------------------
-    // Show a popover with word completion suggestions.
+    // Show a popup with word completion suggestions.
     //
     //////////////////////////////////////////////////////////////////
 
     codiad.autocomplete = {
 
-        init: function() {
+        wordRegex: /[^a-zA-Z_0-9\$]+/,
+
+        init: function () {
             var _this = this;
 
-            $('#autocomplete').popover({
-                title: 'autocomplete',
-                content: 'pipipopo',
-                horizontalOffset: _this._computeHorizontalOffset,
-                verticalOffset: _this._computeVerticalOffset,
-                trigger: 'manual'
+            // $('#autocomplete').append('<ul id="suggestions"> <li class="suggestion">pipi</li> <li class="suggestion">popo</li> <li class="suggestion">pupu</li> <li class="suggestion">pypy</li> </ul>');
+
+        },
+
+        suggest: function () {
+            var _this = this;
+
+            var suggestions = this.getSuggestions();
+
+            var popupContent = $('#autocomplete #suggestions');
+            $.each(suggestions, function (index, value) {
+                popupContent.append('<li class="suggestion">' + value + '</li>');
             });
+
+            // Show the completion popup.
+            var popup = $('#autocomplete');
+            popup.css({'top': _this._computeTopOffset(), 'left': _this._computeLeftOffset()});
+            popup.slideToggle('slow');
+
+            // handle click-out autoclosing.
+            var fn = function () {
+                popup.hide();
+                $(window).off('click', fn);
+                $('.suggestion').remove();
+            };
+            $(window).on('click', fn);
+
         },
 
-        suggest: function() {
-            $('#autocomplete').popover('show');
-            // codiad.editor.getActive()
-                          // + (i.getCursorPosition().row + 1)
-                          // + ' &middot; Col: '
-                          // + i.getCursorPosition().column
-        },
-
-        complete: function() {
+        complete: function () {
             alert('Not implemented.');
         },
 
-        _computeHorizontalOffset: function() {
-            /* FIXME How to handle multiple cursors? */
+        _computeTopOffset: function () {
+            /* FIXME How to handle multiple cursors? This seems to compute the
+             * offset using the position of the last created cursor. */
             var cursor = $('.ace_cursor');
-            if(cursor.length > 0) {
+            if (cursor.length > 0) {
+                cursor = $(cursor[0]);
+                var top = cursor.offset().top;
+                return top;
+            }
+        },
+
+        _computeLeftOffset: function () {
+            /* FIXME How to handle multiple cursors? This seems to compute the
+             * offset using the position of the last created cursor. */
+            var cursor = $('.ace_cursor');
+            if (cursor.length > 0) {
                 cursor = $(cursor[0]);
                 var left = cursor.offset().left;
-                console.log('horizontalOffset');
-                console.log(left);
                 return left;
             }
         },
 
-        _computeVerticalOffset: function() {
-            var editor = codiad.editor.getActive();
-            if(editor != null) {
-                var position = editor.getCursorPositionScreen();
-                console.log('verticalOffset');
-                console.log(position);
-            }
+        getSuggestions: function () {
+            var doc = codiad.editor.getActive().getSession().getDocument();
+
+            /* FIXME For now, make suggestions on the whole file content. Might
+             * be a little bit smarter, e.g., remove the current partial word
+             * and all the keywords associated with the current language.
+             * Note: have a look at EditSession.getTokenAt(row, column). */
+            var text = doc.getValue().trim();
+
+            /* Split the text into words. */
+            var identifiers = text.split(this.wordRegex);
+
+            /* Remove duplicates and empty strings. */
+            var uniqueIdentifiers = [];
+            $.each(identifiers, function (index, identifier) {
+                if (identifier && $.inArray(identifier, uniqueIdentifiers) === -1) {
+                    uniqueIdentifiers.push(identifier);
+                }
+            });
+
+            return uniqueIdentifiers;
         }
+
     };
 
 })(this, jQuery);

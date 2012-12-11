@@ -23,7 +23,6 @@ $components = json_decode($components,true);
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/screen.css">
-    <link rel="stylesheet" href="css/popover.css">
     <?php
     // Load Component CSS Files
     foreach($components as $component){
@@ -44,7 +43,6 @@ $components = json_decode($components,true);
     <script src="js/jquery.easing.js"></script>
     <script src="js/localstorage.js"></script>
     <script src="js/jquery.hoverIntent.min.js"></script>
-    <script src="js/jquery.popover-1.1.2.js"></script>
     <script src="js/system.js"></script>
     <script src="js/sidebars.js"></script>
     <script src="js/modal.js"></script>
@@ -203,7 +201,8 @@ $components = json_decode($components,true);
 
     <iframe id="download"></iframe>
 
-    <div id="autocomplete" style="top:0;bottom:0;display:none;position:absolute"></div>
+    <!-- TODO move that style to css file -->
+    <div id="autocomplete" style="top:0;bottom:0;display:none;position:absolute"><ul id="suggestions"></ul></div>
 
     <!-- ACE -->
     <script src="components/editor/ace-editor/ace.js"></script>
