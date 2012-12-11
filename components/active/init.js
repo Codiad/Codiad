@@ -618,28 +618,22 @@
         //////////////////////////////////////////////////////////////////
 
         initMenuHandler: function(button, menu) {
-            var _this = this;
-            var thisButton = button;
-            var thisMenu = menu;
-
-            thisMenu.appendTo($('body'));
-
-            thisButton.click(function(e) {
-                var wh = $(window).height();
-
+            
+            menu.appendTo($('body'));
+            
+            button.click(function(e) {
                 e.stopPropagation();
 
-                thisMenu.css({
+                menu.css({
                     top: $("#editor-top-bar").height() + 'px',
                     right: '20px',
                     width: '200px'
                 });
-
-                thisMenu.slideToggle('fast');
+                menu.slideToggle('fast');
 
                 // handle click-out autoclosing
                 var fn = function() {
-                    thisMenu.hide();
+                    menu.hide();
                     $(window).off('click', fn)
                 }
                 $(window).on('click', fn);
@@ -647,9 +641,9 @@
         },
 
         createTabDropdownMenu: function() {
-            var _tabMenu = $('#dropdown-list-active-files');
-
-            this.initMenuHandler($('#tab-dropdown-button'), _tabMenu);
+            var menu = $('#dropdown-list-active-files');
+            var button = $('#tab-dropdown-button');
+            this.initMenuHandler(button, menu);
         },
 
         moveTabToDropdownMenu: function(tab, prepend) {
