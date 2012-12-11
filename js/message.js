@@ -9,6 +9,14 @@
     autoclose = null;
 
     codiad.message = {
+        
+        init: function() {
+            // Hide message on click.
+            msg = $('#message');
+            $('#message').click(function(){
+                codiad.message.hide();
+            });
+        },
 
         success: function(m) { // (Message)
             $('#message')
