@@ -1,5 +1,7 @@
 (function (global, $) {
 
+    var TokenIterator = require('ace/token_iterator').TokenIterator;
+
     var codiad = global.codiad;
 
     $(function () {
@@ -28,7 +30,10 @@
         suggest: function () {
             var _this = this;
 
+            // TODO cache suggestions and augment them incrementally.
             var suggestions = this.getSuggestions();
+            // this.rankSuggestions();
+
 
             var popupContent = $('#autocomplete #suggestions');
             $.each(suggestions, function (index, value) {
@@ -38,7 +43,7 @@
             // Show the completion popup.
             var popup = $('#autocomplete');
             popup.css({'top': _this._computeTopOffset(), 'left': _this._computeLeftOffset()});
-            popup.slideToggle('slow');
+            popup.slideToggle('fast');
 
             // handle click-out autoclosing.
             var fn = function () {
@@ -77,7 +82,14 @@
         },
 
         getSuggestions: function () {
-            var doc = codiad.editor.getActive().getSession().getDocument();
+            var session = codiad.editor.getActive().getSession();
+            var doc = session.getDocument();
+
+            var iterator = new TokenIterator(session, 0, 0);
+            console.log(iterator.getCurrentToken());
+
+            iterator.stepForward();
+            console.log(iterator.getCurrentToken());
 
             /* FIXME For now, make suggestions on the whole file content. Might
              * be a little bit smarter, e.g., remove the current partial word
