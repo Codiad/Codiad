@@ -37,8 +37,10 @@
             var position = editor.getCursorPosition();
 
             /* Extract the word being typed. It is somehow the prefix of the
-             * wanted full word. */
+             * wanted full word. Make sure we only keep one word. */
             var prefix = session.getTokenAt(position.row, position.column).value;
+            prefix = prefix.split(this.wordRegex).slice(-1)[0];
+            console.log(prefix);
 
             /* Build and order the suggestions themselves. */
             // TODO cache suggestions and augment them incrementally.
@@ -112,14 +114,18 @@
              * the current token. Might be a little bit smarter, e.g., remove
              * all the keywords associated with the current language. */
 
-            /* Get the token corresponding to the given position. */
-            var token = session.getTokenAt(position.row, position.column);
-
-            /* Get all the text minus token. */
+            /* Get all the text, put a marker at the cursor position. The
+             * marker uses word character so that it won't be discarded by a
+             * word split. */
             var text = doc.getLines(0, position.row - 1).join("\n") + "\n";
             var currentLine = doc.getLine(position.row);
-            text += currentLine.substr(0, token.start);
-            text += currentLine.substr(token.start + token.value.length);
+            text += currentLine.substr(0, position.column);
+            text += '__autocomplete_marker__';
+            if (position.column === currentLine.length) {
+                // position is at end of line, add a break line.
+                text += "\n";
+            }
+            text += currentLine.substr(position.column + 1);
             text += doc.getLines(position.row + 1, doc.getLength()).join("\n") + "\n";
 
             /* Split the text into words. */
