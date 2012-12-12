@@ -84,7 +84,6 @@ a:hover,a:active {;
   font-family: entypo;
   font-style: normal;
   font-size: 75%;
-
   display: inline-block;
   margin-right: 8px; 
   text-align: center;
@@ -105,6 +104,8 @@ a:hover,a:active {;
 .icon-doc.text.bigger-icon {
     padding-right: 0px;
 }
+
+.login-icon { padding-top: 3px; }
 
 /* FORMS */
 
