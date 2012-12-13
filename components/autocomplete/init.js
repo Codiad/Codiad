@@ -1,6 +1,8 @@
 (function (global, $) {
 
     var TokenIterator = require('ace/token_iterator').TokenIterator;
+    var eventManager = require('ace/lib/event').eventManager;
+
 
     var codiad = global.codiad;
 
@@ -20,11 +22,12 @@
 
         wordRegex: /[^a-zA-Z_0-9\$]+/,
 
+        isVisible: false,
+
         init: function () {
             var _this = this;
 
-            // $('#autocomplete').append('<ul id="suggestions"> <li class="suggestion">pipi</li> <li class="suggestion">popo</li> <li class="suggestion">pupu</li> <li class="suggestion">pypy</li> </ul>');
-
+            // eventManager.addListener(text, "input", _this.onTextInput);
         },
 
         suggest: function () {
@@ -33,6 +36,10 @@
             var editor = codiad.editor.getActive();
             var session = editor.getSession();
             var doc = session.getDocument();
+
+            if (this.isVisible) {
+                this.hide();
+            }
 
             var position = editor.getCursorPosition();
 
@@ -55,18 +62,28 @@
             });
 
             // Show the completion popup.
-            var popup = $('#autocomplete');
-            popup.css({'top': _this._computeTopOffset(), 'left': _this._computeLeftOffset()});
-            popup.slideToggle('fast');
+            this.show();
 
             // handle click-out autoclosing.
             var fn = function () {
-                popup.hide();
+                _this.hide();
                 $(window).off('click', fn);
-                $('.suggestion').remove();
             };
             $(window).on('click', fn);
 
+        },
+
+        show: function () {
+            this.isVisible = true;
+            var popup = $('#autocomplete');
+            popup.css({'top': this._computeTopOffset(), 'left': this._computeLeftOffset()});
+            popup.slideToggle('fast');
+        },
+
+        hide: function () {
+            this.isVisible = false;
+            $('#autocomplete').hide();
+            $('.suggestion').remove();
         },
 
         complete: function () {
