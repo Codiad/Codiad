@@ -447,8 +447,8 @@
             if(session.tabThumb.hasClass('tab-item')) {
                 session.tabThumb.css({'z-index': 1});
                 session.tabThumb.animate({
-                    top: session.tabThumb.height() + 'px'
-                }, 600, function() {
+                    top: $('#editor-top-bar').height() + 'px'
+                }, 300, function() {
                     session.tabThumb.remove();
                     _this.updateTabDropdownVisibility();
                 });
