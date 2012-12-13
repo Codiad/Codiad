@@ -1,6 +1,8 @@
 (function (global, $) {
 
-    var TokenIterator = require('ace/token_iterator').TokenIterator;
+    // var TokenIterator = require('ace/token_iterator').TokenIterator;
+    var EventEmitter = require('ace/lib/event_emitter').EventEmitter;
+
 
     var codiad = global.codiad;
 
@@ -20,51 +22,92 @@
 
         wordRegex: /[^a-zA-Z_0-9\$]+/,
 
+        isVisible: false,
+
+        standardOnTextInputCallback: null,
+
         init: function () {
-            var _this = this;
-
-            // $('#autocomplete').append('<ul id="suggestions"> <li class="suggestion">pipi</li> <li class="suggestion">popo</li> <li class="suggestion">pupu</li> <li class="suggestion">pypy</li> </ul>');
-
+            this.$onDocumentChange = this.onDocumentChange.bind(this);
         },
 
         suggest: function () {
             var _this = this;
 
+            /* If the autocomplete popup is already in use, hide it. */
+            if (this.isVisible) {
+                alert('already open');
+                this.hide();
+            }
+
+            this.addListenerToOnDocumentChange();
+
+            this.updateSuggestions();
+
+            // Show the completion popup.
+            this.show();
+
+            // handle click-out autoclosing.
+            var fn = function () {
+                _this.hide();
+                $(window).off('click', fn);
+            };
+            $(window).on('click', fn);
+
+        },
+
+        updateSuggestions: function () {
+            var _this = this;
+
             var editor = codiad.editor.getActive();
             var session = editor.getSession();
-            var doc = session.getDocument();
 
             var position = editor.getCursorPosition();
 
             /* Extract the word being typed. It is somehow the prefix of the
-             * wanted full word. */
+             * wanted full word. Make sure we only keep one word. */
             var prefix = session.getTokenAt(position.row, position.column).value;
+            prefix = prefix.split(this.wordRegex).slice(-1)[0];
 
             /* Build and order the suggestions themselves. */
             // TODO cache suggestions and augment them incrementally.
-            var suggestions = this.getSuggestions(position);
-            suggestions = this.rankSuggestions(prefix, suggestions);
-            console.log(suggestions);
+            var suggestionsAndDistance = this.getSuggestions(position);
+            var suggestions = this.rankSuggestions(prefix, suggestionsAndDistance);
 
-
+            /* Remove the existing suggestions and populate the popu with the
+             * updated ones. */
+            $('.suggestion').remove();
             var popupContent = $('#autocomplete #suggestions');
             $.each(suggestions, function (index, suggestion) {
                 popupContent.append('<li class="suggestion">' + suggestion + '</li>');
             });
+        },
 
-            // Show the completion popup.
+        show: function () {
+            this.isVisible = true;
             var popup = $('#autocomplete');
-            popup.css({'top': _this._computeTopOffset(), 'left': _this._computeLeftOffset()});
+            popup.css({'top': this._computeTopOffset(), 'left': this._computeLeftOffset()});
             popup.slideToggle('fast');
+        },
 
-            // handle click-out autoclosing.
-            var fn = function () {
-                popup.hide();
-                $(window).off('click', fn);
-                $('.suggestion').remove();
-            };
-            $(window).on('click', fn);
+        hide: function () {
+            this.isVisible = false;
+            $('#autocomplete').hide();
+            $('.suggestion').remove();
+            this.removeListenerToOnDocumentChange();
+        },
 
+        addListenerToOnDocumentChange: function () {
+            var session = codiad.editor.getActive().getSession();
+            session.addEventListener('change', this.$onDocumentChange);
+        },
+
+        removeListenerToOnDocumentChange: function () {
+            var session = codiad.editor.getActive().getSession();
+            session.removeEventListener('change', this.$onDocumentChange);
+        },
+
+        onDocumentChange: function (e) {
+            this.updateSuggestions();
         },
 
         complete: function () {
@@ -112,57 +155,101 @@
              * the current token. Might be a little bit smarter, e.g., remove
              * all the keywords associated with the current language. */
 
-            /* Get the token corresponding to the given position. */
-            var token = session.getTokenAt(position.row, position.column);
-
-            /* Get all the text minus token. */
+            /* Get all the text, put a marker at the cursor position. The
+             * marker uses word character so that it won't be discarded by a
+             * word split. */
+            var markerString = '__autocomplete_marker__';
             var text = doc.getLines(0, position.row - 1).join("\n") + "\n";
             var currentLine = doc.getLine(position.row);
-            text += currentLine.substr(0, token.start);
-            text += currentLine.substr(token.start + token.value.length);
+            text += currentLine.substr(0, position.column);
+            text += markerString;
+            if (position.column === currentLine.length) {
+                // position is at end of line, add a break line.
+                text += "\n";
+            }
+            text += currentLine.substr(position.column + 1);
             text += doc.getLines(position.row + 1, doc.getLength()).join("\n") + "\n";
 
             /* Split the text into words. */
-            var identifiers = text.split(this.wordRegex);
+            var suggestions = text.split(this.wordRegex);
 
-            /* Remove duplicates and empty strings. */
-            var uniqueIdentifiers = [];
-            $.each(identifiers, function (index, identifier) {
-                if (identifier && $.inArray(identifier, uniqueIdentifiers) === -1) {
-                    uniqueIdentifiers.push(identifier);
+            /* Get the index of the word at the cursor position. */
+            var markerIndex = 0;
+            var markedWord = '';
+            $.each(suggestions, function (index, value) {
+                if (value.search(markerString) !== -1) {
+                    markerIndex = index;
+                    markedWord = value;
+                    return false;
                 }
             });
 
-            return uniqueIdentifiers;
+            /* Build an objet associating the suggestions with their distance
+             * to the word at cursor position. */
+            var suggestionsAndDistance = {};
+            $.each(suggestions, function (index, suggestion) {
+                var distance = Math.abs(index - markerIndex);
+                suggestionsAndDistance[suggestion] = distance;
+            });
+
+            /* Remove from the suggestions the word under the cursor. */
+            delete suggestionsAndDistance[markedWord];
+
+            return suggestionsAndDistance;
         },
 
-        /* Rank an array of suggestions based on how much the suggestion
-         * matches the given prefix. The suggestions with a score lower than
-         * the maximum score will be discarded. Best match will be first in the
-         * ranked array. Also return the ranked array. */
-        rankSuggestions: function (prefix, suggestions) {
+        /* Given an object associating suggestions and their distances to the
+         * word under the cursor (the prefix), return a ranked array of
+         * suggestions with the best match first. The suggestions are ranked
+         * based on how much they match the given prefix and their distances to
+         * the prefix. The suggestions with a score lower than the maximum
+         * score will be discarded. */
+        rankSuggestions: function (prefix, suggestionsAndDistance) {
             /* Initialize maxScore to one to ensure removing the non matching
              * suggestions (those with a zero score). */
             var maxScore = 1;
             var ranks = {};
-            for (var i = 0; i < suggestions.length; ++i) {
-                var score = this.simpleMatchScorer(prefix, suggestions[i]);
-                if (score > maxScore) {
-                    maxScore = score;
-                }
+            var suggestionsAndMatchScore = {};
+            for (var suggestion in suggestionsAndDistance) {
+                if (suggestionsAndDistance.hasOwnProperty(suggestion)) {
+                    var score = this.simpleMatchScorer(prefix, suggestion);
+                    if (score > maxScore) {
+                        maxScore = score;
+                    }
 
-                ranks[suggestions[i]] = score;
+                    suggestionsAndMatchScore[suggestion] = score;
+                }
             }
 
             /* Remove the suggestions with a score lower than the maximum
              * score. */
-            for (i = suggestions.length - 1; i >= 0; i--) {
-                if (ranks[suggestions[i]] < maxScore) {
-                    suggestions.splice(i, 1);
+            for (suggestion in suggestionsAndMatchScore) {
+                if (suggestionsAndMatchScore.hasOwnProperty(suggestion)) {
+                    if (suggestionsAndMatchScore[suggestion] < maxScore) {
+                        delete suggestionsAndMatchScore[suggestion];
+                    }
+                }
+            }
+            
+            /* Now for each suggestion we have its matching score and its
+             * distance to the word under the cursor. So compute its final
+             * score as a combination of both. */
+            for (suggestion in suggestionsAndMatchScore) {
+                if (suggestionsAndMatchScore.hasOwnProperty(suggestion)) {
+                    ranks[suggestion] = suggestionsAndMatchScore[suggestion] -
+                                            suggestionsAndDistance[suggestion];
                 }
             }
 
-            /* Make sure to rank in the ascending scores order. */
+            /* Make an array of suggestions and make sure to rank them in the
+             * ascending scores order. */
+            var suggestions = [];
+            for (suggestion in ranks) {
+                if (ranks.hasOwnProperty(suggestion)) {
+                    suggestions.push(suggestion);
+                }
+            }
+            
             suggestions.sort(function (firstSuggestion, secondSuggestion) {
                 return ranks[secondSuggestion] - ranks[firstSuggestion];
             });
