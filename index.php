@@ -203,8 +203,7 @@ $components = json_decode($components,true);
 
     <iframe id="download"></iframe>
 
-    <!-- TODO move that style to css file -->
-    <div id="autocomplete" style="top:0;bottom:0;display:none;position:absolute"><ul id="suggestions"></ul></div>
+    <div id="autocomplete"><ul id="suggestions"></ul></div>
 
     <!-- ACE -->
     <script src="components/editor/ace-editor/ace.js"></script>
