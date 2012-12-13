@@ -1,7 +1,7 @@
 [
     {
         "title": "Save File",
-        "icon": "x",
+        "icon": "icon-install",
         "onclick": "codiad.active.save();"
     },
     {
@@ -11,7 +11,7 @@
     },
     {
         "title": "Color Tool",
-        "icon": "F",
+        "icon": "icon-palette",
         "onclick": "codiad.colorPicker.open();"
     },
     {
@@ -21,7 +21,7 @@
     },
     {
         "title": "Terminal",
-        "icon": "@",
+        "icon": "icon-monitor",
         "onclick": "codiad.terminal.open();"
     },
     {
@@ -31,7 +31,7 @@
     },
     {
         "title": "Projects",
-        "icon": "t",
+        "icon": "icon-archive",
         "onclick": "codiad.project.list();"
     },
     {
@@ -41,7 +41,7 @@
     },
     {
         "title": "Users",
-        "icon": ",",
+        "icon": "icon-users",
         "onclick": "codiad.user.list();"
     },
     {
@@ -51,12 +51,12 @@
     },
     {
         "title": "Editor",
-        "icon": "l",
+        "icon": "icon-doc-text",
         "onclick": "codiad.modal.load(400, 'components/editor/dialog.php?action=settings');codiad.modal.hideOverlay();"
     },
     {
         "title": "Password",
-        "icon": "A",
+        "icon": "icon-flashlight",
         "onclick": "codiad.user.password();"
     },
     {
@@ -66,7 +66,7 @@
     },
     {
         "title": "Logout",
-        "icon": "/",
+        "icon": "icon-logout",
         "onclick": "codiad.user.logout();"
     }
 ]

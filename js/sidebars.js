@@ -11,6 +11,9 @@
         userLock: true,
         modalLock: false,
 
+        isLeftSidebarOpen: true,
+        isRigthSidebarOpen: false,
+
         init: function() {
 
             var _this = this;
@@ -21,13 +24,15 @@
 
                     _this.userLock = false;
                     $('#lock-left-sidebar')
-                        .html('V');
+                        .removeClass('icon-lock')
+                        .addClass('icon-lock-open');
 
                 } else {
 
                     _this.userLock = true;
                     $('#lock-left-sidebar')
-                        .html('U');
+                        .removeClass('icon-lock-open')
+                        .addClass('icon-lock');
 
                 }
             });
@@ -48,7 +53,9 @@
                         'width': ($('body')
                             .outerWidth() - sbarWidth - 10) + 'px'
                         }, 300, 'easeOutQuart', function(){
+                            _this.isLeftSidebarOpen = true;
                             $(this).trigger('h-resize-init');
+                            codiad.active.updateTabDropdownVisibility();
                         });
                     $(this)
                         .animate({
@@ -70,7 +77,9 @@
                                     'width': ($('body')
                                         .outerWidth() - 20) + 'px'
                                 }, 300, 'easeOutQuart', function(){
+                                    _this.isLeftSidebarOpen = false;
                                     $(this).trigger('h-resize-init');
+                                    codiad.active.updateTabDropdownVisibility();
                                 });
                         }
                     }, this), 500));
@@ -87,7 +96,9 @@
                     $('#editor-region')
                         .animate({
                             'margin-right': '200px'
-                        }, 300, 'easeOutQuart');
+                        }, 300, 'easeOutQuart', function(){
+                            _this.isRigthSidebarOpen = true;
+                        });
                     $(this)
                         .animate({
                             'right': '0px'
@@ -102,7 +113,9 @@
                         $('#editor-region')
                             .animate({
                                 'margin-right': '10px'
-                            }, 300, 'easeOutQuart');
+                            }, 300, 'easeOutQuart', function(){
+                                _this.isRigthSidebarOpen = false;
+                            });
                     }, this), 500));
                 });
 
