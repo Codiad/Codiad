@@ -22,9 +22,6 @@
 
         init: function () {
             var _this = this;
-
-            // $('#autocomplete').append('<ul id="suggestions"> <li class="suggestion">pipi</li> <li class="suggestion">popo</li> <li class="suggestion">pupu</li> <li class="suggestion">pypy</li> </ul>');
-
         },
 
         suggest: function () {
@@ -54,8 +51,14 @@
 
             // Show the completion popup.
             var popup = $('#autocomplete');
-            popup.css({'top': _this._computeTopOffset(), 'left': _this._computeLeftOffset()});
-            popup.slideToggle('fast');
+            popup.css({
+                'top': _this._computeTopOffset(), 
+                'left': _this._computeLeftOffset()
+            });
+            popup.slideToggle('fast', function() {
+                $(this).css('overflow', '');
+                $(this).css('bottom', '');
+            });
 
             // handle click-out autoclosing.
             var fn = function () {
