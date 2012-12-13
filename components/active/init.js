@@ -31,6 +31,10 @@
 
         // Path to EditSession instance mapping
         sessions: {},
+        
+        // History of opened files
+        history: [],
+        
 
         //////////////////////////////////////////////////////////////////
         //
@@ -359,6 +363,7 @@
             var session = this.sessions[path];
             codiad.editor.setSession(session);
             this.check(path);
+            this.history.push(path)
         },
 
         highlightEntry: function(path) {
@@ -459,13 +464,26 @@
 
             session.listThumb.remove();
 
+            /* Remove closed path from history */
+            var history = [];
+            $.each(this.history, function(index) {
+                if(this != path) history.push(this);
+            })
+            this.history = history
+            
             /* Select all the tab tumbs except the one which is to be removed. */
-            var nextTabThumb = $('#tab-list-active-files li[data-path!="' + path + '"]');
+            var tabThumbs = $('#tab-list-active-files li[data-path!="' + path + '"]');
 
-            if (nextTabThumb.length == 0) {
+            if (tabThumbs.length == 0) {
                 codiad.editor.exterminate();
             } else {
-                var nextPath = nextTabThumb.attr('data-path');
+                
+                var nextPath = '';
+                if(this.history.length > 0) {
+                    nextPath = this.history[this.history.length - 1];
+                } else {
+                    nextPath = tabThumbs[0].attr('data-path');
+                }
                 var nextSession = this.sessions[nextPath];
                 codiad.editor.removeSession(session, nextSession);
 
