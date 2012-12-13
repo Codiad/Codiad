@@ -1,7 +1,7 @@
 (function (global, $) {
 
-    var TokenIterator = require('ace/token_iterator').TokenIterator;
-    var eventManager = require('ace/lib/event').eventManager;
+    // var TokenIterator = require('ace/token_iterator').TokenIterator;
+    var EventEmitter = require('ace/lib/event_emitter').EventEmitter;
 
 
     var codiad = global.codiad;
@@ -27,9 +27,7 @@
         standardOnTextInputCallback: null,
 
         init: function () {
-            var _this = this;
-
-            // eventManager.addListener(text, "input", _this.onTextInput);
+            this.$onDocumentChange = this.onDocumentChange.bind(this);
         },
 
         suggest: function () {
@@ -41,7 +39,7 @@
                 this.hide();
             }
 
-            this.hookupToOnTextInput();
+            this.addListenerToOnDocumentChange();
 
             this.updateSuggestions();
 
@@ -69,13 +67,11 @@
              * wanted full word. Make sure we only keep one word. */
             var prefix = session.getTokenAt(position.row, position.column).value;
             prefix = prefix.split(this.wordRegex).slice(-1)[0];
-            console.log(prefix);
 
             /* Build and order the suggestions themselves. */
             // TODO cache suggestions and augment them incrementally.
             var suggestionsAndDistance = this.getSuggestions(position);
             var suggestions = this.rankSuggestions(prefix, suggestionsAndDistance);
-            console.log(suggestions);
 
             /* Remove the existing suggestions and populate the popu with the
              * updated ones. */
@@ -97,24 +93,21 @@
             this.isVisible = false;
             $('#autocomplete').hide();
             $('.suggestion').remove();
-            this.removeHookToOnTextInput();
+            this.removeListenerToOnDocumentChange();
         },
 
-        hookupToOnTextInput: function () {
-            var _this = this;
-
-            var editor = codiad.editor.getActive();
-            this.standardOnTextInputCallback = editor.onTextInput;
-
-            editor.onTextInput = function (text) {
-                _this.standardOnTextInputCallback.call(editor, text);
-                _this.updateSuggestions();
-            };
+        addListenerToOnDocumentChange: function () {
+            var session = codiad.editor.getActive().getSession();
+            session.addEventListener('change', this.$onDocumentChange);
         },
 
-        removeHookToOnTextInput: function () {
-            var editor = codiad.editor.getActive();
-            editor.onTextInput = this.standardOnTextInputCallback;
+        removeListenerToOnDocumentChange: function () {
+            var session = codiad.editor.getActive().getSession();
+            session.removeEventListener('change', this.$onDocumentChange);
+        },
+
+        onDocumentChange: function (e) {
+            this.updateSuggestions();
         },
 
         complete: function () {
@@ -196,7 +189,6 @@
             var suggestionsAndDistance = {};
             $.each(suggestions, function (index, suggestion) {
                 var distance = Math.abs(index - markerIndex);
-                console.log(distance);
                 suggestionsAndDistance[suggestion] = distance;
             });
 
