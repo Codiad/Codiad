@@ -44,8 +44,8 @@
 
             /* Build and order the suggestions themselves. */
             // TODO cache suggestions and augment them incrementally.
-            var suggestions = this.getSuggestions(position);
-            suggestions = this.rankSuggestions(prefix, suggestions);
+            var suggestionsAndDistance = this.getSuggestions(position);
+            var suggestions = this.rankSuggestions(prefix, suggestionsAndDistance);
             console.log(suggestions);
 
 
@@ -117,10 +117,11 @@
             /* Get all the text, put a marker at the cursor position. The
              * marker uses word character so that it won't be discarded by a
              * word split. */
+            var markerString = '__autocomplete_marker__';
             var text = doc.getLines(0, position.row - 1).join("\n") + "\n";
             var currentLine = doc.getLine(position.row);
             text += currentLine.substr(0, position.column);
-            text += '__autocomplete_marker__';
+            text += markerString;
             if (position.column === currentLine.length) {
                 // position is at end of line, add a break line.
                 text += "\n";
@@ -129,46 +130,86 @@
             text += doc.getLines(position.row + 1, doc.getLength()).join("\n") + "\n";
 
             /* Split the text into words. */
-            var identifiers = text.split(this.wordRegex);
+            var suggestions = text.split(this.wordRegex);
 
-            /* Remove duplicates and empty strings. */
-            var uniqueIdentifiers = [];
-            $.each(identifiers, function (index, identifier) {
-                if (identifier && $.inArray(identifier, uniqueIdentifiers) === -1) {
-                    uniqueIdentifiers.push(identifier);
+            /* Get the index of the word at the cursor position. */
+            var markerIndex = 0;
+            var markedWord = '';
+            $.each(suggestions, function (index, value) {
+                if (value.search(markerString) !== -1) {
+                    markerIndex = index;
+                    markedWord = value;
+                    return false;
                 }
             });
 
-            return uniqueIdentifiers;
+            /* Build an objet associating the suggestions with their distance
+             * to the word at cursor position. */
+            var suggestionsAndDistance = {};
+            $.each(suggestions, function (index, suggestion) {
+                var distance = Math.abs(index - markerIndex);
+                console.log(distance);
+                suggestionsAndDistance[suggestion] = distance;
+            });
+
+            /* Remove from the suggestions the word under the cursor. */
+            delete suggestionsAndDistance[markedWord];
+
+            return suggestionsAndDistance;
         },
 
-        /* Rank an array of suggestions based on how much the suggestion
-         * matches the given prefix. The suggestions with a score lower than
-         * the maximum score will be discarded. Best match will be first in the
-         * ranked array. Also return the ranked array. */
-        rankSuggestions: function (prefix, suggestions) {
+        /* Given an object associating suggestions and their distances to the
+         * word under the cursor (the prefix), return a ranked array of
+         * suggestions with the best match first. The suggestions are ranked
+         * based on how much they match the given prefix and their distances to
+         * the prefix. The suggestions with a score lower than the maximum
+         * score will be discarded. */
+        rankSuggestions: function (prefix, suggestionsAndDistance) {
             /* Initialize maxScore to one to ensure removing the non matching
              * suggestions (those with a zero score). */
             var maxScore = 1;
             var ranks = {};
-            for (var i = 0; i < suggestions.length; ++i) {
-                var score = this.simpleMatchScorer(prefix, suggestions[i]);
-                if (score > maxScore) {
-                    maxScore = score;
-                }
+            var suggestionsAndMatchScore = {};
+            for (var suggestion in suggestionsAndDistance) {
+                if (suggestionsAndDistance.hasOwnProperty(suggestion)) {
+                    var score = this.simpleMatchScorer(prefix, suggestion);
+                    if (score > maxScore) {
+                        maxScore = score;
+                    }
 
-                ranks[suggestions[i]] = score;
+                    suggestionsAndMatchScore[suggestion] = score;
+                }
             }
 
             /* Remove the suggestions with a score lower than the maximum
              * score. */
-            for (i = suggestions.length - 1; i >= 0; i--) {
-                if (ranks[suggestions[i]] < maxScore) {
-                    suggestions.splice(i, 1);
+            for (suggestion in suggestionsAndMatchScore) {
+                if (suggestionsAndMatchScore.hasOwnProperty(suggestion)) {
+                    if (suggestionsAndMatchScore[suggestion] < maxScore) {
+                        delete suggestionsAndMatchScore[suggestion];
+                    }
+                }
+            }
+            
+            /* Now for each suggestion we have its matching score and its
+             * distance to the word under the cursor. So compute its final
+             * score as a combination of both. */
+            for (suggestion in suggestionsAndMatchScore) {
+                if (suggestionsAndMatchScore.hasOwnProperty(suggestion)) {
+                    ranks[suggestion] = suggestionsAndMatchScore[suggestion] -
+                                            suggestionsAndDistance[suggestion];
                 }
             }
 
-            /* Make sure to rank in the ascending scores order. */
+            /* Make an array of suggestions and make sure to rank them in the
+             * ascending scores order. */
+            var suggestions = [];
+            for (suggestion in ranks) {
+                if (ranks.hasOwnProperty(suggestion)) {
+                    suggestions.push(suggestion);
+                }
+            }
+            
             suggestions.sort(function (firstSuggestion, secondSuggestion) {
                 return ranks[secondSuggestion] - ranks[firstSuggestion];
             });
