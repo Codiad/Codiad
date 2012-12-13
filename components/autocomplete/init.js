@@ -24,6 +24,8 @@
 
         isVisible: false,
 
+        standardOnTextInputCallback: null,
+
         init: function () {
             var _this = this;
 
@@ -33,13 +35,33 @@
         suggest: function () {
             var _this = this;
 
-            var editor = codiad.editor.getActive();
-            var session = editor.getSession();
-            var doc = session.getDocument();
-
+            /* If the autocomplete popup is already in use, hide it. */
             if (this.isVisible) {
+                alert('already open');
                 this.hide();
             }
+
+            this.hookupToOnTextInput();
+
+            this.updateSuggestions();
+
+            // Show the completion popup.
+            this.show();
+
+            // handle click-out autoclosing.
+            var fn = function () {
+                _this.hide();
+                $(window).off('click', fn);
+            };
+            $(window).on('click', fn);
+
+        },
+
+        updateSuggestions: function () {
+            var _this = this;
+
+            var editor = codiad.editor.getActive();
+            var session = editor.getSession();
 
             var position = editor.getCursorPosition();
 
@@ -55,22 +77,13 @@
             var suggestions = this.rankSuggestions(prefix, suggestionsAndDistance);
             console.log(suggestions);
 
-
+            /* Remove the existing suggestions and populate the popu with the
+             * updated ones. */
+            $('.suggestion').remove();
             var popupContent = $('#autocomplete #suggestions');
             $.each(suggestions, function (index, suggestion) {
                 popupContent.append('<li class="suggestion">' + suggestion + '</li>');
             });
-
-            // Show the completion popup.
-            this.show();
-
-            // handle click-out autoclosing.
-            var fn = function () {
-                _this.hide();
-                $(window).off('click', fn);
-            };
-            $(window).on('click', fn);
-
         },
 
         show: function () {
@@ -84,6 +97,24 @@
             this.isVisible = false;
             $('#autocomplete').hide();
             $('.suggestion').remove();
+            this.removeHookToOnTextInput();
+        },
+
+        hookupToOnTextInput: function () {
+            var _this = this;
+
+            var editor = codiad.editor.getActive();
+            this.standardOnTextInputCallback = editor.onTextInput;
+
+            editor.onTextInput = function (text) {
+                _this.standardOnTextInputCallback.call(editor, text);
+                _this.updateSuggestions();
+            };
+        },
+
+        removeHookToOnTextInput: function () {
+            var editor = codiad.editor.getActive();
+            editor.onTextInput = this.standardOnTextInputCallback;
         },
 
         complete: function () {
