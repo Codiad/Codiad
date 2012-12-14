@@ -73,13 +73,15 @@
             var suggestionsAndDistance = this.getSuggestions(position);
             var suggestions = this.rankSuggestions(prefix, suggestionsAndDistance);
 
-            /* Remove the existing suggestions and populate the popu with the
+            /* Remove the existing suggestions and populate the popup with the
              * updated ones. */
             $('.suggestion').remove();
             var popupContent = $('#autocomplete #suggestions');
             $.each(suggestions, function (index, suggestion) {
                 popupContent.append('<li class="suggestion">' + suggestion + '</li>');
             });
+
+            this.selectFirstSuggestion();
         },
 
         show: function () {
@@ -96,6 +98,17 @@
             this.removeListenerToOnDocumentChange();
         },
 
+        selectFirstSuggestion: function () {
+            $('li.suggestion:first-child').addClass('active-suggestion');
+        },
+
+        selectNextSuggestion: function () {
+            $('li.suggestion.active-suggestion').addClass('active-suggestion');
+        },
+
+        selectPreviousSuggestion: function () {
+        },
+
         addListenerToOnDocumentChange: function () {
             var session = codiad.editor.getActive().getSession();
             session.addEventListener('change', this.$onDocumentChange);
@@ -107,35 +120,17 @@
         },
 
         onDocumentChange: function (e) {
-            this.updateSuggestions();
+            var doc = this._getDocument();
+            if (e.data.action === 'insertText' &&
+                    e.data.text === doc.getNewLineCharacter()) {
+                alert('replace');
+            } else {
+                this.updateSuggestions();
+            }
         },
 
         complete: function () {
             alert('Not implemented.');
-        },
-
-        _computeTopOffset: function () {
-            /* FIXME How to handle multiple cursors? This seems to compute the
-             * offset using the position of the last created cursor. */
-            var cursor = $('.ace_cursor');
-            if (cursor.length > 0) {
-                var fontSize = codiad.editor.getActive().container.style.fontSize.replace('px', '');
-                var interLine = 1.7;
-                cursor = $(cursor[0]);
-                var top = cursor.offset().top + fontSize * interLine;
-                return top;
-            }
-        },
-
-        _computeLeftOffset: function () {
-            /* FIXME How to handle multiple cursors? This seems to compute the
-             * offset using the position of the last created cursor. */
-            var cursor = $('.ace_cursor');
-            if (cursor.length > 0) {
-                cursor = $(cursor[0]);
-                var left = cursor.offset().left;
-                return left;
-            }
         },
 
         /* Get suggestions of completion for the current position in the
@@ -277,7 +272,45 @@
 
                 return score;
             }
+        },
+
+        _computeTopOffset: function () {
+            /* FIXME How to handle multiple cursors? This seems to compute the
+             * offset using the position of the last created cursor. */
+            var cursor = $('.ace_cursor');
+            if (cursor.length > 0) {
+                var fontSize = codiad.editor.getActive().container.style.fontSize.replace('px', '');
+                var interLine = 1.7;
+                cursor = $(cursor[0]);
+                var top = cursor.offset().top + fontSize * interLine;
+                return top;
+            }
+        },
+
+        _computeLeftOffset: function () {
+            /* FIXME How to handle multiple cursors? This seems to compute the
+             * offset using the position of the last created cursor. */
+            var cursor = $('.ace_cursor');
+            if (cursor.length > 0) {
+                cursor = $(cursor[0]);
+                var left = cursor.offset().left;
+                return left;
+            }
+        },
+
+        /* Set of helper methods to manipulate the editor. */
+        _getEditor: function () {
+            return codiad.editor.getActive();
+        },
+
+        _getEditSession: function () {
+            return codiad.editor.getActive().getSession();
+        },
+
+        _getDocument: function () {
+            return codiad.editor.getActive().getSession().getDocument();
         }
+
     };
 
 })(this, jQuery);
