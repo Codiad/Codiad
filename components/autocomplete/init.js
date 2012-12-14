@@ -2,6 +2,7 @@
 
     // var TokenIterator = require('ace/token_iterator').TokenIterator;
     var EventEmitter = require('ace/lib/event_emitter').EventEmitter;
+    var Range = require('ace/range').Range;
 
 
     var codiad = global.codiad;
@@ -62,8 +63,8 @@
         updateSuggestions: function () {
             var _this = this;
 
-            var editor = codiad.editor.getActive();
-            var session = editor.getSession();
+            var editor = this._getEditor();
+            var session = this._getEditSession();
 
             var position = editor.getCursorPosition();
 
@@ -108,6 +109,18 @@
             this.removeKeyboardCommands();
         },
 
+        /* Return a jQuery object containing the currently selected suggestion. */
+        getSelectedSuggestion: function () {
+            var selectedSuggestion = $('li.suggestion.active-suggestion');
+            if (selectedSuggestion.length < 1) {
+                alert('No suggestion selected. Might be a bug.');
+            } else if (selectedSuggestion.length > 1) {
+                alert('More than one suggestions selected. Might be a bug.');
+            }
+
+            return selectedSuggestion;
+        },
+
         selectFirstSuggestion: function () {
             $('li.suggestion:first-child').addClass('active-suggestion');
         },
@@ -117,65 +130,44 @@
         },
 
         selectNextSuggestion: function () {
-            var selectedSuggestion = $('li.suggestion.active-suggestion');
-            if (selectedSuggestion.length > 0) {
-                if (selectedSuggestion.length > 1) {
-                    alert('More than one suggestions selected. Might be a bug.');
-                } else {
-                    selectedSuggestion.removeClass('active-suggestion');
-                    var nextSuggestion = selectedSuggestion.next();
-                    if (nextSuggestion.length > 0) {
-                        nextSuggestion.addClass('active-suggestion');
-                    } else {
-                        /* The currently selected suggestion is the last one.
-                         * Go back to first one. */
-                        this.selectFirstSuggestion();
-                    }
-                }
+            var selectedSuggestion = this.getSelectedSuggestion();
+            selectedSuggestion.removeClass('active-suggestion');
+            var nextSuggestion = selectedSuggestion.next();
+            if (nextSuggestion.length > 0) {
+                nextSuggestion.addClass('active-suggestion');
             } else {
-                alert('No suggestion selected. Might be a bug.');
+                /* The currently selected suggestion is the last one.
+                 * Go back to first one. */
+                this.selectFirstSuggestion();
             }
         },
 
         selectPreviousSuggestion: function () {
-            var selectedSuggestion = $('li.suggestion.active-suggestion');
-            if (selectedSuggestion.length > 0) {
-                if (selectedSuggestion.length > 1) {
-                    alert('More than one suggestions selected. Might be a bug.');
-                } else {
-                    selectedSuggestion.removeClass('active-suggestion');
-                    var previousSuggestion = selectedSuggestion.prev();
-                    if (previousSuggestion.length > 0) {
-                        previousSuggestion.addClass('active-suggestion');
-                    } else {
-                        /* The currently selected suggestion is the first one.
-                         * Go back to last one. */
-                        this.selectLastSuggestion();
-                    }
-                }
+            var selectedSuggestion = this.getSelectedSuggestion();
+            selectedSuggestion.removeClass('active-suggestion');
+            var previousSuggestion = selectedSuggestion.prev();
+            if (previousSuggestion.length > 0) {
+                previousSuggestion.addClass('active-suggestion');
             } else {
-                alert('No suggestion selected. Might be a bug.');
+                /* The currently selected suggestion is the first one.
+                 * Go back to last one. */
+                this.selectLastSuggestion();
             }
         },
 
         addListenerToOnDocumentChange: function () {
-            var session = codiad.editor.getActive().getSession();
+            var session = this._getEditSession();
             session.addEventListener('change', this.$onDocumentChange);
         },
 
         removeListenerToOnDocumentChange: function () {
-            var session = codiad.editor.getActive().getSession();
+            var session = this._getEditSession();
             session.removeEventListener('change', this.$onDocumentChange);
         },
 
         onDocumentChange: function (e) {
             var doc = this._getDocument();
-            if (e.data.action === 'insertText' &&
-                    e.data.text === doc.getNewLineCharacter()) {
-                alert('replace');
-            } else {
-                this.updateSuggestions();
-            }
+            this.updateSuggestions();
         },
 
         addKeyboardCommands: function () {
@@ -192,9 +184,17 @@
 
             commandManager.addCommand({
                 name: 'hideautocomplete',
-                bindKey: 'esc',
+                bindKey: 'Esc',
                 exec: function () {
                     _this.hide();
+                }
+            });
+
+            commandManager.addCommand({
+                name: 'autocomplete',
+                bindKey: 'Return',
+                exec: function () {
+                    _this.complete();
                 }
             });
         },
@@ -204,18 +204,36 @@
             commandManager.commands.golinedown.exec = this.standardGoLineDownExec;
             commandManager.commands.golineup.exec = this.standardGoLineUpExec;
             commandManager.removeCommand('hideautocomplete');
+            commandManager.removeCommand('autocomplete');
         },
 
+        /* Complete the word under the cursor with the currently selected
+         * suggestion. */
         complete: function () {
-            alert('Not implemented.');
+            var editor = this._getEditor();
+            var session = this._getEditSession();
+
+            var position = editor.getCursorPosition();
+
+            /* Get the length of the word being typed. */
+            var prefix = session.getTokenAt(position.row, position.column).value;
+            var prefixLength = prefix.split(this.wordRegex).slice(-1)[0].length;
+
+            var range = new Range(position.row,
+                                position.column - prefixLength,
+                                position.row,
+                                position.column);
+
+            var suggestion = this.getSelectedSuggestion().text();
+            session.replace(range, suggestion);
+
+            this.hide();
         },
 
         /* Get suggestions of completion for the current position in the
          * document. */
         getSuggestions: function (position) {
-            var editor = codiad.editor.getActive();
-            var session = editor.getSession();
-            var doc = session.getDocument();
+            var doc = this._getDocument();
 
             // The following is just for testing purpose.
             // var iterator = new TokenIterator(session, 0, 0);
@@ -256,7 +274,7 @@
                 }
             });
 
-            /* Build an objet associating the suggestions with their distance
+            /* Build an object associating the suggestions with their distance
              * to the word at cursor position. */
             var suggestionsAndDistance = {};
             $.each(suggestions, function (index, suggestion) {
