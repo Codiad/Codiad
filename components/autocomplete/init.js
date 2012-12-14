@@ -24,10 +24,14 @@
 
         isVisible: false,
 
-        standardOnTextInputCallback: null,
+        standardGoLineDownExec: null,
+
+        standardGoLineUpExec: null,
 
         init: function () {
             this.$onDocumentChange = this.onDocumentChange.bind(this);
+            this.$selectNextSuggestion = this.selectNextSuggestion.bind(this);
+            this.$selectPreviousSuggestion = this.selectPreviousSuggestion.bind(this);
         },
 
         suggest: function () {
@@ -86,27 +90,72 @@
 
         show: function () {
             this.isVisible = true;
+
             var popup = $('#autocomplete');
             popup.css({'top': this._computeTopOffset(), 'left': this._computeLeftOffset()});
             popup.slideToggle('fast');
+
+            this.addKeyboardCommands();
         },
 
         hide: function () {
             this.isVisible = false;
+
             $('#autocomplete').hide();
             $('.suggestion').remove();
+
             this.removeListenerToOnDocumentChange();
+            this.removeKeyboardCommands();
         },
 
         selectFirstSuggestion: function () {
             $('li.suggestion:first-child').addClass('active-suggestion');
         },
 
+        selectLastSuggestion: function () {
+            $('li.suggestion:last-child').addClass('active-suggestion');
+        },
+
         selectNextSuggestion: function () {
-            $('li.suggestion.active-suggestion').addClass('active-suggestion');
+            var selectedSuggestion = $('li.suggestion.active-suggestion');
+            if (selectedSuggestion.length > 0) {
+                if (selectedSuggestion.length > 1) {
+                    alert('More than one suggestions selected. Might be a bug.');
+                } else {
+                    selectedSuggestion.removeClass('active-suggestion');
+                    var nextSuggestion = selectedSuggestion.next();
+                    if (nextSuggestion.length > 0) {
+                        nextSuggestion.addClass('active-suggestion');
+                    } else {
+                        /* The currently selected suggestion is the last one.
+                         * Go back to first one. */
+                        this.selectFirstSuggestion();
+                    }
+                }
+            } else {
+                alert('No suggestion selected. Might be a bug.');
+            }
         },
 
         selectPreviousSuggestion: function () {
+            var selectedSuggestion = $('li.suggestion.active-suggestion');
+            if (selectedSuggestion.length > 0) {
+                if (selectedSuggestion.length > 1) {
+                    alert('More than one suggestions selected. Might be a bug.');
+                } else {
+                    selectedSuggestion.removeClass('active-suggestion');
+                    var previousSuggestion = selectedSuggestion.prev();
+                    if (previousSuggestion.length > 0) {
+                        previousSuggestion.addClass('active-suggestion');
+                    } else {
+                        /* The currently selected suggestion is the first one.
+                         * Go back to last one. */
+                        this.selectLastSuggestion();
+                    }
+                }
+            } else {
+                alert('No suggestion selected. Might be a bug.');
+            }
         },
 
         addListenerToOnDocumentChange: function () {
@@ -127,6 +176,34 @@
             } else {
                 this.updateSuggestions();
             }
+        },
+
+        addKeyboardCommands: function () {
+            var _this = this;
+            var commandManager = this._getEditor().commands;
+
+            /* Save the standard commands that will be overwritten. */
+            this.standardGoLineDownExec = commandManager.commands.golinedown.exec;
+            this.standardGoLineUpExec = commandManager.commands.golineup.exec;
+
+            /* Overwrite with the completion specific implementations. */
+            commandManager.commands.golinedown.exec = this.$selectNextSuggestion;
+            commandManager.commands.golineup.exec = this.$selectPreviousSuggestion;
+
+            commandManager.addCommand({
+                name: 'hideautocomplete',
+                bindKey: 'esc',
+                exec: function () {
+                    _this.hide();
+                }
+            });
+        },
+
+        removeKeyboardCommands: function () {
+            var commandManager = this._getEditor().commands;
+            commandManager.commands.golinedown.exec = this.standardGoLineDownExec;
+            commandManager.commands.golineup.exec = this.standardGoLineUpExec;
+            commandManager.removeCommand('hideautocomplete');
         },
 
         complete: function () {

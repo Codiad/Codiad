@@ -11,3 +11,8 @@
     z-index: 9999;
     overflow: auto;
 }
+
+.active-suggestion {
+    /* Hey this is just for testing ;-) */
+    color: red;
+}
