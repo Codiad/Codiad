@@ -35,6 +35,8 @@
         // History of opened files
         history: [],
         
+        // Current active path
+        activePath: '',
 
         //////////////////////////////////////////////////////////////////
         //
@@ -57,7 +59,6 @@
             }
             var ext = codiad.filemanager.getExtension(path);
             var mode = codiad.editor.selectMode(ext);
-            var _this = this;
 
             var fn = function() {
                 //var Mode = require('ace/mode/' + mode)
@@ -107,7 +108,6 @@
             $('#dropdown-list-active-files a')
                 .live('click', function(e) {
                     if(e.which == 1) {
-                        e.stopPropagation();
                         _this.focus($(this).parent('li').attr('data-path'));
                     }
             });
@@ -362,11 +362,15 @@
             if (typeof moveToTabList == 'undefined') {
                 moveToTabList = true;
             }
+            
             this.highlightEntry(path, moveToTabList);
-            var session = this.sessions[path];
-            codiad.editor.setSession(session);
-            this.check(path);
-            this.history.push(path)
+            
+            if(path != this.activePath) {
+                codiad.editor.setSession(this.sessions[path]);
+                this.check(path);
+                this.activePath = path;
+                this.history.push(path);
+            }
         },
 
         highlightEntry: function(path, moveToTabList) {
@@ -411,7 +415,6 @@
                     }
                 }
             }
-            
 
             session.tabThumb.addClass('active');
             session.listThumb.addClass('active');
@@ -704,6 +707,7 @@
         },
         
         toggleTabDropdownMenu: function() {
+            var _this = this;
             var menu = $('#dropdown-list-active-files');
             
             menu.css({
@@ -714,12 +718,14 @@
             
             menu.slideToggle('fast');
 
-            // handle click-out autoclosing
-            var fn = function() {
-                menu.hide();
-                $(window).off('click', fn)
+            if(menu.is(':visible')) {
+                // handle click-out autoclosing
+                var fn = function() {
+                    menu.hide();
+                    $(window).off('click', fn)
+                }
+                $(window).on('click', fn);
             }
-            $(window).on('click', fn);
         },
 
         moveTabToDropdownMenu: function(tab, prepend) {
