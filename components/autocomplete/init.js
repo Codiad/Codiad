@@ -33,6 +33,10 @@
             this.$onDocumentChange = this.onDocumentChange.bind(this);
             this.$selectNextSuggestion = this.selectNextSuggestion.bind(this);
             this.$selectPreviousSuggestion = this.selectPreviousSuggestion.bind(this);
+
+            /* In debug mode, run some tests here. */
+            this._testSimpleMatchScorer();
+            this._testFuzzyMatcher();
         },
 
         suggest: function () {
@@ -291,9 +295,9 @@
         /* Given an object associating suggestions and their distances to the
          * word under the cursor (the prefix), return a ranked array of
          * suggestions with the best match first. The suggestions are ranked
-         * based on how much they match the given prefix and their distances to
-         * the prefix. The suggestions with a score lower than the maximum
-         * score will be discarded. */
+         * based on if they match the prefix fuzzily, how much they match the
+         * given prefix in the computeSimpleMatchScore sense and  on their
+         * distances to the prefix. */
         rankSuggestions: function (prefix, suggestionsAndDistance) {
             /* Initialize maxScore to one to ensure removing the non matching
              * suggestions (those with a zero score). */
@@ -302,7 +306,7 @@
             var suggestionsAndMatchScore = {};
             for (var suggestion in suggestionsAndDistance) {
                 if (suggestionsAndDistance.hasOwnProperty(suggestion)) {
-                    var score = this.simpleMatchScorer(prefix, suggestion);
+                    var score = this.computeSimpleMatchScore(prefix, suggestion);
                     if (score > maxScore) {
                         maxScore = score;
                     }
@@ -312,10 +316,10 @@
             }
 
             /* Remove the suggestions with a score lower than the maximum
-             * score. */
+             * score and suggestions that do not match fuzzily the prefix. */
             for (suggestion in suggestionsAndMatchScore) {
                 if (suggestionsAndMatchScore.hasOwnProperty(suggestion)) {
-                    if (suggestionsAndMatchScore[suggestion] < maxScore) {
+                    if (!this.isMatchingFuzzily(prefix, suggestion)) {
                         delete suggestionsAndMatchScore[suggestion];
                     }
                 }
@@ -347,10 +351,11 @@
             return suggestions;
         },
 
-        /* Return the number of letters in suggestion that match prefix. For
-         * instance, this.simpleMatchScorer(cod, codiad) will return 3. If
+        /* Return the number of consecutive letters starting from the first
+         * letter in suggestion that match prefix. For instance,
+         * this.computeSimpleMatchScore(cod, codiad) will return 3. If
          * suggestion is shorter than prefix, return a score of zero. */
-        simpleMatchScorer: function (prefix, suggestion) {
+        computeSimpleMatchScore: function (prefix, suggestion) {
             if (suggestion.length < prefix.length) {
                 return 0;
             } else if (suggestion === prefix) {
@@ -367,6 +372,33 @@
 
                 return score;
             }
+        },
+
+        /* Return true if suggestion fuzzily matches prefix. Because everybody
+         * loves fuzzy matches.
+         * For instance, this.isMatchingFuzzily(mlf, mylongfunctionname)
+         * will return true. */
+        isMatchingFuzzily: function (prefix, suggestion) {
+            var fuzzyRegex = '^.*?';
+            for (var i = 0; i < prefix.length; ++i) {
+                fuzzyRegex += prefix[i];
+                fuzzyRegex += '.*?';
+            }
+
+            if (suggestion.search(fuzzyRegex) !== -1) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
+        getMatchIndexes: function (prefix, suggestion) {
+            var matchIndexes = [];
+            for (var i = 0; i < prefix.length; ++i) {
+                matchIndexes.push(suggestion.search(prefix[i]));
+            }
+
+            return matchIndexes;
         },
 
         _computeTopOffset: function () {
@@ -404,6 +436,53 @@
 
         _getDocument: function () {
             return codiad.editor.getActive().getSession().getDocument();
+        },
+
+        /* Some unit tests. */
+        _testSimpleMatchScorer: function () {
+            var prefix = 'myprefix';
+            var suggestion = 'myprefixisshort';
+            var score = this.computeSimpleMatchScore(prefix, suggestion);
+            if (score !== 8) {
+                alert('_testSimpleMatchScorer lowercase test failed.');
+            }
+
+            prefix = 'MYPREFIX';
+            suggestion = 'MYPREFIXISSHORT';
+            score = this.computeSimpleMatchScore(prefix, suggestion);
+            if (score !== 8) {
+                alert('_testSimpleMatchScorer uppercase test failed.');
+            }
+
+            prefix = 'myPrefix';
+            suggestion = 'myprefixisshort';
+            score = this.computeSimpleMatchScore(prefix, suggestion);
+            if (score !== 2) {
+                alert('_testSimpleMatchScorer mixed case vs. lowercase test failed.');
+            }
+
+            prefix = 'myPrefixIs';
+            suggestion = 'myPrefixIsShort';
+            score = this.computeSimpleMatchScore(prefix, suggestion);
+            if (score !== 10) {
+                alert('_testSimpleMatchScorer mixed case test failed.');
+            }
+        },
+
+        _testFuzzyMatcher: function () {
+            var isMatching = this.isMatchingFuzzily('mlf', 'mylongfunctionname');
+            if (!isMatching) {
+                alert('_testFuzzyMatcher mlf vs. mylongfunctionname failed.');
+            }
+
+            isMatching = this.isMatchingFuzzily('mLn', 'myLongFunctionName');
+            if (!isMatching) {
+                alert('_testFuzzyMatcher mLn vs. myLongFunctionName failed.');
+            }
+            isMatching = this.isMatchingFuzzily('mLFuny', 'myLongFunctionName');
+            if (isMatching) {
+                alert('_testFuzzyMatcher mLFuny. myLongFunctionName failed.');
+            }
         }
 
     };
