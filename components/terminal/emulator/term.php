@@ -174,7 +174,7 @@
         $_SESSION['term_auth'] = 'false';
         $output = '[CLOSED]';
         
-    }else if($_SESSION['term_auth']!='true'){
+    }else if(! isset($_SESSION['term_auth']) || $_SESSION['term_auth']!='true'){
         
         //////////////////////////////////////////////////////////////
         // Authentication
