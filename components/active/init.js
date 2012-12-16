@@ -34,9 +34,6 @@
         
         // History of opened files
         history: [],
-        
-        // Current active path
-        activePath: '',
 
         //////////////////////////////////////////////////////////////////
         //
@@ -108,6 +105,9 @@
             $('#dropdown-list-active-files a')
                 .live('click', function(e) {
                     if(e.which == 1) {
+                        /* Do not stop propagation of the event,
+                         * it will be catch by the dropdown menu
+                         * and close it. */
                         _this.focus($(this).parent('li').attr('data-path'));
                     }
             });
@@ -365,7 +365,7 @@
             
             this.highlightEntry(path, moveToTabList);
             
-            if(path != this.activePath) {
+            if(path != this.getPath()) {
                 codiad.editor.setSession(this.sessions[path]);
                 this.check(path);
                 this.activePath = path;
@@ -400,9 +400,7 @@
                     this.moveTabToDropdownMenu(tab);
                 } else {
                     /* Show the dropdown menu if needed */
-                    if(!$('#dropdown-list-active-files').is(':visible')) {
-                        this.toggleTabDropdownMenu();
-                    }
+                    this.showTabDropdownMenu();
                 }
             }
             else if(this.history.length > 0) {
@@ -410,9 +408,7 @@
                 var prevSession = this.sessions[prevPath];
                 if($('#dropdown-list-active-files').has(prevSession.tabThumb).length > 0) {
                     /* Hide the dropdown menu if needed */
-                    if($('#dropdown-list-active-files').is(':visible')) {
-                        this.toggleTabDropdownMenu();
-                    }
+                    this.hideTabDropdownMenu();
                 }
             }
 
@@ -632,11 +628,12 @@
             if (num === 0) return;
             
             var newActive = null;
+            var active = null;
             
             if (dir == 'up') {
                 
                 // If active is in the tab list
-                var active = $('#tab-list-active-files li.active');
+                active = $('#tab-list-active-files li.active');
                 if(active.length > 0) {
                     // Previous or rotate to the end
                     newActive = active.prev('li');
@@ -649,7 +646,7 @@
                 }
                 
                 // If active is in the dropdown list
-                var active = $('#dropdown-list-active-files li.active');
+                active = $('#dropdown-list-active-files li.active');
                 if(active.length > 0) {
                     // Previous
                     newActive = active.prev('li');
@@ -661,7 +658,7 @@
             } else {
                 
                 // If active is in the tab list
-                var active = $('#tab-list-active-files li.active');
+                active = $('#tab-list-active-files li.active');
                 if(active.length > 0) {
                      // Next or rotate to the beginning
                     newActive = active.next('li');
@@ -674,7 +671,7 @@
                 }
                 
                 // If active is in the dropdown list
-                var active = $('#dropdown-list-active-files li.active');
+                active = $('#dropdown-list-active-files li.active');
                 if(active.length > 0) {
                     // Next or rotate to the beginning
                     newActive = active.next('li');
@@ -704,6 +701,16 @@
                 e.stopPropagation();
                 _this.toggleTabDropdownMenu();
             });
+        },
+        
+        showTabDropdownMenu: function() {
+            var menu = $('#dropdown-list-active-files');
+            if(!menu.is(':visible')) this.toggleTabDropdownMenu();
+        },
+        
+        hideTabDropdownMenu: function() {
+            var menu = $('#dropdown-list-active-files');
+            if(menu.is(':visible')) this.toggleTabDropdownMenu();
         },
         
         toggleTabDropdownMenu: function() {
