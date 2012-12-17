@@ -280,9 +280,27 @@ class Filemanager {
 
         // Change content
         if($this->content || $this->patch){
-            if($this->content==' '){ $this->content=''; } // Blank out file
+            if($this->content==' '){
+                $this->content=''; // Blank out file
+            }
+            if ($this->patch && ! $this->mtime){
+                $this->status = "error";
+                $this->message = "mtime parameter not found";
+                $this->respond();
+                return;
+            }
             if(is_file($this->path)){
+                $serverMTime = filemtime($this->path);
                 $fileContents = file_get_contents($this->path);
+
+                if ($this->patch && $this->mtime != $serverMTime){
+                    $this->status = "error";
+                    $this->message = "Client is out of sync";
+                    //DEBUG : file_put_contents($this->path.".conflict", "SERVER MTIME :".$serverMTime.", CLIENT MTIME :".$this->mtime);
+                    $this->respond();
+                    return;
+                }
+
                 if($file = fopen($this->path, 'w')){
                     if ($this->patch){
                         $dmp = new diff_match_patch();
@@ -296,12 +314,16 @@ class Filemanager {
                         $this->status = "error";
                         $this->message = "could not write to file";
                     } else {
+                        // Unless stat cache is cleared the pre-cached mtime will be
+                        // returned instead of new modification time after editing
+                        // the file.
+                        clearstatcache(True);
                         $this->data = '"mtime":'.filemtime($this->path);
                         $this->status = "success";
                     }
                 }else{
                    $this->status = "error";
-                    $this->message = "Cannot Write to File";
+                   $this->message = "Cannot Write to File";
                 }
             }else{
                 $this->status = "error";
