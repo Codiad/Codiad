@@ -54,7 +54,7 @@ class Filemanager {
         // Modify\Create
         if(!empty($get['new_name'])){ $this->new_name = $get['new_name']; }
 
-        foreach(['content', 'mtime', 'patch'] as $key){
+        foreach(array('content', 'mtime', 'patch') as $key){
             if(!empty($post[$key])){
                 if(get_magic_quotes_gpc()){
                     $this->$key = stripslashes($post[$key]);
