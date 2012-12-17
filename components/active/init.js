@@ -467,7 +467,7 @@
                     if (success) {
                         console.log("GENERATED PATCH : ====> ");
                         console.log(patch);
-                        condiad.filemanager.savePatch(path, patch, session.serverMTime, {
+                        codiad.filemanager.savePatch(path, patch, session.serverMTime, {
                             success: handleSuccess
                         });
                     } else {

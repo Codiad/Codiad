@@ -289,6 +289,7 @@ class Filemanager {
                         $this->content = $dmp->patch_apply($fileContents, $dmp->patch_fromText($this->patch));
                     }
                     fwrite($file, $this->content);
+                    $this->data = '"mtime":'.filemtime($this->path);
                     fclose($file);
                     $this->status = "success";
                 }else{
