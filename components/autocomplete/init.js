@@ -50,20 +50,24 @@
 
             this.addListenerToOnDocumentChange();
 
-            this.updateSuggestions();
+            var foundSuggestions = this.updateSuggestions();
 
-            // Show the completion popup.
-            this.show();
+            if (foundSuggestions) {
+                // Show the completion popup.
+                this.show();
+                console.log($('.suggestion'));
 
-            // handle click-out autoclosing.
-            var fn = function () {
-                _this.hide();
-                $(window).off('click', fn);
-            };
-            $(window).on('click', fn);
-
+                // handle click-out autoclosing.
+                var fn = function () {
+                    _this.hide();
+                    $(window).off('click', fn);
+                };
+                $(window).on('click', fn);
+            }
         },
 
+        /* Update the suggestions for the word under the cursor. Return true if
+         * some suitable suggestions could be found, false if not. */
         updateSuggestions: function () {
             var _this = this;
 
@@ -74,23 +78,42 @@
 
             /* Extract the word being typed. It is somehow the prefix of the
              * wanted full word. Make sure we only keep one word. */
-            var prefix = session.getTokenAt(position.row, position.column).value;
+            var token = session.getTokenAt(position.row, position.column);
+            if (!token) {
+                /* Not word at the cursor position. */
+                this.removeSuggestions();
+                return false;
+            }
+
+            var prefix = token.value;
             prefix = prefix.split(this.wordRegex).slice(-1)[0];
+            if (prefix === '') {
+                /* Not word at the cursor position. */
+                this.removeSuggestions();
+                return false;
+            }
 
             /* Build and order the suggestions themselves. */
             // TODO cache suggestions and augment them incrementally.
             var suggestionsAndDistance = this.getSuggestions(position);
             var suggestions = this.rankSuggestions(prefix, suggestionsAndDistance);
+            if (suggestions.length < 1) {
+                /* No suitable suggestions found. */
+                this.removeSuggestions();
+                return false;
+            }
 
             /* Remove the existing suggestions and populate the popup with the
              * updated ones. */
-            $('.suggestion').remove();
+            this.removeSuggestions();
             var popupContent = $('#autocomplete #suggestions');
             $.each(suggestions, function (index, suggestion) {
                 popupContent.append('<li class="suggestion">' + suggestion + '</li>');
             });
 
             this.selectFirstSuggestion();
+
+            return true;
         },
 
         show: function () {
@@ -107,7 +130,7 @@
             this.isVisible = false;
 
             $('#autocomplete').hide();
-            $('.suggestion').remove();
+            this.removeSuggestions();
 
             this.removeListenerToOnDocumentChange();
             this.removeKeyboardCommands();
@@ -170,8 +193,15 @@
         },
 
         onDocumentChange: function (e) {
-            var doc = this._getDocument();
-            this.updateSuggestions();
+            if (e.data.text.search(/^\s+$/) !== -1) {
+                this.hide();
+                return;
+            }
+
+            var foundSuggestions = this.updateSuggestions();
+            if (!foundSuggestions) {
+                this.hide();
+            }
         },
 
         addKeyboardCommands: function () {
@@ -196,7 +226,7 @@
 
             commandManager.addCommand({
                 name: 'autocomplete',
-                bindKey: 'Return',
+                bindKey: 'Return|Tab',
                 exec: function () {
                     _this.complete();
                 }
@@ -232,6 +262,11 @@
             session.replace(range, suggestion);
 
             this.hide();
+        },
+
+        /* Remove the suggestions from the Dom. */
+        removeSuggestions: function () {
+            $('.suggestion').remove();
         },
 
         /* Get suggestions of completion for the current position in the
