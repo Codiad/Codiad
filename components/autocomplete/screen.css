@@ -8,7 +8,7 @@
     background-color: #2E2E2E;
     border: 3px solid #666666;
     padding: 3px;
-    z-index: 9999;
+    z-index: 1;
     overflow: auto;
 }
 

@@ -121,7 +121,9 @@
 
             var popup = $('#autocomplete');
             popup.css({'top': this._computeTopOffset(), 'left': this._computeLeftOffset()});
-            popup.slideToggle('fast');
+            popup.slideToggle('fast', function(){ 
+                $(this).css('overflow', '');
+            });
 
             this.addKeyboardCommands();
         },
