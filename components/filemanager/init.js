@@ -355,7 +355,12 @@
         },
 
         savePatch: function(path, patch, mtime, callbacks) {
-            this.saveModifications(path, {patch: patch, mtime: mtime}, callbacks);
+            if (patch.length > 0)
+                this.saveModifications(path, {patch: patch, mtime: mtime}, callbacks);
+            else if (typeof callbacks.success === 'function'){
+                var context = callbacks.context || this;
+                callbacks.success.call(context, mtime);
+            }
         },
 
         //////////////////////////////////////////////////////////////////
@@ -422,8 +427,8 @@
                         .live('submit', function(e) {
                         e.preventDefault();
                         var duplicate = false;
-                        if($('#modal-content form select[name="or_action"]').val()==1){ 
-                            duplicate=true; console.log('Dup!'); 
+                        if($('#modal-content form select[name="or_action"]').val()==1){
+                            duplicate=true; console.log('Dup!');
                         }
                         _this.processPasteNode(path,duplicate);
                     });

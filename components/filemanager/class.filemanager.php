@@ -299,6 +299,12 @@ class Filemanager {
                     //DEBUG : file_put_contents($this->path.".conflict", "SERVER MTIME :".$serverMTime.", CLIENT MTIME :".$this->mtime);
                     $this->respond();
                     return;
+                } else if (strlen(trim($this->patch)) == 0){
+                    // Do nothing if the patch is empty.
+                    $this->status = "success";
+                    $this->data = '"mtime":'.$serverMTime;
+                    $this.respond();
+                    return;
                 }
 
                 if($file = fopen($this->path, 'w')){
