@@ -50,7 +50,7 @@
             return !!this.sessions[path];
         },
 
-        open: function(path, content, inBackground) {
+        open: function(path, content, mtime, inBackground) {
             var _this = this;
             if (this.isOpen(path)) {
                 this.focus(path);
@@ -77,8 +77,9 @@
                 session.setUndoManager(new UndoManager());
 
                 session.path = path;
+                session.serverMTime = mtime;
                 _this.sessions[path] = session;
-                _this.pureContents[path] = content.slice(0);
+                session.untainted = content.slice(0);
                 if (!inBackground) {
                     codiad.editor.setSession(session);
                 }
@@ -444,54 +445,46 @@
                 .getSession();
             var content = session.getValue();
             var path = session.path;
-
-            var unmark = function(){
+            var handleSuccess = function(mtime){
+                console.log("Save successful : new MTIME :", mtime);
+                session.untainted = newContent;
+                session.serverMTime = mtime;
                 session.thumb.removeClass('changed');
                 _this.removeDraft(path);
             }
-            // HERE BE DRAGONS ==============>
+            // Replicate the current content so as to avoid
+            // discrepancies due to content changes during
+            // computation of diff
+
             var newContent = content.slice(0);
-            var handleFailure = function(err){
-                if (err.msg === 'diff-corruption') {
-                    // resend the complete file
-                } else if (err.msg === 'outdated') {
-                    // fetch the more recent copy and
-                    // perform a local merge
-                }
+            if (session.serverMTime && session.untainted){
+                codiad.workerManager.addTask({
+                    taskType: 'diff',
+                    id: path,
+                    original: session.untainted,
+                    changed: newContent
+                }, function(success, patch){
+                    if (success) {
+                        console.log("GENERATED PATCH : ====> ");
+                        console.log(patch);
+                        condiad.filemanager.savePatch(path, patch, session.serverMTime, {
+                            success: handleSuccess
+                        });
+                    } else {
+                        console.log("Patch creation failed: Saving full file :", session.path);
+                        condiad.filemanager.saveFile(path, newContent, {
+                            success: handleSuccess
+                        });
+                    }
+                }, this);
+            } else {
+                console.log("Insufficient information to save patches :", session.path);
+                console.log("> session.serverMTime : ", session.serverMTime);
+                console.log("> session.untainted : ", session.untainted);
+                codiad.filemanager.saveFile(path, newContent, {
+                    success: handleSuccess
+                });
             }
-            var handleSuccess = function(obj){
-                // record obj.timestamp
-                _this.pureContents[path]= newContent;
-                unmark();
-            }
-            var saveComplete = function(){
-                //codiad.filemanager.saveFile('')
-                cosnole.log("SAVE FULL PATH : ===>");
-            }
-            codiad.workerManager.addTask({
-                taskType: 'diff',
-                id: path,
-                original: _this.pureContents[path],
-                changed: newContent
-            }, function(success, diff){
-                if (success) {
-                    /*codiad.filemanager.saveDiff(path, diff, {
-                        success: handleSuccess,
-                        error: handleFailure
-                    })*/
-                    console.log("GENERATED DIFF : ====> ");
-                    console.log(diff);
-                } else {
-                }
-            }, this);
-            
-            /*codiad.filemanager.saveFile(path, content, {
-                success: function() {
-                    session.listThumb.removeClass('changed');
-                    session.tabThumb.removeClass('changed');
-                    _this.removeDraft(path);
-                }
-            });*/
         },
 
         //////////////////////////////////////////////////////////////////

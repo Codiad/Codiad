@@ -282,7 +282,8 @@
                     var openResponse = codiad.jsend.parse(data);
                     if (openResponse != 'error') {
                         node.removeClass('loading');
-                        codiad.active.open(path, openResponse.content, false);
+                        console.log("FILE OPEN RESPONSE :", openResponse);
+                        codiad.active.open(path, openResponse.content, openResponse.mtime, false);
                     }
                 });
             } else {
@@ -302,14 +303,9 @@
                 }
             });
         },
-
-        //////////////////////////////////////////////////////////////////
-        // Save file
-        //////////////////////////////////////////////////////////////////
-
-        saveFile: function(path, content, callbacks) {
+        saveModifications: function(path, data, callbacks){
             callbacks = callbacks || {};
-            var _this = this;
+            var _this = this, action, data;
             var notifySaveErr = function() {
                 codiad.message.error('File could not be saved');
                 if (typeof callbacks.error === 'function') {
@@ -317,25 +313,29 @@
                     callbacks.error.apply(context, [data]);
                 }
             }
-            $.post(this.controller + '?action=modify&path=' + path, {
-                    content: content
-                }, function(data) {
-                    var saveResponse = codiad.jsend.parse(data);
-                    if (saveResponse != 'error') {
-                        codiad.message.success('File Saved');
-                    }
-                    if (typeof callbacks.success === 'function') {
-                        var context = callbacks.context || _this;
-                        callbacks.success.apply(context, [data]);
-                    } else {
-                        notifySaveErr();
-                    }
-                })
-                .error(notifySaveErr);
+            $.post(this.controller + '?action=modify&path='+path, data, function(data){
+                var saveResponse = codiad.jsend.parse(data);
+                if (saveResponse != 'error') {
+                    codiad.message.success('File Saved');
+                }
+                if (typeof callbacks.success === 'function') {
+                    var context = callbacks.context || _this;
+                    callbacks.success.call(context, data.mtime);
+                } else {
+                    notifySaveErr();
+                }
+            }).error(notifySaveErr);
+        }
+        //////////////////////////////////////////////////////////////////
+        // Save file
+        //////////////////////////////////////////////////////////////////
+
+        saveFile: function(path, content, callbacks) {
+            this.saveModifications(path, {content: content}, callbacks);
         },
 
-        saveDiff: function(path, content, callbacks) {
-            
+        savePatch: function(path, patch, mtime, callbacks) {
+            this.saveModifications(path, {patch: patch, mtime: mtime}, callbacks);
         },
 
         //////////////////////////////////////////////////////////////////

@@ -6,6 +6,8 @@
 *  [root]/license.txt for more. This information must remain intact.
 */
 
+require_once('diff_match_patch.php');
+
 class Filemanager {
 
     //////////////////////////////////////////////////////////////////
@@ -51,11 +53,14 @@ class Filemanager {
         if(!empty($get['type'])){ $this->type = $get['type']; }
         // Modify\Create
         if(!empty($get['new_name'])){ $this->new_name = $get['new_name']; }
-        if(!empty($post['content'])){
-            if(get_magic_quotes_gpc()){
-                $this->content = stripslashes($post['content']);
-            }else{
-                $this->content = $post['content'];
+
+        foreach(['content', 'mtime', 'patch'] as $key){
+            if(!empty($post[$key])){
+                if(get_magic_quotes_gpc()){
+                    $this->$key = stripslashes($post[$key]);
+                }else{
+                    $this->$key = $post[$key];
+                }
             }
         }
         // Duplicate
@@ -164,6 +169,8 @@ class Filemanager {
         if(is_file($this->path)){
             $this->status = "success";
             $this->data = '"content":' . json_encode(file_get_contents($this->path));
+            $mtime = filemtime($this->path);
+            $this->data .= ', "mtime":'.$mtime;
         }else{
             $this->status = "error";
             $this->message = "Not A File :".$this->path;
@@ -197,6 +204,7 @@ class Filemanager {
                 if($file = fopen($this->path, 'w')){
                     // Write content
                     if($this->content){ fwrite($file, $this->content); }
+                    $this->data = '"mtime":'.filemtime($this->path);
                     fclose($file);
                     $this->status = "success";
                 }else{
@@ -271,10 +279,15 @@ class Filemanager {
         }
 
         // Change content
-        if($this->content){
+        if($this->content || $this->patch){
             if($this->content==' '){ $this->content=''; } // Blank out file
             if(is_file($this->path)){
                 if($file = fopen($this->path, 'w')){
+                    if ($this->patch){
+                        $fileContents = file_get_contents($this->path);
+                        $dmp = new diff_match_patch();
+                        $this->content = $dmp->patch_apply($fileContents, $dmp->patch_fromText($this->patch));
+                    }
                     fwrite($file, $this->content);
                     fclose($file);
                     $this->status = "success";
