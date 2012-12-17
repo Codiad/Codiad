@@ -449,7 +449,8 @@
                 console.log("Save successful : new MTIME :", mtime);
                 session.untainted = newContent;
                 session.serverMTime = mtime;
-                session.thumb.removeClass('changed');
+                session.listThumb.removeClass('changed');
+                session.tabThumb.removeClass('changed');
                 _this.removeDraft(path);
             }
             // Replicate the current content so as to avoid

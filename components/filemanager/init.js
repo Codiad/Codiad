@@ -313,14 +313,14 @@
                     callbacks.error.apply(context, [data]);
                 }
             }
-            $.post(this.controller + '?action=modify&path='+path, data, function(data){
-                var saveResponse = codiad.jsend.parse(data);
+            $.post(this.controller + '?action=modify&path='+path, data, function(resp){
+                var saveResponse = codiad.jsend.parse(resp);
                 if (saveResponse != 'error') {
                     codiad.message.success('File Saved');
                 }
                 if (typeof callbacks.success === 'function') {
                     var context = callbacks.context || _this;
-                    callbacks.success.call(context, data.mtime);
+                    callbacks.success.call(context, saveResponse.mtime);
                 } else {
                     notifySaveErr();
                 }

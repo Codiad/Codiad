@@ -282,16 +282,23 @@ class Filemanager {
         if($this->content || $this->patch){
             if($this->content==' '){ $this->content=''; } // Blank out file
             if(is_file($this->path)){
+                $fileContents = file_get_contents($this->path);
                 if($file = fopen($this->path, 'w')){
                     if ($this->patch){
-                        $fileContents = file_get_contents($this->path);
                         $dmp = new diff_match_patch();
-                        $this->content = $dmp->patch_apply($fileContents, $dmp->patch_fromText($this->patch));
+                        $this->content = $dmp->patch_apply($dmp->patch_fromText($this->patch), $fileContents)[0];
+                        //DEBUG : file_put_contents($this->path.".orig",$fileContents );
+                        //DEBUG : file_put_contents($this->path.".patch", $this->patch);
                     }
-                    fwrite($file, $this->content);
-                    $this->data = '"mtime":'.filemtime($this->path);
+                    $writeSuccess = fwrite($file, $this->content);
                     fclose($file);
-                    $this->status = "success";
+                    if (! $writeSuccess){
+                        $this->status = "error";
+                        $this->message = "could not write to file";
+                    } else {
+                        $this->data = '"mtime":'.filemtime($this->path);
+                        $this->status = "success";
+                    }
                 }else{
                    $this->status = "error";
                     $this->message = "Cannot Write to File";
