@@ -48,7 +48,7 @@
             return !!this.sessions[path];
         },
 
-        open: function(path, content, inBackground) {
+        open: function(path, content, mtime, inBackground) {
             var _this = this;
             if (this.isOpen(path)) {
                 this.focus(path);
@@ -75,6 +75,7 @@
                 session.setUndoManager(new UndoManager());
 
                 session.path = path;
+                session.serverMTime = mtime;
                 _this.sessions[path] = session;
                 if (!inBackground) {
                     codiad.editor.setSession(session);
@@ -441,7 +442,8 @@
                 .getSession();
             var content = session.getValue();
             var path = session.path;
-            codiad.filemanager.saveFile(path, content, {
+            var mtime = session.serverMTime;
+            codiad.filemanager.saveFile(path, content, mtime, {
                 success: function() {
                     session.listThumb.removeClass('changed');
                     session.tabThumb.removeClass('changed');

@@ -282,7 +282,8 @@
                     var openResponse = codiad.jsend.parse(data);
                     if (openResponse != 'error') {
                         node.removeClass('loading');
-                        codiad.active.open(path, openResponse.content, false);
+                        console.log("FILE OPEN RESPONSE :", openResponse);
+                        codiad.active.open(path, openResponse.content, openResponse.mtime, false);
                     }
                 });
             } else {
@@ -307,7 +308,7 @@
         // Save file
         //////////////////////////////////////////////////////////////////
 
-        saveFile: function(path, content, callbacks) {
+        saveFile: function(path, content, mtime, callbacks) {
             callbacks = callbacks || {};
             var _this = this;
             var notifySaveErr = function() {
@@ -317,6 +318,7 @@
                     callbacks.error.apply(context, [data]);
                 }
             }
+            // If mtime is available then post a Patch else post entire file
             $.post(this.controller + '?action=modify&path=' + path, {
                     content: content
                 }, function(data) {

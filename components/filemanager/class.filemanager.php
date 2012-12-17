@@ -164,6 +164,8 @@ class Filemanager {
         if(is_file($this->path)){
             $this->status = "success";
             $this->data = '"content":' . json_encode(file_get_contents($this->path));
+            $mtime = filemtime($this->path);
+            $this->data .= ', "mtime":'.$mtime;
         }else{
             $this->status = "error";
             $this->message = "Not A File :".$this->path;
@@ -197,6 +199,7 @@ class Filemanager {
                 if($file = fopen($this->path, 'w')){
                     // Write content
                     if($this->content){ fwrite($file, $this->content); }
+                    $this->data = '"mtime":'.filemtime($this->path);
                     fclose($file);
                     $this->status = "success";
                 }else{
