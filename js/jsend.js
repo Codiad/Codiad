@@ -12,7 +12,9 @@
             var obj = $.parseJSON(d);
             if (obj.status == 'error') {
                 codiad.message.error(obj.message);
-                return 'error';
+                var errMsg = 'error';
+                errMsg.message = obj.message;
+                return errMsg;
             } else {
                 return obj.data;
             }

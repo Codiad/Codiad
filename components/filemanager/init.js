@@ -314,15 +314,36 @@
                 }
             }
             $.post(this.controller + '?action=modify&path='+path, data, function(resp){
-                var saveResponse = codiad.jsend.parse(resp);
-                if (saveResponse != 'error') {
-                    codiad.message.success('File Saved');
-                }
-                if (typeof callbacks.success === 'function') {
-                    var context = callbacks.context || _this;
-                    callbacks.success.call(context, saveResponse.mtime);
+                //var saveResponse = codiad.jsend.parse(resp);
+                resp = $.parseJSON(resp);
+                if (resp.status == 'success') {
+                    codiad.message.success('File saved');
+                    if (typeof callbacks.success === 'function'){
+                        var context = callbacks.context || _this;
+                        callbacks.success.call(context, resp.data.mtime);
+                    }
                 } else {
-                    notifySaveErr();
+                    if (resp.message == 'Client is out of sync'){
+                        var reload = confirm(
+                            "Server has a more updated copy of the file. Would "+
+                            "you like to refresh the contents ? Pressing no will "+
+                            "cause your changes to override the server's copy upon "+
+                            "next save."
+                        );
+                        if (reload) {
+                            codiad.active.close(path);
+                            codiad.active.removeDraft(path);
+                            _this.openFile(path);
+                        } else {
+                            var session = codiad.editor.getActive().getSession();
+                            session.serverMTime = null;
+                            session.untainted = null;
+                        }
+                    } else codiad.message.error('File could not be saved');
+                    if (typeof callbacks.error === 'function') {
+                        var context = callbacks.context || _this;
+                        callbacks.error.apply(context, [resp.data]);
+                    }
                 }
             }).error(notifySaveErr);
         },
