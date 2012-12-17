@@ -63,12 +63,12 @@
                 codiad.editor.openSearch('replace');
             });
 
-            // Active List Up ////////////////////////////////////////////
+            // Active List Previous [CTRL+UP] ////////////////////////////
             $.ctrl('38', function() {
                 codiad.active.move('up');
             });
 
-            // Active List Down //////////////////////////////////////////
+            // Active List Next [CTRL+DOWN] //////////////////////////////
             $.ctrl('40', function() {
                 codiad.active.move('down');
             });

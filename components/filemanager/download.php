@@ -29,7 +29,7 @@
         $filename = explode("/",$_GET['path']);
         $filename = array_pop($filename) . "-" . date('Y.m.d') . ".tar.gz";
         $targetPath = DATA . '/';
-        $dir = '../../workspace/' . $_GET['path'];
+        $dir = WORKSPACE . $_GET['path'];
         # Execute the tar command and save file
         system("tar -pczf ".$targetPath ."/".$filename." ".$dir);
         $download_file = $targetPath.$filename;
