@@ -108,6 +108,14 @@
             this.removeSuggestions();
             var popupContent = $('#autocomplete #suggestions');
             $.each(suggestions, function (index, suggestion) {
+                var indexes = _this.getMatchIndexes(prefix, suggestion);
+                $.each(indexes.reverse(), function(index, matchIndex) {
+                    suggestion = suggestion.substr(0, matchIndex) 
+                    + '<span class="matched">' 
+                    + suggestion.substr(matchIndex, 1)
+                    + '</span>' 
+                    + suggestion.substr(matchIndex + 1);
+                })
                 popupContent.append('<li class="suggestion">' + suggestion + '</li>');
             });
 
@@ -431,8 +439,11 @@
 
         getMatchIndexes: function (prefix, suggestion) {
             var matchIndexes = [];
+            var startIndex = 0;
             for (var i = 0; i < prefix.length; ++i) {
-                matchIndexes.push(suggestion.search(prefix[i]));
+                var index = startIndex + suggestion.substr(startIndex).search(prefix[i]);
+                matchIndexes.push(index);
+                startIndex = index + 1;
             }
 
             return matchIndexes;

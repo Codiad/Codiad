@@ -3,13 +3,19 @@
 #autocomplete {
     display: none;
     position: absolute;
-    width: 150px;
+    /*width: 150px;*/
     max-height: 200px;
     background-color: #2E2E2E;
     border: 3px solid #666666;
     padding: 3px;
     z-index: 1;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.matched {
+    /* Hey this is just for testing ;-) */
+    color: green;
 }
 
 .active-suggestion {
