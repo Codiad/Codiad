@@ -282,7 +282,6 @@
                     var openResponse = codiad.jsend.parse(data);
                     if (openResponse != 'error') {
                         node.removeClass('loading');
-                        console.log("FILE OPEN RESPONSE :", openResponse);
                         codiad.active.open(path, openResponse.content, openResponse.mtime, false);
                     }
                 });

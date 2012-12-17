@@ -31,8 +31,6 @@
 
         // Path to EditSession instance mapping
         sessions: {},
-        pureContents: {},
-        timeStamps: {},
         
         // History of opened files
         history: [],
@@ -446,7 +444,6 @@
             var content = session.getValue();
             var path = session.path;
             var handleSuccess = function(mtime){
-                console.log("Save successful : new MTIME :", mtime);
                 session.untainted = newContent;
                 session.serverMTime = mtime;
                 if (session.listThumb) session.listThumb.removeClass('changed');
@@ -466,22 +463,16 @@
                     changed: newContent
                 }, function(success, patch){
                     if (success) {
-                        console.log("GENERATED PATCH : ====> ");
-                        console.log(patch);
                         codiad.filemanager.savePatch(path, patch, session.serverMTime, {
                             success: handleSuccess
                         });
                     } else {
-                        console.log("Patch creation failed: Saving full file :", session.path);
                         condiad.filemanager.saveFile(path, newContent, {
                             success: handleSuccess
                         });
                     }
                 }, this);
             } else {
-                console.log("Insufficient information to save patches :", session.path);
-                console.log("> session.serverMTime : ", session.serverMTime);
-                console.log("> session.untainted : ", session.untainted);
                 codiad.filemanager.saveFile(path, newContent, {
                     success: handleSuccess
                 });
