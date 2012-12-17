@@ -304,7 +304,8 @@ class Filemanager {
                 if($file = fopen($this->path, 'w')){
                     if ($this->patch){
                         $dmp = new diff_match_patch();
-                        $this->content = $dmp->patch_apply($dmp->patch_fromText($this->patch), $fileContents)[0];
+                        $p = $dmp->patch_apply($dmp->patch_fromText($this->patch), $fileContents);
+                        $this->content = $p[0];
                         //DEBUG : file_put_contents($this->path.".orig",$fileContents );
                         //DEBUG : file_put_contents($this->path.".patch", $this->patch);
                     }
