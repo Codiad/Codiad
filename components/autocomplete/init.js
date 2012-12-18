@@ -1,6 +1,5 @@
 (function (global, $) {
 
-    // var TokenIterator = require('ace/token_iterator').TokenIterator;
     var EventEmitter = require('ace/lib/event_emitter').EventEmitter;
     var Range = require('ace/range').Range;
 
@@ -33,6 +32,8 @@
             this.$onDocumentChange = this.onDocumentChange.bind(this);
             this.$selectNextSuggestion = this.selectNextSuggestion.bind(this);
             this.$selectPreviousSuggestion = this.selectPreviousSuggestion.bind(this);
+            this.$complete = this.complete.bind(this);
+            this.$hide = this.hide.bind(this);
 
             /* In debug mode, run some tests here. */
             this._testSimpleMatchScorer();
@@ -229,9 +230,17 @@
             this.standardGoLineDownExec = commandManager.commands.golinedown.exec;
             this.standardGoLineUpExec = commandManager.commands.golineup.exec;
 
+            this.standardGoToRightExec = commandManager.commands.gotoright.exec;
+            this.standardGoToLeftExec = commandManager.commands.gotoleft.exec;
+            this.standardIndentExec = commandManager.commands.indent.exec;
+
             /* Overwrite with the completion specific implementations. */
             commandManager.commands.golinedown.exec = this.$selectNextSuggestion;
             commandManager.commands.golineup.exec = this.$selectPreviousSuggestion;
+
+            commandManager.commands.gotoright.exec = this.$complete;
+            commandManager.commands.gotoleft.exec = this.$hide;
+            commandManager.commands.indent.exec = this.$complete;
 
             commandManager.addCommand({
                 name: 'hideautocomplete',
@@ -243,17 +252,21 @@
 
             commandManager.addCommand({
                 name: 'autocomplete',
-                bindKey: 'Return|Tab',
-                exec: function () {
-                    _this.complete();
-                }
+                bindKey: 'Return',
+                exec: this.$complete
             });
         },
 
         removeKeyboardCommands: function () {
             var commandManager = this._getEditor().commands;
+
             commandManager.commands.golinedown.exec = this.standardGoLineDownExec;
             commandManager.commands.golineup.exec = this.standardGoLineUpExec;
+
+            commandManager.commands.gotoright.exec = this.standardGoToRightExec;
+            commandManager.commands.gotoleft.exec = this.standardGoToLeftExec;
+            commandManager.commands.indent.exec = this.standardIndentExec;
+
             commandManager.removeCommand('hideautocomplete');
             commandManager.removeCommand('autocomplete');
         },
@@ -290,12 +303,6 @@
          * document. */
         getSuggestions: function (position) {
             var doc = this._getDocument();
-
-            // The following is just for testing purpose.
-            // var iterator = new TokenIterator(session, 0, 0);
-            // console.log(iterator.getCurrentToken());
-            // iterator.stepForward();
-            // console.log(iterator.getCurrentToken());
 
             /* FIXME For now, make suggestions on the whole file content except
              * the current token. Might be a little bit smarter, e.g., remove
