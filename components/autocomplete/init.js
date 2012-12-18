@@ -159,11 +159,15 @@
         },
 
         selectFirstSuggestion: function () {
-            $('li.suggestion:first-child').addClass('active-suggestion');
+            var firstChild = $('li.suggestion:first-child');
+            firstChild.addClass('active-suggestion');
+            this._ensureVisible(firstChild, $('#autocomplete'));
         },
 
         selectLastSuggestion: function () {
-            $('li.suggestion:last-child').addClass('active-suggestion');
+            var lastChild = $('li.suggestion:last-child');
+            lastChild.addClass('active-suggestion');
+            this._ensureVisible(lastChild, $('#autocomplete'));
         },
 
         selectNextSuggestion: function () {
@@ -172,6 +176,7 @@
             var nextSuggestion = selectedSuggestion.next();
             if (nextSuggestion.length > 0) {
                 nextSuggestion.addClass('active-suggestion');
+                this._ensureVisible(nextSuggestion, $('#autocomplete'));
             } else {
                 /* The currently selected suggestion is the last one.
                  * Go back to first one. */
@@ -185,6 +190,7 @@
             var previousSuggestion = selectedSuggestion.prev();
             if (previousSuggestion.length > 0) {
                 previousSuggestion.addClass('active-suggestion');
+                this._ensureVisible(previousSuggestion, $('#autocomplete'));
             } else {
                 /* The currently selected suggestion is the first one.
                  * Go back to last one. */
@@ -447,6 +453,22 @@
             }
 
             return matchIndexes;
+        },
+        
+        _ensureVisible: function(el, parent) {
+            var paneMin = parent.scrollTop();
+            var paneMax = paneMin + parent.innerHeight();
+            var itemMin = el.position().top + paneMin;
+            var itemMax = itemMin + el.outerHeight();
+            if (itemMax > paneMax) {
+                parent.stop().animate({
+                    scrollTop: itemMax - parent.innerHeight()
+                }, 100);
+            } else if (itemMin < paneMin) {
+                parent.stop().animate({
+                    scrollTop: itemMin
+                }, 100);
+            }
         },
 
         _computeTopOffset: function () {
