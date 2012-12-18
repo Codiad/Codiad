@@ -44,10 +44,10 @@
             var _this = this;
 
             /* If the autocomplete popup is already in use, hide it. */
-            if (this.isVisible) {
-                alert('already open');
-                this.hide();
-            }
+            // if (this.isVisible) {
+                // alert('already open');
+                // this.hide();
+            // }
 
             this.addListenerToOnDocumentChange();
 
@@ -388,8 +388,9 @@
             var suggestionsAndFinalScore = {};
             for (suggestion in suggestionsAndMatchScore) {
                 if (suggestionsAndMatchScore.hasOwnProperty(suggestion)) {
-                    suggestionsAndFinalScore[suggestion] = suggestionsAndMatchScore[suggestion] -
-                                            suggestionsAndDistance[suggestion];
+                    // suggestionsAndFinalScore[suggestion] = suggestionsAndMatchScore[suggestion] -
+                                            // suggestionsAndDistance[suggestion];
+                    suggestionsAndFinalScore[suggestion] = suggestionsAndMatchScore[suggestion];
                 }
             }
 
@@ -403,7 +404,8 @@
             }
             
             suggestions.sort(function (firstSuggestion, secondSuggestion) {
-                return suggestionsAndFinalScore[firstSuggestion] - suggestionsAndFinalScore[secondSuggestion];
+                // return suggestionsAndFinalScore[firstSuggestion] - suggestionsAndFinalScore[secondSuggestion];
+                return suggestionsAndFinalScore[secondSuggestion] - suggestionsAndFinalScore[firstSuggestion];
             });
 
             return suggestions;
