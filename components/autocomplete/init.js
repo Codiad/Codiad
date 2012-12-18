@@ -306,6 +306,7 @@
             session.replace(range, suggestion);
 
             this.hide();
+            editor.focus();
         },
 
         /* Remove the suggestions from the Dom. */

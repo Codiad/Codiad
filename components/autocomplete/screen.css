@@ -14,7 +14,8 @@
 }
 
 #autocomplete li {
-    padding: 0 4px;
+    padding: 0 14px 0 4px;
+    cursor: pointer;
 }
 
 #autocomplete li.active-suggestion {
