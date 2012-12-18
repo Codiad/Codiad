@@ -31,6 +31,9 @@
 
         // Path to EditSession instance mapping
         sessions: {},
+        
+        // History of opened files
+        history: [],
 
         //////////////////////////////////////////////////////////////////
         //
@@ -53,7 +56,6 @@
             }
             var ext = codiad.filemanager.getExtension(path);
             var mode = codiad.editor.selectMode(ext);
-            var _this = this;
 
             var fn = function() {
                 //var Mode = require('ace/mode/' + mode)
@@ -89,7 +91,7 @@
 
             var _this = this;
 
-            _this.createTabDropdownMenu();
+            _this.initTabDropdownMenu();
             _this.updateTabDropdownVisibility();
 
             // Focus from list.
@@ -103,7 +105,9 @@
             $('#dropdown-list-active-files a')
                 .live('click', function(e) {
                     if(e.which == 1) {
-                        e.stopPropagation();
+                        /* Do not stop propagation of the event,
+                         * it will be catch by the dropdown menu
+                         * and close it. */
                         _this.focus($(this).parent('li').attr('data-path'));
                     }
             });
@@ -354,15 +358,26 @@
         // Focus on opened file
         //////////////////////////////////////////////////////////////////
 
-        focus: function(path) {
-            this.highlightEntry(path);
-            var session = this.sessions[path];
-            codiad.editor.setSession(session);
-            this.check(path);
+        focus: function(path, moveToTabList) {
+            if (typeof moveToTabList == 'undefined') {
+                moveToTabList = true;
+            }
+            
+            this.highlightEntry(path, moveToTabList);
+            
+            if(path != this.getPath()) {
+                codiad.editor.setSession(this.sessions[path]);
+                this.check(path);
+                this.activePath = path;
+                this.history.push(path);
+            }
         },
 
-        highlightEntry: function(path) {
-
+        highlightEntry: function(path, moveToTabList) {
+            if (typeof moveToTabList == 'undefined') {
+                moveToTabList = true;
+            }
+            
             $('#list-active-files li')
                 .removeClass('active');
 
@@ -375,13 +390,26 @@
             var session = this.sessions[path];
 
             if($('#dropdown-list-active-files').has(session.tabThumb).length > 0) {
-                 /* Get the menu item as a tab, and put the last tab in
-                 * dropdown. */
-                var menuItem = session.tabThumb;
-                this.moveDropdownMenuItemToTab(menuItem, true);
-
-                var tab = $('#tab-list-active-files li:last-child');
-                this.moveTabToDropdownMenu(tab);
+                if(moveToTabList) {
+                     /* Get the menu item as a tab, and put the last tab in
+                     * dropdown. */
+                    var menuItem = session.tabThumb;
+                    this.moveDropdownMenuItemToTab(menuItem, true);
+    
+                    var tab = $('#tab-list-active-files li:last-child');
+                    this.moveTabToDropdownMenu(tab);
+                } else {
+                    /* Show the dropdown menu if needed */
+                    this.showTabDropdownMenu();
+                }
+            }
+            else if(this.history.length > 0) {
+                var prevPath = this.history[this.history.length-1];
+                var prevSession = this.sessions[prevPath];
+                if($('#dropdown-list-active-files').has(prevSession.tabThumb).length > 0) {
+                    /* Hide the dropdown menu if needed */
+                    this.hideTabDropdownMenu();
+                }
             }
 
             session.tabThumb.addClass('active');
@@ -447,8 +475,8 @@
             if(session.tabThumb.hasClass('tab-item')) {
                 session.tabThumb.css({'z-index': 1});
                 session.tabThumb.animate({
-                    top: session.tabThumb.height() + 'px'
-                }, 600, function() {
+                    top: $('#editor-top-bar').height() + 'px'
+                }, 300, function() {
                     session.tabThumb.remove();
                     _this.updateTabDropdownVisibility();
                 });
@@ -459,13 +487,26 @@
 
             session.listThumb.remove();
 
+            /* Remove closed path from history */
+            var history = [];
+            $.each(this.history, function(index) {
+                if(this != path) history.push(this);
+            })
+            this.history = history
+            
             /* Select all the tab tumbs except the one which is to be removed. */
-            var nextTabThumb = $('#tab-list-active-files li[data-path!="' + path + '"]');
+            var tabThumbs = $('#tab-list-active-files li[data-path!="' + path + '"]');
 
-            if (nextTabThumb.length == 0) {
+            if (tabThumbs.length == 0) {
                 codiad.editor.exterminate();
             } else {
-                var nextPath = nextTabThumb.attr('data-path');
+                
+                var nextPath = '';
+                if(this.history.length > 0) {
+                    nextPath = this.history[this.history.length - 1];
+                } else {
+                    nextPath = tabThumbs[0].attr('data-path');
+                }
                 var nextSession = this.sessions[nextPath];
                 codiad.editor.removeSession(session, nextSession);
 
@@ -583,67 +624,115 @@
 
         move: function(dir) {
 
-            var num = $('#list-active-files li')
-                .length;
-            if (num > 1) {
-                if (dir == 'up') {
-                    // Move Up or rotate to bottom
-                    newActive = $('#list-active-files li.active')
-                        .prev('li')
-                        .attr('data-path');
-                    if (!newActive) {
-                        newActive = $('#list-active-files li:last-child')
-                            .attr('data-path');
+            var num = $('#tab-list-active-files li').length;
+            if (num === 0) return;
+            
+            var newActive = null;
+            var active = null;
+            
+            if (dir == 'up') {
+                
+                // If active is in the tab list
+                active = $('#tab-list-active-files li.active');
+                if(active.length > 0) {
+                    // Previous or rotate to the end
+                    newActive = active.prev('li');
+                    if (newActive.length === 0) {
+                        newActive = $('#dropdown-list-active-files li:last-child')
+                        if (newActive.length === 0) {
+                            newActive = $('#tab-list-active-files li:last-child')
+                        }
                     }
-
-                } else {
-                    // Move down or rotate to top
-                    newActive = $('#list-active-files li.active')
-                        .next('li')
-                        .attr('data-path');
-                    if (!newActive) {
-                        newActive = $('#list-active-files li:first-child')
-                            .attr('data-path');
+                }
+                
+                // If active is in the dropdown list
+                active = $('#dropdown-list-active-files li.active');
+                if(active.length > 0) {
+                    // Previous
+                    newActive = active.prev('li');
+                    if (newActive.length === 0) {
+                        newActive = $('#tab-list-active-files li:last-child')
                     }
-
                 }
 
-                this.focus(newActive);
+            } else {
+                
+                // If active is in the tab list
+                active = $('#tab-list-active-files li.active');
+                if(active.length > 0) {
+                     // Next or rotate to the beginning
+                    newActive = active.next('li');
+                    if (newActive.length === 0) {
+                        newActive = $('#dropdown-list-active-files li:first-child');
+                        if (newActive.length === 0) {
+                            newActive = $('#tab-list-active-files li:first-child')
+                        }
+                    }
+                }
+                
+                // If active is in the dropdown list
+                active = $('#dropdown-list-active-files li.active');
+                if(active.length > 0) {
+                    // Next or rotate to the beginning
+                    newActive = active.next('li');
+                    if (newActive.length === 0) {
+                        newActive = $('#tab-list-active-files li:first-child')
+                    }
+                }
+
             }
 
+            if(newActive) this.focus(newActive.attr('data-path'), false);
         },
 
         //////////////////////////////////////////////////////////////////
         // Dropdown Menu
         //////////////////////////////////////////////////////////////////
 
-        initMenuHandler: function(button, menu) {
+        initTabDropdownMenu: function() {
+            var _this = this;
+            
+            var menu = $('#dropdown-list-active-files');
+            var button = $('#tab-dropdown-button');
             
             menu.appendTo($('body'));
-            
+
             button.click(function(e) {
                 e.stopPropagation();
+                _this.toggleTabDropdownMenu();
+            });
+        },
+        
+        showTabDropdownMenu: function() {
+            var menu = $('#dropdown-list-active-files');
+            if(!menu.is(':visible')) this.toggleTabDropdownMenu();
+        },
+        
+        hideTabDropdownMenu: function() {
+            var menu = $('#dropdown-list-active-files');
+            if(menu.is(':visible')) this.toggleTabDropdownMenu();
+        },
+        
+        toggleTabDropdownMenu: function() {
+            var _this = this;
+            var menu = $('#dropdown-list-active-files');
+            
+            menu.css({
+                top: $("#editor-top-bar").height() + 'px',
+                right: '20px',
+                width: '200px'
+            });
+            
+            menu.slideToggle('fast');
 
-                menu.css({
-                    top: $("#editor-top-bar").height() + 'px',
-                    right: '20px',
-                    width: '200px'
-                });
-                menu.slideToggle('fast');
-
+            if(menu.is(':visible')) {
                 // handle click-out autoclosing
                 var fn = function() {
                     menu.hide();
                     $(window).off('click', fn)
                 }
                 $(window).on('click', fn);
-            });
-        },
-
-        createTabDropdownMenu: function() {
-            var menu = $('#dropdown-list-active-files');
-            var button = $('#tab-dropdown-button');
-            this.initMenuHandler(button, menu);
+            }
         },
 
         moveTabToDropdownMenu: function(tab, prepend) {
