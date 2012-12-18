@@ -149,6 +149,7 @@
         /* Return a jQuery object containing the currently selected suggestion. */
         getSelectedSuggestion: function () {
             var selectedSuggestion = $('li.suggestion.active-suggestion');
+            
             if (selectedSuggestion.length < 1) {
                 alert('No suggestion selected. Might be a bug.');
             } else if (selectedSuggestion.length > 1) {
@@ -361,7 +362,6 @@
                     if (score > maxScore) {
                         maxScore = score;
                     }
-
                     suggestionsAndMatchScore[suggestion] = score;
                 }
             }
@@ -396,7 +396,7 @@
             }
             
             suggestions.sort(function (firstSuggestion, secondSuggestion) {
-                return ranks[secondSuggestion] - ranks[firstSuggestion];
+                return ranks[firstSuggestion] - ranks[secondSuggestion];
             });
 
             return suggestions;
