@@ -354,7 +354,6 @@
             /* Initialize maxScore to one to ensure removing the non matching
              * suggestions (those with a zero score). */
             var maxScore = 1;
-            var ranks = {};
             var suggestionsAndMatchScore = {};
             for (var suggestion in suggestionsAndDistance) {
                 if (suggestionsAndDistance.hasOwnProperty(suggestion)) {
@@ -379,9 +378,10 @@
             /* Now for each suggestion we have its matching score and its
              * distance to the word under the cursor. So compute its final
              * score as a combination of both. */
+            var suggestionsAndFinalScore = {};
             for (suggestion in suggestionsAndMatchScore) {
                 if (suggestionsAndMatchScore.hasOwnProperty(suggestion)) {
-                    ranks[suggestion] = suggestionsAndMatchScore[suggestion] -
+                    suggestionsAndFinalScore[suggestion] = suggestionsAndMatchScore[suggestion] -
                                             suggestionsAndDistance[suggestion];
                 }
             }
@@ -389,14 +389,14 @@
             /* Make an array of suggestions and make sure to rank them in the
              * ascending scores order. */
             var suggestions = [];
-            for (suggestion in ranks) {
-                if (ranks.hasOwnProperty(suggestion)) {
+            for (suggestion in suggestionsAndFinalScore) {
+                if (suggestionsAndFinalScore.hasOwnProperty(suggestion)) {
                     suggestions.push(suggestion);
                 }
             }
             
             suggestions.sort(function (firstSuggestion, secondSuggestion) {
-                return ranks[firstSuggestion] - ranks[secondSuggestion];
+                return suggestionsAndFinalScore[firstSuggestion] - suggestionsAndFinalScore[secondSuggestion];
             });
 
             return suggestions;
@@ -405,16 +405,22 @@
         /* Return the number of consecutive letters starting from the first
          * letter in suggestion that match prefix. For instance,
          * this.computeSimpleMatchScore(cod, codiad) will return 3. If
-         * suggestion is shorter than prefix, return a score of zero. */
+         * suggestion is shorter than prefix, return a score of zero. The score
+         * is computed using a Vim-like smartcase behavior. */
         computeSimpleMatchScore: function (prefix, suggestion) {
-            if (suggestion.length < prefix.length) {
+            /* Use a Vim-like smartcase behavior. If prefix is all lowercase,
+             * compute the match score case insensitive, if it is not, compute
+             * the score case sensitive. */
+            var localSuggestion = this._isLowerCase(prefix) ? suggestion.toLowerCase() : suggestion;
+
+            if (localSuggestion.length < prefix.length) {
                 return 0;
-            } else if (suggestion === prefix) {
+            } else if (localSuggestion === prefix) {
                 return prefix.length;
             } else {
                 var score = 0;
                 for (var i = 0; i < prefix.length; ++i) {
-                    if (suggestion[i] === prefix[i]) {
+                    if (localSuggestion[i] === prefix[i]) {
                         ++score;
                     } else {
                         break;
@@ -428,15 +434,21 @@
         /* Return true if suggestion fuzzily matches prefix. Because everybody
          * loves fuzzy matches.
          * For instance, this.isMatchingFuzzily(mlf, mylongfunctionname)
-         * will return true. */
+         * will return true. The score is computed using a Vim-like smartcase
+         * behavior. */
         isMatchingFuzzily: function (prefix, suggestion) {
+            /* Use a Vim-like smartcase behavior. If prefix is all lowercase,
+             * compute the match score case insensitive, if it is not, compute
+             * the score case sensitive. */
+            var localSuggestion = this._isLowerCase(prefix) ? suggestion.toLowerCase() : suggestion;
+
             var fuzzyRegex = '^.*?';
             for (var i = 0; i < prefix.length; ++i) {
                 fuzzyRegex += prefix[i];
                 fuzzyRegex += '.*?';
             }
 
-            if (suggestion.search(fuzzyRegex) !== -1) {
+            if (localSuggestion.search(fuzzyRegex) !== -1) {
                 return true;
             } else {
                 return false;
@@ -444,18 +456,27 @@
         },
 
         getMatchIndexes: function (prefix, suggestion) {
+            /* Use a Vim-like smartcase behavior. If prefix is all lowercase,
+             * find the match indexes case insensitive, if it is not, find them
+             * case sensitive. */
+            var localSuggestion = this._isLowerCase(prefix) ? suggestion.toLowerCase() : suggestion;
+
             var matchIndexes = [];
             var startIndex = 0;
             for (var i = 0; i < prefix.length; ++i) {
-                var index = startIndex + suggestion.substr(startIndex).search(prefix[i]);
+                var index = startIndex + localSuggestion.substr(startIndex).search(prefix[i]);
                 matchIndexes.push(index);
                 startIndex = index + 1;
             }
 
             return matchIndexes;
         },
-        
-        _ensureVisible: function(el, parent) {
+
+        _isLowerCase: function (str) {
+            return (str.toLowerCase() === str);
+        },
+
+        _ensureVisible: function (el, parent) {
             var paneMin = parent.scrollTop();
             var paneMax = paneMin + parent.innerHeight();
             var itemMin = el.position().top + paneMin;
