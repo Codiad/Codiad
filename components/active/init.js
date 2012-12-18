@@ -505,7 +505,7 @@
                 if(this.history.length > 0) {
                     nextPath = this.history[this.history.length - 1];
                 } else {
-                    nextPath = tabThumbs[0].attr('data-path');
+                    nextPath = $(tabThumbs[0]).attr('data-path');
                 }
                 var nextSession = this.sessions[nextPath];
                 codiad.editor.removeSession(session, nextSession);
