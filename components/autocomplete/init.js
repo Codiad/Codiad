@@ -128,7 +128,12 @@
             this.isVisible = true;
 
             var popup = $('#autocomplete');
-            popup.css({'top': this._computeTopOffset(), 'left': this._computeLeftOffset()});
+            popup.css({
+                'top': this._computeTopOffset(), 
+                'left': this._computeLeftOffset(),
+                'font-family': $('.ace_editor').css('font-family'),
+                'font-size': $('.ace_editor').css('font-size')
+            });
             popup.slideToggle('fast', function(){ 
                 $(this).css('overflow', '');
             });
@@ -456,10 +461,11 @@
         },
         
         _ensureVisible: function(el, parent) {
+            var offset = 1;
             var paneMin = parent.scrollTop();
             var paneMax = paneMin + parent.innerHeight();
-            var itemMin = el.position().top + paneMin;
-            var itemMax = itemMin + el.outerHeight();
+            var itemMin = el.position().top + paneMin - offset;
+            var itemMax = itemMin + el.outerHeight() + 2*offset;
             if (itemMax > paneMax) {
                 parent.stop().animate({
                     scrollTop: itemMax - parent.innerHeight()

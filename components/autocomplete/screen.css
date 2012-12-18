@@ -3,22 +3,43 @@
 #autocomplete {
     display: none;
     position: absolute;
-    /*width: 150px;*/
     max-height: 200px;
     background-color: #2E2E2E;
-    border: 3px solid #666666;
-    padding: 3px;
+    border: 2px solid #666666;
+    padding: 1px;
     z-index: 1;
     overflow-x: hidden;
     overflow-y: auto;
+    box-shadow: 3px 3px 8px 0px rgba(0, 0, 0, 0.45);
 }
 
-.matched {
-    /* Hey this is just for testing ;-) */
-    color: green;
+#autocomplete li {
+    padding: 0 4px;
 }
 
-.active-suggestion {
-    /* Hey this is just for testing ;-) */
-    color: red;
+#autocomplete li.active-suggestion {
+    background-color: #6B6B6B;
 }
+
+#autocomplete .matched {
+    font-weight: bold;
+    color: #45A4B6;
+}
+
+/************************
+ * Webkit Scrollbar
+ ************************/
+ 
+#autocomplete::-webkit-scrollbar {
+    width: 10px;
+}
+ 
+#autocomplete::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+ 
+#autocomplete::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+}
+
+
