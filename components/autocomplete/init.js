@@ -1,6 +1,5 @@
 (function (global, $) {
 
-    // var TokenIterator = require('ace/token_iterator').TokenIterator;
     var EventEmitter = require('ace/lib/event_emitter').EventEmitter;
     var Range = require('ace/range').Range;
 
@@ -33,6 +32,8 @@
             this.$onDocumentChange = this.onDocumentChange.bind(this);
             this.$selectNextSuggestion = this.selectNextSuggestion.bind(this);
             this.$selectPreviousSuggestion = this.selectPreviousSuggestion.bind(this);
+            this.$complete = this.complete.bind(this);
+            this.$hide = this.hide.bind(this);
 
             /* In debug mode, run some tests here. */
             this._testSimpleMatchScorer();
@@ -43,10 +44,10 @@
             var _this = this;
 
             /* If the autocomplete popup is already in use, hide it. */
-            if (this.isVisible) {
-                alert('already open');
-                this.hide();
-            }
+            // if (this.isVisible) {
+                // alert('already open');
+                // this.hide();
+            // }
 
             this.addListenerToOnDocumentChange();
 
@@ -234,9 +235,17 @@
             this.standardGoLineDownExec = commandManager.commands.golinedown.exec;
             this.standardGoLineUpExec = commandManager.commands.golineup.exec;
 
+            this.standardGoToRightExec = commandManager.commands.gotoright.exec;
+            this.standardGoToLeftExec = commandManager.commands.gotoleft.exec;
+            this.standardIndentExec = commandManager.commands.indent.exec;
+
             /* Overwrite with the completion specific implementations. */
             commandManager.commands.golinedown.exec = this.$selectNextSuggestion;
             commandManager.commands.golineup.exec = this.$selectPreviousSuggestion;
+
+            commandManager.commands.gotoright.exec = this.$complete;
+            commandManager.commands.gotoleft.exec = this.$hide;
+            commandManager.commands.indent.exec = this.$complete;
 
             commandManager.addCommand({
                 name: 'hideautocomplete',
@@ -248,17 +257,21 @@
 
             commandManager.addCommand({
                 name: 'autocomplete',
-                bindKey: 'Return|Tab',
-                exec: function () {
-                    _this.complete();
-                }
+                bindKey: 'Return',
+                exec: this.$complete
             });
         },
 
         removeKeyboardCommands: function () {
             var commandManager = this._getEditor().commands;
+
             commandManager.commands.golinedown.exec = this.standardGoLineDownExec;
             commandManager.commands.golineup.exec = this.standardGoLineUpExec;
+
+            commandManager.commands.gotoright.exec = this.standardGoToRightExec;
+            commandManager.commands.gotoleft.exec = this.standardGoToLeftExec;
+            commandManager.commands.indent.exec = this.standardIndentExec;
+
             commandManager.removeCommand('hideautocomplete');
             commandManager.removeCommand('autocomplete');
         },
@@ -295,12 +308,6 @@
          * document. */
         getSuggestions: function (position) {
             var doc = this._getDocument();
-
-            // The following is just for testing purpose.
-            // var iterator = new TokenIterator(session, 0, 0);
-            // console.log(iterator.getCurrentToken());
-            // iterator.stepForward();
-            // console.log(iterator.getCurrentToken());
 
             /* FIXME For now, make suggestions on the whole file content except
              * the current token. Might be a little bit smarter, e.g., remove
@@ -359,7 +366,6 @@
             /* Initialize maxScore to one to ensure removing the non matching
              * suggestions (those with a zero score). */
             var maxScore = 1;
-            var ranks = {};
             var suggestionsAndMatchScore = {};
             for (var suggestion in suggestionsAndDistance) {
                 if (suggestionsAndDistance.hasOwnProperty(suggestion)) {
@@ -384,24 +390,27 @@
             /* Now for each suggestion we have its matching score and its
              * distance to the word under the cursor. So compute its final
              * score as a combination of both. */
+            var suggestionsAndFinalScore = {};
             for (suggestion in suggestionsAndMatchScore) {
                 if (suggestionsAndMatchScore.hasOwnProperty(suggestion)) {
-                    ranks[suggestion] = suggestionsAndMatchScore[suggestion] -
-                                            suggestionsAndDistance[suggestion];
+                    // suggestionsAndFinalScore[suggestion] = suggestionsAndMatchScore[suggestion] -
+                                            // suggestionsAndDistance[suggestion];
+                    suggestionsAndFinalScore[suggestion] = suggestionsAndMatchScore[suggestion];
                 }
             }
 
             /* Make an array of suggestions and make sure to rank them in the
              * ascending scores order. */
             var suggestions = [];
-            for (suggestion in ranks) {
-                if (ranks.hasOwnProperty(suggestion)) {
+            for (suggestion in suggestionsAndFinalScore) {
+                if (suggestionsAndFinalScore.hasOwnProperty(suggestion)) {
                     suggestions.push(suggestion);
                 }
             }
             
             suggestions.sort(function (firstSuggestion, secondSuggestion) {
-                return ranks[firstSuggestion] - ranks[secondSuggestion];
+                // return suggestionsAndFinalScore[firstSuggestion] - suggestionsAndFinalScore[secondSuggestion];
+                return suggestionsAndFinalScore[secondSuggestion] - suggestionsAndFinalScore[firstSuggestion];
             });
 
             return suggestions;
@@ -410,16 +419,22 @@
         /* Return the number of consecutive letters starting from the first
          * letter in suggestion that match prefix. For instance,
          * this.computeSimpleMatchScore(cod, codiad) will return 3. If
-         * suggestion is shorter than prefix, return a score of zero. */
+         * suggestion is shorter than prefix, return a score of zero. The score
+         * is computed using a Vim-like smartcase behavior. */
         computeSimpleMatchScore: function (prefix, suggestion) {
-            if (suggestion.length < prefix.length) {
+            /* Use a Vim-like smartcase behavior. If prefix is all lowercase,
+             * compute the match score case insensitive, if it is not, compute
+             * the score case sensitive. */
+            var localSuggestion = this._isLowerCase(prefix) ? suggestion.toLowerCase() : suggestion;
+
+            if (localSuggestion.length < prefix.length) {
                 return 0;
-            } else if (suggestion === prefix) {
+            } else if (localSuggestion === prefix) {
                 return prefix.length;
             } else {
                 var score = 0;
                 for (var i = 0; i < prefix.length; ++i) {
-                    if (suggestion[i] === prefix[i]) {
+                    if (localSuggestion[i] === prefix[i]) {
                         ++score;
                     } else {
                         break;
@@ -433,15 +448,21 @@
         /* Return true if suggestion fuzzily matches prefix. Because everybody
          * loves fuzzy matches.
          * For instance, this.isMatchingFuzzily(mlf, mylongfunctionname)
-         * will return true. */
+         * will return true. The score is computed using a Vim-like smartcase
+         * behavior. */
         isMatchingFuzzily: function (prefix, suggestion) {
+            /* Use a Vim-like smartcase behavior. If prefix is all lowercase,
+             * compute the match score case insensitive, if it is not, compute
+             * the score case sensitive. */
+            var localSuggestion = this._isLowerCase(prefix) ? suggestion.toLowerCase() : suggestion;
+
             var fuzzyRegex = '^.*?';
             for (var i = 0; i < prefix.length; ++i) {
                 fuzzyRegex += prefix[i];
                 fuzzyRegex += '.*?';
             }
 
-            if (suggestion.search(fuzzyRegex) !== -1) {
+            if (localSuggestion.search(fuzzyRegex) !== -1) {
                 return true;
             } else {
                 return false;
@@ -449,18 +470,27 @@
         },
 
         getMatchIndexes: function (prefix, suggestion) {
+            /* Use a Vim-like smartcase behavior. If prefix is all lowercase,
+             * find the match indexes case insensitive, if it is not, find them
+             * case sensitive. */
+            var localSuggestion = this._isLowerCase(prefix) ? suggestion.toLowerCase() : suggestion;
+
             var matchIndexes = [];
             var startIndex = 0;
             for (var i = 0; i < prefix.length; ++i) {
-                var index = startIndex + suggestion.substr(startIndex).search(prefix[i]);
+                var index = startIndex + localSuggestion.substr(startIndex).search(prefix[i]);
                 matchIndexes.push(index);
                 startIndex = index + 1;
             }
 
             return matchIndexes;
         },
-        
-        _ensureVisible: function(el, parent) {
+
+        _isLowerCase: function (str) {
+            return (str.toLowerCase() === str);
+        },
+
+        _ensureVisible: function (el, parent) {
             var offset = 1;
             var paneMin = parent.scrollTop();
             var paneMax = paneMin + parent.innerHeight();
