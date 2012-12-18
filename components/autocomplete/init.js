@@ -29,11 +29,20 @@
         standardGoLineUpExec: null,
 
         init: function () {
+            var _this = this;
+            
             this.$onDocumentChange = this.onDocumentChange.bind(this);
             this.$selectNextSuggestion = this.selectNextSuggestion.bind(this);
             this.$selectPreviousSuggestion = this.selectPreviousSuggestion.bind(this);
             this.$complete = this.complete.bind(this);
             this.$hide = this.hide.bind(this);
+            
+            /* Catch click on suggestion */
+            $('#autocomplete li').live('click', function(){
+                $('#autocomplete li.active-suggestion').removeClass('active-suggestion');
+                $(this).addClass('active-suggestion');
+                _this.complete();
+            })
 
             /* In debug mode, run some tests here. */
             this._testSimpleMatchScorer();
@@ -154,7 +163,7 @@
 
         /* Return a jQuery object containing the currently selected suggestion. */
         getSelectedSuggestion: function () {
-            var selectedSuggestion = $('li.suggestion.active-suggestion');
+            var selectedSuggestion = $('#autocomplete li.suggestion.active-suggestion');
             
             if (selectedSuggestion.length < 1) {
                 alert('No suggestion selected. Might be a bug.');
