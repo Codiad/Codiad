@@ -420,7 +420,7 @@
 
             this.changeListener(i);
             this.cursorTracking(i);
-            this.bindKeys(i);            
+            this.bindKeys(i);
 
             this.instances.push(i);
 
@@ -460,7 +460,7 @@
 
         createModeMenu: function(){
             var _this = this;
-            var _thisMenu = $('#changemode-menu');            
+            var _thisMenu = $('#changemode-menu');
             var modeOptions = '';
 
             this.initMenuHandler($('#current-mode'),_thisMenu);
@@ -476,19 +476,19 @@
                 e.stopPropagation();
                 var newMode = "ace/mode/" + e.srcElement.text;
                 var actSession = _this.activeInstance.getSession();
-                
+
                 // handle async mode change
                 var fn = function(){
                    _this.setModeDisplay(actSession);
-                   actSession.removeListener('changeMode', fn);                   
+                   actSession.removeListener('changeMode', fn);
                 }
                 actSession.on("changeMode", fn);
 
                 actSession.setMode(newMode);
                 _thisMenu.hide();
 
-            });            
-        },  
+            });
+        },
 
         initMenuHandler: function(button,menu){
             var _this = this;
@@ -510,7 +510,7 @@
                     bottom: ( (wh - $(this).offset().top) + 8) + 'px',
                     left: ($(this).offset().left - 13) + 'px'
                 });
-                
+
                 thisMenu.slideToggle('fast');
 
                 // handle click-out autoclosing
@@ -519,13 +519,13 @@
                     $(window).off('click', fn)
                 }
                 $(window).on('click', fn);
-            });            
+            });
         },
 
         closeMenus: function(exclude){
             var menuId = exclude.attr("id");
             if(menuId != 'split-options-menu') $('#split-options-menu').hide();
-            if(menuId != 'changemode-menu') $('#changemode-menu').hide();    
+            if(menuId != 'changemode-menu') $('#changemode-menu').hide();
         },
 
         setModeDisplay: function(session){
@@ -535,7 +535,7 @@
                     $('#current-mode').html(currMode);
                 }  else {
                     $('#current-mode').html('text');
-                }  
+                }
         },
 
         //////////////////////////////////////////////////////////////////
@@ -640,8 +640,11 @@
         setSession: function(session, i) {
             i = i || this.getActive();
             if (! this.isOpen(session)) {
-		if (! i) i = this.addInstance(session);
-		else i.setSession(session);
+                if (! i) {
+                    i = this.addInstance(session);
+                } else {
+                    i.setSession(session);
+                }
             } else {
                 // Proxy session is required because scroll-position and
                 // cursor position etc. are shared among sessions.
@@ -652,8 +655,11 @@
                 proxySession.path = session.path;
                 proxySession.listThumb = session.listThumb;
                 proxySession.tabThumb = session.tabThumb;
-		if (! i) i = this.addInstance(proxySession);
-		else i.setSession(proxySession);
+                if (! i) {
+                    i = this.addInstance(proxySession);
+                } else {
+                    i.setSession(proxySession);
+                }
             }
             this.setActive(i);
         },
