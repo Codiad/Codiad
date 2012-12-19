@@ -282,7 +282,7 @@
                     var openResponse = codiad.jsend.parse(data);
                     if (openResponse != 'error') {
                         node.removeClass('loading');
-                        codiad.active.open(path, openResponse.content, false);
+                        codiad.active.open(path, openResponse.content, openResponse.mtime, false);
                     }
                 });
             } else {
@@ -302,14 +302,9 @@
                 }
             });
         },
-
-        //////////////////////////////////////////////////////////////////
-        // Save file
-        //////////////////////////////////////////////////////////////////
-
-        saveFile: function(path, content, callbacks) {
+        saveModifications: function(path, data, callbacks){
             callbacks = callbacks || {};
-            var _this = this;
+            var _this = this, action, data;
             var notifySaveErr = function() {
                 codiad.message.error('File could not be saved');
                 if (typeof callbacks.error === 'function') {
@@ -317,21 +312,54 @@
                     callbacks.error.apply(context, [data]);
                 }
             }
-            $.post(this.controller + '?action=modify&path=' + path, {
-                    content: content
-                }, function(data) {
-                    var saveResponse = codiad.jsend.parse(data);
-                    if (saveResponse != 'error') {
-                        codiad.message.success('File Saved');
-                    }
-                    if (typeof callbacks.success === 'function') {
+            $.post(this.controller + '?action=modify&path='+path, data, function(resp){
+                resp = $.parseJSON(resp);
+                if (resp.status == 'success') {
+                    codiad.message.success('File saved');
+                    if (typeof callbacks.success === 'function'){
                         var context = callbacks.context || _this;
-                        callbacks.success.apply(context, [data]);
-                    } else {
-                        notifySaveErr();
+                        callbacks.success.call(context, resp.data.mtime);
                     }
-                })
-                .error(notifySaveErr);
+                } else {
+                    if (resp.message == 'Client is out of sync'){
+                        var reload = confirm(
+                            "Server has a more updated copy of the file. Would "+
+                            "you like to refresh the contents ? Pressing no will "+
+                            "cause your changes to override the server's copy upon "+
+                            "next save."
+                        );
+                        if (reload) {
+                            codiad.active.close(path);
+                            codiad.active.removeDraft(path);
+                            _this.openFile(path);
+                        } else {
+                            var session = codiad.editor.getActive().getSession();
+                            session.serverMTime = null;
+                            session.untainted = null;
+                        }
+                    } else codiad.message.error('File could not be saved');
+                    if (typeof callbacks.error === 'function') {
+                        var context = callbacks.context || _this;
+                        callbacks.error.apply(context, [resp.data]);
+                    }
+                }
+            }).error(notifySaveErr);
+        },
+        //////////////////////////////////////////////////////////////////
+        // Save file
+        //////////////////////////////////////////////////////////////////
+
+        saveFile: function(path, content, callbacks) {
+            this.saveModifications(path, {content: content}, callbacks);
+        },
+
+        savePatch: function(path, patch, mtime, callbacks) {
+            if (patch.length > 0)
+                this.saveModifications(path, {patch: patch, mtime: mtime}, callbacks);
+            else if (typeof callbacks.success === 'function'){
+                var context = callbacks.context || this;
+                callbacks.success.call(context, mtime);
+            }
         },
 
         //////////////////////////////////////////////////////////////////
@@ -398,8 +426,8 @@
                         .live('submit', function(e) {
                         e.preventDefault();
                         var duplicate = false;
-                        if($('#modal-content form select[name="or_action"]').val()==1){ 
-                            duplicate=true; console.log('Dup!'); 
+                        if($('#modal-content form select[name="or_action"]').val()==1){
+                            duplicate=true; console.log('Dup!');
                         }
                         _this.processPasteNode(path,duplicate);
                     });
