@@ -48,7 +48,7 @@
             return !!this.sessions[path];
         },
 
-        open: function(path, content, inBackground) {
+        open: function(path, content, mtime, inBackground) {
             var _this = this;
             if (this.isOpen(path)) {
                 this.focus(path);
@@ -75,7 +75,9 @@
                 session.setUndoManager(new UndoManager());
 
                 session.path = path;
+                session.serverMTime = mtime;
                 _this.sessions[path] = session;
+                session.untainted = content.slice(0);
                 if (!inBackground) {
                     codiad.editor.setSession(session);
                 }
@@ -441,13 +443,40 @@
                 .getSession();
             var content = session.getValue();
             var path = session.path;
-            codiad.filemanager.saveFile(path, content, {
-                success: function() {
-                    session.listThumb.removeClass('changed');
-                    session.tabThumb.removeClass('changed');
-                    _this.removeDraft(path);
-                }
-            });
+            var handleSuccess = function(mtime){
+                session.untainted = newContent;
+                session.serverMTime = mtime;
+                if (session.listThumb) session.listThumb.removeClass('changed');
+                if (session.tabThumb) session.tabThumb.removeClass('changed');
+                _this.removeDraft(path);
+            }
+            // Replicate the current content so as to avoid
+            // discrepancies due to content changes during
+            // computation of diff
+
+            var newContent = content.slice(0);
+            if (session.serverMTime && session.untainted){
+                codiad.workerManager.addTask({
+                    taskType: 'diff',
+                    id: path,
+                    original: session.untainted,
+                    changed: newContent
+                }, function(success, patch){
+                    if (success) {
+                        codiad.filemanager.savePatch(path, patch, session.serverMTime, {
+                            success: handleSuccess
+                        });
+                    } else {
+                        condiad.filemanager.saveFile(path, newContent, {
+                            success: handleSuccess
+                        });
+                    }
+                }, this);
+            } else {
+                codiad.filemanager.saveFile(path, newContent, {
+                    success: handleSuccess
+                });
+            }
         },
 
         //////////////////////////////////////////////////////////////////
