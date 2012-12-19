@@ -27,6 +27,8 @@
         standardGoLineDownExec: null,
 
         standardGoLineUpExec: null,
+        
+        _suggestionCache: null,
 
         init: function () {
             var _this = this;
@@ -51,12 +53,6 @@
 
         suggest: function () {
             var _this = this;
-
-            /* If the autocomplete popup is already in use, hide it. */
-            // if (this.isVisible) {
-                // alert('already open');
-                // this.hide();
-            // }
 
             this.addListenerToOnDocumentChange();
 
@@ -305,6 +301,7 @@
             var suggestion = this.getSelectedSuggestion().text();
             session.replace(range, suggestion);
 
+            this.clearSuggestionCache();
             this.hide();
             editor.focus();
         },
@@ -317,6 +314,13 @@
         /* Get suggestions of completion for the current position in the
          * document. */
         getSuggestions: function (position) {
+            
+            /* If suggestions are cached,
+             * return them directely */
+            if(this._suggestionCache) {
+                return this._suggestionCache;
+            }
+            
             var doc = this._getDocument();
 
             /* FIXME For now, make suggestions on the whole file content except
@@ -363,7 +367,15 @@
             /* Remove from the suggestions the word under the cursor. */
             delete suggestionsAndDistance[markedWord];
 
+            /* Fill the cache */
+            this._suggestionCache = suggestionsAndDistance;
+            
             return suggestionsAndDistance;
+        },
+        
+        /* Clear the suggestion cache */
+        clearSuggestionCache: function() {
+            this._suggestionCache = null;
         },
 
         /* Given an object associating suggestions and their distances to the
