@@ -389,7 +389,7 @@
             var suggestionsAndDistance = {};
             $.each(suggestions, function (index, suggestion) {
                 var distance = Math.abs(index - markerIndex);
-                if (suggestionsAndDistance[suggestion] &&
+                if (!suggestionsAndDistance[suggestion] ||
                     distance < suggestionsAndDistance[suggestion]) {
                     suggestionsAndDistance[suggestion] = distance;
                 }
@@ -430,8 +430,7 @@
                 }
             }
 
-            /* Remove the suggestions with a score lower than the maximum
-             * score and suggestions that do not match fuzzily the prefix. */
+            /* Remove the suggestions that do not match the prefix fuzzily. */
             for (suggestion in suggestionsAndMatchScore) {
                 if (Object.prototype.hasOwnProperty.call(suggestionsAndMatchScore, suggestion)) {
                     if (!this.isMatchingFuzzily(prefix, suggestion)) {
@@ -446,9 +445,9 @@
             var suggestionsAndFinalScore = {};
             for (suggestion in suggestionsAndMatchScore) {
                 if (Object.prototype.hasOwnProperty.call(suggestionsAndMatchScore, suggestion)) {
-                    suggestionsAndFinalScore[suggestion] = suggestionsAndMatchScore[suggestion] -
-                                            suggestionsAndDistance[suggestion];
-                    // suggestionsAndFinalScore[suggestion] = suggestionsAndMatchScore[suggestion];
+                    //suggestionsAndFinalScore[suggestion] = suggestionsAndMatchScore[suggestion] -
+                    //                        suggestionsAndDistance[suggestion];
+                    suggestionsAndFinalScore[suggestion] = suggestionsAndMatchScore[suggestion] / suggestion.length;
                 }
             }
 
@@ -462,7 +461,6 @@
             }
             
             suggestions.sort(function (firstSuggestion, secondSuggestion) {
-                // return suggestionsAndFinalScore[firstSuggestion] - suggestionsAndFinalScore[secondSuggestion];
                 return suggestionsAndFinalScore[secondSuggestion] - suggestionsAndFinalScore[firstSuggestion];
             });
 
