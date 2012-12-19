@@ -30,6 +30,12 @@
         
         _suggestionCache: null,
 
+        standardGoToRightExec: null,
+
+        standardGoToLeftExec: null,
+
+        standardIndentExec: null,
+
         init: function () {
             var _this = this;
             
@@ -40,11 +46,11 @@
             this.$hide = this.hide.bind(this);
             
             /* Catch click on suggestion */
-            $('#autocomplete li').live('click', function(){
+            $('#autocomplete li').live('click', function () {
                 $('#autocomplete li.active-suggestion').removeClass('active-suggestion');
                 $(this).addClass('active-suggestion');
                 _this.complete();
-            })
+            });
 
             /* In debug mode, run some tests here. */
             this._testSimpleMatchScorer();
@@ -56,12 +62,12 @@
 
             this.addListenerToOnDocumentChange();
 
-            var foundSuggestions = this.updateSuggestions();
+            var cursorPosition = this._getEditor().getCursorPosition();
+            var foundSuggestions = this.updateSuggestions(cursorPosition);
 
             if (foundSuggestions) {
                 // Show the completion popup.
                 this.show();
-                console.log($('.suggestion'));
 
                 // handle click-out autoclosing.
                 var fn = function () {
@@ -72,29 +78,27 @@
             }
         },
 
-        /* Update the suggestions for the word under the cursor. Return true if
+        /* Update the suggestions for the word at the given position. Return true if
          * some suitable suggestions could be found, false if not. */
-        updateSuggestions: function () {
+        updateSuggestions: function (position) {
             var _this = this;
 
-            var editor = this._getEditor();
             var session = this._getEditSession();
 
-            var position = editor.getCursorPosition();
-
-            /* Extract the word being typed. It is somehow the prefix of the
-             * wanted full word. Make sure we only keep one word. */
+            /* Extract the word being typed. Keep only the part of the word
+             * which is before the given position. It is somehow the prefix of
+             * the wanted full word. Make sure we only keep one word. */
             var token = session.getTokenAt(position.row, position.column);
             if (!token) {
-                /* Not word at the cursor position. */
+                /* No word at the given position. */
                 this.removeSuggestions();
                 return false;
             }
 
-            var prefix = token.value;
+            var prefix = token.value.substr(0, position.column - token.start);
             prefix = prefix.split(this.wordRegex).slice(-1)[0];
             if (prefix === '') {
-                /* Not word at the cursor position. */
+                /* No word at the given position. */
                 this.removeSuggestions();
                 return false;
             }
@@ -115,13 +119,13 @@
             var popupContent = $('#autocomplete #suggestions');
             $.each(suggestions, function (index, suggestion) {
                 var indexes = _this.getMatchIndexes(prefix, suggestion);
-                $.each(indexes.reverse(), function(index, matchIndex) {
-                    suggestion = suggestion.substr(0, matchIndex) 
-                    + '<span class="matched">' 
-                    + suggestion.substr(matchIndex, 1)
-                    + '</span>' 
-                    + suggestion.substr(matchIndex + 1);
-                })
+                $.each(indexes.reverse(), function (index, matchIndex) {
+                    suggestion = suggestion.substr(0, matchIndex) +
+                    '<span class="matched">' +
+                    suggestion.substr(matchIndex, 1) +
+                    '</span>' +
+                    suggestion.substr(matchIndex + 1);
+                });
                 popupContent.append('<li class="suggestion">' + suggestion + '</li>');
             });
 
@@ -135,12 +139,12 @@
 
             var popup = $('#autocomplete');
             popup.css({
-                'top': this._computeTopOffset(), 
+                'top': this._computeTopOffset(),
                 'left': this._computeLeftOffset(),
                 'font-family': $('.ace_editor').css('font-family'),
                 'font-size': $('.ace_editor').css('font-size')
             });
-            popup.slideToggle('fast', function(){ 
+            popup.slideToggle('fast', function(){
                 $(this).css('overflow', '');
             });
 
@@ -160,7 +164,7 @@
         /* Return a jQuery object containing the currently selected suggestion. */
         getSelectedSuggestion: function () {
             var selectedSuggestion = $('#autocomplete li.suggestion.active-suggestion');
-            
+
             if (selectedSuggestion.length < 1) {
                 alert('No suggestion selected. Might be a bug.');
             } else if (selectedSuggestion.length > 1) {
@@ -226,7 +230,16 @@
                 return;
             }
 
-            var foundSuggestions = this.updateSuggestions();
+            var position = null;
+            if (e.data.action === 'insertText') {
+                position = e.data.range.end;
+            } else if (e.data.action === 'removeText') {
+                position = e.data.range.start;
+            } else {
+                alert('Unkown document change action.');
+            }
+
+            var foundSuggestions = this.updateSuggestions(position);
             if (!foundSuggestions) {
                 this.hide();
             }
@@ -281,16 +294,25 @@
             commandManager.removeCommand('autocomplete');
         },
 
-        /* Complete the word under the cursor with the currently selected
-         * suggestion. */
-        complete: function () {
+        /* Complete the word at the given position with the currently selected
+         * suggestion. Only the part of the word before the position is
+         * replaced. */
+        complete: function (position) {
             var editor = this._getEditor();
             var session = this._getEditSession();
 
             var position = editor.getCursorPosition();
 
             /* Get the length of the word being typed. */
-            var prefix = session.getTokenAt(position.row, position.column).value;
+            var token = session.getTokenAt(position.row, position.column);
+            if (!token) {
+                /* No token at the given position. */
+                this.clearSuggestionCache();
+                this.hide();
+                editor.focus();
+            }
+
+            var prefix = token.value.substr(0, position.column - token.start);
             var prefixLength = prefix.split(this.wordRegex).slice(-1)[0].length;
 
             var range = new Range(position.row,
