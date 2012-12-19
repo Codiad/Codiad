@@ -639,12 +639,9 @@
 
         setSession: function(session, i) {
             i = i || this.getActive();
-            //if (i && i.session.path == session.path) return;
-            if (! i) {
-                i = this.addInstance(session);
-            }
             if (! this.isOpen(session)) {
-                i.setSession(session);
+		if (! i) i = this.addInstance(session);
+		else i.setSession(session);
             } else {
                 // Proxy session is required because scroll-position and
                 // cursor position etc. are shared among sessions.
@@ -655,7 +652,8 @@
                 proxySession.path = session.path;
                 proxySession.listThumb = session.listThumb;
                 proxySession.tabThumb = session.tabThumb;
-                i.setSession(proxySession);
+		if (! i) i = this.addInstance(proxySession);
+		else i.setSession(proxySession);
             }
             this.setActive(i);
         },
