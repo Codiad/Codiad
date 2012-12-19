@@ -1,3 +1,9 @@
+/*
+ *  Copyright (c) Codiad & Kent Safranski (codiad.com), distributed
+ *  as-is and without warranty under the MIT License. See
+ *  [root]/license.txt for more. This information must remain intact.
+ */
+
 (function (global, $) {
 
     var EventEmitter = require('ace/lib/event_emitter').EventEmitter;
@@ -383,7 +389,10 @@
             var suggestionsAndDistance = {};
             $.each(suggestions, function (index, suggestion) {
                 var distance = Math.abs(index - markerIndex);
-                suggestionsAndDistance[suggestion] = distance;
+                if (suggestionsAndDistance[suggestion] &&
+                    distance < suggestionsAndDistance[suggestion]) {
+                    suggestionsAndDistance[suggestion] = distance;
+                }
             });
 
             /* Remove from the suggestions the word under the cursor. */
@@ -396,7 +405,7 @@
         },
         
         /* Clear the suggestion cache */
-        clearSuggestionCache: function() {
+        clearSuggestionCache: function () {
             this._suggestionCache = null;
         },
 
@@ -437,9 +446,9 @@
             var suggestionsAndFinalScore = {};
             for (suggestion in suggestionsAndMatchScore) {
                 if (Object.prototype.hasOwnProperty.call(suggestionsAndMatchScore, suggestion)) {
-                    // suggestionsAndFinalScore[suggestion] = suggestionsAndMatchScore[suggestion] -
-                                            // suggestionsAndDistance[suggestion];
-                    suggestionsAndFinalScore[suggestion] = suggestionsAndMatchScore[suggestion];
+                    suggestionsAndFinalScore[suggestion] = suggestionsAndMatchScore[suggestion] -
+                                            suggestionsAndDistance[suggestion];
+                    // suggestionsAndFinalScore[suggestion] = suggestionsAndMatchScore[suggestion];
                 }
             }
 
