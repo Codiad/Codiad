@@ -378,7 +378,7 @@
             var maxScore = 1;
             var suggestionsAndMatchScore = {};
             for (var suggestion in suggestionsAndDistance) {
-                if (suggestionsAndDistance.hasOwnProperty(suggestion)) {
+                if (Object.prototype.hasOwnProperty.call(suggestionsAndDistance, suggestion)) {
                     var score = this.computeSimpleMatchScore(prefix, suggestion);
                     if (score > maxScore) {
                         maxScore = score;
@@ -390,7 +390,7 @@
             /* Remove the suggestions with a score lower than the maximum
              * score and suggestions that do not match fuzzily the prefix. */
             for (suggestion in suggestionsAndMatchScore) {
-                if (suggestionsAndMatchScore.hasOwnProperty(suggestion)) {
+                if (Object.prototype.hasOwnProperty.call(suggestionsAndMatchScore, suggestion)) {
                     if (!this.isMatchingFuzzily(prefix, suggestion)) {
                         delete suggestionsAndMatchScore[suggestion];
                     }
@@ -402,7 +402,7 @@
              * score as a combination of both. */
             var suggestionsAndFinalScore = {};
             for (suggestion in suggestionsAndMatchScore) {
-                if (suggestionsAndMatchScore.hasOwnProperty(suggestion)) {
+                if (Object.prototype.hasOwnProperty.call(suggestionsAndMatchScore, suggestion)) {
                     // suggestionsAndFinalScore[suggestion] = suggestionsAndMatchScore[suggestion] -
                                             // suggestionsAndDistance[suggestion];
                     suggestionsAndFinalScore[suggestion] = suggestionsAndMatchScore[suggestion];
@@ -413,7 +413,7 @@
              * ascending scores order. */
             var suggestions = [];
             for (suggestion in suggestionsAndFinalScore) {
-                if (suggestionsAndFinalScore.hasOwnProperty(suggestion)) {
+                if (Object.prototype.hasOwnProperty.call(suggestionsAndFinalScore, suggestion)) {
                     suggestions.push(suggestion);
                 }
             }
