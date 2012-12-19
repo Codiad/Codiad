@@ -299,11 +299,11 @@ class Filemanager {
                     //DEBUG : file_put_contents($this->path.".conflict", "SERVER MTIME :".$serverMTime.", CLIENT MTIME :".$this->mtime);
                     $this->respond();
                     return;
-                } else if (strlen(trim($this->patch)) == 0){
-                    // Do nothing if the patch is empty.
+                } else if (strlen(trim($this->patch)) == 0 && ! $this->content ){
+                    // Do nothing if the patch is empty and there is no content
                     $this->status = "success";
                     $this->data = '"mtime":'.$serverMTime;
-                    $this.respond();
+                    $this->respond();
                     return;
                 }
 
@@ -315,6 +315,7 @@ class Filemanager {
                         //DEBUG : file_put_contents($this->path.".orig",$fileContents );
                         //DEBUG : file_put_contents($this->path.".patch", $this->patch);
                     }
+		    
                     $writeSuccess = fwrite($file, $this->content);
                     fclose($file);
                     if (! $writeSuccess){
@@ -324,7 +325,7 @@ class Filemanager {
                         // Unless stat cache is cleared the pre-cached mtime will be
                         // returned instead of new modification time after editing
                         // the file.
-                        clearstatcache(True);
+                        clearstatcache();
                         $this->data = '"mtime":'.filemtime($this->path);
                         $this->status = "success";
                     }

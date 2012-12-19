@@ -444,6 +444,7 @@
             var content = session.getValue();
             var path = session.path;
             var handleSuccess = function(mtime){
+		var session = codiad.active.sessions[path];
                 session.untainted = newContent;
                 session.serverMTime = mtime;
                 if (session.listThumb) session.listThumb.removeClass('changed');

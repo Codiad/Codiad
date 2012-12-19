@@ -313,7 +313,6 @@
                 }
             }
             $.post(this.controller + '?action=modify&path='+path, data, function(resp){
-                //var saveResponse = codiad.jsend.parse(resp);
                 resp = $.parseJSON(resp);
                 if (resp.status == 'success') {
                     codiad.message.success('File saved');
