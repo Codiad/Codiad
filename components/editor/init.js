@@ -28,6 +28,7 @@
     var availableTextModes = new Array(
         'html',
         'javascript',
+        'coffee',
         'css',
         'scss',
         'less',
@@ -708,6 +709,8 @@
                 return 'ruby';
             case 'jade':
                 return 'jade';
+            case 'coffee':
+                return 'coffee';
             default:
                 return 'text';
             }
