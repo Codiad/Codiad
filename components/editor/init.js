@@ -517,7 +517,7 @@
                 // handle click-out autoclosing
                 var fn = function(){
                     thisMenu.hide();
-                    $(window).off('click', fn)
+                    $(window).off('click', fn);
                 }
                 $(window).on('click', fn);
             });

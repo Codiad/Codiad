@@ -73,6 +73,11 @@
                 codiad.active.move('down');
             });
 
+            // Autocomplete [CTRL+SPACE] /////////////////////////////////
+            $.ctrl('32', function() {
+                codiad.autocomplete.suggest();
+            });
+
         }
 
     };
