@@ -162,6 +162,7 @@
 
             $('#autocomplete').hide();
             this.removeSuggestions();
+            this.clearSuggestionCache();
 
             this.removeListenerToOnDocumentChange();
             this.removeKeyboardCommands();
@@ -329,7 +330,6 @@
             var suggestion = this.getSelectedSuggestion().text();
             session.replace(range, suggestion);
 
-            this.clearSuggestionCache();
             this.hide();
             editor.focus();
         },
