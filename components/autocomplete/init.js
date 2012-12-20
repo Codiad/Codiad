@@ -124,6 +124,9 @@
             this.removeSuggestions();
             var popupContent = $('#autocomplete #suggestions');
             $.each(suggestions, function (index, suggestion) {
+                /* First get rid of the suggestion suffix. */
+                suggestion = suggestion.slice(0, -1);
+
                 var indexes = _this.getMatchIndexes(prefix, suggestion);
                 $.each(indexes.reverse(), function (index, matchIndex) {
                     suggestion = suggestion.substr(0, matchIndex) +
@@ -385,18 +388,22 @@
             });
 
             /* Build an object associating the suggestions with their distance
-             * to the word at cursor position. */
+             * to the word at cursor position. To make sure that no suggestion
+             * string overrides a built-in method of the suggestionsAndDistance
+             * object, suffix all the suggestions with '-'. Afterward, make
+             * sure of removing that suffix before using the stored
+             * suggestions! */
             var suggestionsAndDistance = {};
             $.each(suggestions, function (index, suggestion) {
                 var distance = Math.abs(index - markerIndex);
-                if (!suggestionsAndDistance[suggestion] ||
+                if (!suggestionsAndDistance[suggestion + '-'] ||
                     distance < suggestionsAndDistance[suggestion]) {
-                    suggestionsAndDistance[suggestion] = distance;
+                    suggestionsAndDistance[suggestion + '-'] = distance;
                 }
             });
 
             /* Remove from the suggestions the word under the cursor. */
-            delete suggestionsAndDistance[markedWord];
+            delete suggestionsAndDistance[markedWord + '-'];
 
             /* Fill the cache */
             this._suggestionCache = suggestionsAndDistance;
