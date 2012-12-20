@@ -545,7 +545,7 @@
             var matchIndexes = [];
             var startIndex = 0;
             for (var i = 0; i < prefix.length; ++i) {
-                var index = startIndex + localSuggestion.substr(startIndex).indexOf(prefix[i]);
+                var index = localSuggestion.indexOf(prefix[i], startIndex);
                 matchIndexes.push(index);
                 startIndex = index + 1;
             }
