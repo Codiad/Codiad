@@ -348,7 +348,7 @@
             
             /* If suggestions are cached,
              * return them directely */
-            if(this._suggestionCache) {
+            if (this._suggestionCache) {
                 return this._suggestionCache;
             }
             
@@ -514,9 +514,18 @@
              * the score case sensitive. */
             var localSuggestion = this._isLowerCase(prefix) ? suggestion.toLowerCase() : suggestion;
 
+            /* Escape the characters that have a special meaning for regex in
+             * the prefix. */
+            var localPrefix = prefix.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+
             var fuzzyRegex = '^.*?';
-            for (var i = 0; i < prefix.length; ++i) {
-                fuzzyRegex += prefix[i];
+            for (var i = 0; i < localPrefix.length; ++i) {
+                if (localPrefix[i] === '\\') {
+                    fuzzyRegex += localPrefix[i];
+                    ++i;
+                }
+
+                fuzzyRegex += localPrefix[i];
                 fuzzyRegex += '.*?';
             }
 
@@ -536,7 +545,7 @@
             var matchIndexes = [];
             var startIndex = 0;
             for (var i = 0; i < prefix.length; ++i) {
-                var index = startIndex + localSuggestion.substr(startIndex).search(prefix[i]);
+                var index = startIndex + localSuggestion.substr(startIndex).indexOf(prefix[i]);
                 matchIndexes.push(index);
                 startIndex = index + 1;
             }
