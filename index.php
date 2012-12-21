@@ -203,6 +203,8 @@ $components = json_decode($components,true);
 
     <iframe id="download"></iframe>
 
+    <div id="autocomplete"><ul id="suggestions"></ul></div>
+
     <!-- ACE -->
     <script src="components/editor/ace-editor/ace.js"></script>
 
