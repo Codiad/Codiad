@@ -255,7 +255,6 @@
         },
 
         addKeyboardCommands: function () {
-            console.log('add keys');
             var _this = this;
             var commandManager = this._getEditor().commands;
 
@@ -293,6 +292,7 @@
         removeKeyboardCommands: function () {
             var commandManager = this._getEditor().commands;
 
+            /* Make sure the standard exec have been initialized. */
             if (this.standardGoLineDownExec !== null) {
                 commandManager.commands.golinedown.exec = this.standardGoLineDownExec;
             }
