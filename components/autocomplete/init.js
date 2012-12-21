@@ -59,19 +59,18 @@
             });
 
             /* In debug mode, run some tests here. */
-            this._testSimpleMatchScorer();
-            this._testFuzzyMatcher();
+            // this._testSimpleMatchScorer();
+            // this._testFuzzyMatcher();
         },
 
         suggest: function () {
             var _this = this;
 
-            this.addListenerToOnDocumentChange();
-
             var cursorPosition = this._getEditor().getCursorPosition();
             var foundSuggestions = this.updateSuggestions(cursorPosition);
-
             if (foundSuggestions) {
+                this.addListenerToOnDocumentChange();
+
                 // Show the completion popup.
                 this.show();
 
@@ -256,6 +255,7 @@
         },
 
         addKeyboardCommands: function () {
+            console.log('add keys');
             var _this = this;
             var commandManager = this._getEditor().commands;
 
@@ -293,12 +293,25 @@
         removeKeyboardCommands: function () {
             var commandManager = this._getEditor().commands;
 
-            commandManager.commands.golinedown.exec = this.standardGoLineDownExec;
-            commandManager.commands.golineup.exec = this.standardGoLineUpExec;
+            if (this.standardGoLineDownExec !== null) {
+                commandManager.commands.golinedown.exec = this.standardGoLineDownExec;
+            }
 
-            commandManager.commands.gotoright.exec = this.standardGoToRightExec;
-            commandManager.commands.gotoleft.exec = this.standardGoToLeftExec;
-            commandManager.commands.indent.exec = this.standardIndentExec;
+            if (this.standardGoLineUpExec !== null) {
+                commandManager.commands.golineup.exec = this.standardGoLineUpExec;
+            }
+
+            if (this.standardGoToRightExec !== null) {
+                commandManager.commands.gotoright.exec = this.standardGoToRightExec;
+            }
+
+            if (this.standardGoToLeftExec !== null) {
+                commandManager.commands.gotoleft.exec = this.standardGoToLeftExec;
+            }
+
+            if (this.standardIndentExec !== null) {
+                commandManager.commands.indent.exec = this.standardIndentExec;
+            }
 
             commandManager.removeCommand('hideautocomplete');
             commandManager.removeCommand('autocomplete');
