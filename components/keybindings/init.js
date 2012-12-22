@@ -75,9 +75,11 @@
 
             // Autocomplete [CTRL+SPACE] /////////////////////////////////
             $.ctrl('32', function() {
-                codiad.autocomplete.suggest();
+                // TODO remove this it is for testing purpose.
+                // codiad.autocomplete.suggest();
+                console.log('add listener.');
+                codiad.collaborative.addListenerToOnDocumentChange();
             });
-
         }
 
     };
