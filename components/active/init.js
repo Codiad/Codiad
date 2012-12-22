@@ -896,7 +896,10 @@
         },
 
         createMenuItemThumb: function(path) {
-            return $('<li data-path="' + path + '"><a title="' + path + '"><span></span><div class="label">' + path.substring(1) + '</div></a></li>');
+            split = this.splitDirectoryAndFileName(path);
+            return $('<li data-path="' + path + '"><a title="' + path + '"><span class="label"></span><div class="label">' 
+                    + split.directory.substring(1) + '<span class="file-name">' + split.fileName + '</span>'
+                    + '</div></a></li>');
         },
 
     };
