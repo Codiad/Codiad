@@ -875,13 +875,24 @@
         //////////////////////////////////////////////////////////////////
         // Factory
         //////////////////////////////////////////////////////////////////
+        
+        splitDirectoryAndFileName: function(path) {
+            var index = path.lastIndexOf('/');
+            return {
+                fileName: path.substring(index + 1),
+                directory: path.substring(0, index + 1)
+            }
+        },
 
         createListThumb: function(path) {
             return $('<li data-path="' + path + '"><a title="'+path+'"><span></span><div>' + path.substring(1) + '</div></a></li>');
         },
 
         createTabThumb: function(path) {
-            return $('<li class="tab-item" data-path="' + path + '"><a class="label" title="' + path + '">' + path.substring(1) + '</a><a class="close">x</a></li>');
+            split = this.splitDirectoryAndFileName(path);
+            return $('<li class="tab-item" data-path="' + path + '"><a class="label" title="' + path + '">' 
+                    + split.directory.substring(1) + '<span class="file-name">' + split.fileName + '</span>' 
+                    + '</a><a class="close">x</a></li>');
         },
 
         createMenuItemThumb: function(path) {

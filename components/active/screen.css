@@ -40,14 +40,14 @@
     z-index: 1;
     box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .9);
 }
+
+#tab-list-active-files li.active {
+    z-index: 3;
+}
  
 #tab-list-active-files li:first-child {
     margin-left: 0;
 }
- 
-#tab-list-active-files .active {
-    z-index: 3;
-} 
 
 #tab-list-active-files li a.label {
     display: block;
@@ -55,11 +55,24 @@
     width: 140px;
     line-height: 25px;
     padding-top: 1px;
-    color: #919191;
+    color: #757575;
     overflow: hidden;
     text-decoration: none;
     direction: rtl;
     white-space: nowrap;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+#tab-list-active-files li.active a.label {
+    color: #A0A0A0;
+}
+
+#tab-list-active-files li .file-name {
+    color: #AFAFAF;
+}
+
+#tab-list-active-files li.active .file-name {
+    color: white;
 }
 
 #tab-list-active-files li.changed {
