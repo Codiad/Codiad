@@ -9,7 +9,7 @@
     autoclose = null;
 
     codiad.message = {
-        
+
         init: function() {
             // Hide message on click.
             $('#message').click(function(){
@@ -49,4 +49,3 @@
     };
 
 })(this, jQuery);
-
