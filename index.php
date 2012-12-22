@@ -20,6 +20,7 @@ $components = json_decode($components,true);
 <head>
     <meta charset="utf-8">
     <title>CODIAD</title>
+    <link rel="stylesheet" href="css/jquery.toastmessage.css">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/screen.css">
@@ -41,6 +42,7 @@ $components = json_decode($components,true);
     <script src="js/jquery-ui-1.8.23.custom.min.js"></script>
     <script src="js/jquery.css3.min.js"></script>
     <script src="js/jquery.easing.js"></script>
+    <script src="js/jquery.toastmessage.js"></script>
     <script src="js/localstorage.js"></script>
     <script src="js/jquery.hoverIntent.min.js"></script>
     <script src="js/system.js"></script>
@@ -49,7 +51,6 @@ $components = json_decode($components,true);
     <script src="js/message.js"></script>
     <script src="js/jsend.js"></script>
     <div id="message"></div>
-
     <?php
 
     //////////////////////////////////////////////////////////////////

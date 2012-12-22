@@ -2,7 +2,7 @@
 
 /*
 *  Copyright (c) Codiad & Kent Safranski (codiad.com), distributed
-*  as-is and without warranty under the MIT License. See 
+*  as-is and without warranty under the MIT License. See
 *  [root]/license.txt for more. This information must remain intact.
 */
 
@@ -11,46 +11,55 @@ class Active {
     //////////////////////////////////////////////////////////////////
     // PROPERTIES
     //////////////////////////////////////////////////////////////////
-    
+
     public $username    = "";
     public $path        = "";
     public $new_path    = "";
     public $actives     = "";
-    
+
     //////////////////////////////////////////////////////////////////
     // METHODS
     //////////////////////////////////////////////////////////////////
-    
+
     // -----------------------------||----------------------------- //
-    
+
     //////////////////////////////////////////////////////////////////
     // Construct
     //////////////////////////////////////////////////////////////////
-    
+
     public function __construct(){
         $this->actives = getJSON('active.php');
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // List User's Active Files
     //////////////////////////////////////////////////////////////////
-        
+
     public function ListActive(){
         $active_list = array();
+        $tainted = FALSE;
         if($this->actives){
             foreach($this->actives as $active=>$data){
-                if($data['username']==$this->username){
+              if($data['username']==$this->username){
+                if (file_exists(dirname(__FILE__)."/../../workspace".$data['path'])) {
                     $active_list[] = $data['path'];
+                } else {
+                    unset($this->actives[$active]);
+                    $tainted = TRUE;
                 }
+              }
             }
+        }
+        if ($tainted){
+            saveJSON('active.php',$this->actives);
         }
         echo formatJSEND("success",$active_list);
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Check File
     //////////////////////////////////////////////////////////////////
-    
+
     public function Check(){
         $cur_users = array();
         foreach($this->actives as $active=>$data){
@@ -64,11 +73,11 @@ class Active {
             echo formatJSEND("success");
         }
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Add File
     //////////////////////////////////////////////////////////////////
-    
+
     public function Add(){
         $process_add = true;
         foreach($this->actives as $active=>$data){
@@ -82,11 +91,11 @@ class Active {
             echo formatJSEND("success");
         }
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Rename File
     //////////////////////////////////////////////////////////////////
-    
+
     public function Rename(){
         $revised_actives = array();
         foreach($this->actives as $active=>$data){
@@ -95,11 +104,11 @@ class Active {
         saveJSON('active.php',$revised_actives);
         echo formatJSEND("success");
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Remove File
     //////////////////////////////////////////////////////////////////
-    
+
     public function Remove(){
         foreach($this->actives as $active=>$data){
             if($this->username==$data['username'] && $this->path==$data['path']){
@@ -109,5 +118,5 @@ class Active {
         saveJSON('active.php',$this->actives);
         echo formatJSEND("success");
     }
-    
+
 }

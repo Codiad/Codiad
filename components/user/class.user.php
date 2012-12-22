@@ -2,7 +2,7 @@
 
 /*
 *  Copyright (c) Codiad & Kent Safranski (codiad.com), distributed
-*  as-is and without warranty under the MIT License. See 
+*  as-is and without warranty under the MIT License. See
 *  [root]/license.txt for more. This information must remain intact.
 */
 
@@ -18,28 +18,28 @@ class User {
     public $projects    = '';
     public $users       = '';
     public $actives     = '';
-    
+
     //////////////////////////////////////////////////////////////////
     // METHODS
     //////////////////////////////////////////////////////////////////
-    
+
     // -----------------------------||----------------------------- //
-    
+
     //////////////////////////////////////////////////////////////////
     // Construct
     //////////////////////////////////////////////////////////////////
-    
+
     public function __construct(){
         $this->users = getJSON('users.php');
         $this->actives = getJSON('active.php');
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Authenticate
     //////////////////////////////////////////////////////////////////
-    
+
     public function Authenticate(){
-        
+
         $pass = false;
         $this->EncryptPassword();
         $users = getJSON('users.php');
@@ -50,15 +50,15 @@ class User {
                 if($user['project']!=''){ $_SESSION['project'] = $user['project']; }
             }
         }
-        
+
         if($pass){ echo formatJSEND("success",array("username"=>$this->username)); }
         else{ echo formatJSEND("error","Incorrect Username or Password"); }
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Create Account
     //////////////////////////////////////////////////////////////////
-    
+
     public function Create(){
         $this->EncryptPassword();
         $pass = $this->checkDuplicate();
@@ -70,11 +70,11 @@ class User {
             echo formatJSEND("error","The Username is Already Taken");
         }
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Delete Account
     //////////////////////////////////////////////////////////////////
-    
+
     public function Delete(){
         // Remove User
         $revised_array = array();
@@ -85,7 +85,7 @@ class User {
         }
         // Save array back to JSON
         saveJSON('users.php',$revised_array);
-        
+
         // Remove any active files
         foreach($this->actives as $active=>$data){
             if($this->username==$data['username']){
@@ -93,20 +93,20 @@ class User {
             }
         }
         saveJSON('active.php',$this->actives);
-        
+
         // Remove access control list (if exists)
         if(file_exists(BASE_PATH . "/data/" . $this->username . '_acl.php')){
             unlink(BASE_PATH . "/data/" . $this->username . '_acl.php');
         }
-        
+
         // Response
         echo formatJSEND("success",null);
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Change Password
     //////////////////////////////////////////////////////////////////
-    
+
     public function Password(){
         $this->EncryptPassword();
         $revised_array = array();
@@ -122,11 +122,11 @@ class User {
         // Response
         echo formatJSEND("success",null);
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Set Project Access
     //////////////////////////////////////////////////////////////////
-    
+
     public function Project_Access(){
         // Access set to all projects
         if($this->projects==0){
@@ -141,11 +141,11 @@ class User {
         // Response
         echo formatJSEND("success",null);
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Set Current Project
     //////////////////////////////////////////////////////////////////
-    
+
     public function Project(){
         $revised_array = array();
         foreach($this->users as $user=>$data){
@@ -160,11 +160,11 @@ class User {
         // Response
         echo formatJSEND("success",null);
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Check Duplicate
     //////////////////////////////////////////////////////////////////
-    
+
     public function CheckDuplicate(){
         $pass = true;
         foreach($this->users as $user=>$data){
@@ -174,11 +174,11 @@ class User {
         }
         return $pass;
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Verify Account Exists
     //////////////////////////////////////////////////////////////////
-    
+
     public function Verify(){
         $pass = 'false';
         foreach($this->users as $user=>$data){
@@ -188,13 +188,13 @@ class User {
         }
         echo($pass);
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Encrypt Password
     //////////////////////////////////////////////////////////////////
-    
+
     private function EncryptPassword(){
         $this->password = sha1(md5($this->password));
     }
-    
+
 }
