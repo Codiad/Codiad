@@ -80,6 +80,8 @@
                     $(window).off('click', fn);
                 };
                 $(window).on('click', fn);
+            } else {
+                this.clearSuggestionCache();
             }
         },
 
