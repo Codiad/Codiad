@@ -6,45 +6,30 @@
     // User Alerts / Messages
     //////////////////////////////////////////////////////////////////////
 
-    autoclose = null;
-
     codiad.message = {
 
-        init: function() {
-            // Hide message on click.
-            $('#message').click(function(){
-                codiad.message.hide();
-            });
-        },
+        init: function() {},
 
-        success: function(m) { // (Message)
-            $('#message')
-                .removeClass('error')
-                .addClass('success')
-                .html(m);
-            this.show();
+        _showMessage: function(toastType, message, options){
+            options = options || {};
+            options.text = message;
+            options.type = toastType
+            $().toastmessage('showToast', options);
         },
-
-        error: function(m) { // (Message)
-            $('#message')
-                .removeClass('success')
-                .addClass('error')
-                .html(m);
-            this.show();
+        success: function(m, options) {
+            this._showMessage('success', m, options);
         },
-
-        show: function() {
-            clearTimeout(autoclose);
-            $('#message')
-                .fadeIn(300);
-            autoclose = setTimeout(function() {
-                codiad.message.hide();
-            }, 2000);
+        error: function(m, options) {
+            this._showMessage('error', m, options);
         },
-
+        warning: function(m, options) {
+            this._showMessage('warning', m, options);
+        },
+        notice: function(m, options){
+            this._showMessage('notice', m, options);
+        },
         hide: function() {
-            $('#message')
-                .fadeOut(300);
+            $(".toast-item-wrapper").remove();
         }
     };
 
