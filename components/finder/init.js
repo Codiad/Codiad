@@ -126,6 +126,10 @@
                 // query is a regexp - the filtered results can be
                 // deduced locally if last ajax request had completed.
 
+                // Not implementing this currently because this is
+                // not very beneficial practically for decent
+                // typing speed.
+
             }*/ else{
                 // Stop currently ongoing request
                 if (this._xhr) this._xhr.abort();
