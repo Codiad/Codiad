@@ -85,7 +85,7 @@ a:hover,a:active {;
   font-style: normal;
   font-size: 75%;
   display: inline-block;
-  margin-right: 8px; 
+  margin-right: 8px;
   text-align: center;
   vertical-align: top;
 }
@@ -149,8 +149,8 @@ input:focus, textarea:focus, select:focus {
 }
 
 input[type="checkbox"] {
-    width: 20px;	
-	position: relative;
+    width: 20px;
+  position: relative;
     margin: 5px 0 0 0; padding: 0;
 }
 
@@ -225,7 +225,7 @@ table th {
 }
 
 table [class^="icon-"], [class*=" icon-"] {
-    display: block; 
+    display: block;
 }
 
 /* INSTALLER */
@@ -419,15 +419,15 @@ table [class^="icon-"], [class*=" icon-"] {
     -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    user-select: none;  
+    user-select: none;
 }
 
 #current-file, #current-mode{
     float: left;
 }
 
-#current-mode:hover { 
-    color: #fff; 
+#current-mode:hover {
+    color: #fff;
 }
 
 .divider {
@@ -480,21 +480,6 @@ table [class^="icon-"], [class*=" icon-"] {
     height: 33px;
     background-color: #303030;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.898) inset;
-}
-#finder-wrapper {
-    position: absolute;
-    z-index: 9999;
-    top: 2px; left: 2px; bottom: 2px; right: 75px;
-    display: none;
-}
-#finder {
-    border: 1px solid #666;
-    background: transparent;
-    font-size: 15px;
-    height: 24px;
-    line-height: 18px;
-    margin: 3px;
-    padding: 3px;
 }
 .sidebar#sb-right {
     width: 200px;
@@ -550,13 +535,13 @@ table [class^="icon-"], [class*=" icon-"] {
     top: 6px;
 }*/
 #sb-left-title .icon {
-    float: right;
     display: block;
     font-size: 15px;
     color: #666;
     z-index: 99999;
-    margin: 10px;
     cursor: pointer;
+    margin: 10px;
+    float: right;
 }
 #sb-left-title h2 {
     float: left;
@@ -565,6 +550,25 @@ table [class^="icon-"], [class*=" icon-"] {
     color: #666;
     display: block;
     margin: 10px;
+}
+#finder-wrapper {
+    position: absolute;
+    z-index: 9999;
+    top: 2px; left: 2px; bottom: 2px; right: 60px;
+    display: none;
+    border: 1px sollid red;
+}
+#finder-inner-wrapper {
+    left: 0; right: 30px; top: 3px; bottom: 3px;
+    position: absolute;
+}
+#finder {
+    border: 1px solid #666;
+    background: transparent;
+    height: 24px;
+    font-size: 11px;
+    position: relative;
+    bottom: 5px;
 }
 
 #sb-left-title .icon:hover , #sb-left-title .icon.active{
@@ -639,7 +643,7 @@ table [class^="icon-"], [class*=" icon-"] {
 
 #modal #drag-handle {
     float: right;
-    font-size: 20px; 
+    font-size: 20px;
     margin: -4px 2px 0 0;
     padding: 5px;
     cursor: move;

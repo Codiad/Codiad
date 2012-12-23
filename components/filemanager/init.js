@@ -477,7 +477,7 @@
                         temp.push(arr[i])
                     }
                     var newPath = temp.join('/') + '/' + newName;
-                    $.get(_this.controller, { action: 'modify', path: path, new_name: newName} , function(data) {                    
+                    $.get(_this.controller, { action: 'modify', path: path, new_name: newName} , function(data) {
                         var renameResponse = codiad.jsend.parse(data);
                         if (renameResponse != 'error') {
                             codiad.message.success(type.charAt(0)
@@ -680,7 +680,8 @@
         },
         _clearFilters: function(){
             console.info("Reloading initial tree state ");
-            $('#file-manager').html(this._htmlStash);
+            if (this._htmlStash)
+                $('#file-manager').html(this._htmlStash);
             this._htmlStash = null;
         },
         _emptyTree: function(){
@@ -728,8 +729,8 @@
         },
         _contractFinder: function(){
             this._isFinderExpanded = false;
-            $("#finder-wrapper").hide('slow');
-            $("#sb-left-title h2").show('slow');
+            $("#finder-wrapper").hide('fast');
+            $("#sb-left-title h2").show('fast');
             clearInterval(this._finderPoller);
             this._clearFilters();
         },
@@ -744,9 +745,29 @@
                     _this._contractFinder();
                 }
             });
-            $('#finder').blur(function(){
-                _this._contractFinder();
+
+            /*
+
+              TODO: provide configuration option
+              to automatically collapse finder
+              --
+              The code below does exactly that
+              --
+
+            $('#sb-left').mouseleave(function(){
+                _this.finderSustainFocus = false;
+                if (! $('#finder').is(':focus')){
+                    _this._contractFinder();
+                }
+            }).mouseenter(function(){
+                _this.finderSustainFocus = true;
             });
+            $('#finder').blur(function(){
+                if (! _this.finderSustainFocus)
+                    _this._contractFinder();
+            });
+
+            */
         }
     };
 
