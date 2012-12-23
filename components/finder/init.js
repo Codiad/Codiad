@@ -158,7 +158,13 @@
             }
         },
 
-        // Expand the finder box
+        //////////////////////////////////////////////////////////////////
+        //
+        // Expand the finder box (Textbox through which the directory tree
+        // can be searched for matching files) and focus on it.
+        //
+        //////////////////////////////////////////////////////////////////
+
         expandFinder: function(){
             this._isFinderExpanded = true;
             //console.info("Saving tree state : ");
