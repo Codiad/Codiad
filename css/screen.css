@@ -574,12 +574,17 @@ table [class^="icon-"], [class*=" icon-"] {
     top: 35px;
     right: 40px;
 }
+#finder-options-menu li.chosen {
+    font-weight: 700;
+    background: #3A3A3A;
+}
+#finder-options-menu li.chosen a{
+    color: white;
+}
 #sb-left-title .icon:hover , #sb-left-title .icon.active{
     color: #fff;
 }
-
-
-    /* Right Sidebar */
+/* Right Sidebar */
 #sb-right .sidebar-handle {
     float: left;
 }

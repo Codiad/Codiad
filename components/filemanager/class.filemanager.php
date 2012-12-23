@@ -121,15 +121,24 @@ class Filemanager {
         $this->respond();
     }
 
-    public function find(){
+    public function find($options){
         if(!function_exists('shell_exec')){
             $this->status = "error";
             $this->message = "Shell_exec() Command Not Enabled.";
         } else {
             chdir($this->path);
             $input = str_replace('"' , '', $this->query);
-            $input = preg_quote($input);
-            $cmd = 'find -iname "' . $input . '*"  -printf "%h/%f %y\n"';
+            $vinput = preg_quote($input);
+            $cmd = 'find ';
+            if ($options && $options['strategy']) {
+              switch($options['strategy']){
+              case 'left_prefix': $cmd = "$cmd -iname \"$vinput*\"";  break;
+              case 'substring':   $cmd = "$cmd -iname \"*$vinput*\""; break;
+              case 'regexp':      $cmd = "$cmd -regex \"$input\"";    break;
+              }
+            } else
+              $cmd = 'find -iname "' . $input . '*"';
+            $cmd = "$cmd  -printf \"%h/%f %y\n\"";
             $output = shell_exec($cmd);
             $file_arr = explode("\n", $output);
             $output_arr = array();

@@ -683,6 +683,7 @@
             if (this._htmlStash)
                 $('#file-manager').html(this._htmlStash);
             this._htmlStash = null;
+            $('#finder').attr('value', '');
         },
         _emptyTree: function(){
             $('#file-manager').html("No files found .");
@@ -701,7 +702,8 @@
                     data: {
                         query: fentry,
                         action: 'find',
-                        path: this._rootPath
+                        path: this._rootPath,
+                        options: this._finderOptions
                     },
                     success: function(data){
                         if (data.status == 'success'){
@@ -738,6 +740,7 @@
         setupFinder: function(){
             var _this = this;
             var isExpanded = false;
+            this._finderOptions = {};
             $('#tree-search').click(function(){
                 $(this).toggleClass('active');
                 if (! _this._isFinderExpanded) {
@@ -751,12 +754,20 @@
                 .appendTo($('#sb-left'))
                 .hide();
 
+            $finderOptionsMenu = $('#finder-options-menu');
+
             $('#finder-options').click(function(){
                 finderMenu.toggle();
             });
-
-            
-
+            $finderOptionsMenu.bind('click', 'a', function(e){
+                $target = $(e.target);
+                _this._finderOptions.strategy = $target.attr('data-option');
+                $finderOptionsMenu
+                    .find('li.chosen')
+                    .removeClass('chosen');
+                $target.parent('li').addClass('chosen');
+                $finderOptionsMenu.hide();
+            });
             /*
 
               TODO: provide configuration option

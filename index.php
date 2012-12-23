@@ -108,9 +108,9 @@ $components = json_decode($components,true);
                    <input type="text" id="finder"></input>
                    </div>
                    <ul id="finder-options-menu" class="options-menu">
-                      <li><a>Left Prefix</a></li>
-                      <li><a>Substring</a></li>
-                      <li><a>Regular expression</a></li>
+                      <li class="chosen"><a data-option="left_prefix">Prefix</a></li>
+                      <li><a data-option="substring">Substring</a></li>
+                      <li><a data-option="regexp">Regular expression</a></li>
                    </ul>
                 </div>
                 <a id="lock-left-sidebar" class="icon-lock icon"></a>
