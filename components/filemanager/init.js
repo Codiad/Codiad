@@ -732,6 +732,7 @@
             $("#finder-wrapper").hide('fast');
             $("#sb-left-title h2").show('fast');
             clearInterval(this._finderPoller);
+            this.finderMenu.hide();
             this._clearFilters();
         },
         setupFinder: function(){
@@ -745,6 +746,16 @@
                     _this._contractFinder();
                 }
             });
+
+            this.finderMenu = finderMenu = $('#finder-options-menu')
+                .appendTo($('#sb-left'))
+                .hide();
+
+            $('#finder-options').click(function(){
+                finderMenu.toggle();
+            });
+
+            
 
             /*
 

@@ -570,7 +570,10 @@ table [class^="icon-"], [class*=" icon-"] {
     position: relative;
     bottom: 5px;
 }
-
+#finder-options-menu {
+    top: 35px;
+    right: 40px;
+}
 #sb-left-title .icon:hover , #sb-left-title .icon.active{
     color: #fff;
 }

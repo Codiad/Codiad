@@ -107,7 +107,11 @@ $components = json_decode($components,true);
                    <div id="finder-inner-wrapper">
                    <input type="text" id="finder"></input>
                    </div>
-                   <div id="finder-options-menu"></div>
+                   <ul id="finder-options-menu" class="options-menu">
+                      <li><a>Left Prefix</a></li>
+                      <li><a>Substring</a></li>
+                      <li><a>Regular expression</a></li>
+                   </ul>
                 </div>
                 <a id="lock-left-sidebar" class="icon-lock icon"></a>
                 <a id="tree-search" class="icon-search icon"></a>
