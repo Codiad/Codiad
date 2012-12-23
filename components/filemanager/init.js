@@ -608,8 +608,16 @@
             $('#download')
                 .attr('src', 'components/filemanager/download.php?path=' + path + '&type=' + type);
         },
+        _filterTree: function(data){
+            var tree = {};
+            
+        },
+        _emptyTree: function(){
+            // notify users that no files were found
+        },
         _checkFinder: function(){
             var fentry = $('#finder').attr('value');
+            var _this = this;
             if (fentry && fentry != this._finderLastEntry){
                 console.log("Finder query changed");
                 this._finderLastEntry = fentry;
@@ -622,8 +630,12 @@
                         action: 'find',
                         path: $('#project-root').attr('data-path')
                     },
-                    success: function(){
-                        console.log(arguments);
+                    success: function(data){
+                        if (data.status == 'success'){
+                            _this._filterTree(data.data);
+                        } else {
+                            _this._emptyTree();
+                        }
                     }
                 });
             }

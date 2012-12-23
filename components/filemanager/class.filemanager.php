@@ -125,19 +125,34 @@ class Filemanager {
         if(!function_exists('shell_exec')){
             $this->status = "error";
             $this->message = "Shell_exec() Command Not Enabled.";
-        }else{
+        } else {
             chdir($this->path);
             $input = str_replace('"' , '', $this->query);
             $input = preg_quote($input);
-            $cmd = 'find -iname "' . $input . '*"';
-            file_put_contents("/tmp/log_input.txt", $cmd);
+            $cmd = 'find -iname "' . $input . '*"  -printf "%h/%f %y\n"';
             $output = shell_exec($cmd);
-            file_put_contents("/tmp/log_output.txt", $output);
-            $output_arr = explode("\n", $output);
+            $file_arr = explode("\n", $output);
+            $output_arr = array();
+
+            foreach ($file_arr as $i => $fentry) {
+              $farr = explode(" ", $fentry);
+              $fname = trim($farr[0]);
+              if ($farr[1] == 'f') {
+                $ftype = 'file';
+              } else {
+                $ftype = 'directory';
+              }
+              if (strlen($fname) != 0){
+                $fname = $this->rel_path . substr($fname, 1);
+                $f = array('path' => $fname, 'type' => $ftype );
+                array_push( $output_arr, $f);
+              }
+            }
+
             if(count($output_arr)==0){
                 $this->status = "error";
                 $this->message = "No Results Returned";
-            }else{
+            } else {
                 $this->status = "success";
                 $this->data = '"index":' . json_encode($output_arr);
             }
