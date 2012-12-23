@@ -51,7 +51,7 @@
                 str += this._makeDomNode(key, tree[key]);
             }
             str += "</ul>";
-            console.debug("DOM tree :", str);
+            //console.debug("DOM tree :", str);
             return str;
         },
 
@@ -59,7 +59,7 @@
         // from array returned by server
         _makeHierarchy: function(data){
             data = data.index;
-            console.log('data : ', data);
+            //console.log('data : ', data);
             var tree = {}, fpathArr, i, j, fragment, curLevel, type;
             for (i = 0; i < data.length; i++){
                 curLevel = tree;
@@ -82,7 +82,7 @@
                     curLevel = curLevel[fragment].children;
                 }
             }
-            console.log('tree : ', tree, JSON.stringify(tree));
+            //console.log('tree : ', tree, JSON.stringify(tree));
             return tree;
         },
 
@@ -99,7 +99,7 @@
 
         // Clear all filters applied and restore the tree to its original state
         _clearFilters: function(){
-            console.info("Reloading initial tree state ");
+            //console.info("Reloading initial tree state ");
             if (this._htmlStash)
                 $('#file-manager').html(this._htmlStash);
             this._htmlStash = null;
@@ -135,7 +135,7 @@
                 if (this._xhr) this._xhr.abort();
 
                 // Query the server for results
-                console.log("Finder query changed");
+                //console.log("Finder query changed");
                 this._lastEntry = fentry;
                 this._xhr = $.ajax({
                     url: 'components/filemanager/controller.php',
@@ -161,7 +161,7 @@
         // Expand the finder box
         expandFinder: function(){
             this._isFinderExpanded = true;
-            console.info("Saving tree state : ");
+            //console.info("Saving tree state : ");
             this._htmlStash = $('#file-manager').html();
             this._rootPath = $('#project-root').attr('data-path');
             $("#finder-wrapper").show('slow');
