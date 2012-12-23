@@ -608,16 +608,88 @@
             $('#download')
                 .attr('src', 'components/filemanager/download.php?path=' + path + '&type=' + type);
         },
+        _makeDomNode: function(name, obj){
+            var str, path, ext, chStr;
+            str = "<li><a";
+
+            if (obj.type === 'directory'){
+                str += " class='directory open'";
+            } else {
+                path = obj.path;
+                s = name.split('.');
+                str += " class='file";
+                if (s.length > 0)
+                    str += " ext-"+s[s.length -1];
+                str += "' data-path='"+obj.path+"' data-type='"+
+                    obj.type +"'";
+            }
+            str += ">" + name + "</a>";
+            chStr = "";
+            for (key in obj.children){
+                chStr += this._makeDomNode(key, obj.children[key]);
+            }
+            if (chStr.length > 0){
+                str += "<ul>"+chStr +"</ul>";
+            }
+
+            str += "</li>";
+            return str;
+        },
+        _makeDomTree: function(tree){
+            var str = "<ul>";
+            for (key in tree){
+                str += this._makeDomNode(key, tree[key]);
+            }
+            str += "</ul>";
+            console.debug("DOM tree :", str);
+            return str;
+        },
+        _makeHierarchy: function(data){
+            data = data.index;
+            console.log('data : ', data);
+            var tree = {}, fpathArr, i, j, fragment, curLevel;
+            for (i = 0; i < data.length; i++){
+                curLevel = tree;
+                fpathArr = data[i].path.split('/');
+                for (j = 0; j < fpathArr.length; j++){
+                    fragment = fpathArr[j];
+                    if (fragment === "") continue;
+                    if (! curLevel[fragment]){
+                        curLevel[fragment] = {
+                            type: j < fpathArr.length -1 ? 'directory' : data[i].type,
+                            children: {}
+                        }
+                        if (data[i].type == 'file'){
+                            curLevel[fragment].path = data[i].path;
+                        }
+                    }
+                    curLevel = curLevel[fragment].children;
+                }
+            }
+            console.log('tree : ', tree, JSON.stringify(tree));
+            return tree;
+        },
         _filterTree: function(data){
-            var tree = {};
-            
+            var tree = this._makeHierarchy(data);
+            var domTree = this._makeDomTree(tree);
+            $('#file-manager').html(domTree);
+            $('#file-manager>ul>li:first-child>a').attr({
+                id: 'project-root',
+                'data-path': this._rootPath
+            });
+        },
+        _clearFilters: function(){
+            console.info("Reloading initial tree state ");
+            $('#file-manager').html(this._htmlStash);
+            this._htmlStash = null;
         },
         _emptyTree: function(){
-            // notify users that no files were found
+            $('#file-manager').html("No files found .");
         },
         _checkFinder: function(){
             var fentry = $('#finder').attr('value');
             var _this = this;
+            fentry = fentry.replace(/^\s+|\s+$/g, '');
             if (fentry && fentry != this._finderLastEntry){
                 console.log("Finder query changed");
                 this._finderLastEntry = fentry;
@@ -628,7 +700,7 @@
                     data: {
                         query: fentry,
                         action: 'find',
-                        path: $('#project-root').attr('data-path')
+                        path: this._rootPath
                     },
                     success: function(data){
                         if (data.status == 'success'){
@@ -641,6 +713,10 @@
             }
         },
         _expandFinder: function(){
+            this._isFinderExpanded = true;
+            console.info("Saving tree state : ");
+            this._htmlStash = $('#file-manager').html();
+            this._rootPath = $('#project-root').attr('data-path');
             $("#finder-wrapper").show('slow');
             $("#sb-left-title h2").hide('slow');
             var _this = this;
@@ -651,23 +727,25 @@
             $("#finder").focus();
         },
         _contractFinder: function(){
+            this._isFinderExpanded = false;
             $("#finder-wrapper").hide('slow');
             $("#sb-left-title h2").show('slow');
-            $("#finder").blur();
             clearInterval(this._finderPoller);
+            this._clearFilters();
         },
         setupFinder: function(){
             var _this = this;
             var isExpanded = false;
             $('#tree-search').click(function(){
                 $(this).toggleClass('active');
-                if (! isExpanded) {
-                    isExpanded = true;
+                if (! _this._isFinderExpanded) {
                     _this._expandFinder();
                 } else {
-                    isExpanded = false;
                     _this._contractFinder();
                 }
+            });
+            $('#finder').blur(function(){
+                _this._contractFinder();
             });
         }
     };
