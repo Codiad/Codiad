@@ -128,7 +128,7 @@ $components = json_decode($components,true);
                 </div>
 
                 <div id="file-manager"></div>
-                
+
                 <ul id="list-active-files"></ul>
 
             </div>
