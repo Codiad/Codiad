@@ -114,10 +114,24 @@
             var fentry = $('#finder').attr('value');
             var _this = this;
             fentry = fentry.replace(/^\s+|\s+$/g, '');
-            if (fentry && fentry != this._finderLastEntry){
+            if (! fentry || fentry == this._lastEntry) return;
+            /*else if (fentry.substring(0, this._lastEntry.length) ===
+                     this._lastEntry) {
+
+                // TODO : Scope for optimization
+                //
+                // User has added characters to query - so unless the
+                // query is a regexp - the filtered results can be
+                // deduced locally if last ajax request had completed.
+
+            }*/ else{
+                // Stop currently ongoing request
+                if (this._xhr) this._xhr.abort();
+
+                // Query the server for results
                 console.log("Finder query changed");
-                this._finderLastEntry = fentry;
-                $.ajax({
+                this._lastEntry = fentry;
+                this._xhr = $.ajax({
                     url: 'components/filemanager/controller.php',
                     type: 'GET',
                     dataType: 'json',
@@ -125,7 +139,7 @@
                         query: fentry,
                         action: 'find',
                         path: this._rootPath,
-                        options: this._finderOptions
+                        options: this._options
                     },
                     success: function(data){
                         if (data.status == 'success'){
@@ -147,8 +161,8 @@
             $("#finder-wrapper").show('slow');
             $("#sb-left-title h2").hide('slow');
             var _this = this;
-            this._finderLastEntry = null;
-            this._finderPoller = setInterval(function(){
+            this._lastEntry = null;
+            this._poller = setInterval(function(){
                 _this._checkFinder();
             }, 500);
             $("#finder").focus();
@@ -159,7 +173,7 @@
             this._isFinderExpanded = false;
             $("#finder-wrapper").hide('fast');
             $("#sb-left-title h2").show('fast');
-            clearInterval(this._finderPoller);
+            clearInterval(this._poller);
             this.finderMenu.hide();
             this._clearFilters();
         },
@@ -168,7 +182,7 @@
         init: function(){
             var _this = this;
             var isExpanded = false;
-            this._finderOptions = {};
+            this._options = {};
             $('#tree-search').click(function(){
                 $(this).toggleClass('active');
                 if (! _this._isFinderExpanded) {
@@ -191,7 +205,7 @@
             // Setup the menu for selection of finding strategy
             $finderOptionsMenu.bind('click', 'a', function(e){
                 $target = $(e.target);
-                _this._finderOptions.strategy = $target.attr('data-option');
+                _this._options.strategy = $target.attr('data-option');
                 $finderOptionsMenu
                     .find('li.chosen')
                     .removeClass('chosen');
