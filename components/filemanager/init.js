@@ -26,6 +26,7 @@
         init: function() {
             // Initialize node listener
             this.nodeListener();
+            this.setupFinder();
             // Load uploader
             $.loadScript("components/filemanager/upload_scripts/jquery.ui.widget.js", true);
             $.loadScript("components/filemanager/upload_scripts/jquery.iframe-transport.js", true);
@@ -441,7 +442,7 @@
             var _this = this;
             var shortName = this.getShortName(this.clipboard);
             var type = this.getType(this.clipboard);
-            if(duplicate){ 
+            if(duplicate){
                 shortName = "copy_of_"+shortName;
             }
             $.get(this.controller + '?action=duplicate&path=' +
@@ -606,6 +607,30 @@
             var type = this.getType(path);
             $('#download')
                 .attr('src', 'components/filemanager/download.php?path=' + path + '&type=' + type);
+        },
+        _expandSearchBar: function(){
+            $("#finder-wrapper").show('slow');
+            $("#sb-left-title h2").hide('slow');
+            $("#finder").focus();
+        },
+        _contractSearchBar: function(){
+            $("#finder-wrapper").hide('slow');
+            $("#sb-left-title h2").show('slow');
+            $("#finder").blur();
+        },
+        setupFinder: function(){
+            var _this = this;
+            var isExpanded = false;
+            $('#tree-search').click(function(){
+                $(this).toggleClass('active');
+                if (! isExpanded) {
+                    isExpanded = true;
+                    _this._expandSearchBar();
+                } else {
+                    isExpanded = false;
+                    _this._contractSearchBar();
+                }
+            });
         }
     };
 

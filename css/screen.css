@@ -471,7 +471,31 @@ table [class^="icon-"], [class*=" icon-"] {
     width: 300px;
     left: 0;
 }
-
+#sb-left-title{
+    position: absolute;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    right: 10px;
+    height: 33px;
+    background-color: #303030;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.898) inset;
+}
+#finder-wrapper {
+    position: absolute;
+    z-index: 9999;
+    top: 2px; left: 2px; bottom: 2px; right: 75px;
+    display: none;
+}
+#finder {
+    border: 1px solid #666;
+    background: transparent;
+    font-size: 15px;
+    height: 24px;
+    line-height: 18px;
+    margin: 3px;
+    padding: 3px;
+}
 .sidebar#sb-right {
     width: 200px;
     right: -190px;
@@ -509,13 +533,13 @@ table [class^="icon-"], [class*=" icon-"] {
 
 .sb-left-content {
     position: absolute;
-    top: 0;
+    top: 33px;
     left: 0;
     right: 10px;
     bottom: 0;
 }
 
-#lock-left-sidebar {
+/*#lock-left-sidebar {
     display: block;
     position: absolute;
     cursor: pointer;
@@ -524,11 +548,29 @@ table [class^="icon-"], [class*=" icon-"] {
     z-index: 99999;
     right: 20px;
     top: 6px;
+}*/
+#sb-left-title .icon {
+    float: right;
+    display: block;
+    font-size: 15px;
+    color: #666;
+    z-index: 99999;
+    margin: 10px;
+    cursor: pointer;
+}
+#sb-left-title h2 {
+    float: left;
+    font-size: 15px;
+    font-weight: 500;
+    color: #666;
+    display: block;
+    margin: 10px;
 }
 
-#lock-left-sidebar:hover {
+#sb-left-title .icon:hover , #sb-left-title .icon.active{
     color: #fff;
 }
+
 
     /* Right Sidebar */
 #sb-right .sidebar-handle {

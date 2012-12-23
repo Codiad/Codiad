@@ -100,11 +100,16 @@ $components = json_decode($components,true);
     <div id="workspace">
 
         <div id="sb-left" class="sidebar">
+            <div id="sb-left-title">
+                <h2> Explore </h2>
+                <div id="finder-wrapper">
+                   <input type="text" id="finder"></input>
+                </div>
+                <a id="lock-left-sidebar" class="icon-lock icon"></a>
+                <a id="tree-search" class="icon-search icon"></a>
+            </div>
 
             <div class="sb-left-content">
-
-                <a id="lock-left-sidebar" class="icon-lock"></a>
-
                 <div id="context-menu" data-path="" data-type="">
 
                     <?php
