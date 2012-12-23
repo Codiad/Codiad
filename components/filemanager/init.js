@@ -93,8 +93,8 @@
             // Show menu
             $('#context-menu')
                 .css({
-                'top': (e.pageY - 10) + 'px',
-                'left': (e.pageX - 10) + 'px'
+                'top': (e.pageY - 20) + 'px',
+                'left': (e.pageX - 20) + 'px'
             })
                 .fadeIn(200)
                 .attr('data-path', path)
@@ -608,15 +608,28 @@
             $('#download')
                 .attr('src', 'components/filemanager/download.php?path=' + path + '&type=' + type);
         },
-        _expandSearchBar: function(){
+        _checkFinder: function(){
+            var fentry = $('#finder').attr('value');
+            if (fentry && fentry != this._finderLastEntry){
+                console.log("Finder query changed");
+                this._finderLastEntry = fentry;
+            }
+        },
+        _expandFinder: function(){
             $("#finder-wrapper").show('slow');
             $("#sb-left-title h2").hide('slow');
+            var _this = this;
+            this._finderLastEntry = null;
+            this._finderPoller = setInterval(function(){
+                _this._checkFinder();
+            }, 500);
             $("#finder").focus();
         },
-        _contractSearchBar: function(){
+        _contractFinder: function(){
             $("#finder-wrapper").hide('slow');
             $("#sb-left-title h2").show('slow');
             $("#finder").blur();
+            clearInterval(this._finderPoller);
         },
         setupFinder: function(){
             var _this = this;
@@ -625,10 +638,10 @@
                 $(this).toggleClass('active');
                 if (! isExpanded) {
                     isExpanded = true;
-                    _this._expandSearchBar();
+                    _this._expandFinder();
                 } else {
                     isExpanded = false;
-                    _this._contractSearchBar();
+                    _this._contractFinder();
                 }
             });
         }

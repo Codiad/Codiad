@@ -120,6 +120,33 @@ class Filemanager {
         $this->respond();
     }
 
+    public function find(){
+        if(!function_exists('shell_exec')){
+            $this->status = "error";
+            $this->message = "Shell_exec() Command Not Enabled.";
+        }else{
+            chdir(WORKSPACE);
+            if($this->path[0] == "/"){
+                $path = substr($this->path,1);
+            }else{
+                $path = $this->path;
+            }
+            $input = str_replace('"' , '', $this->search_string);
+            $input = preg_quote($input);
+            $output = shell_exec('find -iname "' . $input . '" /' . $path . '/* ');
+            $output_arr = explode("\n", $output);
+            if(count($return)==0){
+                $this->status = "error";
+                $this->message = "No Results Returned";
+            }else{
+                $this->status = "success";
+                $this->data = '"index":' . json_encode($output_arr);
+            }
+        }
+        $this->respond();
+
+    }
+
     //////////////////////////////////////////////////////////////////
     // SEARCH
     //////////////////////////////////////////////////////////////////
