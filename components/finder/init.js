@@ -159,7 +159,7 @@
         },
 
         // Expand the finder box
-        _expandFinder: function(){
+        expandFinder: function(){
             this._isFinderExpanded = true;
             console.info("Saving tree state : ");
             this._htmlStash = $('#file-manager').html();
@@ -192,7 +192,7 @@
             $('#tree-search').click(function(){
                 $(this).toggleClass('active');
                 if (! _this._isFinderExpanded) {
-                    _this._expandFinder();
+                    _this.expandFinder();
                 } else {
                     _this._contractFinder();
                 }
