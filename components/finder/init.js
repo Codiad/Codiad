@@ -23,15 +23,14 @@
             if (obj.type === 'directory'){
                 str += " class='directory open'";
             } else {
-                path = obj.path;
                 s = name.split('.');
                 str += " class='file";
                 if (s.length > 0)
                     str += " ext-"+s[s.length -1];
-                str += "' data-path='"+obj.path+"' data-type='"+
-                    obj.type +"'";
+                str += "'";
             }
-            str += ">" + name + "</a>";
+            str += " data-path='"+obj.path+"' data-type='"+
+                obj.type +"' >" + name + "</a>";
             chStr = "";
             for (key in obj.children){
                 chStr += this._makeDomNode(key, obj.children[key]);
@@ -61,7 +60,7 @@
         _makeHierarchy: function(data){
             data = data.index;
             console.log('data : ', data);
-            var tree = {}, fpathArr, i, j, fragment, curLevel;
+            var tree = {}, fpathArr, i, j, fragment, curLevel, type;
             for (i = 0; i < data.length; i++){
                 curLevel = tree;
                 fpathArr = data[i].path.split('/');
@@ -69,12 +68,15 @@
                     fragment = fpathArr[j];
                     if (fragment === "") continue;
                     if (! curLevel[fragment]){
+                        type = j < fpathArr.length -1 ? 'directory' : data[i].type;
                         curLevel[fragment] = {
-                            type: j < fpathArr.length -1 ? 'directory' : data[i].type,
+                            type: type,
                             children: {}
                         }
-                        if (data[i].type == 'file'){
+                        if (type === 'file'){
                             curLevel[fragment].path = data[i].path;
+                        } else {
+                            curLevel[fragment].path = fpathArr.slice(0, j+1).join('/');
                         }
                     }
                     curLevel = curLevel[fragment].children;
