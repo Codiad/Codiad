@@ -45,6 +45,7 @@ class Filemanager {
     public function __construct($get,$post,$files) {
         $this->rel_path = $get['path'];
         if($this->rel_path!="/"){ $this->rel_path .= "/"; }
+        $this->query = $get['query'];
         $this->root = $get['root'];
         $this->path = $this->root . $get['path'];
         // Search
@@ -125,17 +126,15 @@ class Filemanager {
             $this->status = "error";
             $this->message = "Shell_exec() Command Not Enabled.";
         }else{
-            chdir(WORKSPACE);
-            if($this->path[0] == "/"){
-                $path = substr($this->path,1);
-            }else{
-                $path = $this->path;
-            }
-            $input = str_replace('"' , '', $this->search_string);
+            chdir($this->path);
+            $input = str_replace('"' , '', $this->query);
             $input = preg_quote($input);
-            $output = shell_exec('find -iname "' . $input . '" /' . $path . '/* ');
+            $cmd = 'find -iname "' . $input . '*"';
+            file_put_contents("/tmp/log_input.txt", $cmd);
+            $output = shell_exec($cmd);
+            file_put_contents("/tmp/log_output.txt", $output);
             $output_arr = explode("\n", $output);
-            if(count($return)==0){
+            if(count($output_arr)==0){
                 $this->status = "error";
                 $this->message = "No Results Returned";
             }else{

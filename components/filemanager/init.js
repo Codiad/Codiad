@@ -613,6 +613,19 @@
             if (fentry && fentry != this._finderLastEntry){
                 console.log("Finder query changed");
                 this._finderLastEntry = fentry;
+                $.ajax({
+                    url: 'components/filemanager/controller.php',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        query: fentry,
+                        action: 'find',
+                        path: $('#project-root').attr('data-path')
+                    },
+                    success: function(){
+                        console.log(arguments);
+                    }
+                });
             }
         },
         _expandFinder: function(){
