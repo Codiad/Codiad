@@ -6,7 +6,16 @@
         codiad.finder.init();
     });
 
+    //////////////////////////////////////////////////////////////////
+    //
+    //  Search utility to quickly filter the directory tree
+    //  according to multiple matching strategies
+    //
+    //////////////////////////////////////////////////////////////////
+
     codiad.finder = {
+
+        // Create DOM node for a particular tree element
         _makeDomNode: function(name, obj){
             var str, path, ext, chStr;
             str = "<li><a";
@@ -34,6 +43,9 @@
             str += "</li>";
             return str;
         },
+
+        // Construct DOM tree from internal data-structure representing
+        // the filtered directory tree
         _makeDomTree: function(tree){
             var str = "<ul>";
             for (key in tree){
@@ -43,6 +55,9 @@
             console.debug("DOM tree :", str);
             return str;
         },
+
+        // Construct internal representation for filtered directory tree
+        // from array returned by server
         _makeHierarchy: function(data){
             data = data.index;
             console.log('data : ', data);
@@ -68,6 +83,8 @@
             console.log('tree : ', tree, JSON.stringify(tree));
             return tree;
         },
+
+        // Use query response returned by server to filter the directory tree
         _filterTree: function(data){
             var tree = this._makeHierarchy(data);
             var domTree = this._makeDomTree(tree);
@@ -77,6 +94,8 @@
                 'data-path': this._rootPath
             });
         },
+
+        // Clear all filters applied and restore the tree to its original state
         _clearFilters: function(){
             console.info("Reloading initial tree state ");
             if (this._htmlStash)
@@ -84,9 +103,13 @@
             this._htmlStash = null;
             $('#finder').attr('value', '');
         },
+
+        // Empty the tree and notify that no files were found
         _emptyTree: function(){
             $('#file-manager').html("No files found .");
         },
+
+        // Check finder for changes in the user entered query
         _checkFinder: function(){
             var fentry = $('#finder').attr('value');
             var _this = this;
@@ -114,6 +137,8 @@
                 });
             }
         },
+
+        // Expand the finder box
         _expandFinder: function(){
             this._isFinderExpanded = true;
             console.info("Saving tree state : ");
@@ -128,6 +153,8 @@
             }, 500);
             $("#finder").focus();
         },
+
+        // Contract the finder box
         _contractFinder: function(){
             this._isFinderExpanded = false;
             $("#finder-wrapper").hide('fast');
@@ -136,6 +163,8 @@
             this.finderMenu.hide();
             this._clearFilters();
         },
+
+        // Setup finder
         init: function(){
             var _this = this;
             var isExpanded = false;
@@ -158,6 +187,8 @@
             $('#finder-options').click(function(){
                 finderMenu.toggle();
             });
+
+            // Setup the menu for selection of finding strategy
             $finderOptionsMenu.bind('click', 'a', function(e){
                 $target = $(e.target);
                 _this._finderOptions.strategy = $target.attr('data-option');
@@ -167,6 +198,7 @@
                 $target.parent('li').addClass('chosen');
                 $finderOptionsMenu.hide();
             });
+
             /*
 
               TODO: provide configuration option
