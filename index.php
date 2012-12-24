@@ -101,7 +101,7 @@ $components = json_decode($components,true);
 
         <div id="sb-left" class="sidebar">
             <div id="sb-left-title">
-                <h2> Explore </h2>
+                <h2 id="finder-label"> Explore </h2>
                 <div id="finder-wrapper">
                    <a id="finder-options" class="icon icon-cog"></a>
                    <div id="finder-inner-wrapper">

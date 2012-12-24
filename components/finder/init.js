@@ -170,24 +170,32 @@
             //console.info("Saving tree state : ");
             this._htmlStash = $('#file-manager').html();
             this._rootPath = $('#project-root').attr('data-path');
-            $("#finder-wrapper").show('slow');
-            $("#sb-left-title h2").hide('slow');
+            $("#finder-wrapper").show();
+            $("#sb-left-title h2").hide();
             var _this = this;
             this._lastEntry = null;
             this._poller = setInterval(function(){
                 _this._checkFinder();
             }, 500);
             $("#finder").focus();
+            $("#sb-left-title").addClass('active');
+            $("#tree-search")
+                .removeClass('icon-search')
+                .addClass('icon-cancel-squared active');
         },
 
         // Contract the finder box
-        _contractFinder: function(){
+        contractFinder: function(){
             this._isFinderExpanded = false;
             $("#finder-wrapper").hide('fast');
             $("#sb-left-title h2").show('fast');
             clearInterval(this._poller);
             this.finderMenu.hide();
             this._clearFilters();
+            $("#sb-left-title").removeClass('active');
+            $("#tree-search")
+                .removeClass('icon-cancel-squared active')
+                .addClass('icon-search');
         },
 
         // Setup finder
@@ -196,12 +204,15 @@
             var isExpanded = false;
             this._options = {};
             $('#tree-search').click(function(){
-                $(this).toggleClass('active');
                 if (! _this._isFinderExpanded) {
                     _this.expandFinder();
                 } else {
-                    _this._contractFinder();
+                    _this.contractFinder();
                 }
+            });
+
+            $('#finder-label').click(function(){
+                _this.expandFinder();
             });
 
             this.finderMenu = finderMenu = $('#finder-options-menu')
@@ -236,14 +247,14 @@
             $('#sb-left').mouseleave(function(){
                 _this.finderSustainFocus = false;
                 if (! $('#finder').is(':focus')){
-                    _this._contractFinder();
+                    _this.contractFinder();
                 }
             }).mouseenter(function(){
                 _this.finderSustainFocus = true;
             });
             $('#finder').blur(function(){
                 if (! _this.finderSustainFocus)
-                    _this._contractFinder();
+                    _this.contractFinder();
             });
 
             */
