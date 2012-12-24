@@ -22,12 +22,13 @@
       padding-right: 6px;*/
     padding: 5px;
     padding-right: 10px;
-    font-family: lucida Grande;
-    font-size: 14px;
+    font-family: Ubuntu, sans-serif;
+    font-size: 12px;
     border: 2px solid #999;
     display: block;
     position: relative;
     margin: 0 0 12px 0;
+    box-shadow: 1px 1px 3px 2px rgba(0, 0, 0, 0.35);
 }
 
 .toast-item p {
@@ -40,15 +41,15 @@
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAzNJREFUOI19k09I6nkUxc/7Wr8KfgQhPzUwoZcWSIG/KCtaGPWMCokW/cHgLaKwqaBoE8xjWjQzizAook2t2k3UoqIWLXxCMy4iNIv+mBaoqFFqKEQwZuqdzTyZNnPgLg58ONxz4X7Cv9JqtZxSqTSoVKq5mpqaLwaDAWq1GkSEQCAAh8OBm5ub736/3/r09PSnx+NJA4DkR0Btbe3PJpNpc3R09HNpaSkcDgcODg5gt9sRjUZRX18Pk8n0OZPJfH18fEwHg8G/AKBAq9Vycrl8zmKxfKurq8Pq6ir29/cRj8eRTqcBAIWFhRAEAWazGSMjI6isrPzGcRzC4bAVnZ2dxpWVFbq+vqb29nZijP3v6PV6cjqdtL6+Tt3d3UaMjY3Z7u7uaGpqKg+pVCoSBCHvS0pKSBRF4jiOGGM0ODhIHo+HJiYmbFheXia73U5KpZIYY6RQKMjn89Hx8TE1NTWRQqGgtbU1CoVCNDQ0RIwxkkqltLW1RRsbG4TT01NaWFigoqIiYowRz/O0vb1NmUyGXC4XbW5uUiqVoqurKxJFkRhjJJFIaGZmhi4uLgixWIwsFsuHnhqNhg4PDymbzVImkyG/309dXV0fmP7+fgoEAsSICNlsFv/V6+srnp+fkcvlwBhDIpFAMpn8wORyORAR2MPDAwRBAGMMAFBQUID5+XkMDw8jHA7j6OgIOp0OS0tLUKvV+QCpVIpkMgl2cnKChoYGlJWVAQBkMhmMRiO8Xi8mJycxOzuL3d1daDQa6PV6AADP8xBFEW63GxgfH7fd3t7SwMBAvl9raytVV1fnvVQqpY6ODuJ5nhhj1NbWRk6nk6anp20SmUz2VFxc/LWvrw8OhwOJRAKRSASJRCK/biqVQjAYxPv7O+RyOaxWK+7v73F2dvaThOO4SDweT6vV6haz2VwYjUYRi8Xw9vb24Wg8z6O5uRmLi4tIp9N/7+3t/er1ev/49APo6en5pbe397eWlha43W64XC6EQiEQEcrLyyGKIvR6Pc7Pz2Gz2eZ3dnZ+B4B8gFar5aqqqgwVFRVzOp3uS2NjI3ieBwC8vLzA7Xbj8vLyeyQSsfp8vvw7/wOnzKHeU4Ib8AAAAABJRU5ErkJggg==);
     background-repeat: no-repeat;
     background-position: top center;
-    width:22px;
-    height:22px;
+    width: 22px;
+    height: 22px;
     position: absolute;
-    top:7px;
-    right:7px;
+    top: 4px;
+    right: 2px;
 }
 
 .toast-item-image {
-    width:32px;
+    width: 32px;
     height: 32px;
     position: absolute;
     top: 50%;
@@ -152,4 +153,10 @@
     margin-left: -140px;
     margin-top: -40px;
     top: 50%;
+}
+
+.toast-position-bottom-right {
+    position: fixed;
+    bottom: 30px;
+    right: 25px;
 }
