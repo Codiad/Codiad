@@ -78,6 +78,12 @@
                 codiad.autocomplete.suggest();
             });
 
+            $.ctrl('71', function(){
+                if (codiad.finder) {
+                    codiad.finder.expandFinder();
+                }
+            });
+
         }
 
     };

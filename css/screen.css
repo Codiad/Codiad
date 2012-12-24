@@ -85,7 +85,7 @@ a:hover,a:active {;
   font-style: normal;
   font-size: 75%;
   display: inline-block;
-  margin-right: 8px; 
+  margin-right: 8px;
   text-align: center;
   vertical-align: top;
 }
@@ -149,8 +149,8 @@ input:focus, textarea:focus, select:focus {
 }
 
 input[type="checkbox"] {
-    width: 20px;	
-	position: relative;
+    width: 20px;
+  position: relative;
     margin: 5px 0 0 0; padding: 0;
 }
 
@@ -225,7 +225,7 @@ table th {
 }
 
 table [class^="icon-"], [class*=" icon-"] {
-    display: block; 
+    display: block;
 }
 
 /* INSTALLER */
@@ -419,15 +419,15 @@ table [class^="icon-"], [class*=" icon-"] {
     -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    user-select: none;  
+    user-select: none;
 }
 
 #current-file, #current-mode{
     float: left;
 }
 
-#current-mode:hover { 
-    color: #fff; 
+#current-mode:hover {
+    color: #fff;
 }
 
 .divider {
@@ -471,7 +471,19 @@ table [class^="icon-"], [class*=" icon-"] {
     width: 300px;
     left: 0;
 }
-
+#sb-left-title{
+    position: absolute;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    right: 10px;
+    height: 33px;
+    background-color: #303030;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.898) inset;
+}
+#sb-left-title.active {
+    border-bottom: 1px solid gray;
+}
 .sidebar#sb-right {
     width: 200px;
     right: -190px;
@@ -509,13 +521,13 @@ table [class^="icon-"], [class*=" icon-"] {
 
 .sb-left-content {
     position: absolute;
-    top: 0;
+    top: 33px;
     left: 0;
     right: 10px;
     bottom: 0;
 }
 
-#lock-left-sidebar {
+/*#lock-left-sidebar {
     display: block;
     position: absolute;
     cursor: pointer;
@@ -524,13 +536,62 @@ table [class^="icon-"], [class*=" icon-"] {
     z-index: 99999;
     right: 20px;
     top: 6px;
+}*/
+#sb-left-title .icon {
+    display: block;
+    font-size: 15px;
+    color: #666;
+    z-index: 99999;
+    cursor: pointer;
+    margin: 10px;
+    float: right;
 }
-
-#lock-left-sidebar:hover {
+#sb-left-title h2 {
+    float: left;
+    font-size: 15px;
+    font-weight: 500;
+    color: #666;
+    display: block;
+    margin: 10px;
+}
+#finder-label{
+    cursor: pointer;
+}
+#finder-wrapper {
+    position: absolute;
+    z-index: 9999;
+    top: 0; left: 0; bottom: 0; right: 60px;
+    display: none;
+}
+#finder-inner-wrapper {
+    left: 0; right: 30px; top: 5px; bottom: 3px;
+    position: absolute;
+}
+#finder {
+    border: none;
+    background: transparent;
+    height: 24px;
+    font-size: 11px;
+    position: relative;
+    margin-top: 3px;
+    margin-left: 5px;
+    padding: 0;
+}
+#finder-options-menu {
+    top: 35px;
+    right: 40px;
+}
+#finder-options-menu li.chosen {
+    font-weight: 700;
+    background: #3A3A3A;
+}
+#finder-options-menu li.chosen a{
+    color: white;
+}
+#sb-left-title .icon:hover , #sb-left-title .icon.active{
     color: #fff;
 }
-
-    /* Right Sidebar */
+/* Right Sidebar */
 #sb-right .sidebar-handle {
     float: left;
 }
@@ -597,7 +658,7 @@ table [class^="icon-"], [class*=" icon-"] {
 
 #modal #drag-handle {
     float: right;
-    font-size: 20px; 
+    font-size: 20px;
     margin: -4px 2px 0 0;
     padding: 5px;
     cursor: move;
