@@ -45,6 +45,7 @@ class Filemanager {
     public function __construct($get,$post,$files) {
         $this->rel_path = $get['path'];
         if($this->rel_path!="/"){ $this->rel_path .= "/"; }
+        $this->query = $get['query'];
         $this->root = $get['root'];
         $this->path = $this->root . $get['path'];
         // Search
@@ -118,6 +119,55 @@ class Filemanager {
         }
 
         $this->respond();
+    }
+
+    public function find($options){
+        if(!function_exists('shell_exec')){
+            $this->status = "error";
+            $this->message = "Shell_exec() Command Not Enabled.";
+        } else {
+            chdir($this->path);
+            $input = str_replace('"' , '', $this->query);
+            $vinput = preg_quote($input);
+            $cmd = 'find ';
+            if ($options && $options['strategy']) {
+              switch($options['strategy']){
+              case 'left_prefix': $cmd = "$cmd -iname \"$vinput*\"";  break;
+              case 'substring':   $cmd = "$cmd -iname \"*$vinput*\""; break;
+              case 'regexp':      $cmd = "$cmd -regex \"$input\"";    break;
+              }
+            } else
+              $cmd = 'find -iname "' . $input . '*"';
+            $cmd = "$cmd  -printf \"%h/%f %y\n\"";
+            $output = shell_exec($cmd);
+            $file_arr = explode("\n", $output);
+            $output_arr = array();
+
+            foreach ($file_arr as $i => $fentry) {
+              $farr = explode(" ", $fentry);
+              $fname = trim($farr[0]);
+              if ($farr[1] == 'f') {
+                $ftype = 'file';
+              } else {
+                $ftype = 'directory';
+              }
+              if (strlen($fname) != 0){
+                $fname = $this->rel_path . substr($fname, 1);
+                $f = array('path' => $fname, 'type' => $ftype );
+                array_push( $output_arr, $f);
+              }
+            }
+
+            if(count($output_arr)==0){
+                $this->status = "error";
+                $this->message = "No Results Returned";
+            } else {
+                $this->status = "success";
+                $this->data = '"index":' . json_encode($output_arr);
+            }
+        }
+        $this->respond();
+
     }
 
     //////////////////////////////////////////////////////////////////
