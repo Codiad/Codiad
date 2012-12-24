@@ -111,6 +111,7 @@ $components = json_decode($components,true);
                       <li class="chosen"><a data-option="left_prefix">Prefix</a></li>
                       <li><a data-option="substring">Substring</a></li>
                       <li><a data-option="regexp">Regular expression</a></li>
+                      <li><a data-action="search">Search File Contents</a></li>
                    </ul>
                 </div>
                 <a id="lock-left-sidebar" class="icon-lock icon"></a>

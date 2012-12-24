@@ -228,11 +228,18 @@
             // Setup the menu for selection of finding strategy
             $finderOptionsMenu.bind('click', 'a', function(e){
                 $target = $(e.target);
-                _this._options.strategy = $target.attr('data-option');
-                $finderOptionsMenu
-                    .find('li.chosen')
-                    .removeClass('chosen');
-                $target.parent('li').addClass('chosen');
+                var strategy = $target.attr('data-option');
+                var action = $target.attr('data-action');
+                if (strategy){
+                    _this._options.strategy = strategy;
+                    $finderOptionsMenu
+                        .find('li.chosen')
+                        .removeClass('chosen');
+                    $target.parent('li').addClass('chosen');
+                } else if (action){
+                    codiad.filemanager[action]('/');
+                    _this.contractFinder();
+                }
                 $finderOptionsMenu.hide();
             });
 
