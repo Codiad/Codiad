@@ -147,6 +147,8 @@ class Filemanager {
             $output = shell_exec($cmd);
             $file_arr = explode("\n", $output);
             $output_arr = array();
+            
+            error_reporting(0);
 
             foreach ($file_arr as $i => $fentry) {
               $farr = explode(" ", $fentry);
