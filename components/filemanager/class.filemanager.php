@@ -45,7 +45,7 @@ class Filemanager {
     public function __construct($get,$post,$files) {
         $this->rel_path = $get['path'];
         if($this->rel_path!="/"){ $this->rel_path .= "/"; }
-        $this->query = $get['query'];
+        if(!empty($get['query'])){ $this->query = $get['query']; }
         $this->root = $get['root'];
         $this->path = $this->root . $get['path'];
         // Search
