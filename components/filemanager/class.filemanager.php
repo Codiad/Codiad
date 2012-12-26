@@ -134,7 +134,7 @@ class Filemanager {
             $input = str_replace('"' , '', $this->query);
             $vinput = preg_quote($input);
             $cmd = 'find ';
-            if ($this->f_options && $this->f_options['strategy']) {
+            if ($this->foptions && $this->foptions['strategy']) {
               switch($this->f_options['strategy']){
               case 'left_prefix': $cmd = "$cmd -iname \"$vinput*\"";  break;
               case 'substring':   $cmd = "$cmd -iname \"*$vinput*\""; break;
