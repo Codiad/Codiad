@@ -26,6 +26,9 @@ class Filemanager {
     public $controller    = "";
     public $upload_json   = "";
     public $search_string = "";
+    
+    public $query         = "";
+    public $foptions     = "";
 
     // JSEND Return Contents
     public $status        = "";
@@ -46,6 +49,7 @@ class Filemanager {
         $this->rel_path = $get['path'];
         if($this->rel_path!="/"){ $this->rel_path .= "/"; }
         if(!empty($get['query'])){ $this->query = $get['query']; }
+        if(!empty($get['options'])){ $this->foptions = $get['options']; }
         $this->root = $get['root'];
         $this->path = $this->root . $get['path'];
         // Search
@@ -121,7 +125,7 @@ class Filemanager {
         $this->respond();
     }
 
-    public function find($options){
+    public function find(){
         if(!function_exists('shell_exec')){
             $this->status = "error";
             $this->message = "Shell_exec() Command Not Enabled.";
@@ -130,8 +134,8 @@ class Filemanager {
             $input = str_replace('"' , '', $this->query);
             $vinput = preg_quote($input);
             $cmd = 'find ';
-            if ($options && $options['strategy']) {
-              switch($options['strategy']){
+            if ($this->f_options && $this->f_options['strategy']) {
+              switch($this->f_options['strategy']){
               case 'left_prefix': $cmd = "$cmd -iname \"$vinput*\"";  break;
               case 'substring':   $cmd = "$cmd -iname \"*$vinput*\""; break;
               case 'regexp':      $cmd = "$cmd -regex \"$input\"";    break;
