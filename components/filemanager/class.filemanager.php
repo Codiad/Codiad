@@ -140,8 +140,9 @@ class Filemanager {
               case 'substring':   $cmd = "$cmd -iname \"*$vinput*\""; break;
               case 'regexp':      $cmd = "$cmd -regex \"$input\"";    break;
               }
-            } else
-              $cmd = 'find -iname "' . $input . '*"';
+            } else {
+                $cmd = 'find -iname "' . $input . '*"';
+            }
             $cmd = "$cmd  -printf \"%h/%f %y\n\"";
             $output = shell_exec($cmd);
             $file_arr = explode("\n", $output);
