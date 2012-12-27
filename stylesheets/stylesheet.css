@@ -399,6 +399,9 @@ footer a:hover {
     height: 100%;
 }
 
+.features_left { width: 45%; display: inline-block; float: left; margin: 0 10% 0 0; }
+.features_right { width: 45%; display: inline-block; float: left; margin: 0; }
+
 
 /* #Media Queries
 ================================================== */
