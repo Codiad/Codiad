@@ -80,8 +80,13 @@
                 console.log('add listener.');
                 codiad.collaborative.addListenerToOnDocumentChange();
             });
-        }
 
+            $.ctrl('71', function(){
+                if (codiad.finder) {
+                    codiad.finder.expandFinder();
+                }
+            });
+        }
     };
 
 })(this, jQuery);

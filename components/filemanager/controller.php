@@ -48,6 +48,7 @@
     switch($action){
         case 'index': $Filemanager->index(); break;
         case 'search': $Filemanager->search(); break;
+        case 'find': $Filemanager->find(); break;
         case 'open' : $Filemanager->open(); break;
         case 'open_in_browser': $Filemanager->openinbrowser(); break;
         case 'create': $Filemanager->create(); break;

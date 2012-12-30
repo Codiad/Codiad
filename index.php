@@ -100,11 +100,25 @@ $components = json_decode($components,true);
     <div id="workspace">
 
         <div id="sb-left" class="sidebar">
+            <div id="sb-left-title">
+                <h2 id="finder-label"> Explore </h2>
+                <div id="finder-wrapper">
+                   <a id="finder-options" class="icon icon-cog"></a>
+                   <div id="finder-inner-wrapper">
+                   <input type="text" id="finder"></input>
+                   </div>
+                   <ul id="finder-options-menu" class="options-menu">
+                      <li class="chosen"><a data-option="left_prefix">Prefix</a></li>
+                      <li><a data-option="substring">Substring</a></li>
+                      <li><a data-option="regexp">Regular expression</a></li>
+                      <li><a data-action="search">Search File Contents</a></li>
+                   </ul>
+                </div>
+                <a id="lock-left-sidebar" class="icon-lock icon"></a>
+                <a id="tree-search" class="icon-search icon"></a>
+            </div>
 
             <div class="sb-left-content">
-
-                <a id="lock-left-sidebar" class="icon-lock"></a>
-
                 <div id="context-menu" data-path="" data-type="">
 
                     <?php
@@ -128,7 +142,7 @@ $components = json_decode($components,true);
                 </div>
 
                 <div id="file-manager"></div>
-                
+
                 <ul id="list-active-files"></ul>
 
             </div>

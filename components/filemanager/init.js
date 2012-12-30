@@ -92,8 +92,8 @@
             // Show menu
             $('#context-menu')
                 .css({
-                'top': (e.pageY - 10) + 'px',
-                'left': (e.pageX - 10) + 'px'
+                'top': (e.pageY - 20) + 'px',
+                'left': (e.pageX - 20) + 'px'
             })
                 .fadeIn(200)
                 .attr('data-path', path)
@@ -441,7 +441,7 @@
             var _this = this;
             var shortName = this.getShortName(this.clipboard);
             var type = this.getType(this.clipboard);
-            if(duplicate){ 
+            if(duplicate){
                 shortName = "copy_of_"+shortName;
             }
             $.get(this.controller + '?action=duplicate&path=' +
@@ -476,7 +476,7 @@
                         temp.push(arr[i])
                     }
                     var newPath = temp.join('/') + '/' + newName;
-                    $.get(_this.controller, { action: 'modify', path: path, new_name: newName} , function(data) {                    
+                    $.get(_this.controller, { action: 'modify', path: path, new_name: newName} , function(data) {
                         var renameResponse = codiad.jsend.parse(data);
                         if (renameResponse != 'error') {
                             codiad.message.success(type.charAt(0)
@@ -610,4 +610,3 @@
     };
 
 })(this, jQuery);
-
