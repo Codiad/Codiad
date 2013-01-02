@@ -26,5 +26,10 @@
         echo json_encode($data);
     }
 
+    if (isset($_POST["cursor"]) && !empty($_POST["cursor"])) {
+        $data = json_decode($_POST["cursor"]);
+        echo json_encode($data);
+    }
+
 ?>
 

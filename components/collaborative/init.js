@@ -23,10 +23,16 @@
 
     codiad.collaborative = {
 
-        controller: 'components/collaborative/collaborative.php',
+        controller: 'components/collaborative/controler.php',
 
         init: function () {
             this.$onDocumentChange = this.onDocumentChange.bind(this);
+            this.$onCursorChange = this.onCursorChange.bind(this);
+        },
+
+        addListeners: function () {
+            this.addListenerToOnDocumentChange();
+            this.addListenerToOnCursorChange();
         },
 
         addListenerToOnDocumentChange: function () {
@@ -39,6 +45,16 @@
             session.removeEventListener('change', this.$onDocumentChange);
         },
 
+        addListenerToOnCursorChange: function () {
+            var selection = this._getSelection();
+            selection.addEventListener('changeCursor', this.$onCursorChange);
+        },
+
+        removeListenerToOnCursorChange: function () {
+            var selection = this._getSelection();
+            selection.removeEventListener('changeCursor', this.$onCursorChange);
+        },
+
         onDocumentChange: function (e) {
             console.log('document change');
             var post = { change: JSON.stringify(e.data) };
@@ -49,8 +65,24 @@
                 url: this.controller,
                 data: post,
                 complete: function (data) {
-                    console.log('complete');
-                    console.log(data.text);
+                    console.log('complete doc change');
+                    console.log(data);
+                }
+            });
+        },
+
+        onCursorChange: function (e) {
+            console.log('cursor change');
+            var post = { cursor: JSON.stringify(this._getSelection().getRange()) };
+            console.log(post);
+
+            $.ajax({
+                type: 'POST',
+                url: this.controller,
+                data: post,
+                complete: function (data) {
+                    console.log('complete cursor');
+                    console.log(data);
                 }
             });
         },
@@ -62,6 +94,10 @@
 
         _getEditSession: function () {
             return codiad.editor.getActive().getSession();
+        },
+
+        _getSelection: function () {
+            return codiad.editor.getActive().getSelection();
         },
 
         _getDocument: function () {
