@@ -92,8 +92,8 @@
             // Show menu
             $('#context-menu')
                 .css({
-                'top': (e.pageY - 20) + 'px',
-                'left': (e.pageX - 20) + 'px'
+                'top': (e.pageY - 40) + 'px',
+                'left': (e.pageX - 30) + 'px'
             })
                 .fadeIn(200)
                 .attr('data-path', path)
