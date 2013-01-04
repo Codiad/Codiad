@@ -30,7 +30,22 @@
             this.$onCursorChange = this.onCursorChange.bind(this);
         },
 
+        registerAsCollaboratorOfActiveFile: function () {
+            var post = { action: 'register', filename: 'toto' };
+            $.ajax({
+                type: 'POST',
+                url: this.controller,
+                // data: post,
+                data: { action: 'register', filename: codiad.active.getPath() },
+                complete: function (data) {
+                    console.log('complete registering');
+                    console.log(data);
+                }
+            });
+        },
+
         addListeners: function () {
+            this.registerAsCollaboratorOfActiveFile();
             this.addListenerToOnDocumentChange();
             this.addListenerToOnCursorChange();
         },
