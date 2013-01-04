@@ -31,14 +31,24 @@
         },
 
         registerAsCollaboratorOfActiveFile: function () {
-            var post = { action: 'register', filename: 'toto' };
             $.ajax({
                 type: 'POST',
                 url: this.controller,
-                // data: post,
                 data: { action: 'register', filename: codiad.active.getPath() },
                 complete: function (data) {
                     console.log('complete registering');
+                    console.log(data);
+                }
+            });
+        },
+
+        unregisterAsCollaboratorOfActiveFile: function () {
+            $.ajax({
+                type: 'POST',
+                url: this.controller,
+                data: { action: 'unregister', filename: codiad.active.getPath() },
+                complete: function (data) {
+                    console.log('complete unregistering');
                     console.log(data);
                 }
             });
