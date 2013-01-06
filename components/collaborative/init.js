@@ -78,7 +78,9 @@
 
         onDocumentChange: function (e) {
             console.log('document change');
-            var post = { action: 'documentChange', change: JSON.stringify(e.data) };
+            var post = { action: 'documentChange',
+                filename: codiad.active.getPath(),
+                change: JSON.stringify(e.data) };
             console.log(post);
 
             $.post(this.controller, post, function (data) {
@@ -89,7 +91,9 @@
 
         onCursorChange: function (e) {
             console.log('cursor change');
-            var post = { action: 'cursorChange', selection: JSON.stringify(this._getSelection().getRange()) };
+            var post = { action: 'cursorChange',
+                filename: codiad.active.getPath(),
+                selection: JSON.stringify(this._getSelection().getRange()) };
             console.log(post);
 
             $.post(this.controller, post, function (data) {

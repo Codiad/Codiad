@@ -27,31 +27,59 @@
         /* FIXME beware of filenames with '%' characters. */
         $filename = BASE_PATH . '/data/' . str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'];
         if (file_exists($filename)) {
-            echo formatJSEND('error', 'Unable to register as collaborator for ' . $_POST['filename']);
+            echo formatJSEND('error', 'Already registered as collaborator for ' . $_POST['filename']);
         } else {
             touch($filename);
             echo formatJSEND('success');
         }
         break;
+
     case 'unregister':
         $filename = BASE_PATH . '/data/' . str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'];
         if (!file_exists($filename)) {
-            echo formatJSEND('error', 'Unable to unregister as collaborator for ' . $_POST['filename']);
+            echo formatJSEND('error', 'Not registered as collaborator for ' . $_POST['filename']);
         } else {
             unlink($filename);
             echo formatJSEND('success');
         }
         break;
+
     case 'cursorChange':
-        $data = json_decode($_POST['selection']);
-        echo json_encode($data);
+        if (isUserRegisteredForFile($_POST['filename'])) {
+            $filename = str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'] . '%%selection';
+            $selection = json_decode($_POST['selection']);
+            saveJSON($filename, $selection);
+            echo formatJSEND('success');
+        } else {
+            echo formatJSEND('error', 'Not registered as collaborator for ' . $_POST['filename']);
+        }
         break;
+
     case 'documentChange':
-        $data = json_decode($_POST['change']);
-        echo json_encode($data);
+        if (isUserRegisteredForFile($_POST['filename'])) {
+            $filename = str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'] . '%%changes';
+
+            $change = json_decode($_POST['change'], true);
+            if (file_exists(BASE_PATH . '/data/' . $filename)) {
+                /* FIXME array_merge does not work here... */
+                $changes = getJSON($filename);
+                $change = array_merge($changes, $change);
+            }
+
+            saveJSON($filename, $change);
+            echo formatJSEND('success');
+        } else {
+            echo formatJSEND('error', 'Not registered as collaborator for ' . $_POST['filename']);
+        }
         break;
+
     default:
         exit(formatJSEND('error', 'Unknown Action ' . $_POST['action']));
+    }
+
+    function isUserRegisteredForFile($filename) {
+        $marker = BASE_PATH . '/data/' . str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'];
+        return file_exists($marker);
     }
 
 ?>
