@@ -23,7 +23,7 @@
 
     codiad.collaborative = {
 
-        controller: 'components/collaborative/controler.php',
+        controller: 'components/collaborative/controller.php',
 
         init: function () {
             this.$onDocumentChange = this.onDocumentChange.bind(this);
@@ -31,27 +31,23 @@
         },
 
         registerAsCollaboratorOfActiveFile: function () {
-            $.ajax({
-                type: 'POST',
-                url: this.controller,
-                data: { action: 'register', filename: codiad.active.getPath() },
-                complete: function (data) {
+            $.post(this.controller,
+                    { action: 'register', filename: codiad.active.getPath() },
+                    function (data) {
                     console.log('complete registering');
                     console.log(data);
-                }
-            });
+                    codiad.jsend.parse(data);
+                });
         },
 
         unregisterAsCollaboratorOfActiveFile: function () {
-            $.ajax({
-                type: 'POST',
-                url: this.controller,
-                data: { action: 'unregister', filename: codiad.active.getPath() },
-                complete: function (data) {
+            $.post(this.controller,
+                    { action: 'unregister', filename: codiad.active.getPath() },
+                    function (data) {
                     console.log('complete unregistering');
                     console.log(data);
-                }
-            });
+                    codiad.jsend.parse(data);
+                });
         },
 
         addListeners: function () {
@@ -82,34 +78,24 @@
 
         onDocumentChange: function (e) {
             console.log('document change');
-            var post = { change: JSON.stringify(e.data) };
+            var post = { action: 'documentChange', change: JSON.stringify(e.data) };
             console.log(post);
 
-            $.ajax({
-                type: 'POST',
-                url: this.controller,
-                data: post,
-                complete: function (data) {
+            $.post(this.controller, post, function (data) {
                     console.log('complete doc change');
                     console.log(data);
-                }
-            });
+                });
         },
 
         onCursorChange: function (e) {
             console.log('cursor change');
-            var post = { cursor: JSON.stringify(this._getSelection().getRange()) };
+            var post = { action: 'cursorChange', selection: JSON.stringify(this._getSelection().getRange()) };
             console.log(post);
 
-            $.ajax({
-                type: 'POST',
-                url: this.controller,
-                data: post,
-                complete: function (data) {
-                    console.log('complete cursor');
+            $.post(this.controller, post, function (data) {
+                    console.log('complete cursor change');
                     console.log(data);
-                }
-            });
+                });
         },
 
         /* Set of helper methods to manipulate the editor. */
