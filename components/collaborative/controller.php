@@ -59,14 +59,18 @@
         if (isUserRegisteredForFile($_POST['filename'])) {
             $filename = str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'] . '%%changes';
 
-            $change = json_decode($_POST['change'], true);
+            $changes = array();
             if (file_exists(BASE_PATH . '/data/' . $filename)) {
-                /* FIXME array_merge does not work here... */
                 $changes = getJSON($filename);
-                $change = array_merge($changes, $change);
             }
 
-            saveJSON($filename, $change);
+            $maxChangeIndex = max(array_keys($changes));
+
+            $change = json_decode($_POST['change'], true);
+            $changes[++$maxChangeIndex] = $change;
+            /* print_r($changes); */
+
+            saveJSON($filename, $changes);
             echo formatJSEND('success');
         } else {
             echo formatJSEND('error', 'Not registered as collaborator for ' . $_POST['filename']);
