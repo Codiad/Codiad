@@ -24,6 +24,7 @@
 
     switch ($_POST['action']) {
     case 'register':
+        /* Register as a collaborator for the given filename. */
         /* FIXME beware of filenames with '%' characters. */
         $filename = BASE_PATH . '/data/' . str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'];
         if (file_exists($filename)) {
@@ -35,6 +36,7 @@
         break;
 
     case 'unregister':
+        /* Unregister as a collaborator for the given filename. */
         $filename = BASE_PATH . '/data/' . str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'];
         if (!file_exists($filename)) {
             echo formatJSEND('error', 'Not registered as collaborator for ' . $_POST['filename']);
@@ -45,6 +47,8 @@
         break;
 
     case 'unregisterFromAll':
+        /* Find all the files for which the current user is registered as
+         * collaborator and unregister him. */
         $basePath = BASE_PATH . '/data/';
         if ($handle = opendir($basePath)) {
             $regex = '/' . $_SESSION['user'] . '$/';
@@ -59,7 +63,8 @@
         break;
 
     case 'cursorChange':
-        if (isUserRegisteredForFile($_POST['filename'])) {
+        /* Push the current selection to the server. */
+        if (isUserRegisteredForFile($_SESSION['user'], $_POST['filename'])) {
             $filename = str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'] . '%%selection';
             $selection = json_decode($_POST['selection']);
             saveJSON($filename, $selection);
@@ -70,7 +75,8 @@
         break;
 
     case 'documentChange':
-        if (isUserRegisteredForFile($_POST['filename'])) {
+        /* Push a document change to the server. */
+        if (isUserRegisteredForFile($_SESSION['user'], $_POST['filename'])) {
             $filename = str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'] . '%%changes';
 
             $changes = array();
@@ -92,12 +98,18 @@
         }
         break;
 
+    case 'getUsersAndSelectionsForFile':
+        /* Get an object containing all the users registered to the given file 
+         * and their associated selections. */
+
+        break;
+
     default:
         exit(formatJSEND('error', 'Unknown Action ' . $_POST['action']));
     }
 
-    function isUserRegisteredForFile($filename) {
-        $marker = BASE_PATH . '/data/' . str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'];
+    function isUserRegisteredForFile($user, $filename) {
+        $marker = BASE_PATH . '/data/' . str_replace('/', '_', $filename) . '%%' . $user;
         return file_exists($marker);
     }
 
