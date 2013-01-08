@@ -373,6 +373,9 @@
                 this.activePath = path;
                 this.history.push(path);
             }
+
+            /* Notify listeners. */
+            amplify.publish('active.onFocus', path);
         },
 
         highlightEntry: function(path, moveToTabList) {
@@ -540,8 +543,7 @@
                 var nextSession = this.sessions[nextPath];
                 codiad.editor.removeSession(session, nextSession);
 
-                nextSession.listThumb.addClass('active');
-                nextSession.tabThumb.addClass('active');
+                this.focus(nextPath);
             }
             delete this.sessions[path];
             $.get(this.controller + '?action=remove&path=' + path);

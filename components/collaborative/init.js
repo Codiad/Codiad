@@ -25,11 +25,26 @@
 
         controller: 'components/collaborative/controller.php',
 
+        /* Store the filenames and their corresponding local versions. */
         filenamesAndVersion: {},
 
+        /* The filename of the file to wich we are currently registered as a
+         * collaborator. Might be null if we are not collaborating to any file. */
+        currentFilename: null,
+
         init: function () {
+            var _this = this;
+
             this.$onDocumentChange = this.onDocumentChange.bind(this);
             this.$onCursorChange = this.onCursorChange.bind(this);
+
+            /* Subscribe to know when a file become active. */
+            amplify.subscribe('active.onFocus', function (path) {
+                _this.unregisterAsCollaboratorOfCurrentFile();
+                _this.registerAsCollaboratorOfActiveFile();
+
+                _this.addListeners();
+            });
         },
 
         registerAsCollaboratorOfActiveFile: function () {
@@ -40,6 +55,8 @@
                 this.filenamesAndVersion[filename] = 0;
             }
 
+            this.currentFilename = filename;
+
             $.post(this.controller,
                     { action: 'register', filename: filename },
                     function (data) {
@@ -49,20 +66,31 @@
                 });
         },
 
-        unregisterAsCollaboratorOfActiveFile: function () {
-            $.post(this.controller,
-                    { action: 'unregister', filename: codiad.active.getPath() },
-                    function (data) {
-                    console.log('complete unregistering');
-                    console.log(data);
-                    codiad.jsend.parse(data);
-                });
+        unregisterAsCollaboratorOfCurrentFile: function () {
+            console.log(this.currentFilename);
+            if (this.currentFilename !== null) {
+                $.post(this.controller,
+                        { action: 'unregister', filename: this.currentFilename },
+                        function (data) {
+                            console.log('complete unregistering');
+                            console.log(data);
+                            codiad.jsend.parse(data);
+                        });
+
+                this.currentFilename = null;
+            }
         },
 
+        /* Add appropriate listeners to the current EditSession. */
         addListeners: function () {
-            this.registerAsCollaboratorOfActiveFile();
             this.addListenerToOnDocumentChange();
             this.addListenerToOnCursorChange();
+        },
+
+        /* Remove listeners from the current EditSession. */
+        removeListeners: function () {
+            this.removeListenerToOnDocumentChange();
+            this.removeListenerToOnCursorChange();
         },
 
         addListenerToOnDocumentChange: function () {
@@ -137,5 +165,4 @@
     };
 
 })(this, jQuery);
-
 
