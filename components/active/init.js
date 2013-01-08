@@ -501,6 +501,9 @@
         },
 
         close: function(path) {
+            /* Notify listeners. */
+            amplify.publish('active.onClose', path);
+
             var _this = this;
             var session = this.sessions[path];
 

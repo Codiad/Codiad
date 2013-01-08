@@ -35,8 +35,18 @@
         init: function () {
             var _this = this;
 
+            /* Make sure to start clean by unregistering from any file first. */
+            this.unregisterAsCollaboratorFromAllFiles();
+
             this.$onDocumentChange = this.onDocumentChange.bind(this);
             this.$onCursorChange = this.onCursorChange.bind(this);
+
+            /* Subscribe to know when a file is being closed. */
+            amplify.subscribe('active.onClose', function (path) {
+                if (_this.currentFilename === path) {
+                    _this.unregisterAsCollaboratorOfCurrentFile();
+                }
+            });
 
             /* Subscribe to know when a file become active. */
             amplify.subscribe('active.onFocus', function (path) {
@@ -45,6 +55,16 @@
 
                 _this.addListeners();
             });
+        },
+
+        unregisterAsCollaboratorFromAllFiles: function () {
+            $.post(this.controller,
+                    { action: 'unregisterFromAll' },
+                    function (data) {
+                    console.log('complete unregistering from all');
+                    console.log(data);
+                    codiad.jsend.parse(data);
+                });
         },
 
         registerAsCollaboratorOfActiveFile: function () {

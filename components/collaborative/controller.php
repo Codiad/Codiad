@@ -44,6 +44,20 @@
         }
         break;
 
+    case 'unregisterFromAll':
+        $basePath = BASE_PATH . '/data/';
+        if ($handle = opendir($basePath)) {
+            $regex = '/' . $_SESSION['user'] . '$/';
+            while (false !== ($entry = readdir($handle))) {
+                if (preg_match($regex, $entry)) {
+                    unlink($basePath . $entry);
+                }
+            }
+        }
+
+        echo formatJSEND('success');
+        break;
+
     case 'cursorChange':
         if (isUserRegisteredForFile($_POST['filename'])) {
             $filename = str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'] . '%%selection';
