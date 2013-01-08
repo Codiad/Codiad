@@ -67,6 +67,7 @@
             $maxChangeIndex = max(array_keys($changes));
 
             $change = json_decode($_POST['change'], true);
+            $change['version'] = json_decode($_POST['version']);
             $changes[++$maxChangeIndex] = $change;
             /* print_r($changes); */
 

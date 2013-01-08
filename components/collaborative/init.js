@@ -25,14 +25,23 @@
 
         controller: 'components/collaborative/controller.php',
 
+        filenamesAndVersion: {},
+
         init: function () {
             this.$onDocumentChange = this.onDocumentChange.bind(this);
             this.$onCursorChange = this.onCursorChange.bind(this);
         },
 
         registerAsCollaboratorOfActiveFile: function () {
+            var filename = codiad.active.getPath();
+            if (!(filename in this.filenamesAndVersion)) {
+                /* If the current file has not already been edited, initialize
+                 * its version to 0. */
+                this.filenamesAndVersion[filename] = 0;
+            }
+
             $.post(this.controller,
-                    { action: 'register', filename: codiad.active.getPath() },
+                    { action: 'register', filename: filename },
                     function (data) {
                     console.log('complete registering');
                     console.log(data);
@@ -77,10 +86,16 @@
         },
 
         onDocumentChange: function (e) {
+            /* Increment the current document version and send the change to
+             * the server along with the version number. */
+            var filename = codiad.active.getPath();
+            ++this.filenamesAndVersion[filename];
             console.log('document change');
             var post = { action: 'documentChange',
                 filename: codiad.active.getPath(),
-                change: JSON.stringify(e.data) };
+                change: JSON.stringify(e.data),
+                version: this.filenamesAndVersion[filename]
+            };
             console.log(post);
 
             $.post(this.controller, post, function (data) {
