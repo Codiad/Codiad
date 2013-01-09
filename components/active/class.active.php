@@ -68,7 +68,7 @@ class Active {
             }
         }
         if(count($cur_users)!=0){
-            echo formatJSEND("error","Warning: File Currently Opened By: " . implode(", ",$cur_users));
+            echo formatJSEND("error", lang("Warning: File Currently Opened By: ").implode(", ",$cur_users));
         }else{
             echo formatJSEND("success");
         }

@@ -8,9 +8,10 @@
 
 </div>
 
-<button class="right" onclick="codiad.modal.unload();">Close</button>
+<button class="right" onclick="codiad.modal.unload();"><?=lang("Close"); ?></button>
 
-<button class="btn-left" onclick="codiad.colorPicker.insert('hex');">Insert HEX</button><button class="btn-right" onclick="codiad.colorPicker.insert('rgb');">Insert RGB</button>
+<button class="btn-left" onclick="codiad.colorPicker.insert('hex');"><?=lang("Insert HEX"); ?></button
+><button class="btn-right" onclick="codiad.colorPicker.insert('rgb');"><?=lang("Insert RGB"); ?></button>
 
 <script>
 

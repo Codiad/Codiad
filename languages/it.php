@@ -28,4 +28,23 @@ $lang["Split Vertically"] = "Dividi Verticalmente";
 $lang["Merge all"] = "Unisci Entrambi";
 $lang["Explore"] = "Esplora";
 $lang["You Must Choose A Value"] = "Devi Selezionare Un Valore";
+$lang["Warning: File Currently Opened By: "] = "Attenzione: Il file è gia aperto da: ";
+$lang["Close Unsaved File?"] = "Chiudi il file non salvato?";
+$lang["Save&Close"] = "Salva &amp; Chiudi";
+$lang["Discard Changes"] = "Annulla modifiche";
+$lang["Cancel"] = "Annulla";
+$lang["Recovered unsaved content for: "] = "Recuperato contenuto non salvato per: ";
+$lang["You have unsaved files."] = "Attualmente hai dei file non salvati.";
+$lang["No Open Files to save"] = "Nessun file aperto per poterlo salvare.";
+$lang["No Open Files or Selected Text"] = "Nessun file aperto oppure nessun testo selezionato";
+$lang["No suggestion selected. Might be a bug."] = "Nessun opzione selezionata. Potrebbe essere un bug";
+$lang["More than one suggestions selected. Might be a bug."] = "Più di un opzione selezionata. Potrebbe essere un bug";
+$lang["Insert HEX"] = "Inserisci HEX";
+$lang["Insert RGB"] = "Inserisci RGB";
+$lang["Find:"] = "Cerca:";
+$lang["Replace:"] = "Rimpiazza:";
+$lang["Find"] = "Cerca";
+$lang["Replace"] = "Rimpiazza";
+$lang["Replace ALL"] = "Rimpiazza tutti";
+
 ?>

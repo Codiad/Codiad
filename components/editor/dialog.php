@@ -29,17 +29,22 @@ switch($_GET['action']){
     ?>
     <input type="hidden" name="id" value="<?php echo($_GET['id']); ?>">
 
-    <label>Find:</label>
+    <label><?=lang("Find:"); ?></label>
     <input type="text" name="find" autofocus="autofocus" autocomplete="off">
     
     <?php if($type=='replace'){ ?>
 
-    <label>Replace:</label>
+    <label><?=lang("Replace:"); ?></label>
     <input type="text" name="replace">
     
     <?php } ?>
 
-    <button class="btn-left" onclick="codiad.editor.search('find');return false;">Find</button><?php if($type=='replace'){ ?><button class="btn-mid" onclick="codiad.editor.search('replace');return false;">Replace</button><button class="btn-mid" onclick="codiad.editor.search('replaceAll');return false;">Replace ALL</button><?php } ?><button class="btn-right" onclick="codiad.modal.unload(); return false;">Cancel</button>
+    <button class="btn-left" onclick="codiad.editor.search('find');return false;"><?=lang("Find"); ?></button>
+    <?php if($type=='replace'){ ?>
+        <button class="btn-mid" onclick="codiad.editor.search('replace');return false;"><?=lang("Replace"); ?></button>
+        <button class="btn-mid" onclick="codiad.editor.search('replaceAll');return false;"><?=lang("Replace ALL"); ?></button>
+    <?php } ?>
+    <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?=lang("Cancel"); ?></button>
     <?php
     break;
     
