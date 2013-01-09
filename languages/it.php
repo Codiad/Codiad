@@ -1,0 +1,31 @@
+<?php
+$lang["Save"] = "Salva";
+$lang["Color Tool"] = "Selettore Colori";
+$lang["Terminal"] = "Terminale";
+$lang["Projects"] = "Progetti";
+$lang["Users"] = "Utenti";
+$lang["Settings"] = "Impostazioni";
+$lang["Password"] = "Password";
+$lang["Logout"] = "Logout";
+$lang["Split"] = "Dividi";
+$lang["Editor Settings"] = "Impostazioni Editor";
+$lang["Theme"] = "Tema";
+$lang["Font Size"] = "Dimensione Font";
+$lang["Highlight Active Line"] = "Evidenzia Linea Attiva";
+$lang["Indent Guides"] = "Guide di Indentazione";
+$lang["On"] = "Attivo";
+$lang["Off"] = "Non Attivo";
+$lang["Print Margin"] = "Margine di Stampa";
+$lang["show"] = "Visualizza"; 
+$lang["hide"] = "Nascondi";
+$lang["Wrap Lines"] = "A capo automatico";
+$lang["No wrap"] = "Non mandare a capo";  
+$lang["close"] = "Chiudi";
+$lang["Y"] = "Si";
+$lang["N"] = "No";
+$lang["Split Horizontally"] = "Dividi Orizzontalmente";
+$lang["Split Vertically"] = "Dividi Verticalmente";
+$lang["Merge all"] = "Unisci Entrambi";
+$lang["Explore"] = "Esplora";
+$lang["You Must Choose A Value"] = "Devi Selezionare Un Valore";
+?>
