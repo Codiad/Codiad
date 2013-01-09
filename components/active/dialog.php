@@ -26,13 +26,13 @@ switch($_GET['action']){
     case 'confirm':
     $path = $_GET['path'];
     ?>
-    <label><?=lang("Close Unsaved File?"); ?></label>
+    <label><?php echo lang("Close Unsaved File?"); ?></label>
     
     <pre><?php echo($path); ?></pre>
 
-    <button class="btn-left" onclick="save_and_close('<?php echo($path); ?>'); return false;"><?=lang("Save&Close"); ?></button>
-    <button class="btn-mid" onclick="close_without_save('<?php echo($path); ?>'); return false;"><?=lang("Discard Changes"); ?></button>
-    <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?=lang("Cancel"); ?></button>
+    <button class="btn-left" onclick="save_and_close('<?php echo($path); ?>'); return false;"><?php echo lang("Save&Close"); ?></button>
+    <button class="btn-mid" onclick="close_without_save('<?php echo($path); ?>'); return false;"><?php echo lang("Discard Changes"); ?></button>
+    <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php echo lang("Cancel"); ?></button>
     <?php
     break;
     

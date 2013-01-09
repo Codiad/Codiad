@@ -29,22 +29,22 @@ switch($_GET['action']){
     ?>
     <input type="hidden" name="id" value="<?php echo($_GET['id']); ?>">
 
-    <label><?=lang("Find:"); ?></label>
+    <label><?php echo lang("Find:"); ?></label>
     <input type="text" name="find" autofocus="autofocus" autocomplete="off">
     
     <?php if($type=='replace'){ ?>
 
-    <label><?=lang("Replace:"); ?></label>
+    <label><?php echo lang("Replace:"); ?></label>
     <input type="text" name="replace">
     
     <?php } ?>
 
-    <button class="btn-left" onclick="codiad.editor.search('find');return false;"><?=lang("Find"); ?></button>
+    <button class="btn-left" onclick="codiad.editor.search('find');return false;"><?php echo lang("Find"); ?></button>
     <?php if($type=='replace'){ ?>
-        <button class="btn-mid" onclick="codiad.editor.search('replace');return false;"><?=lang("Replace"); ?></button>
-        <button class="btn-mid" onclick="codiad.editor.search('replaceAll');return false;"><?=lang("Replace ALL"); ?></button>
+        <button class="btn-mid" onclick="codiad.editor.search('replace');return false;"><?php echo lang("Replace"); ?></button>
+        <button class="btn-mid" onclick="codiad.editor.search('replaceAll');return false;"><?php echo lang("Replace ALL"); ?></button>
     <?php } ?>
-    <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?=lang("Cancel"); ?></button>
+    <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php echo lang("Cancel"); ?></button>
     <?php
     break;
     
@@ -54,13 +54,13 @@ switch($_GET['action']){
     
     case 'settings':
     ?>
-    <label><?=lang("Editor Settings"); ?></label>
+    <label><?php echo lang("Editor Settings"); ?></label>
     
     <table class="settings">
     
     <tr>
     
-        <td width="1"><?=lang("Theme"); ?></td>
+        <td width="1"><?php echo lang("Theme"); ?></td>
         <td>
         
         <select class="setting" data-setting="theme">
@@ -95,7 +95,7 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td><?=lang("Font Size"); ?></td>
+        <td><?php echo lang("Font Size"); ?></td>
         <td>
         
         <select class="setting" data-setting="font-size">
@@ -115,12 +115,12 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td><?=lang("Highlight Active Line"); ?></td>
+        <td><?php echo lang("Highlight Active Line"); ?></td>
         <td>
         
             <select class="setting" data-setting="highlight-line">
-                <option value="true"><?=lang("Yes"); ?></option>
-                <option value="false"><?=lang("No"); ?></option>
+                <option value="true"><?php echo lang("Yes"); ?></option>
+                <option value="false"><?php echo lang("No"); ?></option>
             </select>
             
         </td>
@@ -128,12 +128,12 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td><?=lang("Indent Guides"); ?></td>
+        <td><?php echo lang("Indent Guides"); ?></td>
         <td>
         
         <select class="setting" data-setting="indent-guides">
-            <option value="true"><?=lang("On"); ?></option>
-            <option value="false"><?=lang("Off"); ?></option>
+            <option value="true"><?php echo lang("On"); ?></option>
+            <option value="false"><?php echo lang("Off"); ?></option>
         </select>
         
         </td>
@@ -141,12 +141,12 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td><?=lang("Print Margin"); ?></td>
+        <td><?php echo lang("Print Margin"); ?></td>
         <td>
         
         <select class="setting" data-setting="print-margin">
-            <option value="true"><?=lang("Show"); ?></option>
-            <option value="false"><?=lang("Hide"); ?></option>
+            <option value="true"><?php echo lang("Show"); ?></option>
+            <option value="false"><?php echo lang("Hide"); ?></option>
         </select>
         
         </td>
@@ -154,12 +154,12 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td><?=lang("Wrap Lines"); ?></td>
+        <td><?php echo lang("Wrap Lines"); ?></td>
         <td>
         
         <select class="setting" data-setting="wrap-mode">
-            <option value="false"><?=lang("No wrap"); ?></option>
-            <option value="true"><?=lang("Wrap Lines"); ?></option>
+            <option value="false"><?php echo lang("No wrap"); ?></option>
+            <option value="true"><?php echo lang("Wrap Lines"); ?></option>
         </select>
         
         </td>
@@ -167,7 +167,7 @@ switch($_GET['action']){
     </tr>
     </table>
     
-    <button onclick="codiad.modal.unload(); return false;"><?=lang("Close"); ?></button
+    <button onclick="codiad.modal.unload(); return false;"><?php echo lang("Close"); ?></button
     
     <?php
     
@@ -216,7 +216,7 @@ var editor_settings = {
             var setting = $(this).data('setting');
             var val = $(this).val();
             if(val===null){
-                codiad.message.alert(lang["You Must Choose A Value"]);
+                codiad.message.alert(lang("You Must Choose A Value"));
             }else{
                 switch($(this).data('setting')){
                     case 'theme':

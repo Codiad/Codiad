@@ -177,9 +177,9 @@
             var selectedSuggestion = $('#autocomplete li.suggestion.active-suggestion');
 
             if (selectedSuggestion.length < 1) {
-                alert(lang['No suggestion selected. Might be a bug.']);
+                alert(lang('No suggestion selected. Might be a bug.'));
             } else if (selectedSuggestion.length > 1) {
-                alert(lang['More than one suggestions selected. Might be a bug.']);
+                alert(lang('More than one suggestions selected. Might be a bug.'));
             }
 
             return selectedSuggestion;
