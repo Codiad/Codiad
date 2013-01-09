@@ -283,6 +283,8 @@
                     if (openResponse != 'error') {
                         node.removeClass('loading');
                         codiad.active.open(path, openResponse.content, openResponse.mtime, false);
+                        window.localStorage.setItem('timestamp', (new Date()).getTime());
+                        window.localStorage.setItem('path', path);
                     }
                 });
             } else {

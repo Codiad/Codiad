@@ -46,7 +46,7 @@
 
     function SplitContainer(root, children, splitType) {
         var _this = this;
-
+        this.setActive(window.localStorage.getItem('path'));
         this.root = root;
         this.splitType = splitType;
         this.childContainers = {};
