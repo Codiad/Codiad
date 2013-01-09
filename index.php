@@ -113,7 +113,7 @@ $components = json_decode($components,true);
 
         <div id="sb-left" class="sidebar">
             <div id="sb-left-title">
-                <h2 id="finder-label"> <?=lang("Explore"); ?> </h2>
+                <h2 id="finder-label"> <?php lang("Explore"); ?> </h2>
                 <div id="finder-wrapper">
                    <a id="finder-options" class="icon icon-cog"></a>
                    <div id="finder-inner-wrapper">
@@ -177,9 +177,9 @@ $components = json_decode($components,true);
             <div id="root-editor-wrapper"></div>
 
             <div id="editor-bottom-bar">
-                <a id="settings" class="ico-wrapper"><span class="icon-doc-text"></span><?=lang("Settings"); ?></a>
+                <a id="settings" class="ico-wrapper"><span class="icon-doc-text"></span><?php lang("Settings"); ?></a>
                 <div class="divider"></div>
-                <a id="split" class="ico-wrapper"><span class="icon-layout"></span><?=lang("Split"); ?></a>
+                <a id="split" class="ico-wrapper"><span class="icon-layout"></span><?php lang("Split"); ?></a>
                 <div class="divider"></div>
                 <a id="current-mode"><span class="icon-layout"></span></a>
                 <div class="divider"></div>
@@ -188,9 +188,9 @@ $components = json_decode($components,true);
             <ul id="changemode-menu" class="options-menu">
             </ul>
             <ul id="split-options-menu" class="options-menu">
-              <li id="split-horizontally"><a> <?=lang("SplitH"); ?> </a></li>
-              <li id="split-vertically"><a> <?=lang("SplitV"); ?> </a></li>
-              <li id="merge-all"><a> <?=lang("Merge"); ?> </a></li>
+              <li id="split-horizontally"><a> <?php lang("Split Horizontally"); ?> </a></li>
+              <li id="split-vertically"><a> <?php lang("Split Vertically"); ?> </a></li>
+              <li id="merge-all"><a> <?php lang("Merge"); ?> </a></li>
             </ul>
         </div>
 
@@ -211,7 +211,7 @@ $components = json_decode($components,true);
                     if($data['title']=='break'){
                         echo("<hr>");
                     }else{
-                        echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].' bigger-icon"></span>'.lang($data['title']).'</a>');
+                        echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].' bigger-icon"></span>'.lang($data['title'], false).'</a>');
                     }
 
                 }
