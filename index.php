@@ -8,7 +8,7 @@ $context_menu = json_decode($context_menu,true);
 
 // Right Bar
 $right_bar = file_get_contents(COMPONENTS . "/right_bar.json");
-$right_bar = json_decode($right_bar,true);
+$right_bar = json_decode($right_bar, true);
 
 // Components
 $components = file_get_contents(COMPONENTS . "/load.json");
@@ -39,6 +39,7 @@ $components = json_decode($components,true);
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script>!window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.7.2.min.js"%3E%3C/script%3E'));</script>
+    <script>var lang = <?=json_encode($lang); ?>;</script>
     <script src="js/jquery-ui-1.8.23.custom.min.js"></script>
     <script src="js/jquery.css3.min.js"></script>
     <script src="js/jquery.easing.js"></script>
@@ -79,7 +80,12 @@ $components = json_decode($components,true);
 
                 <label><span class="icon-lock login-icon"></span> Password</label>
                 <input type="password" name="password">
-
+                <label><span class="icon-language"></span> Language</label>
+                <select name="lang">
+                    <option value="en" selected>English</option>
+                    
+                </select>
+                
                 <button>Login</button>
 
             </form>
@@ -96,12 +102,11 @@ $components = json_decode($components,true);
     }else{
 
     ?>
-
     <div id="workspace">
 
         <div id="sb-left" class="sidebar">
             <div id="sb-left-title">
-                <h2 id="finder-label"> Explore </h2>
+                <h2 id="finder-label"> <?=lang("Explore"); ?> </h2>
                 <div id="finder-wrapper">
                    <a id="finder-options" class="icon icon-cog"></a>
                    <div id="finder-inner-wrapper">
@@ -152,7 +157,6 @@ $components = json_decode($components,true);
         </div>
 
         <div id="cursor-position">Ln: 0 &middot; Col: 0</div>
-
         <div id="editor-region">
             <div id="editor-top-bar">
                 <ul id="tab-list-active-files"> </ul>
@@ -166,9 +170,9 @@ $components = json_decode($components,true);
             <div id="root-editor-wrapper"></div>
 
             <div id="editor-bottom-bar">
-                <a id="settings" class="ico-wrapper"><span class="icon-doc-text"></span>Settings</a>
+                <a id="settings" class="ico-wrapper"><span class="icon-doc-text"></span><?=lang("Settings"); ?></a>
                 <div class="divider"></div>
-                <a id="split" class="ico-wrapper"><span class="icon-layout"></span>Split</a>
+                <a id="split" class="ico-wrapper"><span class="icon-layout"></span><?=lang("Split"); ?></a>
                 <div class="divider"></div>
                 <a id="current-mode"><span class="icon-layout"></span></a>
                 <div class="divider"></div>
@@ -177,9 +181,9 @@ $components = json_decode($components,true);
             <ul id="changemode-menu" class="options-menu">
             </ul>
             <ul id="split-options-menu" class="options-menu">
-              <li id="split-horizontally"><a> Split Horizontally </a></li>
-              <li id="split-vertically"><a> Split Vertically </a></li>
-              <li id="merge-all"><a> Merge all </a></li>
+              <li id="split-horizontally"><a> <?=lang("SplitH"); ?> </a></li>
+              <li id="split-vertically"><a> <?=lang("SplitV"); ?> </a></li>
+              <li id="merge-all"><a> <?=lang("Merge"); ?> </a></li>
             </ul>
         </div>
 
@@ -200,7 +204,7 @@ $components = json_decode($components,true);
                     if($data['title']=='break'){
                         echo("<hr>");
                     }else{
-                        echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].' bigger-icon"></span>'.$data['title'].'</a>');
+                        echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].' bigger-icon"></span>'.lang($data['title']).'</a>');
                     }
 
                 }

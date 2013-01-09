@@ -1,0 +1,32 @@
+<?php
+$lang = new STDClass;
+$lang->Save = "Save";
+$lang->Ctool = "Color Tool";
+$lang->Terminal = "Terminal";
+$lang->Proj = "Projects";
+$lang->Users = "Users";
+$lang->Settings = "Settings";
+$lang->Password = "Password";
+$lang->Logout = "Logout";
+$lang->Split = "Split";
+$lang->ESettings = "Editor Settings";
+$lang->Theme = "Theme";
+$lang->FSize = "Font Size";
+$lang->HiAcLi = "Highlight Active Line";
+$lang->InGu = "Indent Guides";
+$lang->On = "On";
+$lang->Off = "Off";
+$lang->PrMa = "Print Margin";
+$lang->show = "Show";
+$lang->hide = "Hide";
+$lang->wrapping = "Wrap Lines";
+$lang->Nw = "No wrap";
+$lang->WLines = "Wrap Lines";
+$lang->close = "Close";
+$lang->Y = "Yes";
+$lang->N = "No";
+$lang->SplitH = "Split Horizontally";
+$lang->SplitV = "Split Vertically";
+$lang->Merge = "Merge all";
+$lang->Explore = "Explore";
+?>

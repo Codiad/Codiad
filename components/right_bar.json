@@ -1,6 +1,6 @@
 [
     {
-        "title": "Save File",
+        "title": "Save",
         "icon": "icon-install",
         "onclick": "codiad.active.save();"
     },
@@ -10,7 +10,7 @@
         "onclick": null
     },
     {
-        "title": "Color Tool",
+        "title": "Ctool",
         "icon": "icon-palette",
         "onclick": "codiad.colorPicker.open();"
     },
@@ -30,7 +30,7 @@
         "onclick": null
     },
     {
-        "title": "Projects",
+        "title": "Proj",
         "icon": "icon-archive",
         "onclick": "codiad.project.list();"
     },
@@ -50,7 +50,7 @@
         "onclick": null
     },
     {
-        "title": "Editor",
+        "title": "Settings",
         "icon": "icon-doc-text",
         "onclick": "codiad.modal.load(400, 'components/editor/dialog.php?action=settings');codiad.modal.hideOverlay();"
     },

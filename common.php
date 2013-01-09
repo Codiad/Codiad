@@ -1,11 +1,18 @@
 <?php
-
     /*
     *  Copyright (c) Codiad & Kent Safranski (codiad.com), distributed
     *  as-is and without warranty under the MIT License. See 
     *  [root]/license.txt for more. This information must remain intact.
     */
-
+    
+    include BASE_PATH."/languages/en.php"; //english is the main language
+    include BASE_PATH."/languages/{$_SESSION['lang']}.php";
+    
+    function lang($key) {
+        global $lang;
+        return $lang->$key;
+    }
+    
     //////////////////////////////////////////////////////////////////
     // Check Session / Key
     //////////////////////////////////////////////////////////////////
