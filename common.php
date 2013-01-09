@@ -19,6 +19,12 @@
             echo $return;
         return $return;
     }
+    function i18n($key) {
+        return lang($key);
+    }
+    function get_i18n($key) {
+        return lang($key, false);
+    }
     
     //////////////////////////////////////////////////////////////////
     // Check Session / Key

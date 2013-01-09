@@ -51,6 +51,7 @@ $components = json_decode($components,true);
                 return $lang[key];
             return key;
         }
+        var i18n = function(key) { return lang(key); }
     </script>
     <script src="js/jquery-ui-1.8.23.custom.min.js"></script>
     <script src="js/jquery.css3.min.js"></script>
