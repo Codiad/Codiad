@@ -626,7 +626,7 @@
             this.activeInstance = i;
             $('#current-file').text(i.getSession().path);
             this.setModeDisplay(i.getSession());
-            window.localStorage.getItem('path', i);
+            window.localStorage.setItem('path', i);
         },
 
         /////////////////////////////////////////////////////////////////
