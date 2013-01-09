@@ -83,7 +83,7 @@ $components = json_decode($components,true);
                 <label><span class="icon-language"></span> Language</label>
                 <select name="lang">
                     <option value="en" selected>English</option>
-                    
+                    <option value="it" selected>Italiano</option>
                 </select>
                 
                 <button>Login</button>

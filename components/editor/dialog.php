@@ -49,7 +49,7 @@ switch($_GET['action']){
     
     case 'settings':
     ?>
-    <label><?=lang("ESettings"); ?></label>
+    <label><?=lang("Editor Settings"); ?></label>
     
     <table class="settings">
     
@@ -114,8 +114,8 @@ switch($_GET['action']){
         <td>
         
             <select class="setting" data-setting="highlight-line">
-                <option value="true"><?=lang("Y"); ?></option>
-                <option value="false"><?=lang("N"); ?></option>
+                <option value="true"><?=lang("Yes"); ?></option>
+                <option value="false"><?=lang("No"); ?></option>
             </select>
             
         </td>
@@ -140,8 +140,8 @@ switch($_GET['action']){
         <td>
         
         <select class="setting" data-setting="print-margin">
-            <option value="true"><?=lang("show"); ?></option>
-            <option value="false"><?=lang("hide"); ?></option>
+            <option value="true"><?=lang("Show"); ?></option>
+            <option value="false"><?=lang("Hide"); ?></option>
         </select>
         
         </td>
@@ -162,7 +162,7 @@ switch($_GET['action']){
     </tr>
     </table>
     
-    <button onclick="codiad.modal.unload(); return false;"><?=lang("close"); ?></button
+    <button onclick="codiad.modal.unload(); return false;"><?=lang("Close"); ?></button
     
     <?php
     

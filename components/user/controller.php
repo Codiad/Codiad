@@ -24,6 +24,7 @@
     if($_GET['action']=='authenticate'){
         $User->username = $_POST['username'];
         $User->password = $_POST['password'];
+        $User->language = $_POST['lang'];
         $User->Authenticate();
     }
 
