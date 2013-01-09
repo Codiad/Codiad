@@ -90,7 +90,7 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td><?=lang("FSize"); ?></td>
+        <td><?=lang("Font Size"); ?></td>
         <td>
         
         <select class="setting" data-setting="font-size">
@@ -110,7 +110,7 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td><?=lang("HiAcLi"); ?></td>
+        <td><?=lang("Highlight Active Line"); ?></td>
         <td>
         
             <select class="setting" data-setting="highlight-line">
@@ -123,7 +123,7 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td><?=lang("InGu"); ?></td>
+        <td><?=lang("Indent Guides"); ?></td>
         <td>
         
         <select class="setting" data-setting="indent-guides">
@@ -136,7 +136,7 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td><?=lang("PrMa"); ?></td>
+        <td><?=lang("Print Margin"); ?></td>
         <td>
         
         <select class="setting" data-setting="print-margin">
@@ -149,12 +149,12 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td><?=lang("wrapping"); ?></td>
+        <td><?=lang("Wrap Lines"); ?></td>
         <td>
         
         <select class="setting" data-setting="wrap-mode">
-            <option value="false"><?=lang("Nw"); ?></option>
-            <option value="true"><?=lang("WLines"); ?></option>
+            <option value="false"><?=lang("No wrap"); ?></option>
+            <option value="true"><?=lang("Wrap Lines"); ?></option>
         </select>
         
         </td>
@@ -211,7 +211,7 @@ var editor_settings = {
             var setting = $(this).data('setting');
             var val = $(this).val();
             if(val===null){
-                codiad.message.alert(lang.YMCAV);
+                codiad.message.alert(lang["You Must Choose A Value"]);
             }else{
                 switch($(this).data('setting')){
                     case 'theme':

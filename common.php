@@ -10,7 +10,7 @@
     
     function lang($key) {
         global $lang;
-        return $lang->$key;
+        return $lang[$key];
     }
     
     //////////////////////////////////////////////////////////////////

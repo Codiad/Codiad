@@ -10,7 +10,7 @@
         "onclick": null
     },
     {
-        "title": "Ctool",
+        "title": "Color Tool",
         "icon": "icon-palette",
         "onclick": "codiad.colorPicker.open();"
     },
@@ -30,7 +30,7 @@
         "onclick": null
     },
     {
-        "title": "Proj",
+        "title": "Projects",
         "icon": "icon-archive",
         "onclick": "codiad.project.list();"
     },
