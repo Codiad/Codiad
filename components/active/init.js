@@ -66,7 +66,7 @@
                 var draft = _this.checkDraft(path);
                 if (draft) {
                     content = draft;
-                    codiad.message.success('Recovered unsaved content for : ' + path);
+                    codiad.message.success(lang('Recovered unsaved content for: ') + path);
                 }
 
                 //var session = new EditSession(content, new Mode());
@@ -268,7 +268,7 @@
                 if ($('#list-active-files li.changed')
                     .length > 0) {
                     var e = e || window.event;
-                    var errMsg = 'You have unsaved files.';
+                    var errMsg = lang('You have unsaved files.');
 
                     // For IE and Firefox prior to version 4
                     if (e) {
@@ -434,7 +434,7 @@
         save: function(path) {
             var _this = this;
             if ((path && !this.isOpen(path)) || (!path && !codiad.editor.getActive())) {
-                codiad.message.error('No Open Files to save');
+                codiad.message.error(lang('No Open Files to save'));
                 return;
             }
             var session;
@@ -626,7 +626,7 @@
                 codiad.editor.getActive()
                     .getSelectionRange());
             } else {
-                codiad.message.error('No Open Files or Selected Text');
+                codiad.message.error(lang('No Open Files or Selected Text'));
             }
         },
 

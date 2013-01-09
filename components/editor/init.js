@@ -46,7 +46,7 @@
 
     function SplitContainer(root, children, splitType) {
         var _this = this;
-
+        this.setActive(window.localStorage.getItem('path'));
         this.root = root;
         this.splitType = splitType;
         this.childContainers = {};
@@ -626,6 +626,7 @@
             this.activeInstance = i;
             $('#current-file').text(i.getSession().path);
             this.setModeDisplay(i.getSession());
+            window.localStorage.setItem('path', i);
         },
 
         /////////////////////////////////////////////////////////////////

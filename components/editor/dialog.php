@@ -29,17 +29,22 @@ switch($_GET['action']){
     ?>
     <input type="hidden" name="id" value="<?php echo($_GET['id']); ?>">
 
-    <label>Find:</label>
+    <label><?php lang("Find:"); ?></label>
     <input type="text" name="find" autofocus="autofocus" autocomplete="off">
     
     <?php if($type=='replace'){ ?>
 
-    <label>Replace:</label>
+    <label><?php lang("Replace:"); ?></label>
     <input type="text" name="replace">
     
     <?php } ?>
 
-    <button class="btn-left" onclick="codiad.editor.search('find');return false;">Find</button><?php if($type=='replace'){ ?><button class="btn-mid" onclick="codiad.editor.search('replace');return false;">Replace</button><button class="btn-mid" onclick="codiad.editor.search('replaceAll');return false;">Replace ALL</button><?php } ?><button class="btn-right" onclick="codiad.modal.unload(); return false;">Cancel</button>
+    <button class="btn-left" onclick="codiad.editor.search('find');return false;"><?php lang("Find"); ?></button>
+    <?php if($type=='replace'){ ?>
+        <button class="btn-mid" onclick="codiad.editor.search('replace');return false;"><?php lang("Replace"); ?></button>
+        <button class="btn-mid" onclick="codiad.editor.search('replaceAll');return false;"><?php lang("Replace ALL"); ?></button>
+    <?php } ?>
+    <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php lang("Cancel"); ?></button>
     <?php
     break;
     
@@ -49,13 +54,13 @@ switch($_GET['action']){
     
     case 'settings':
     ?>
-    <label>Editor Settings</label>
+    <label><?php lang("Editor Settings"); ?></label>
     
     <table class="settings">
     
     <tr>
     
-        <td width="1">Theme</td>
+        <td width="1"><?php lang("Theme"); ?></td>
         <td>
         
         <select class="setting" data-setting="theme">
@@ -90,7 +95,7 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td>Font&nbsp;Size</td>
+        <td><?php lang("Font Size"); ?></td>
         <td>
         
         <select class="setting" data-setting="font-size">
@@ -110,12 +115,12 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td>Highlight&nbsp;Active&nbsp;Line</td>
+        <td><?php lang("Highlight Active Line"); ?></td>
         <td>
         
             <select class="setting" data-setting="highlight-line">
-                <option value="true">Yes</option>
-                <option value="false">No</option>
+                <option value="true"><?php lang("Yes"); ?></option>
+                <option value="false"><?php lang("No"); ?></option>
             </select>
             
         </td>
@@ -123,12 +128,12 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td>Indent&nbsp;Guides</td>
+        <td><?php lang("Indent Guides"); ?></td>
         <td>
         
         <select class="setting" data-setting="indent-guides">
-            <option value="true">On</option>
-            <option value="false">Off</option>
+            <option value="true"><?php lang("On"); ?></option>
+            <option value="false"><?php lang("Off"); ?></option>
         </select>
         
         </td>
@@ -136,12 +141,12 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td>Print&nbsp;Margin</td>
+        <td><?php lang("Print Margin"); ?></td>
         <td>
         
         <select class="setting" data-setting="print-margin">
-            <option value="true">Show</option>
-            <option value="false">Hide</option>
+            <option value="true"><?php lang("Show"); ?></option>
+            <option value="false"><?php lang("Hide"); ?></option>
         </select>
         
         </td>
@@ -149,12 +154,12 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td>Wrapping</td>
+        <td><?php lang("Wrap Lines"); ?></td>
         <td>
         
         <select class="setting" data-setting="wrap-mode">
-            <option value="false">No Wrapping</option>
-            <option value="true">Wrap Lines</option>
+            <option value="false"><?php lang("No wrap"); ?></option>
+            <option value="true"><?php lang("Wrap Lines"); ?></option>
         </select>
         
         </td>
@@ -162,7 +167,7 @@ switch($_GET['action']){
     </tr>
     </table>
     
-    <button onclick="codiad.modal.unload(); return false;">Close</button
+    <button onclick="codiad.modal.unload(); return false;"><?php lang("Close"); ?></button
     
     <?php
     
@@ -211,7 +216,7 @@ var editor_settings = {
             var setting = $(this).data('setting');
             var val = $(this).val();
             if(val===null){
-                codiad.message.alert('You Must Choose A Value');
+                codiad.message.alert(lang("You Must Choose A Value"));
             }else{
                 switch($(this).data('setting')){
                     case 'theme':
