@@ -39,7 +39,14 @@ $components = json_decode($components,true);
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script>!window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.7.2.min.js"%3E%3C/script%3E'));</script>
-    <script>var lang = <?=json_encode($lang); ?>;</script>
+    <script>
+        var $lang = <?=json_encode($lang); ?>;
+        var lang = function(key) {
+            if(key in $lang)
+                return $lang[key];
+            return key;
+        }
+    </script>
     <script src="js/jquery-ui-1.8.23.custom.min.js"></script>
     <script src="js/jquery.css3.min.js"></script>
     <script src="js/jquery.easing.js"></script>
