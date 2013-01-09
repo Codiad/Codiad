@@ -8,7 +8,7 @@
     include BASE_PATH."/languages/en.php"; //english is the main language
     include BASE_PATH."/languages/{$_SESSION['lang']}.php";
     
-    function lang($key, $output = false) {
+    function lang($key, $output = true) {
         global $lang;
         $key = ucwords(strtolower($key)); //Test, test TeSt and tESt are exacly the same
         if(isset($lang[$key]))
