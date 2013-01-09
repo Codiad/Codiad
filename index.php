@@ -40,9 +40,14 @@ $components = json_decode($components,true);
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script>!window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.7.2.min.js"%3E%3C/script%3E'));</script>
     <script>
+        function ucwords(str) { //function by Kevin Van Zonneveld
+            return (str + '').replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function ($1) {
+                return $1.toUpperCase();
+            });
+        }
         var $lang = <?=json_encode($lang); ?>;
         var lang = function(key) {
-            if(key in $lang)
+            if(ucwords(key.toLowerCase()) in $lang)
                 return $lang[key];
             return key;
         }
