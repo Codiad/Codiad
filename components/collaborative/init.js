@@ -40,6 +40,7 @@
 
             this.$onDocumentChange = this.onDocumentChange.bind(this);
             this.$onCursorChange = this.onCursorChange.bind(this);
+            this.$updateCollaboratorsSelections = this.updateCollaboratorsSelections.bind(this);
 
             /* Subscribe to know when a file is being closed. */
             amplify.subscribe('active.onClose', function (path) {
@@ -55,6 +56,11 @@
 
                 _this.addListeners();
             });
+
+            /* Start to ask periodically for the potential other collaborators
+             * selection. */
+            setInterval(this.$updateCollaboratorsSelections, 1000);
+
         },
 
         unregisterAsCollaboratorFromAllFiles: function () {
@@ -139,7 +145,7 @@
             var filename = codiad.active.getPath();
             ++this.filenamesAndVersion[filename];
             console.log('document change');
-            var post = { action: 'documentChange',
+            var post = { action: 'sendDocumentChange',
                 filename: codiad.active.getPath(),
                 change: JSON.stringify(e.data),
                 version: this.filenamesAndVersion[filename]
@@ -154,7 +160,7 @@
 
         onCursorChange: function (e) {
             console.log('cursor change');
-            var post = { action: 'cursorChange',
+            var post = { action: 'sendCursorChange',
                 filename: codiad.active.getPath(),
                 selection: JSON.stringify(this._getSelection().getRange()) };
             console.log(post);
@@ -163,6 +169,21 @@
                     console.log('complete cursor change');
                     console.log(data);
                 });
+        },
+
+        /* Request the server for the collaborators selections for the current
+         * file. */
+        updateCollaboratorsSelections: function () {
+            console.log('update');
+            if (this.currentFilename !== null) {
+                $.post(this.controller,
+                        { action: 'getUsersAndSelectionsForFile', filename: this.currentFilename },
+                        function (data) {
+                            console.log('complete getUsersAndSelectionsForFile');
+                            console.log(data);
+                            codiad.jsend.parse(data);
+                        });
+            }
         },
 
         /* Set of helper methods to manipulate the editor. */
