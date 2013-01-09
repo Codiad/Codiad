@@ -10,7 +10,10 @@
     
     function lang($key) {
         global $lang;
-        return $lang[$key];
+        $key = ucwords(strtolower($key)); //Test, test TeSt and tESt are exacly the same
+        if(isset($lang[$key]))
+            return $lang[$key];
+        return $key; //if there's nothing in the language thing return the english value
     }
     
     //////////////////////////////////////////////////////////////////
