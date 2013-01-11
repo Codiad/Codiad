@@ -41,6 +41,7 @@
             this.$onDocumentChange = this.onDocumentChange.bind(this);
             this.$onCursorChange = this.onCursorChange.bind(this);
             this.$updateCollaboratorsSelections = this.updateCollaboratorsSelections.bind(this);
+            this.$displaySelection = this.displaySelection.bind(this);
 
             /* Subscribe to know when a file is being closed. */
             amplify.subscribe('active.onClose', function (path) {
@@ -174,16 +175,50 @@
         /* Request the server for the collaborators selections for the current
          * file. */
         updateCollaboratorsSelections: function () {
-            console.log('update');
+            var _this = this;
             if (this.currentFilename !== null) {
                 $.post(this.controller,
                         { action: 'getUsersAndSelectionsForFile', filename: this.currentFilename },
                         function (data) {
                             console.log('complete getUsersAndSelectionsForFile');
                             console.log(data);
-                            codiad.jsend.parse(data);
+                            var selection = codiad.jsend.parse(data);
+                            _this.$displaySelection(selection);
                         });
             }
+        },
+
+        /* Displays a selection in the current file for the given user.
+         * The expected selection object is compatible with what is returned
+         * from the getUsersAndSelectionsForFile action on the server
+         * controller.
+         * Selection object example:
+         * {username: {start: {row: 12, column: 14}, end: {row: 14, column: 19}}} */
+        displaySelection: function (selection) {
+            console.log('displaySelection');
+            for (var username in selection) {
+                if (selection.hasOwnProperty(username)) {
+                    var markup = $('#selection-' + username);
+                    if (markup.length === 0) {
+                        /* The markup for the selection of this user does not
+                         * exist yet. Append it to the dom. */
+                        markup = $(this.getSelectionMarkupForUser(username));
+                        $('body').append(markup);
+                    }
+
+                    var screenCoordinates = this._getEditor().renderer
+                        .textToScreenCoordinates(selection[username].start.row,
+                                                selection[username].start.column);
+                    markup.css({
+                        left: screenCoordinates.pageX,
+                        top: screenCoordinates.pageY
+                    });
+                }
+            }
+        },
+
+        getSelectionMarkupForUser: function (username) {
+            return '<span id="selection-' + username + '" class="collaborative-selection">####</span>';
         },
 
         /* Set of helper methods to manipulate the editor. */
