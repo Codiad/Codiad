@@ -25,8 +25,8 @@
 
         controller: 'components/collaborative/controller.php',
 
-        /* Store the filenames and their corresponding local versions. */
-        filenamesAndVersion: {},
+        /* Store the filenames and their corresponding local revisions. */
+        filenamesAndRevision: {},
 
         /* The filename of the file to wich we are currently registered as a
          * collaborator. Might be null if we are not collaborating to any file. */
@@ -37,11 +37,15 @@
 
             /* Make sure to start clean by unregistering from any file first. */
             this.unregisterAsCollaboratorFromAllFiles();
+            this.removeSelectionAndChangesForAllFiles();
 
             this.$onDocumentChange = this.onDocumentChange.bind(this);
             this.$onSelectionChange = this.onSelectionChange.bind(this);
+
             this.$updateCollaboratorsSelections = this.updateCollaboratorsSelections.bind(this);
             this.$displaySelection = this.displaySelection.bind(this);
+
+            this.$applyCollaboratorsChanges = this.applyCollaboratorsChanges.bind(this);
 
             /* Subscribe to know when a file is being closed. */
             amplify.subscribe('active.onClose', function (path) {
@@ -62,11 +66,25 @@
              * selection. */
             setInterval(this.$updateCollaboratorsSelections, 1000);
 
+            /* Start to ask periodically for the potential other collaborators
+             * changes. */
+            setInterval(this.$applyCollaboratorsChanges, 1000);
+
+        },
+
+        removeSelectionAndChangesForAllFiles: function () {
+            $.post(this.controller,
+                    { action: 'removeSelectionAndChangesForAllFiles' },
+                    function (data) {
+                    // console.log('complete unregistering from all');
+                    // console.log(data);
+                    codiad.jsend.parse(data);
+                });
         },
 
         unregisterAsCollaboratorFromAllFiles: function () {
             $.post(this.controller,
-                    { action: 'unregisterFromAll' },
+                    { action: 'unregisterFromAllFiles' },
                     function (data) {
                     // console.log('complete unregistering from all');
                     // console.log(data);
@@ -76,16 +94,16 @@
 
         registerAsCollaboratorOfActiveFile: function () {
             var filename = codiad.active.getPath();
-            if (!(filename in this.filenamesAndVersion)) {
+            if (!(filename in this.filenamesAndRevision)) {
                 /* If the current file has not already been edited, initialize
-                 * its version to 0. */
-                this.filenamesAndVersion[filename] = 0;
+                 * its revision to 0. */
+                this.filenamesAndRevision[filename] = 0;
             }
 
             this.currentFilename = filename;
 
             $.post(this.controller,
-                    { action: 'register', filename: filename },
+                    { action: 'registerToFile', filename: filename },
                     function (data) {
                     // console.log('complete registering');
                     // console.log(data);
@@ -97,7 +115,7 @@
             // console.log(this.currentFilename);
             if (this.currentFilename !== null) {
                 $.post(this.controller,
-                        { action: 'unregister', filename: this.currentFilename },
+                        { action: 'unregisterFromFile', filename: this.currentFilename },
                         function (data) {
                             // console.log('complete unregistering');
                             // console.log(data);
@@ -143,15 +161,15 @@
         },
 
         onDocumentChange: function (e) {
-            /* Increment the current document version and send the change to
-             * the server along with the version number. */
+            /* Increment the current document revision and send the change to
+             * the server along with the revision number. */
             var filename = codiad.active.getPath();
-            ++this.filenamesAndVersion[filename];
+            ++this.filenamesAndRevision[filename];
             console.log('document change');
             var post = { action: 'sendDocumentChange',
                 filename: codiad.active.getPath(),
                 change: JSON.stringify(e.data),
-                version: this.filenamesAndVersion[filename]
+                revision: this.filenamesAndRevision[filename]
             };
             console.log(post);
 
@@ -216,6 +234,27 @@
                         top: screenCoordinates.pageY
                     });
                 }
+            }
+        },
+
+        /* Request the server for the collaborators changes and apply them if
+         * any. */
+        applyCollaboratorsChanges: function () {
+            var _this = this;
+            if (this.currentFilename !== null) {
+                console.log( { action: 'getUsersAndChangesForFile',
+                            filename: this.currentFilename,
+                            fromRevision: this.filenamesAndRevision[this.currentFilename]  });
+                $.post(this.controller,
+                        { action: 'getUsersAndChangesForFile',
+                            filename: this.currentFilename,
+                            fromRevision: this.filenamesAndRevision[this.currentFilename]  },
+                        function (data) {
+                            console.log('complete getUsersAndChangesForFile');
+                            console.log(data);
+                            var changes = codiad.jsend.parse(data);
+                            // _this.$applyChanges(changes);
+                        });
             }
         },
 

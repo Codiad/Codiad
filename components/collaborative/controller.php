@@ -32,7 +32,7 @@
     }
 
     switch ($_POST['action']) {
-    case 'register':
+    case 'registerToFile':
         /* Register as a collaborator for the given filename. */
         if(!isset($_POST['filename']) || empty($_POST['filename'])) {
             exit(formatJSEND('error', 'No Filename Specified in register'));
@@ -48,7 +48,7 @@
         }
         break;
 
-    case 'unregister':
+    case 'unregisterFromFile':
         /* Unregister as a collaborator for the given filename. */
         if(!isset($_POST['filename']) || empty($_POST['filename'])) {
             exit(formatJSEND('error', 'No Filename Specified in unregister'));
@@ -63,12 +63,28 @@
         }
         break;
 
-    case 'unregisterFromAll':
+    case 'unregisterFromAllFiles':
         /* Find all the files for which the current user is registered as
          * collaborator and unregister him. */
         $basePath = BASE_PATH . '/data/';
         if ($handle = opendir($basePath)) {
             $regex = '/' . $_SESSION['user'] . '$/';
+            while (false !== ($entry = readdir($handle))) {
+                if (preg_match($regex, $entry)) {
+                    unlink($basePath . $entry);
+                }
+            }
+        }
+
+        echo formatJSEND('success');
+        break;
+
+    case 'removeSelectionAndChangesForAllFiles':
+        /* Find all the files for which the current user is registered as
+         * collaborator and unregister him. */
+        $basePath = BASE_PATH . '/data/';
+        if ($handle = opendir($basePath)) {
+            $regex = '/' . $_SESSION['user'] . '/';
             while (false !== ($entry = readdir($handle))) {
                 if (preg_match($regex, $entry)) {
                     unlink($basePath . $entry);
@@ -120,7 +136,7 @@
             $maxChangeIndex = max(array_keys($changes));
 
             $change = json_decode($_POST['change'], true);
-            $change['version'] = json_decode($_POST['version']);
+            $change['revision'] = json_decode($_POST['revision']);
             $changes[++$maxChangeIndex] = $change;
 
             saveJSON($filename, $changes);
@@ -147,6 +163,35 @@
                 $selection = getSelection($filename, $user);
                 if (!empty($selection)) {
                     $usersAndSelections[$user] = $selection;
+                }
+            }
+        }
+
+        echo formatJSEND('success', $usersAndSelections);
+        break;
+
+    case 'getUsersAndChangesForFile':
+        /* Get an object containing all the users registered to the given file 
+        * and their associated list of changes from the given revision 
+        * number. The data corresponding to the current user is omitted. */
+        if(!isset($_POST['filename']) || empty($_POST['filename'])) {
+            exit(formatJSEND('error', 'No Filename Specified in getUsersAndChangesForFile'));
+        }
+
+        if(!isset($_POST['fromRevision'])) {
+            exit(formatJSEND('error', 'No fromRevision argument Specified in getUsersAndChangesForFile'));
+        }
+
+        $filename = $_POST['filename'];
+        $fromRevision = $_POST['fromRevision']; 
+
+        $usersAndChanges = array();
+        $users = getRegisteredUsersForFile($filename);
+        foreach ($users as $user) {
+            if ($user !== $_SESSION['user']) {
+                $changes = getChanges($filename, $user, $fromRevision);
+                if (!empty($changes)) {
+                    $usersAndChanges[$user] = $changes;
                 }
             }
         }
@@ -211,6 +256,16 @@
     function getSelection($filename, $user) {
         $sanitizedFilename = str_replace('/', '_', $filename);
         $json = getJSON($sanitizedFilename . '%%' . $user . '%%selection');
+        return $json;
+    }
+
+    /* Return the list of changes, if any, for the given filename, user and 
+     * from the given revision number.
+     * $filename must contain only the basename of the file. */
+    function getChanges($filename, $user, $fromRevision) {
+        $sanitizedFilename = str_replace('/', '_', $filename);
+        $json = getJSON($sanitizedFilename . '%%' . $user . '%%changes');
+        print_r($json);
         return $json;
     }
 
