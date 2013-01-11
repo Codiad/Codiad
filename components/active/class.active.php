@@ -1,70 +1,122 @@
 <?php
 
-    /*
-    *  Copyright (c) Codiad & Kent Safranski (codiad.com), distributed
-    *  as-is and without warranty under the MIT License. See
-    *  [root]/license.txt for more. This information must remain intact.
-    */
+/*
+*  Copyright (c) Codiad & Kent Safranski (codiad.com), distributed
+*  as-is and without warranty under the MIT License. See
+*  [root]/license.txt for more. This information must remain intact.
+*/
 
-    require_once('../../config.php');
-    require_once('class.active.php'); 
-
-    $Active = new Active();
+class Active {
 
     //////////////////////////////////////////////////////////////////
-    // Verify Session or Key
+    // PROPERTIES
     //////////////////////////////////////////////////////////////////
 
-    checkSession();
+    public $username    = "";
+    public $path        = "";
+    public $new_path    = "";
+    public $actives     = "";
 
     //////////////////////////////////////////////////////////////////
-    // Get user's active files
+    // METHODS
     //////////////////////////////////////////////////////////////////
 
-    if($_GET['action']=='list'){
-        $Active->username = $_SESSION['user'];
-        $Active->ListActive();
+    // -----------------------------||----------------------------- //
+
+    //////////////////////////////////////////////////////////////////
+    // Construct
+    //////////////////////////////////////////////////////////////////
+
+    public function __construct(){
+        $this->actives = getJSON('active.php');
     }
 
     //////////////////////////////////////////////////////////////////
-    // Add active record
+    // List User's Active Files
     //////////////////////////////////////////////////////////////////
 
-    if($_GET['action']=='add'){
-        $Active->username = $_SESSION['user'];
-        $Active->path = $_GET['path'];
-        $Active->Add();
+    public function ListActive(){
+        $active_list = array();
+        $tainted = FALSE;
+        if($this->actives){
+            foreach($this->actives as $active=>$data){
+              if($data['username']==$this->username){
+                if (file_exists(dirname(__FILE__)."/../../workspace".$data['path'])) {
+                    $active_list[] = $data['path'];
+                } else {
+                    unset($this->actives[$active]);
+                    $tainted = TRUE;
+                }
+              }
+            }
+        }
+        if ($tainted){
+            saveJSON('active.php',$this->actives);
+        }
+        echo formatJSEND("success",$active_list);
     }
 
     //////////////////////////////////////////////////////////////////
-    // Rename
+    // Check File
     //////////////////////////////////////////////////////////////////
 
-    if($_GET['action']=='rename'){
-        $Active->username = $_SESSION['user'];
-        $Active->path = $_GET['old_path'];
-        $Active->new_path = $_GET['new_path'];
-        $Active->Rename();
+    public function Check(){
+        $cur_users = array();
+        foreach($this->actives as $active=>$data){
+            if($data['username']!=$this->username && $data['path']==$this->path){
+                $cur_users[] = $data['username'];
+            }
+        }
+        if(count($cur_users)!=0){
+            echo formatJSEND("error","Warning: File Currently Opened By: " . implode(", ",$cur_users));
+        }else{
+            echo formatJSEND("success");
+        }
     }
 
     //////////////////////////////////////////////////////////////////
-    // Check if file is active
+    // Add File
     //////////////////////////////////////////////////////////////////
 
-    if($_GET['action']=='check'){
-        $Active->username = $_SESSION['user'];
-        $Active->path = $_GET['path'];
-        $Active->Check();
+    public function Add(){
+        $process_add = true;
+        foreach($this->actives as $active=>$data){
+            if($data['username']==$this->username && $data['path']==$this->path){
+                $process_add = false;
+            }
+        }
+        if($process_add){
+            $this->actives[] = array("username"=>$this->username,"path"=>$this->path);
+            saveJSON('active.php',$this->actives);
+            echo formatJSEND("success");
+        }
     }
 
     //////////////////////////////////////////////////////////////////
-    // Remove active record
+    // Rename File
     //////////////////////////////////////////////////////////////////
 
-    if($_GET['action']=='remove'){
-        $Active->username = $_SESSION['user'];
-        $Active->path = $_GET['path'];
-        $Active->Remove();
+    public function Rename(){
+        $revised_actives = array();
+        foreach($this->actives as $active=>$data){
+            $revised_actives[] = array("username"=>$data['username'],"path"=>str_replace($this->path,$this->new_path,$data['path']));
+        }
+        saveJSON('active.php',$revised_actives);
+        echo formatJSEND("success");
     }
 
-?>
+    //////////////////////////////////////////////////////////////////
+    // Remove File
+    //////////////////////////////////////////////////////////////////
+
+    public function Remove(){
+        foreach($this->actives as $active=>$data){
+            if($this->username==$data['username'] && $this->path==$data['path']){
+                unset($this->actives[$active]);
+            }
+        }
+        saveJSON('active.php',$this->actives);
+        echo formatJSEND("success");
+    }
+
+}
