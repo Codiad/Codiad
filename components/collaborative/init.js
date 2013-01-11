@@ -16,7 +16,7 @@
     //
     // Collaborative Component for Codiad
     // ---------------------------------
-    // Displays in real time the cursor position and
+    // Displays in real time the selection position and
     // the changes when concurrently editing files.
     //
     //////////////////////////////////////////////////////////////////
@@ -39,7 +39,7 @@
             this.unregisterAsCollaboratorFromAllFiles();
 
             this.$onDocumentChange = this.onDocumentChange.bind(this);
-            this.$onCursorChange = this.onCursorChange.bind(this);
+            this.$onSelectionChange = this.onSelectionChange.bind(this);
             this.$updateCollaboratorsSelections = this.updateCollaboratorsSelections.bind(this);
             this.$displaySelection = this.displaySelection.bind(this);
 
@@ -68,8 +68,8 @@
             $.post(this.controller,
                     { action: 'unregisterFromAll' },
                     function (data) {
-                    console.log('complete unregistering from all');
-                    console.log(data);
+                    // console.log('complete unregistering from all');
+                    // console.log(data);
                     codiad.jsend.parse(data);
                 });
         },
@@ -87,20 +87,20 @@
             $.post(this.controller,
                     { action: 'register', filename: filename },
                     function (data) {
-                    console.log('complete registering');
-                    console.log(data);
+                    // console.log('complete registering');
+                    // console.log(data);
                     codiad.jsend.parse(data);
                 });
         },
 
         unregisterAsCollaboratorOfCurrentFile: function () {
-            console.log(this.currentFilename);
+            // console.log(this.currentFilename);
             if (this.currentFilename !== null) {
                 $.post(this.controller,
                         { action: 'unregister', filename: this.currentFilename },
                         function (data) {
-                            console.log('complete unregistering');
-                            console.log(data);
+                            // console.log('complete unregistering');
+                            // console.log(data);
                             codiad.jsend.parse(data);
                         });
 
@@ -111,13 +111,13 @@
         /* Add appropriate listeners to the current EditSession. */
         addListeners: function () {
             this.addListenerToOnDocumentChange();
-            this.addListenerToOnCursorChange();
+            this.addListenerToOnSelectionChange();
         },
 
         /* Remove listeners from the current EditSession. */
         removeListeners: function () {
             this.removeListenerToOnDocumentChange();
-            this.removeListenerToOnCursorChange();
+            this.removeListenerToOnSelectionChange();
         },
 
         addListenerToOnDocumentChange: function () {
@@ -130,14 +130,16 @@
             session.removeEventListener('change', this.$onDocumentChange);
         },
 
-        addListenerToOnCursorChange: function () {
+        addListenerToOnSelectionChange: function () {
             var selection = this._getSelection();
-            selection.addEventListener('changeCursor', this.$onCursorChange);
+            // selection.addEventListener('changeCursor', this.$onSelectionChange);
+            selection.addEventListener('changeSelection', this.$onSelectionChange);
         },
 
-        removeListenerToOnCursorChange: function () {
+        removeListenerToOnSelectionChange: function () {
             var selection = this._getSelection();
-            selection.removeEventListener('changeCursor', this.$onCursorChange);
+            // selection.removeEventListener('changeCursor', this.$onSelectionChange);
+            selection.removeEventListener('changeSelection', this.$onSelectionChange);
         },
 
         onDocumentChange: function (e) {
@@ -159,15 +161,15 @@
                 });
         },
 
-        onCursorChange: function (e) {
-            console.log('cursor change');
-            var post = { action: 'sendCursorChange',
+        onSelectionChange: function (e) {
+            console.log('selection change');
+            var post = { action: 'sendSelectionChange',
                 filename: codiad.active.getPath(),
                 selection: JSON.stringify(this._getSelection().getRange()) };
             console.log(post);
 
             $.post(this.controller, post, function (data) {
-                    console.log('complete cursor change');
+                    console.log('complete selection change');
                     console.log(data);
                 });
         },
@@ -180,8 +182,8 @@
                 $.post(this.controller,
                         { action: 'getUsersAndSelectionsForFile', filename: this.currentFilename },
                         function (data) {
-                            console.log('complete getUsersAndSelectionsForFile');
-                            console.log(data);
+                            // console.log('complete getUsersAndSelectionsForFile');
+                            // console.log(data);
                             var selection = codiad.jsend.parse(data);
                             _this.$displaySelection(selection);
                         });
@@ -195,7 +197,7 @@
          * Selection object example:
          * {username: {start: {row: 12, column: 14}, end: {row: 14, column: 19}}} */
         displaySelection: function (selection) {
-            console.log('displaySelection');
+            // console.log('displaySelection');
             for (var username in selection) {
                 if (selection.hasOwnProperty(username)) {
                     var markup = $('#selection-' + username);

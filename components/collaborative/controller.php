@@ -79,14 +79,14 @@
         echo formatJSEND('success');
         break;
 
-    case 'sendCursorChange':
+    case 'sendSelectionChange':
         /* Push the current selection to the server. */
         if(!isset($_POST['filename']) || empty($_POST['filename'])) {
-            exit(formatJSEND('error', 'No Filename Specified in sendCursorChange'));
+            exit(formatJSEND('error', 'No Filename Specified in sendSelectionChange'));
         }
 
         if(!isset($_POST['selection']) || empty($_POST['selection'])) {
-            exit(formatJSEND('error', 'No Selection Specified in sendCursorChange'));
+            exit(formatJSEND('error', 'No Selection Specified in sendSelectionChange'));
         }
 
         if (isUserRegisteredForFile($_SESSION['user'], $_POST['filename'])) {
