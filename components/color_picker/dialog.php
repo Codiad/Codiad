@@ -2,15 +2,18 @@
 *  Copyright (c) Codiad & Kent Safranski (codiad.com), distributed
 *  as-is and without warranty under the MIT License. See 
 *  [root]/license.txt for more. This information must remain intact.
-*/-->
-
+*/--> 
+<?php
+include "../../common.php";
+?>
 <div id="colorpicker_region">
 
 </div>
 
-<button class="right" onclick="codiad.modal.unload();">Close</button>
+<button class="right" onclick="codiad.modal.unload();"><?php i18n("Close"); ?></button>
 
-<button class="btn-left" onclick="codiad.colorPicker.insert('hex');">Insert HEX</button><button class="btn-right" onclick="codiad.colorPicker.insert('rgb');">Insert RGB</button>
+<button class="btn-left" onclick="codiad.colorPicker.insert('hex');"><?php i18n("Insert HEX"); ?></button
+><button class="btn-right" onclick="codiad.colorPicker.insert('rgb');"><?php i18n("Insert RGB"); ?></button>
 
 <script>
 

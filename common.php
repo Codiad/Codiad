@@ -1,11 +1,28 @@
 <?php
-
     /*
     *  Copyright (c) Codiad & Kent Safranski (codiad.com), distributed
     *  as-is and without warranty under the MIT License. See 
     *  [root]/license.txt for more. This information must remain intact.
     */
-
+    
+    include BASE_PATH."/languages/en.php"; //english is the main language
+    include BASE_PATH."/languages/{$_SESSION['lang']}.php";
+    
+    function i18n($key, $output = true) {
+        global $lang;
+        $key = ucwords(strtolower($key)); //Test, test TeSt and tESt are exacly the same
+        if(isset($lang[$key]))
+            $return = $lang[$key];
+        else
+            $return = $key;
+        if($output)
+            echo $return;
+        return $return;
+    }
+    function get_i18n($key) {
+        return i18n($key, false);
+    }
+    
     //////////////////////////////////////////////////////////////////
     // Check Session / Key
     //////////////////////////////////////////////////////////////////
