@@ -265,8 +265,8 @@
     function getChanges($filename, $user, $fromRevision) {
         $sanitizedFilename = str_replace('/', '_', $filename);
         $json = getJSON($sanitizedFilename . '%%' . $user . '%%changes');
-        print_r($json);
-        return $json;
+        /* print_r(array_slice($json, $fromRevision, NULL, true)); */
+        return array_slice($json, $fromRevision, NULL, true);
     }
 
 ?>
