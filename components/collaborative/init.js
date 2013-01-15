@@ -32,6 +32,11 @@
          * collaborator. Might be null if we are not collaborating to any file. */
         currentFilename: null,
 
+        /* Store the currently displayed usernames and their corresponding
+         * current selection.
+         * [username: {start: {row: 12, column: 14}, end: {row: 14, column: 19}}, ... ] */
+        displayedSelections: [],
+
         init: function () {
             var _this = this;
 
@@ -43,7 +48,7 @@
             this.$onSelectionChange = this.onSelectionChange.bind(this);
 
             this.$updateCollaboratorsSelections = this.updateCollaboratorsSelections.bind(this);
-            this.$displaySelection = this.displaySelection.bind(this);
+            this.$displaySelections = this.displaySelections.bind(this);
 
             this.$applyCollaboratorsChanges = this.applyCollaboratorsChanges.bind(this);
 
@@ -112,7 +117,7 @@
         },
 
         unregisterAsCollaboratorOfCurrentFile: function () {
-            // console.log(this.currentFilename);
+            // console.log('unregister ' + this.currentFilename);
             if (this.currentFilename !== null) {
                 $.post(this.controller,
                         { action: 'unregisterFromFile', filename: this.currentFilename },
@@ -150,13 +155,13 @@
 
         addListenerToOnSelectionChange: function () {
             var selection = this._getSelection();
-            // selection.addEventListener('changeCursor', this.$onSelectionChange);
+            selection.addEventListener('changeCursor', this.$onSelectionChange);
             selection.addEventListener('changeSelection', this.$onSelectionChange);
         },
 
         removeListenerToOnSelectionChange: function () {
             var selection = this._getSelection();
-            // selection.removeEventListener('changeCursor', this.$onSelectionChange);
+            selection.removeEventListener('changeCursor', this.$onSelectionChange);
             selection.removeEventListener('changeSelection', this.$onSelectionChange);
         },
 
@@ -202,8 +207,21 @@
                         function (data) {
                             // console.log('complete getUsersAndSelectionsForFile');
                             // console.log(data);
-                            var selection = codiad.jsend.parse(data);
-                            _this.$displaySelection(selection);
+                            var selections = codiad.jsend.parse(data);
+                            _this.$displaySelections(selections);
+
+                            /* Nobody is registered, remove every displayed selections. */
+                            if (_this.displayedSelections !== null) {
+                                for (var username in _this.displayedSelections) {
+                                    if (_this.displayedSelections.hasOwnProperty(username)) {
+                                        if (selections === null || !(username in selections)) {
+                                            _this.removeSelection(username);
+                                        }
+                                    }
+                                }
+                            }
+
+                            _this.displayedSelections = selections;
                         });
             }
         },
@@ -214,10 +232,10 @@
          * controller.
          * Selection object example:
          * {username: {start: {row: 12, column: 14}, end: {row: 14, column: 19}}} */
-        displaySelection: function (selection) {
+        displaySelections: function (selections) {
             // console.log('displaySelection');
-            for (var username in selection) {
-                if (selection.hasOwnProperty(username)) {
+            for (var username in selections) {
+                if (selections.hasOwnProperty(username)) {
                     var markup = $('#selection-' + username);
                     if (markup.length === 0) {
                         /* The markup for the selection of this user does not
@@ -227,8 +245,8 @@
                     }
 
                     var screenCoordinates = this._getEditor().renderer
-                        .textToScreenCoordinates(selection[username].start.row,
-                                                selection[username].start.column);
+                        .textToScreenCoordinates(selections[username].start.row,
+                                                selections[username].start.column);
                     markup.css({
                         left: screenCoordinates.pageX,
                         top: screenCoordinates.pageY
@@ -237,21 +255,27 @@
             }
         },
 
+        /* Remove the selection corresponding to the given username. */
+        removeSelection: function (username) {
+            console.log('remove ' + username);
+            $('#selection-' + username).remove();
+        },
+
         /* Request the server for the collaborators changes and apply them if
          * any. */
         applyCollaboratorsChanges: function () {
             var _this = this;
             if (this.currentFilename !== null) {
-                console.log( { action: 'getUsersAndChangesForFile',
-                            filename: this.currentFilename,
-                            fromRevision: this.filenamesAndRevision[this.currentFilename]  });
+                // console.log( { action: 'getUsersAndChangesForFile',
+                            // filename: this.currentFilename,
+                            // fromRevision: this.filenamesAndRevision[this.currentFilename]  });
                 $.post(this.controller,
                         { action: 'getUsersAndChangesForFile',
                             filename: this.currentFilename,
                             fromRevision: this.filenamesAndRevision[this.currentFilename]  },
                         function (data) {
-                            console.log('complete getUsersAndChangesForFile');
-                            console.log(data);
+                            // console.log('complete getUsersAndChangesForFile');
+                            // console.log(data);
                             var changes = codiad.jsend.parse(data);
                             // _this.$applyChanges(changes);
                         });
