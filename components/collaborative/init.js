@@ -74,6 +74,18 @@
             /* Start to ask periodically for the potential other collaborators
              * changes. */
             setInterval(this.$applyCollaboratorsChanges, 1000);
+            
+            $(".collaborative-selection").live({
+                mouseenter: function() {
+                        $(this).parent().find(".collaborative-selection-tooltip").fadeIn('fast');
+                    },
+                mouseleave: function() {
+                        var $this = $(this);
+                        setTimeout(function() {
+                            $this.parent().find(".collaborative-selection-tooltip").fadeOut('fast');
+                        }, 300);
+                    }
+            });
 
         },
 
@@ -274,8 +286,8 @@
                             filename: this.currentFilename,
                             fromRevision: this.filenamesAndRevision[this.currentFilename]  },
                         function (data) {
-                            // console.log('complete getUsersAndChangesForFile');
-                            // console.log(data);
+                             console.log('complete getUsersAndChangesForFile');
+                             console.log(data);
                             var changes = codiad.jsend.parse(data);
                             // _this.$applyChanges(changes);
                         });
@@ -283,7 +295,10 @@
         },
 
         getSelectionMarkupForUser: function (username) {
-            return '<span id="selection-' + username + '" class="collaborative-selection">####</span>';
+            return '<div id="selection-' + username + '" class="collaborative-selection-wrapper">' +
+                '<div class="collaborative-selection"></div>' +
+                '<div class="collaborative-selection-tooltip">' + username + '</div>' +
+                '</div>';
         },
 
         /* Set of helper methods to manipulate the editor. */

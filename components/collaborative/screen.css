@@ -1,4 +1,18 @@
-.collaborative-selection {
+.collaborative-selection-wrapper {
     position: fixed;
-    display: block;
+    z-index: 1;
+}
+
+.collaborative-selection {
+    width: 2px;
+    background-color: red;
+    height: 12pt;
+}
+
+.collaborative-selection-tooltip {
+    display: none;
+    position: relative;
+    top: -24pt;
+    padding: 0 3px;
+    background-color: red;
 }
