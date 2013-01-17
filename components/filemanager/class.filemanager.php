@@ -6,7 +6,7 @@
 *  [root]/license.txt for more. This information must remain intact.
 */
 
-require_once('diff_match_patch.php');
+require_once('../../thirdparty/diff_match_patch.php');
 
 class Filemanager {
 
