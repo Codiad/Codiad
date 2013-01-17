@@ -1,6 +1,6 @@
 [
     {
-        "title": "Save File",
+        "title": "Save",
         "icon": "icon-install",
         "onclick": "codiad.active.save();"
     },
@@ -50,7 +50,7 @@
         "onclick": null
     },
     {
-        "title": "Editor",
+        "title": "Settings",
         "icon": "icon-doc-text",
         "onclick": "codiad.modal.load(400, 'components/editor/dialog.php?action=settings');codiad.modal.hideOverlay();"
     },
