@@ -6,7 +6,7 @@
 *  [root]/license.txt for more. This information must remain intact.
 */
 
-require_once('diff_match_patch.php');
+require_once('../../thirdparty/diff_match_patch.php');
 
 class Filemanager {
 
@@ -26,7 +26,7 @@ class Filemanager {
     public $controller    = "";
     public $upload_json   = "";
     public $search_string = "";
-    
+
     public $query         = "";
     public $foptions     = "";
 
@@ -147,7 +147,7 @@ class Filemanager {
             $output = shell_exec($cmd);
             $file_arr = explode("\n", $output);
             $output_arr = array();
-            
+
             error_reporting(0);
 
             foreach ($file_arr as $i => $fentry) {
@@ -372,7 +372,7 @@ class Filemanager {
                         //DEBUG : file_put_contents($this->path.".orig",$fileContents );
                         //DEBUG : file_put_contents($this->path.".patch", $this->patch);
                     }
-		    
+
                     $writeSuccess = fwrite($file, $this->content);
                     fclose($file);
                     if (! $writeSuccess){
