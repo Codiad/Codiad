@@ -77,8 +77,8 @@
             $.ctrl('32', function() {
                 // TODO remove this it is for testing purpose.
                 // codiad.autocomplete.suggest();
-                console.log('add listeners.');
-                codiad.collaborative.addListeners();
+                console.log('diffing');
+                codiad.collaborative.sendEdits();
             });
 
             $.ctrl('71', function(){

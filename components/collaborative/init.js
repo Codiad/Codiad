@@ -32,6 +32,10 @@
          * collaborator. Might be null if we are not collaborating to any file. */
         currentFilename: null,
 
+        /* Store the text shadows for every edited files.
+         * {'filename': shadowString, ... } */
+        shadows: {},
+
         init: function () {
             var _this = this;
 
@@ -58,6 +62,11 @@
             amplify.subscribe('active.onFocus', function (path) {
                 _this.unregisterAsCollaboratorOfCurrentFile();
                 _this.registerAsCollaboratorOfActiveFile();
+
+                if (!(_this.currentFilename in _this.shadows)) {
+                    /* Create the initial shadow for the current file. */
+                    _this.shadows[_this.currentFilename] = _this._getCurrentFileText();
+                }
 
                 _this.addListeners();
             });
@@ -242,20 +251,55 @@
         applyCollaboratorsChanges: function () {
             var _this = this;
             if (this.currentFilename !== null) {
-                console.log( { action: 'getUsersAndChangesForFile',
-                            filename: this.currentFilename,
-                            fromRevision: this.filenamesAndRevision[this.currentFilename]  });
+                // console.log( { action: 'getUsersAndChangesForFile',
+                            // filename: this.currentFilename,
+                            // fromRevision: this.filenamesAndRevision[this.currentFilename]  });
                 $.post(this.controller,
                         { action: 'getUsersAndChangesForFile',
                             filename: this.currentFilename,
                             fromRevision: this.filenamesAndRevision[this.currentFilename]  },
                         function (data) {
-                            console.log('complete getUsersAndChangesForFile');
-                            console.log(data);
+                            // console.log('complete getUsersAndChangesForFile');
+                            // console.log(data);
                             var changes = codiad.jsend.parse(data);
                             // _this.$applyChanges(changes);
                         });
             }
+        },
+
+        /* Make a diff of the current file text with the shadow and send it to
+         * the server. */
+        sendEdits: function (callback) {
+            var _this = this;
+            var currentText = this._getCurrentFileText();
+            var currentFilename = this.currentFilename;
+
+            codiad.workerManager.addTask({
+                taskType: 'diff',
+                id: 'collaborative_' + currentFilename,
+                original: _this.shadows[currentFilename],
+                changed: currentText
+            }, function (success, patch) {
+                if (success) {
+                    if (patch) {
+                        console.log(patch);
+                        _this.shadows[currentFilename] = currentText;
+
+                        var post = { action: 'sendEdits',
+                                    filename: currentFilename,
+                                    selection: JSON.stringify(patch) };
+                        console.log(post);
+
+                        $.post(this.controller, post, function (data) {
+                            console.log('complete sendEdits');
+                            console.log(data);
+                        });
+                    }
+                } else {
+                    console.log('problem diffing');
+                    console.log(patch);
+                }
+            }, this);
         },
 
         getSelectionMarkupForUser: function (username) {
@@ -277,7 +321,12 @@
 
         _getDocument: function () {
             return codiad.editor.getActive().getSession().getDocument();
+        },
+
+        _getCurrentFileText: function () {
+            return codiad.editor.getActive().getSession().getValue();
         }
+
 
     };
 

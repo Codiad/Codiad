@@ -28,14 +28,14 @@
     //////////////////////////////////////////////////////////////////
 
     if(!isset($_POST['action']) || empty($_POST['action'])) {
-        exit(formatJSEND('error', 'No Action Specified'));
+        exit(formatJSEND('error', 'No action specified'));
     }
 
     switch ($_POST['action']) {
     case 'registerToFile':
         /* Register as a collaborator for the given filename. */
         if(!isset($_POST['filename']) || empty($_POST['filename'])) {
-            exit(formatJSEND('error', 'No Filename Specified in register'));
+            exit(formatJSEND('error', 'No filename specified in register'));
         }
 
         /* FIXME beware of filenames with '%' characters. */
@@ -51,7 +51,7 @@
     case 'unregisterFromFile':
         /* Unregister as a collaborator for the given filename. */
         if(!isset($_POST['filename']) || empty($_POST['filename'])) {
-            exit(formatJSEND('error', 'No Filename Specified in unregister'));
+            exit(formatJSEND('error', 'No filename specified in unregister'));
         }
 
         $filename = BASE_PATH . '/data/' . str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'];
@@ -102,7 +102,7 @@
         }
 
         if(!isset($_POST['selection']) || empty($_POST['selection'])) {
-            exit(formatJSEND('error', 'No Selection Specified in sendSelectionChange'));
+            exit(formatJSEND('error', 'No selection specified in sendSelectionChange'));
         }
 
         if (isUserRegisteredForFile($_SESSION['user'], $_POST['filename'])) {
@@ -118,11 +118,11 @@
     case 'sendDocumentChange':
         /* Push a document change to the server. */
         if(!isset($_POST['filename']) || empty($_POST['filename'])) {
-            exit(formatJSEND('error', 'No Filename Specified in sendDocumentChange'));
+            exit(formatJSEND('error', 'No filename specified in sendDocumentChange'));
         }
 
         if(!isset($_POST['change']) || empty($_POST['change'])) {
-            exit(formatJSEND('error', 'No Change Specified in sendDocumentChange'));
+            exit(formatJSEND('error', 'No change specified in sendDocumentChange'));
         }
 
         if (isUserRegisteredForFile($_SESSION['user'], $_POST['filename'])) {
@@ -151,7 +151,7 @@
          * and their associated selections. The data corresponding to the
          * current user is omitted. */
         if(!isset($_POST['filename']) || empty($_POST['filename'])) {
-            exit(formatJSEND('error', 'No Filename Specified in getUsersAndSelectionsForFile'));
+            exit(formatJSEND('error', 'No filename specified in getUsersAndSelectionsForFile'));
         }
 
         $filename = $_POST['filename'];
@@ -171,11 +171,11 @@
         break;
 
     case 'getUsersAndChangesForFile':
-        /* Get an object containing all the users registered to the given file 
-        * and their associated list of changes from the given revision 
+        /* Get an object containing all the users registered to the given file
+        * and their associated list of changes from the given revision
         * number. The data corresponding to the current user is omitted. */
         if(!isset($_POST['filename']) || empty($_POST['filename'])) {
-            exit(formatJSEND('error', 'No Filename Specified in getUsersAndChangesForFile'));
+            exit(formatJSEND('error', 'No filename specified in getUsersAndChangesForFile'));
         }
 
         if(!isset($_POST['fromRevision'])) {
@@ -183,7 +183,7 @@
         }
 
         $filename = $_POST['filename'];
-        $fromRevision = $_POST['fromRevision']; 
+        $fromRevision = $_POST['fromRevision'];
 
         $usersAndChanges = array();
         $users = getRegisteredUsersForFile($filename);
@@ -197,6 +197,53 @@
         }
 
         echo formatJSEND('success', $usersAndSelections);
+        break;
+
+    case 'sendShadow':
+        if(!isset($_POST['filename']) || empty($_POST['filename'])) {
+            exit(formatJSEND('error', 'No filename specified in sendShadow'));
+        }
+
+        if(!isset($_POST['shadow'])) {
+            exit(formatJSEND('error', 'No shadow specified in sendShadow'));
+        }
+
+        $filename = $_POST['filename'];
+        $clientShadow = $_POST['shadow'];
+
+        if (!existShadow($filename)) {
+            setShadow($filename, $clientShadow);
+        } else {
+            $serverShadow = getShadow($filename);
+
+            $dmp = new diff_match_patch();
+            $patchTxt = $dmp.patch_toText($dmp.patch_make($clientShadow, $serverShadow));
+
+            exit(formatJSEND('success', $patchTxt));
+        }
+
+        $dmp = new diff_match_patch();
+        $p = $dmp->patch_apply($dmp->patch_fromText($patch), $fileContents);
+        $this->content = $p[0];
+
+        break;
+
+    case 'sendEdits':
+        if(!isset($_POST['filename']) || empty($_POST['filename'])) {
+            exit(formatJSEND('error', 'No filename specified in sendEdits'));
+        }
+
+        if(!isset($_POST['patch'])) {
+            exit(formatJSEND('error', 'No patch specified in sendEdits'));
+        }
+
+        $filename = $_POST['filename'];
+        $patch = $_POST['patch'];
+
+        $dmp = new diff_match_patch();
+        $p = $dmp->patch_apply($dmp->patch_fromText($patch), $fileContents);
+        $this->content = $p[0];
+
         break;
 
     default:
@@ -259,7 +306,7 @@
         return $json;
     }
 
-    /* Return the list of changes, if any, for the given filename, user and 
+    /* Return the list of changes, if any, for the given filename, user and
      * from the given revision number.
      * $filename must contain only the basename of the file. */
     function getChanges($filename, $user, $fromRevision) {
