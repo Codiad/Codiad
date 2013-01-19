@@ -59,11 +59,12 @@ $components = json_decode($components,true);
 
     if(!isset($_SESSION['user'])){
 
-        $path = rtrim(str_replace("index.php", "", $_SERVER['PHP_SELF']),"/");
+        //$path = rtrim(str_replace("index.php", "", $_SERVER['PHP_SELF']),"/");
+        $path = rtrim(str_replace("index.php", "", $_SERVER['SCRIPT_FILENAME']),"/");
 
-        $users = file_exists($_SERVER['DOCUMENT_ROOT'] . $path . "/data/users.php");
-        $projects = file_exists($_SERVER['DOCUMENT_ROOT'] . $path . "/data/projects.php");
-        $active = file_exists($_SERVER['DOCUMENT_ROOT'] . $path . "/data/active.php");
+        $users = file_exists($path . "/data/users.php");
+        $projects = file_exists($path . "/data/projects.php");
+        $active = file_exists($path . "/data/active.php");
 
         if(!$users && !$projects && !$active){
             // Installer

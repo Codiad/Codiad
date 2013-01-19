@@ -12,11 +12,11 @@
 
     $path = $_POST['path'];
     
-    $workspace = $_SERVER['DOCUMENT_ROOT'] . $path . "/workspace";
-    $users = $_SERVER['DOCUMENT_ROOT'] . $path . "/data/users.php";
-    $projects = $_SERVER['DOCUMENT_ROOT'] . $path . "/data/projects.php";
-    $active = $_SERVER['DOCUMENT_ROOT'] . $path . "/data/active.php";
-    $config = $_SERVER['DOCUMENT_ROOT'] . $path . "/config.php";
+    $workspace = $path . "/workspace";
+    $users = $path . "/data/users.php";
+    $projects = $path . "/data/projects.php";
+    $active = $path . "/data/active.php";
+    $config = $path . "/config.php";
 
 //////////////////////////////////////////////////////////////////////
 // Functions
@@ -92,7 +92,7 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
 //////////////////////////////////////////////////////////////////
 
 $rel = "' . $path . '";
-define("BASE_PATH",$_SERVER["DOCUMENT_ROOT"] . $rel);
+define("BASE_PATH",$rel);
 define("COMPONENTS",BASE_PATH . "/components");
 define("DATA",BASE_PATH . "/data");
 define("WORKSPACE",BASE_PATH . "/workspace");
