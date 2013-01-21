@@ -5,7 +5,7 @@
     *  [root]/license.txt for more. This information must remain intact.
     */
     
-    include BASE_PATH."/languages/en.php"; //english is the main language
+    include BASE_PATH."/languages/english.php"; //english is the main language
     include BASE_PATH."/languages/{$_SESSION['lang']}.php";
     
     function i18n($key, $output = true) {
@@ -18,7 +18,7 @@
         if($output)
             echo $return;
         return $return;
-    }
+    } 
     function get_i18n($key) {
         return i18n($key, false);
     }
