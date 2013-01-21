@@ -7,15 +7,15 @@
 *  [root]/license.txt for more. This information must remain intact.
 */
 
-$path = rtrim(str_replace("index.php", "", $_SERVER['PHP_SELF']),"/");
+$path = rtrim(str_replace("index.php", "", $_SERVER['SCRIPT_FILENAME']),"/");
 
-$workspace = is_writable($_SERVER['DOCUMENT_ROOT'] . $path . "/workspace");
-$data = is_writable($_SERVER['DOCUMENT_ROOT'] . $path . "/data");
-if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $path . "/config.php")){
-	file_put_contents($_SERVER['DOCUMENT_ROOT'] . $path . "/config.php",file_get_contents($_SERVER['DOCUMENT_ROOT'] . $path . "/config.example.php"));
+$workspace = is_writable( $path . "/workspace");
+$data = is_writable($path . "/data");
+if(!file_exists($path . "/config.php")){
+	file_put_contents($path . "/config.php",file_get_contents($path . "/config.example.php"));
 }
-if(file_exists($_SERVER['DOCUMENT_ROOT'] . $path . "/config.php")){
-    $config = is_writable($_SERVER['DOCUMENT_ROOT'] . $path . "/config.php");
+if(file_exists($path . "/config.php")){
+    $config = is_writable($path . "/config.php");
 }else{ $config=false; }
 
 if(!$workspace || !$data || !$config){
