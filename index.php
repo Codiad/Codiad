@@ -79,7 +79,11 @@ $components = json_decode($components,true);
 
                 <label><span class="icon-lock login-icon"></span> Password</label>
                 <input type="password" name="password">
-
+                <label><span class="icon-language login-icon"></span> Language</label>
+                <select name="language">
+                    <option value="it">Italiano</option>
+                    <option value="en" selected>English</option>
+                </select>
                 <button>Login</button>
 
             </form>
