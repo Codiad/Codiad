@@ -177,9 +177,9 @@
             var selectedSuggestion = $('#autocomplete li.suggestion.active-suggestion');
 
             if (selectedSuggestion.length < 1) {
-                alert('No suggestion selected. Might be a bug.');
+                alert(i18n('No suggestion selected. Might be a bug.'));
             } else if (selectedSuggestion.length > 1) {
-                alert('More than one suggestions selected. Might be a bug.');
+                alert(i18n('More than one suggestions selected. Might be a bug.'));
             }
 
             return selectedSuggestion;
@@ -627,6 +627,7 @@
         },
 
         /* Some unit tests. */
+        //i don't need to translate this... this is just for testing things... 
         _testSimpleMatchScorer: function () {
             var prefix = 'myprefix';
             var suggestion = 'myprefixisshort';
@@ -676,4 +677,3 @@
     };
 
 })(this, jQuery);
-
