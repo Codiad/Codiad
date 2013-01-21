@@ -59,11 +59,11 @@ $components = json_decode($components,true);
 
     if(!isset($_SESSION['user'])){
 
-        $path = rtrim(str_replace("index.php", "", $_SERVER['SCRIPT_FILENAME']),"/");
+        $path = rtrim(str_replace("index.php", "", $_SERVER['PHP_SELF']),"/");
 
-        $users = file_exists($path . "/data/users.php");
-        $projects = file_exists($path . "/data/projects.php");
-        $active = file_exists($path . "/data/active.php");
+        $users = file_exists($_SERVER['DOCUMENT_ROOT'] . $path . "/data/users.php");
+        $projects = file_exists($_SERVER['DOCUMENT_ROOT'] . $path . "/data/projects.php");
+        $active = file_exists($_SERVER['DOCUMENT_ROOT'] . $path . "/data/active.php");
 
         if(!$users && !$projects && !$active){
             // Installer
@@ -81,7 +81,14 @@ $components = json_decode($components,true);
                 <input type="password" name="password">
                 <label><span class="icon-language login-icon"></span> Language</label>
                 <select name="language">
-                    <option value="it">Italiano</option>
+                    <?
+                    foreach(glob("languages/*.php") as $v): 
+                        $v = str_replace(array("languages/", ".php"), "", $v); 
+                        if($v == "english")
+                            continue;
+                        ?>
+                        <option value="<?=$v; ?>"><?=ucfirst(strtolower($v)); ?></option>
+                    <? endforeach; ?>
                     <option value="en" selected>English</option>
                 </select>
                 <button>Login</button>
@@ -204,7 +211,7 @@ $components = json_decode($components,true);
                     if($data['title']=='break'){
                         echo("<hr>");
                     }else{
-                        echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].' bigger-icon"></span>'.$data['title'].'</a>');
+                        echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].' bigger-icon"></span>'.i18n($data['title'], false).'</a>');
                     }
 
                 }
