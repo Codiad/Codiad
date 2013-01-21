@@ -36,7 +36,16 @@ $components = json_decode($components,true);
 </head>
 
 <body>
-
+    <script>
+    var _lang = <?=json_encode($lang); ?>;
+        var i18n = function(word) {
+            if(word in _lang)
+                var r = _lang[word];
+            else
+                var r = word;
+            return r ;
+    }
+    </script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script>!window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.7.2.min.js"%3E%3C/script%3E'));</script>
     <script src="js/jquery-ui-1.8.23.custom.min.js"></script>

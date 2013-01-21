@@ -306,7 +306,7 @@
             callbacks = callbacks || {};
             var _this = this, action, data;
             var notifySaveErr = function() {
-                codiad.message.error('File could not be saved');
+                codiad.message.error(i18n('File could not be saved'));
                 if (typeof callbacks.error === 'function') {
                     var context = callbacks.context || _this;
                     callbacks.error.apply(context, [data]);
@@ -315,7 +315,7 @@
             $.post(this.controller + '?action=modify&path='+path, data, function(resp){
                 resp = $.parseJSON(resp);
                 if (resp.status == 'success') {
-                    codiad.message.success('File saved');
+                    codiad.message.success(i18n('File saved'));
                     if (typeof callbacks.success === 'function'){
                         var context = callbacks.context || _this;
                         callbacks.success.call(context, resp.data.mtime);
@@ -401,7 +401,7 @@
 
         copyNode: function(path) {
             this.clipboard = path;
-            codiad.message.success('Copied to Clipboard');
+            codiad.message.success(i18n('Copied to Clipboard'));
         },
 
         //////////////////////////////////////////////////////////////////
@@ -411,9 +411,9 @@
         pasteNode: function(path) {
             var _this = this;
             if (this.clipboard == '') {
-                codiad.message.error('Nothing in Your Clipboard');
+                codiad.message.error(i18n('Nothing in Your Clipboard'));
             } else if (path == this.clipboard) {
-                codiad.message.error('Cannot Paste Directory Into Itself');
+                codiad.message.error(i18n('Cannot Paste Directory Into Itself'));
             } else {
                 var shortName = _this.getShortName(_this.clipboard);
                 if ($('#file-manager a[data-path="' + path + '/' + shortName + '"]')

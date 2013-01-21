@@ -46,5 +46,10 @@ $lang["Replace:"] = "Rimpiazza:";
 $lang["Find"] = "Cerca";
 $lang["Replace"] = "Rimpiazza";
 $lang["Replace ALL"] = "Rimpiazza tutti";
-
+$lang["Project Loaded"] = "Progetto Caricato";
+$lang["File saved"] = "File Salvato";
+$lang["Copied to Clipboard"] = "Copiato negli appunti";
+$lang["Nothing in Your Clipboard"] = "Non c'è niente nei tuoi appunti";
+$lang["Cannot Paste Directory Into Itself"] = "Impossibile spostare una directory dentro se stessa";
+$lang["File could not be saved"] = "Il file non è stato salvato";
 ?>
