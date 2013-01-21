@@ -48,4 +48,10 @@ $lang["Replace:"] = "Replace:";
 $lang["Find"] = "Find";
 $lang["Replace"] = "Replace";
 $lang["Replace ALL"] = "Replace ALL";
+$lang["Project Loaded"] = "Project Loaded";
+$lang["File saved"] = "File saved";
+$lang["Copied to Clipboard"] = "Copied to Clipboard";
+$lang["Nothing in Your Clipboard"] = "Nothing in Your Clipboard";
+$lang["Cannot Paste Directory Into Itself"] = "Cannot Paste Directory Into Itself";
+$lang["File could not be saved"] = "File could not be saved";
 ?>
