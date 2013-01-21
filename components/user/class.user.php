@@ -18,6 +18,7 @@ class User {
     public $projects    = '';
     public $users       = '';
     public $actives     = '';
+    public $lang        = '';
 
     //////////////////////////////////////////////////////////////////
     // METHODS
@@ -47,6 +48,7 @@ class User {
             if($user['username']==$this->username && $user['password']==$this->password){
                 $pass = true;
                 $_SESSION['user'] = $this->username;
+                $_SESSION['lang'] = $this->lang;
                 if($user['project']!=''){ $_SESSION['project'] = $user['project']; }
             }
         }
