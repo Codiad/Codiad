@@ -66,6 +66,7 @@
                 if (!(_this.currentFilename in _this.shadows)) {
                     /* Create the initial shadow for the current file. */
                     _this.shadows[_this.currentFilename] = _this._getCurrentFileText();
+                    _this.sendAsShadow(_this.currentFilename, _this.shadows[_this.currentFilename]);
                 }
 
                 _this.addListeners();
@@ -77,7 +78,7 @@
 
             /* Start to ask periodically for the potential other collaborators
              * changes. */
-            setInterval(this.$applyCollaboratorsChanges, 1000);
+            // setInterval(this.$applyCollaboratorsChanges, 1000);
 
         },
 
@@ -253,11 +254,11 @@
             if (this.currentFilename !== null) {
                 // console.log( { action: 'getUsersAndChangesForFile',
                             // filename: this.currentFilename,
-                            // fromRevision: this.filenamesAndRevision[this.currentFilename]  });
+                            // fromRevision: this.filenamesAndRevision[this.currentFilename] });
                 $.post(this.controller,
                         { action: 'getUsersAndChangesForFile',
                             filename: this.currentFilename,
-                            fromRevision: this.filenamesAndRevision[this.currentFilename]  },
+                            fromRevision: this.filenamesAndRevision[this.currentFilename] },
                         function (data) {
                             // console.log('complete getUsersAndChangesForFile');
                             // console.log(data);
@@ -269,7 +270,7 @@
 
         /* Make a diff of the current file text with the shadow and send it to
          * the server. */
-        sendEdits: function (callback) {
+        sendEdits: function () {
             var _this = this;
             var currentText = this._getCurrentFileText();
             var currentFilename = this.currentFilename;
@@ -300,6 +301,18 @@
                     console.log(patch);
                 }
             }, this);
+        },
+
+        /* Send the string 'shadow' as server shadow for 'filename'. */
+        sendAsShadow: function (filename, shadow) {
+            $.post(this.controller,
+                    { action: 'sendShadow',
+                    filename: filename,
+                    shadow: JSON.stringify(shadow) },
+                function (data) {
+                    console.log('complete sendShadow');
+                    console.log(data);
+                });
         },
 
         getSelectionMarkupForUser: function (username) {
