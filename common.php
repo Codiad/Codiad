@@ -6,7 +6,8 @@
     */
     
     include BASE_PATH."/languages/english.php"; //english is the main language
-    include BASE_PATH."/languages/{$_SESSION['lang']}.php";
+    if (isset($_SESSION['lang']))
+        include BASE_PATH."/languages/{$_SESSION['lang']}.php";
     
     function i18n($key, $output = true) {
         global $lang;
