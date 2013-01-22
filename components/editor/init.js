@@ -702,6 +702,7 @@
                 return 'markdown';
             case 'c':
             case 'cpp':
+            case 'h':
                 return 'c_cpp';
             case 'py':
                 return 'python';
