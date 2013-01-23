@@ -16,6 +16,7 @@
      */
 
     require_once('../../config.php');
+    require_once('../../lib/diff_match_patch.php');
 
     //////////////////////////////////////////////////////////////////
     // Verify Session or Key
@@ -228,13 +229,38 @@
             exit(formatJSEND('error', 'No patch specified in sendEdits'));
         }
 
-        $filename = $_POST['filename'];
+        /* First acquire a lock or wait until a lock can be acquired for server
+         * text and shadow. */
+        $serverTextFilename = BASE_PATH . '/data/' . str_replace('/', '_', $_POST['filename']) . '%%text';
+        $shadowFilename = BASE_PATH . '/data/' . str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'] . '%%shadow';
+        flock($serverTextFilename, LOCK_EX); 
+        flock($shadowFilename, LOCK_EX); 
+
+        $serverText = file_get_contents($serverTextFilename); 
+        $shadowText = file_get_contents($shadowFilename); 
+
+        /* print_r($shadowFilename);  */
+        /* print_r($shadowText);  */
+        /* print_r($serverTextFilename); */
+        /* print_r($serverText); */
+
         $patch = $_POST['patch'];
 
         $dmp = new diff_match_patch();
-        $p = $dmp->patch_apply($dmp->patch_fromText($patch), $fileContents);
-        $this->content = $p[0];
+        $patchedServerText = $dmp->patch_apply($dmp->patch_fromText($patch), $serverText);  
+        file_put_contents($serverTextFilename, $patchedServerText[0]);  
+        print_r('patched server text:');
+        print_r($patchedServerText); 
 
+        $patchedShadowText = $dmp->patch_apply($dmp->patch_fromText($patch), $shadowText);  
+        file_put_contents($shadowFilename, $patchedShadowText[0]);   
+        print_r('patched shadow text:');
+        print_r($patchedShadowText); 
+
+        flock($serverTextFilename, LOCK_UN); 
+        flock($shadowFilename, LOCK_UN); 
+
+        echo formatJSEND('success');
         break;
 
     default:

@@ -288,7 +288,7 @@
 
                         var post = { action: 'sendEdits',
                                     filename: currentFilename,
-                                    selection: JSON.stringify(patch) };
+                                    patch: patch };
                         console.log(post);
 
                         $.post(this.controller, post, function (data) {
@@ -308,7 +308,7 @@
             $.post(this.controller,
                     { action: 'sendShadow',
                     filename: filename,
-                    shadow: JSON.stringify(shadow) },
+                    shadow: shadow },
                 function (data) {
                     console.log('complete sendShadow');
                     console.log(data);
