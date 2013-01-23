@@ -5,23 +5,24 @@
     *  [root]/license.txt for more. This information must remain intact.
     */
     
-    include BASE_PATH."/languages/english.php"; //english is the main language
-    if (isset($_SESSION['lang']))
-        include BASE_PATH."/languages/{$_SESSION['lang']}.php";
+    //////////////////////////////////////////////////////////////////
+    // Localization
+    //////////////////////////////////////////////////////////////////
     
-    function i18n($key, $output = true) {
+    if (isset($_SESSION['lang'])) {
+        include BASE_PATH."/languages/{$_SESSION['lang']}.php";
+    } else {
+        include BASE_PATH."/languages/en.php";
+    }
+    
+    function i18n($key) {
+        echo get_i18n($key);
+    }
+    
+    function get_i18n($key) {
         global $lang;
         $key = ucwords(strtolower($key)); //Test, test TeSt and tESt are exacly the same
-        if(isset($lang[$key]))
-            $return = $lang[$key];
-        else
-            $return = $key;
-        if($output)
-            echo $return;
-        return $return;
-    } 
-    function get_i18n($key) {
-        return i18n($key, false);
+        return isset($lang[$key]) ? $lang[$key] : $key;
     }
     
     //////////////////////////////////////////////////////////////////

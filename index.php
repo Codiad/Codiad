@@ -37,14 +37,11 @@ $components = json_decode($components,true);
 
 <body>
     <script>
-    var _lang = <?=json_encode($lang); ?>;
-        var i18n = function(word) {
-            if(word in _lang)
-                var r = _lang[word];
-            else
-                var r = word;
-            return r ;
-    }
+    var i18n = (function(lang) {
+        return function(word) {
+            return (word in lang) ? lang[word] : word;
+        }
+    })(<?php echo json_encode($lang); ?>)
     </script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script>!window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.7.2.min.js"%3E%3C/script%3E'));</script>
@@ -90,15 +87,16 @@ $components = json_decode($components,true);
                 <input type="password" name="password">
                 <label><span class="icon-language login-icon"></span> Language</label>
                 <select name="language">
-                    <?
-                    foreach(glob("languages/*.php") as $v): 
-                        $v = str_replace(array("languages/", ".php"), "", $v); 
-                        if($v == "english")
+                    <?php
+                    include 'languages/code.php';
+                    foreach(glob("languages/*.php") as $filename): 
+                        $lang_code = str_replace(array("languages/", ".php"), "", $filename);
+                        if(!array_key_exists($lang_code, $languages))
                             continue;
+                        $lang_disp = ucfirst(strtolower($languages[$lang_code]));
                         ?>
-                        <option value="<?=$v; ?>"><?=ucfirst(strtolower($v)); ?></option>
-                    <? endforeach; ?>
-                    <option value="en" selected>English</option>
+                        <option value="<?php echo $lang_code; ?>"><?php echo $lang_disp; ?></option>
+                    <?php endforeach; ?>
                 </select>
                 <button>Login</button>
 
@@ -220,7 +218,7 @@ $components = json_decode($components,true);
                     if($data['title']=='break'){
                         echo("<hr>");
                     }else{
-                        echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].' bigger-icon"></span>'.i18n($data['title'], false).'</a>');
+                        echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].' bigger-icon"></span>'.get_i18n($data['title']).'</a>');
                     }
 
                 }
