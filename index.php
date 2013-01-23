@@ -91,8 +91,7 @@ $components = json_decode($components,true);
                     include 'languages/code.php';
                     foreach(glob("languages/*.php") as $filename): 
                         $lang_code = str_replace(array("languages/", ".php"), "", $filename);
-                        if(!array_key_exists($lang_code, $languages))
-                            continue;
+                        if(!isset($languages[$lang_code])) continue;
                         $lang_disp = ucfirst(strtolower($languages[$lang_code]));
                         ?>
                         <option value="<?php echo $lang_code; ?>"><?php echo $lang_disp; ?></option>
