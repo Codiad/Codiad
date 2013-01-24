@@ -6,6 +6,9 @@
 
 (function (global, $) {
 
+    /* FIXME Dynamically load diff match patch lib. Is there any better way? */
+    $.getScript('lib/diff_match_patch.js');
+
     var codiad = global.codiad;
 
     $(function () {
@@ -272,9 +275,14 @@
          * the server. */
         sendEdits: function () {
             var _this = this;
-            var currentText = this._getCurrentFileText();
             var currentFilename = this.currentFilename;
 
+            /* Save the current text state, because it can be modified by the
+             * user on the UI thread. */
+            var currentText = this._getCurrentFileText();
+
+            /* Make a diff between the current text and the previously saved
+             * shadow. */
             codiad.workerManager.addTask({
                 taskType: 'diff',
                 id: 'collaborative_' + currentFilename,
@@ -282,20 +290,37 @@
                 changed: currentText
             }, function (success, patch) {
                 if (success) {
-                    if (patch) {
-                        console.log(patch);
-                        _this.shadows[currentFilename] = currentText;
+                    /* Send our edits to the server, and get in response a
+                     * patch of the edits in the server text. */
+                    console.log(patch);
+                    _this.shadows[currentFilename] = currentText;
 
-                        var post = { action: 'sendEdits',
-                                    filename: currentFilename,
-                                    patch: patch };
-                        console.log(post);
+                    var post = { action: 'sendEdits',
+                        filename: currentFilename,
+                        patch: patch };
+                    console.log(post);
 
-                        $.post(this.controller, post, function (data) {
-                            console.log('complete sendEdits');
-                            console.log(data);
-                        });
-                    }
+                    $.post(this.controller, post, function (data) {
+                        console.log('complete sendEdits');
+                        patchFromServer = codiad.jsend.parse(data);
+                        console.log(patchFromServer);
+
+                        /* Apply the patch from the server text to the shadow
+                         * and the current text. */
+                        var dmp = new diff_match_patch();
+                        var patchedShadow = dmp.patch_apply(dmp.patch_fromText(patchFromServer), _this.shadows[currentFilename]);
+                        console.log(patchedShadow);
+                        _this.shadows[currentFilename] = patchedShadow[0];
+
+                        /* Update the current text. */
+                        currentText = _this._getCurrentFileText();
+                        var patchedCurrentText = dmp.patch_apply(dmp.patch_fromText(patchFromServer), currentText)[0];
+
+                        var editor = _this._getEditor();
+                        var position = editor.getCursorPosition();
+                        _this._getEditor().setValue(patchedCurrentText, -1);
+                        editor.moveCursorToPosition(position);
+                    });
                 } else {
                     console.log('problem diffing');
                     console.log(patch);

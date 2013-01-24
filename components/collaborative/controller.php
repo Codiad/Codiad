@@ -244,23 +244,34 @@
         /* print_r($serverTextFilename); */
         /* print_r($serverText); */
 
-        $patch = $_POST['patch'];
+        $patchFromClient = $_POST['patch'];
 
+        /* Patch the shadow and server texts with the edits from the client. */
         $dmp = new diff_match_patch();
-        $patchedServerText = $dmp->patch_apply($dmp->patch_fromText($patch), $serverText);  
+        $patchedServerText = $dmp->patch_apply($dmp->patch_fromText($patchFromClient), $serverText);  
         file_put_contents($serverTextFilename, $patchedServerText[0]);  
-        print_r('patched server text:');
-        print_r($patchedServerText); 
+        /* print_r('patched server text:'); */
+        /* print_r($patchedServerText);  */
 
-        $patchedShadowText = $dmp->patch_apply($dmp->patch_fromText($patch), $shadowText);  
+        $patchedShadowText = $dmp->patch_apply($dmp->patch_fromText($patchFromClient), $shadowText);  
         file_put_contents($shadowFilename, $patchedShadowText[0]);   
-        print_r('patched shadow text:');
-        print_r($patchedShadowText); 
+        /* print_r('patched shadow text:'); */
+        /* print_r($patchedShadowText);  */
 
+        /* Make a diff between server text and shadow to get the edits to send 
+         * back to the client. */
+        $patchFromServer = $dmp->patch_toText($dmp->patch_make($patchedShadowText[0], $patchedServerText[0]));
+        /* print_r('patch from server:'); */
+        /* print_r($patchFromServer); */
+
+        file_put_contents($serverTextFilename, $patchedServerText); 
+        file_put_contents($shadowFilename, $patchedShadowText); 
+
+        /* Release locks. */
         flock($serverTextFilename, LOCK_UN); 
         flock($shadowFilename, LOCK_UN); 
 
-        echo formatJSEND('success');
+        echo formatJSEND('success', $patchFromServer);
         break;
 
     default:
