@@ -51,6 +51,9 @@
             this.unregisterAsCollaboratorFromAllFiles();
             this.removeSelectionAndChangesForAllFiles();
 
+            /* TODO For debug only, remove this for production. */
+            this.removeServerTextForAllFiles();
+
             this.$onDocumentChange = this.onDocumentChange.bind(this);
             this.$onSelectionChange = this.onSelectionChange.bind(this);
 
@@ -59,7 +62,7 @@
 
             this.$applyCollaboratorsChanges = this.applyCollaboratorsChanges.bind(this);
 
-            this.$sendEdits = this.sendEdits.bind(this);
+            this.$synchronizeText = this.synchronizeText.bind(this);
 
             /* Subscribe to know when a file is being closed. */
             amplify.subscribe('active.onClose', function (path) {
@@ -89,7 +92,7 @@
             /* Start to ask periodically for the potential other collaborators
              * changes. */
             // setInterval(this.$applyCollaboratorsChanges, 1000);
-            setInterval(this.$sendEdits, 1000);
+            // setInterval(this.$synchronizeText, 1000);
             
             $(".collaborative-selection").live({
                 mouseenter: function() {
@@ -108,6 +111,16 @@
         removeSelectionAndChangesForAllFiles: function () {
             $.post(this.controller,
                     { action: 'removeSelectionAndChangesForAllFiles' },
+                    function (data) {
+                    // console.log('complete unregistering from all');
+                    // console.log(data);
+                    codiad.jsend.parse(data);
+                });
+        },
+
+        removeServerTextForAllFiles: function () {
+            $.post(this.controller,
+                    { action: 'removeServerTextForAllFiles' },
                     function (data) {
                     // console.log('complete unregistering from all');
                     // console.log(data);
@@ -198,30 +211,30 @@
              * the server along with the revision number. */
             var filename = codiad.active.getPath();
             ++this.filenamesAndRevision[filename];
-            console.log('document change');
+            // console.log('document change');
             var post = { action: 'sendDocumentChange',
                 filename: codiad.active.getPath(),
                 change: JSON.stringify(e.data),
                 revision: this.filenamesAndRevision[filename]
             };
-            console.log(post);
+            // console.log(post);
 
             $.post(this.controller, post, function (data) {
-                    console.log('complete doc change');
-                    console.log(data);
+                    // console.log('complete doc change');
+                    // console.log(data);
                 });
         },
 
         onSelectionChange: function (e) {
-            console.log('selection change');
+            // console.log('selection change');
             var post = { action: 'sendSelectionChange',
                 filename: codiad.active.getPath(),
                 selection: JSON.stringify(this._getSelection().getRange()) };
-            console.log(post);
+            // console.log(post);
 
             $.post(this.controller, post, function (data) {
-                    console.log('complete selection change');
-                    console.log(data);
+                    // console.log('complete selection change');
+                    // console.log(data);
                 });
         },
 
@@ -313,7 +326,7 @@
 
         /* Make a diff of the current file text with the shadow and send it to
          * the server. */
-        sendEdits: function () {
+        synchronizeText: function () {
             var _this = this;
             var currentFilename = this.currentFilename;
 
@@ -335,13 +348,13 @@
                     console.log(patch);
                     _this.shadows[currentFilename] = currentText;
 
-                    var post = { action: 'sendEdits',
+                    var post = { action: 'synchronizeText',
                         filename: currentFilename,
                         patch: patch };
                     console.log(post);
 
                     $.post(this.controller, post, function (data) {
-                        console.log('complete sendEdits');
+                        console.log('complete synchronizeText');
                         console.log(data);
                         patchFromServer = codiad.jsend.parse(data);
                         console.log(patchFromServer);
@@ -356,6 +369,10 @@
                         /* Update the current text. */
                         currentText = _this._getCurrentFileText();
                         var patchedCurrentText = dmp.patch_apply(dmp.patch_fromText(patchFromServer), currentText)[0];
+
+                        var diff = dmp.diff_main(currentText, patchedCurrentText);
+                        var deltas = dmp.diff_toDelta(diff);
+                        console.log(deltas);
 
                         var editor = _this._getEditor();
                         var position = editor.getCursorPosition();
@@ -379,6 +396,16 @@
                     console.log('complete sendShadow');
                     console.log(data);
                 });
+        },
+
+        /* Helper method that return a Ace editor delta change from a
+         * diff_match_patch diff object. */
+        diffToAceDeltas: function (diff) {
+            var dmp = new diff_match_patch();
+            var deltas = dmp.diff_toDelta(diff).split('\t');
+
+
+
         },
 
         getSelectionMarkupForUser: function (username) {

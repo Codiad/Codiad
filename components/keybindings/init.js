@@ -78,7 +78,7 @@
                 // TODO remove this it is for testing purpose.
                 // codiad.autocomplete.suggest();
                 console.log('diffing');
-                codiad.collaborative.sendEdits();
+                codiad.collaborative.synchronizeText();
             });
 
             $.ctrl('71', function(){

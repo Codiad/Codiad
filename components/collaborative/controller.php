@@ -81,11 +81,23 @@
         break;
 
     case 'removeSelectionAndChangesForAllFiles':
-        /* Find all the files for which the current user is registered as
-         * collaborator and unregister him. */
         $basePath = BASE_PATH . '/data/';
         if ($handle = opendir($basePath)) {
             $regex = '/' . $_SESSION['user'] . '/';
+            while (false !== ($entry = readdir($handle))) {
+                if (preg_match($regex, $entry)) {
+                    unlink($basePath . $entry);
+                }
+            }
+        }
+
+        echo formatJSEND('success');
+        break;
+
+    case 'removeServerTextForAllFiles':
+        $basePath = BASE_PATH . '/data/';
+        if ($handle = opendir($basePath)) {
+            $regex = '/%%text$/';
             while (false !== ($entry = readdir($handle))) {
                 if (preg_match($regex, $entry)) {
                     unlink($basePath . $entry);
@@ -220,13 +232,13 @@
         echo formatJSEND('success');
         break;
 
-    case 'sendEdits':
+    case 'synchronizeText':
         if(!isset($_POST['filename']) || empty($_POST['filename'])) {
-            exit(formatJSEND('error', 'No filename specified in sendEdits'));
+            exit(formatJSEND('error', 'No filename specified in synchronizeText'));
         }
 
         if(!isset($_POST['patch'])) {
-            exit(formatJSEND('error', 'No patch specified in sendEdits'));
+            exit(formatJSEND('error', 'No patch specified in synchronizeText'));
         }
 
         /* First acquire a lock or wait until a lock can be acquired for server
@@ -239,31 +251,18 @@
         $serverText = file_get_contents($serverTextFilename); 
         $shadowText = file_get_contents($shadowTextFilename); 
 
-        /* print_r($shadowTextFilename);   */
-        /* print_r($shadowText);   */
-        /* print_r($serverTextFilename); */
-        /* print_r($serverText); */
-
         $patchFromClient = $_POST['patch'];
 
         /* Patch the shadow and server texts with the edits from the client. */
         $dmp = new diff_match_patch();
         $patchedServerText = $dmp->patch_apply($dmp->patch_fromText($patchFromClient), $serverText);  
         file_put_contents($serverTextFilename, $patchedServerText[0]);  
-        /* print_r('patched server text:'); */
-        /* print_r($patchedServerText);  */
-        /* print_r($patchFromClient); */
 
         $patchedShadowText = $dmp->patch_apply($dmp->patch_fromText($patchFromClient), $shadowText);   
-        /* file_put_contents($shadowTextFilename, $patchedShadowText[0]);    */
-        /* print_r('patched shadow text:');    */
-        /* print_r($patchedShadowText);     */
 
         /* Make a diff between server text and shadow to get the edits to send 
          * back to the client. */
         $patchFromServer = $dmp->patch_toText($dmp->patch_make($patchedShadowText[0], $patchedServerText[0]));
-        /* print_r('patch from server:'); */
-        /* print_r($patchFromServer); */
 
         /* Apply it to the shadow. */
         $patchedShadowText = $dmp->patch_apply($dmp->patch_fromText($patchFromServer), $patchedShadowText[0]);  
