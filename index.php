@@ -36,7 +36,13 @@ $components = json_decode($components,true);
 </head>
 
 <body>
-
+    <script>
+    var i18n = (function(lang) {
+        return function(word) {
+            return (word in lang) ? lang[word] : word;
+        }
+    })(<?php echo json_encode($lang); ?>)
+    </script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script>!window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.7.2.min.js"%3E%3C/script%3E'));</script>
     <script src="js/jquery-ui-1.8.23.custom.min.js"></script>
@@ -60,11 +66,11 @@ $components = json_decode($components,true);
 
     if(!isset($_SESSION['user'])){
 
-        $path = rtrim(str_replace("index.php", "", $_SERVER['PHP_SELF']),"/");
+        $path = rtrim(str_replace("index.php", "", $_SERVER['SCRIPT_FILENAME']),"/");
 
-        $users = file_exists($_SERVER['DOCUMENT_ROOT'] . $path . "/data/users.php");
-        $projects = file_exists($_SERVER['DOCUMENT_ROOT'] . $path . "/data/projects.php");
-        $active = file_exists($_SERVER['DOCUMENT_ROOT'] . $path . "/data/active.php");
+        $users = file_exists($path . "/data/users.php");
+        $projects = file_exists($path . "/data/projects.php");
+        $active = file_exists($path . "/data/active.php");
 
         if(!$users && !$projects && !$active){
             // Installer
@@ -80,7 +86,18 @@ $components = json_decode($components,true);
 
                 <label><span class="icon-lock login-icon"></span> Password</label>
                 <input type="password" name="password">
-
+                <label><span class="icon-language login-icon"></span> Language</label>
+                <select name="language">
+                    <?php
+                    include 'languages/code.php';
+                    foreach(glob("languages/*.php") as $filename): 
+                        $lang_code = str_replace(array("languages/", ".php"), "", $filename);
+                        if(!isset($languages[$lang_code])) continue;
+                        $lang_disp = ucfirst(strtolower($languages[$lang_code]));
+                        ?>
+                        <option value="<?php echo $lang_code; ?>"><?php echo $lang_disp; ?></option>
+                    <?php endforeach; ?>
+                </select>
                 <button>Login</button>
 
             </form>
@@ -201,7 +218,7 @@ $components = json_decode($components,true);
                     if($data['title']=='break'){
                         echo("<hr>");
                     }else{
-                        echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].' bigger-icon"></span>'.$data['title'].'</a>');
+                        echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].' bigger-icon"></span>'.get_i18n($data['title']).'</a>');
                     }
 
                 }
