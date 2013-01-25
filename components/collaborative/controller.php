@@ -232,15 +232,15 @@
         /* First acquire a lock or wait until a lock can be acquired for server
          * text and shadow. */
         $serverTextFilename = BASE_PATH . '/data/' . str_replace('/', '_', $_POST['filename']) . '%%text';
-        $shadowFilename = BASE_PATH . '/data/' . str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'] . '%%shadow';
-        flock($serverTextFilename, LOCK_EX); 
-        flock($shadowFilename, LOCK_EX); 
+        $shadowTextFilename = BASE_PATH . '/data/' . str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'] . '%%shadow';
+        /* flock($serverTextFilename, LOCK_EX);  */
+        /* flock($shadowTextFilename, LOCK_EX);  */
 
         $serverText = file_get_contents($serverTextFilename); 
-        $shadowText = file_get_contents($shadowFilename); 
+        $shadowText = file_get_contents($shadowTextFilename); 
 
-        /* print_r($shadowFilename);  */
-        /* print_r($shadowText);  */
+        /* print_r($shadowTextFilename);   */
+        /* print_r($shadowText);   */
         /* print_r($serverTextFilename); */
         /* print_r($serverText); */
 
@@ -252,11 +252,12 @@
         file_put_contents($serverTextFilename, $patchedServerText[0]);  
         /* print_r('patched server text:'); */
         /* print_r($patchedServerText);  */
+        /* print_r($patchFromClient); */
 
-        $patchedShadowText = $dmp->patch_apply($dmp->patch_fromText($patchFromClient), $shadowText);  
-        file_put_contents($shadowFilename, $patchedShadowText[0]);   
-        /* print_r('patched shadow text:'); */
-        /* print_r($patchedShadowText);  */
+        $patchedShadowText = $dmp->patch_apply($dmp->patch_fromText($patchFromClient), $shadowText);   
+        /* file_put_contents($shadowTextFilename, $patchedShadowText[0]);    */
+        /* print_r('patched shadow text:');    */
+        /* print_r($patchedShadowText);     */
 
         /* Make a diff between server text and shadow to get the edits to send 
          * back to the client. */
@@ -264,12 +265,13 @@
         /* print_r('patch from server:'); */
         /* print_r($patchFromServer); */
 
-        file_put_contents($serverTextFilename, $patchedServerText); 
-        file_put_contents($shadowFilename, $patchedShadowText); 
+        /* Apply it to the shadow. */
+        $patchedShadowText = $dmp->patch_apply($dmp->patch_fromText($patchFromServer), $patchedShadowText[0]);  
+        file_put_contents($shadowTextFilename, $patchedShadowText[0]);   
 
         /* Release locks. */
-        flock($serverTextFilename, LOCK_UN); 
-        flock($shadowFilename, LOCK_UN); 
+        /* flock($serverTextFilename, LOCK_UN);  */
+        /* flock($shadowTextFilename, LOCK_UN);  */
 
         echo formatJSEND('success', $patchFromServer);
         break;

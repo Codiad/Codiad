@@ -302,6 +302,7 @@
 
                     $.post(this.controller, post, function (data) {
                         console.log('complete sendEdits');
+                        console.log(data);
                         patchFromServer = codiad.jsend.parse(data);
                         console.log(patchFromServer);
 
