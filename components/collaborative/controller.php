@@ -233,8 +233,8 @@
          * text and shadow. */
         $serverTextFilename = BASE_PATH . '/data/' . str_replace('/', '_', $_POST['filename']) . '%%text';
         $shadowTextFilename = BASE_PATH . '/data/' . str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'] . '%%shadow';
-        /* flock($serverTextFilename, LOCK_EX);  */
-        /* flock($shadowTextFilename, LOCK_EX);  */
+        flock($serverTextFilename, LOCK_EX);  
+        flock($shadowTextFilename, LOCK_EX);  
 
         $serverText = file_get_contents($serverTextFilename); 
         $shadowText = file_get_contents($shadowTextFilename); 
@@ -270,8 +270,8 @@
         file_put_contents($shadowTextFilename, $patchedShadowText[0]);   
 
         /* Release locks. */
-        /* flock($serverTextFilename, LOCK_UN);  */
-        /* flock($shadowTextFilename, LOCK_UN);  */
+        flock($serverTextFilename, LOCK_UN);  
+        flock($shadowTextFilename, LOCK_UN);  
 
         echo formatJSEND('success', $patchFromServer);
         break;
