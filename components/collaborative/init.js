@@ -54,6 +54,8 @@
 
             this.$applyCollaboratorsChanges = this.applyCollaboratorsChanges.bind(this);
 
+            this.$sendEdits = this.sendEdits.bind(this);
+
             /* Subscribe to know when a file is being closed. */
             amplify.subscribe('active.onClose', function (path) {
                 if (_this.currentFilename === path) {
@@ -82,6 +84,7 @@
             /* Start to ask periodically for the potential other collaborators
              * changes. */
             // setInterval(this.$applyCollaboratorsChanges, 1000);
+            setInterval(this.$sendEdits, 1000);
 
         },
 
