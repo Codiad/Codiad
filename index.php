@@ -85,6 +85,8 @@ $components = json_decode($components,true);
 
                 <label><span class="icon-lock login-icon"></span> Password</label>
                 <input type="password" name="password">
+                
+                <span class="language-selector">
                 <label><span class="icon-language login-icon"></span> Language</label>
                 <select name="language">
                     <?php
@@ -97,7 +99,11 @@ $components = json_decode($components,true);
                         <option value="<?php echo $lang_code; ?>"><?php echo $lang_disp; ?></option>
                     <?php endforeach; ?>
                 </select>
+                </span>
+                
                 <button>Login</button>
+
+                <a class="show-language-selector">Language</a>
 
             </form>
 
