@@ -371,13 +371,9 @@
                         var patchedCurrentText = dmp.patch_apply(dmp.patch_fromText(patchFromServer), currentText)[0];
 
                         var diff = dmp.diff_main(currentText, patchedCurrentText);
-                        var deltas = dmp.diff_toDelta(diff);
-                        console.log(deltas);
-
-                        var editor = _this._getEditor();
-                        var position = editor.getCursorPosition();
-                        _this._getEditor().setValue(patchedCurrentText, -1);
-                        editor.moveCursorToPosition(position);
+                        var deltas = _this.diffToAceDeltas(diff, currentText);
+                        
+                        _this._getDocument().applyDeltas(deltas);
                     });
                 } else {
                     console.log('problem diffing');
@@ -400,12 +396,96 @@
 
         /* Helper method that return a Ace editor delta change from a
          * diff_match_patch diff object. */
-        diffToAceDeltas: function (diff) {
+        diffToAceDeltas: function (diff, text) {
             var dmp = new diff_match_patch();
             var deltas = dmp.diff_toDelta(diff).split('\t');
+            
+            /*
+             * chaoscollective / Space_Editor
+             */
 
-
-
+            var offset = 0;
+            var row = 1;
+            var col = 1;
+            var aceDeltas = [];
+            
+            for(var i=0; i<deltas.length; i++){
+              var type = deltas[i].charAt(0);
+              var data = decodeURI(deltas[i].substring(1));
+              
+              //console.log(type + " >> " + data);
+              switch(type){
+                  
+                case "=": { // equals for number of characters.
+                  var sameLen = parseInt(data);
+                  for(var j=0; j<sameLen; j++){
+                    if(text.charAt(offset+j) == "\n"){
+                      row++;
+                      col = 1;
+                    }else{
+                      col++;
+                    }
+                  }
+                  offset += sameLen;
+                  break;
+                }
+                
+                case "+": { // add string.
+                  var newLen = data.length;
+                  
+                  //console.log("at row="+row+" col="+col+" >> " + data);
+                  var aceDelta = {
+                          action: "insertText",
+                          range: {start: {row: (row-1), column: (col-1)}, end: {row: (row-1), column: (col-1)}}, //Range.fromPoints(position, end),
+                          text: data
+                      };
+                  aceDeltas.push(aceDelta);
+                  
+                  var innerRows = data.split("\n");
+                  var innerRowsCount = innerRows.length-1;
+                  row += innerRowsCount;
+                  if(innerRowsCount <= 0){
+                    col += data.length;
+                  }else{
+                    col = innerRows[innerRowsCount].length+1;
+                  }
+                  //console.log("ended at row="+row+" col="+col);
+                  break;
+                }
+                
+                case "-": { // subtract number of characters.
+                  var delLen = parseInt(data);
+                  //console.log("at row="+row+" col="+col+" >> " + data);
+                  var removedData = text.substring(offset, offset+delLen);
+                  //console.log("REMOVING: " + removedData);
+                  var removedRows = removedData.split("\n");
+                  //console.log(removedRows);
+                  var removedRowsCount = removedRows.length-1;
+                  //console.log("removed rows count: " + removedRowsCount);
+                  var endRow = row + removedRowsCount;
+                  var endCol = col;
+                  if(removedRowsCount <= 0){
+                    endCol = col+delLen;
+                  }else{
+                    endCol = removedRows[removedRowsCount].length+1;
+                  }
+                  
+                  //console.log("end delete selection at row="+endRow+" col="+endCol);
+                  var aceDelta = {
+                          action: "removeText",
+                          range: {start: {row: (row-1), column: (col-1)}, end: {row: (endRow-1), column: (endCol-1)}}, //Range.fromPoints(position, end),
+                          text: data
+                      };
+                  aceDeltas.push(aceDelta);
+                  
+                  //console.log("ended at row="+row+" col="+col);      
+                  offset += delLen;
+                  break;
+                }
+                
+              }
+            }
+            return aceDeltas;
         },
 
         getSelectionMarkupForUser: function (username) {
