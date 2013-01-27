@@ -91,8 +91,8 @@
 
             /* Start to ask periodically for the potential other collaborators
              * changes. */
-            // setInterval(this.$applyCollaboratorsChanges, 1000);
-            // setInterval(this.$synchronizeText, 1000);
+            setInterval(this.$applyCollaboratorsChanges, 1000);
+            setInterval(this.$synchronizeText, 1000);
             
             $(".collaborative-selection").live({
                 mouseenter: function() {
