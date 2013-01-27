@@ -1,0 +1,8 @@
+<?php
+$languages = array(
+    "en" => "english",
+    "fr" => "français",
+    "it" => "italiano",
+    "ru" => "русский"
+);
+?>
