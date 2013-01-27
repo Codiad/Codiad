@@ -42,7 +42,8 @@ class Active {
             foreach($this->actives as $active=>$data){
               if($data['username']==$this->username){
                 if (file_exists(dirname(__FILE__)."/../../workspace".$data['path'])) {
-                    $active_list[] = $data['path'];
+                    $focus = isset($data['focus']) ? $data['focus'] : false;
+                    $active_list[] = array('path'=>$data['path'], 'focus'=>$focus);
                 } else {
                     unset($this->actives[$active]);
                     $tainted = TRUE;
@@ -113,6 +114,23 @@ class Active {
         foreach($this->actives as $active=>$data){
             if($this->username==$data['username'] && $this->path==$data['path']){
                 unset($this->actives[$active]);
+            }
+        }
+        saveJSON('active.php',$this->actives);
+        echo formatJSEND("success");
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Notify Focus
+    //////////////////////////////////////////////////////////////////
+
+    public function NotifyFocus(){
+        foreach($this->actives as $active=>$data){
+            if($this->username==$data['username']){
+                $this->actives[$active]['focus']=false;
+                if($this->path==$data['path']){
+                    $this->actives[$active]['focus']=true;
+                }
             }
         }
         saveJSON('active.php',$this->actives);

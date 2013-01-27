@@ -66,5 +66,15 @@
         $Active->path = $_GET['path'];
         $Active->Remove();
     }
+    
+    //////////////////////////////////////////////////////////////////
+    // Notify focus
+    //////////////////////////////////////////////////////////////////
+
+    if($_GET['action']=='focus'){
+        $Active->username = $_SESSION['user'];
+        $Active->path = $_GET['path'];
+        $Active->NotifyFocus();
+    }
 
 ?>

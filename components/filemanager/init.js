@@ -273,7 +273,10 @@
         // Open File
         //////////////////////////////////////////////////////////////////
 
-        openFile: function(path) {
+        openFile: function(path, focus) {
+            if (focus === undefined) {
+                focus = true;
+            }
             var node = $('#file-manager a[data-path="' + path + '"]');
             var ext = this.getExtension(path);
             if ($.inArray(ext, this.noOpen) < 0) {
@@ -282,7 +285,7 @@
                     var openResponse = codiad.jsend.parse(data);
                     if (openResponse != 'error') {
                         node.removeClass('loading');
-                        codiad.active.open(path, openResponse.content, openResponse.mtime, false);
+                        codiad.active.open(path, openResponse.content, openResponse.mtime, false, focus);
                     }
                 });
             } else {

@@ -48,10 +48,15 @@
             return !!this.sessions[path];
         },
 
-        open: function(path, content, mtime, inBackground) {
+        open: function(path, content, mtime, inBackground, focus) {
+            if (focus === undefined) {
+                focus = true;
+            }
+            
             var _this = this;
+            
             if (this.isOpen(path)) {
-                this.focus(path);
+                if(focus) this.focus(path);
                 return;
             }
             var ext = codiad.filemanager.getExtension(path);
@@ -78,10 +83,10 @@
                 session.serverMTime = mtime;
                 _this.sessions[path] = session;
                 session.untainted = content.slice(0);
-                if (!inBackground) {
+                if (!inBackground && focus) {
                     codiad.editor.setSession(session);
                 }
-                _this.add(path, session);
+                _this.add(path, session, focus);
             };
 
             // Assuming the mode file has no dependencies
@@ -249,8 +254,8 @@
             $.get(_this.controller + '?action=list', function(data) {
                 var listResponse = codiad.jsend.parse(data);
                 if (listResponse !== null) {
-                    $.each(listResponse, function(index, value) {
-                        codiad.filemanager.openFile(value);
+                    $.each(listResponse, function(index, data) {
+                        codiad.filemanager.openFile(data.path, data.focus);
                     });
                     // Run resize command to fix render issues
                     codiad.editor.resize();
@@ -328,7 +333,10 @@
         // Add newly opened file to list
         //////////////////////////////////////////////////////////////////
 
-        add: function(path, session) {
+        add: function(path, session, focus) {
+            if (focus === undefined) {
+                focus = true;
+            }
 
             var listThumb = this.createListThumb(path);
             session.listThumb = listThumb;
@@ -349,7 +357,10 @@
 
             $.get(this.controller + '?action=add&path=' + path);
 
-            this.focus(path);
+            if(focus) {
+                this.focus(path);
+            }
+            
             // Mark draft as changed
             if (this.checkDraft(path)) {
                 this.markChanged(path);
@@ -370,8 +381,8 @@
             if(path != this.getPath()) {
                 codiad.editor.setSession(this.sessions[path]);
                 this.check(path);
-                this.activePath = path;
                 this.history.push(path);
+                $.get(this.controller, {'action':'focus', 'path':path});
             }
         },
 
