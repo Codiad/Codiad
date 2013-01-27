@@ -165,6 +165,19 @@ switch($_GET['action']){
         </td>
         
     </tr>
+    <tr>
+    
+        <td><?php i18n("Right Sidebar Trigger"); ?></td>
+        <td>
+        
+        <select class="setting" data-setting="right-sidebar-trigger">
+            <option value="false"><?php i18n("Hover"); ?></option>
+            <option value="true"><?php i18n("Click"); ?></option>
+        </select>
+        
+        </td>
+        
+    </tr>
     </table>
     
     <button onclick="codiad.modal.unload(); return false;"><?php i18n("Close"); ?></button
@@ -206,6 +219,9 @@ var editor_settings = {
                 case 'wrap-mode':
                     $(this).children('option[value="'+codiad.editor.settings.wrapMode+'"]').prop('selected',true);
                     break;
+                case 'right-sidebar-trigger':
+                    $(this).children('option[value="'+codiad.editor.settings.rightSidebarTrigger+'"]').prop('selected',true);
+                    break;
             }
         });
     },
@@ -240,6 +256,10 @@ var editor_settings = {
                     case 'wrap-mode':
                         var bool_val = (val == "true");
                         codiad.editor.setWrapMode(bool_val);
+                        break;
+                    case 'right-sidebar-trigger':
+                        var bool_val = (val == "true");
+                        codiad.editor.setRightSidebarTrigger(bool_val);
                         break;
                 }
             }
