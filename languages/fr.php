@@ -46,6 +46,12 @@ $lang = array(
    "Replace:" => "Remplacer:",
    "Find" => "Rechercher",
    "Replace" => "Remplacer",
-   "Replace ALL" => "Remplacer tout"
+   "Replace ALL" => "Remplacer tout",
+   "Project Loaded" => "Projet chargé",
+   "File saved" => "Fichier sauvegardé",
+   "Copied to Clipboard" => "Copié vers le presse-papier",
+   "Nothing in Your Clipboard" => "Presse-papiers vide",
+   "Cannot Paste Directory Into Itself" => "Les dossiers source et destination sont identiques",
+   "File could not be saved" => "Le fichier n'a pas pu être enregistré"
 );
 ?>
