@@ -19,7 +19,6 @@ $lang = array(
    "Print Margin" => "Print Margin",
    "Show" => "Show", 
    "Hide" => "Hide",
-   "Wrap Lines" => "Wrap Lines",
    "No wrap" => "No wrap",  
    "Wrap Lines" => "Wrap Lines",
    "Right Sidebar Trigger" => "Right Sidebar Trigger",
