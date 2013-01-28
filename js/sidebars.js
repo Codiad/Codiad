@@ -87,22 +87,43 @@
 
             // Right Column Slider
             $("#sb-right")
-                .hoverIntent(function() {
-                    var timeout_r = $(this)
-                        .data("timeout_r");
-                    if (timeout_r) {
-                        clearTimeout(timeout_r);
+                .click(function() {
+                    if (codiad.editor.settings.rightSidebarTrigger) { // if trigger set to Click
+                        var timeout_r = $(this)
+                            .data("timeout_r");
+                        if (timeout_r) {
+                            clearTimeout(timeout_r);
+                        }
+                        $('#editor-region')
+                            .animate({
+                                'margin-right': '200px'
+                            }, 300, 'easeOutQuart', function(){
+                                _this.isRigthSidebarOpen = true;
+                            });
+                        $(this)
+                            .animate({
+                                'right': '0px'
+                            }, 300, 'easeOutQuart');
                     }
-                    $('#editor-region')
-                        .animate({
-                            'margin-right': '200px'
-                        }, 300, 'easeOutQuart', function(){
-                            _this.isRigthSidebarOpen = true;
-                        });
-                    $(this)
-                        .animate({
-                            'right': '0px'
-                        }, 300, 'easeOutQuart');
+                })
+                .hoverIntent(function() {
+                    if (!codiad.editor.settings.rightSidebarTrigger) { // if trigger set to Hover
+                        var timeout_r = $(this)
+                            .data("timeout_r");
+                        if (timeout_r) {
+                            clearTimeout(timeout_r);
+                        }
+                        $('#editor-region')
+                            .animate({
+                                'margin-right': '200px'
+                            }, 300, 'easeOutQuart', function(){
+                                _this.isRigthSidebarOpen = true;
+                            });
+                        $(this)
+                            .animate({
+                                'right': '0px'
+                            }, 300, 'easeOutQuart');
+                    }
                 }, function() {
                     $(this)
                         .data("timeout_r", setTimeout($.proxy(function() {

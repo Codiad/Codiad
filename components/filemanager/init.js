@@ -92,8 +92,8 @@
             // Show menu
             $('#context-menu')
                 .css({
-                'top': (e.pageY - 20) + 'px',
-                'left': (e.pageX - 20) + 'px'
+                'top': (e.pageY - 40) + 'px',
+                'left': (e.pageX - 30) + 'px'
             })
                 .fadeIn(200)
                 .attr('data-path', path)
@@ -273,7 +273,10 @@
         // Open File
         //////////////////////////////////////////////////////////////////
 
-        openFile: function(path) {
+        openFile: function(path, focus) {
+            if (focus === undefined) {
+                focus = true;
+            }
             var node = $('#file-manager a[data-path="' + path + '"]');
             var ext = this.getExtension(path);
             if ($.inArray(ext, this.noOpen) < 0) {
@@ -282,7 +285,7 @@
                     var openResponse = codiad.jsend.parse(data);
                     if (openResponse != 'error') {
                         node.removeClass('loading');
-                        codiad.active.open(path, openResponse.content, openResponse.mtime, false);
+                        codiad.active.open(path, openResponse.content, openResponse.mtime, false, focus);
                     }
                 });
             } else {
@@ -306,7 +309,7 @@
             callbacks = callbacks || {};
             var _this = this, action, data;
             var notifySaveErr = function() {
-                codiad.message.error('File could not be saved');
+                codiad.message.error(i18n('File could not be saved'));
                 if (typeof callbacks.error === 'function') {
                     var context = callbacks.context || _this;
                     callbacks.error.apply(context, [data]);
@@ -315,7 +318,7 @@
             $.post(this.controller + '?action=modify&path='+path, data, function(resp){
                 resp = $.parseJSON(resp);
                 if (resp.status == 'success') {
-                    codiad.message.success('File saved');
+                    codiad.message.success(i18n('File saved'));
                     if (typeof callbacks.success === 'function'){
                         var context = callbacks.context || _this;
                         callbacks.success.call(context, resp.data.mtime);
@@ -401,7 +404,7 @@
 
         copyNode: function(path) {
             this.clipboard = path;
-            codiad.message.success('Copied to Clipboard');
+            codiad.message.success(i18n('Copied to Clipboard'));
         },
 
         //////////////////////////////////////////////////////////////////
@@ -411,9 +414,9 @@
         pasteNode: function(path) {
             var _this = this;
             if (this.clipboard == '') {
-                codiad.message.error('Nothing in Your Clipboard');
+                codiad.message.error(i18n('Nothing in Your Clipboard'));
             } else if (path == this.clipboard) {
-                codiad.message.error('Cannot Paste Directory Into Itself');
+                codiad.message.error(i18n('Cannot Paste Directory Into Itself'));
             } else {
                 var shortName = _this.getShortName(_this.clipboard);
                 if ($('#file-manager a[data-path="' + path + '/' + shortName + '"]')

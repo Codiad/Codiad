@@ -66,5 +66,15 @@
         $Active->path = $_GET['path'];
         $Active->Remove();
     }
+    
+    //////////////////////////////////////////////////////////////////
+    // Mark file as focused
+    //////////////////////////////////////////////////////////////////
+
+    if($_GET['action']=='focused'){
+        $Active->username = $_SESSION['user'];
+        $Active->path = $_GET['path'];
+        $Active->MarkFileAsFocused();
+    }
 
 ?>

@@ -48,10 +48,15 @@
             return !!this.sessions[path];
         },
 
-        open: function(path, content, mtime, inBackground) {
+        open: function(path, content, mtime, inBackground, focus) {
+            if (focus === undefined) {
+                focus = true;
+            }
+            
             var _this = this;
+            
             if (this.isOpen(path)) {
-                this.focus(path);
+                if(focus) this.focus(path);
                 return;
             }
             var ext = codiad.filemanager.getExtension(path);
@@ -66,7 +71,7 @@
                 var draft = _this.checkDraft(path);
                 if (draft) {
                     content = draft;
-                    codiad.message.success('Recovered unsaved content for : ' + path);
+                    codiad.message.success(i18n('Recovered unsaved content for: ') + path);
                 }
 
                 //var session = new EditSession(content, new Mode());
@@ -78,10 +83,10 @@
                 session.serverMTime = mtime;
                 _this.sessions[path] = session;
                 session.untainted = content.slice(0);
-                if (!inBackground) {
+                if (!inBackground && focus) {
                     codiad.editor.setSession(session);
                 }
-                _this.add(path, session);
+                _this.add(path, session, focus);
             };
 
             // Assuming the mode file has no dependencies
@@ -249,8 +254,8 @@
             $.get(_this.controller + '?action=list', function(data) {
                 var listResponse = codiad.jsend.parse(data);
                 if (listResponse !== null) {
-                    $.each(listResponse, function(index, value) {
-                        codiad.filemanager.openFile(value);
+                    $.each(listResponse, function(index, data) {
+                        codiad.filemanager.openFile(data.path, data.focused);
                     });
                     // Run resize command to fix render issues
                     codiad.editor.resize();
@@ -268,7 +273,7 @@
                 if ($('#list-active-files li.changed')
                     .length > 0) {
                     var e = e || window.event;
-                    var errMsg = 'You have unsaved files.';
+                    var errMsg = i18n('You have unsaved files.');
 
                     // For IE and Firefox prior to version 4
                     if (e) {
@@ -328,7 +333,10 @@
         // Add newly opened file to list
         //////////////////////////////////////////////////////////////////
 
-        add: function(path, session) {
+        add: function(path, session, focus) {
+            if (focus === undefined) {
+                focus = true;
+            }
 
             var listThumb = this.createListThumb(path);
             session.listThumb = listThumb;
@@ -349,7 +357,10 @@
 
             $.get(this.controller + '?action=add&path=' + path);
 
-            this.focus(path);
+            if(focus) {
+                this.focus(path);
+            }
+            
             // Mark draft as changed
             if (this.checkDraft(path)) {
                 this.markChanged(path);
@@ -361,7 +372,7 @@
         //////////////////////////////////////////////////////////////////
 
         focus: function(path, moveToTabList) {
-            if (typeof moveToTabList == 'undefined') {
+            if (moveToTabList === undefined) {
                 moveToTabList = true;
             }
             
@@ -370,8 +381,8 @@
             if(path != this.getPath()) {
                 codiad.editor.setSession(this.sessions[path]);
                 this.check(path);
-                this.activePath = path;
                 this.history.push(path);
+                $.get(this.controller, {'action':'focused', 'path':path});
             }
 
             /* Notify listeners. */
@@ -379,7 +390,7 @@
         },
 
         highlightEntry: function(path, moveToTabList) {
-            if (typeof moveToTabList == 'undefined') {
+            if (moveToTabList === undefined) {
                 moveToTabList = true;
             }
             
@@ -437,7 +448,7 @@
         save: function(path) {
             var _this = this;
             if ((path && !this.isOpen(path)) || (!path && !codiad.editor.getActive())) {
-                codiad.message.error('No Open Files to save');
+                codiad.message.error(i18n('No Open Files to save'));
                 return;
             }
             var session;
@@ -447,7 +458,7 @@
             var content = session.getValue();
             var path = session.path;
             var handleSuccess = function(mtime){
-		var session = codiad.active.sessions[path];
+    	var session = codiad.active.sessions[path];
                 session.untainted = newContent;
                 session.serverMTime = mtime;
                 if (session.listThumb) session.listThumb.removeClass('changed');
@@ -631,7 +642,7 @@
                 codiad.editor.getActive()
                     .getSelectionRange());
             } else {
-                codiad.message.error('No Open Files or Selected Text');
+                codiad.message.error(i18n('No Open Files or Selected Text'));
             }
         },
 
@@ -771,7 +782,7 @@
         },
 
         moveTabToDropdownMenu: function(tab, prepend) {
-            if (typeof prepend == 'undefined') {
+            if (prepend === undefined) {
                 prepend = false;
             }
 
@@ -794,7 +805,7 @@
         },
 
         moveDropdownMenuItemToTab: function(menuItem, prepend) {
-            if (typeof prepend == 'undefined') {
+            if (prepend === undefined) {
                 prepend = false;
             }
 
@@ -817,7 +828,7 @@
         },
 
         isTabListOverflowed: function(includeFictiveTab) {
-            if (typeof includeFictiveTab == 'undefined') {
+            if (includeFictiveTab === undefined) {
                 includeFictiveTab = false;
             }
 

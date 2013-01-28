@@ -29,17 +29,22 @@ switch($_GET['action']){
     ?>
     <input type="hidden" name="id" value="<?php echo($_GET['id']); ?>">
 
-    <label>Find:</label>
+    <label><?php i18n("Find:"); ?></label>
     <input type="text" name="find" autofocus="autofocus" autocomplete="off">
     
     <?php if($type=='replace'){ ?>
 
-    <label>Replace:</label>
+    <label><?php i18n("Replace:"); ?></label>
     <input type="text" name="replace">
     
     <?php } ?>
 
-    <button class="btn-left" onclick="codiad.editor.search('find');return false;">Find</button><?php if($type=='replace'){ ?><button class="btn-mid" onclick="codiad.editor.search('replace');return false;">Replace</button><button class="btn-mid" onclick="codiad.editor.search('replaceAll');return false;">Replace ALL</button><?php } ?><button class="btn-right" onclick="codiad.modal.unload(); return false;">Cancel</button>
+    <button class="btn-left" onclick="codiad.editor.search('find');return false;"><?php i18n("Find"); ?></button>
+    <?php if($type=='replace'){ ?>
+        <button class="btn-mid" onclick="codiad.editor.search('replace');return false;"><?php i18n("Replace"); ?></button>
+        <button class="btn-mid" onclick="codiad.editor.search('replaceAll');return false;"><?php i18n("Replace ALL"); ?></button>
+    <?php } ?>
+    <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Cancel"); ?></button>
     <?php
     break;
     
@@ -49,13 +54,13 @@ switch($_GET['action']){
     
     case 'settings':
     ?>
-    <label>Editor Settings</label>
+    <label><?php i18n("Editor Settings"); ?></label>
     
     <table class="settings">
     
     <tr>
     
-        <td width="1">Theme</td>
+        <td width="1"><?php i18n("Theme"); ?></td>
         <td>
         
         <select class="setting" data-setting="theme">
@@ -90,7 +95,7 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td>Font&nbsp;Size</td>
+        <td><?php i18n("Font Size"); ?></td>
         <td>
         
         <select class="setting" data-setting="font-size">
@@ -110,12 +115,12 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td>Highlight&nbsp;Active&nbsp;Line</td>
+        <td><?php i18n("Highlight Active Line"); ?></td>
         <td>
         
             <select class="setting" data-setting="highlight-line">
-                <option value="true">Yes</option>
-                <option value="false">No</option>
+                <option value="true"><?php i18n("Yes"); ?></option>
+                <option value="false"><?php i18n("No"); ?></option>
             </select>
             
         </td>
@@ -123,12 +128,12 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td>Indent&nbsp;Guides</td>
+        <td><?php i18n("Indent Guides"); ?></td>
         <td>
         
         <select class="setting" data-setting="indent-guides">
-            <option value="true">On</option>
-            <option value="false">Off</option>
+            <option value="true"><?php i18n("On"); ?></option>
+            <option value="false"><?php i18n("Off"); ?></option>
         </select>
         
         </td>
@@ -136,12 +141,12 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td>Print&nbsp;Margin</td>
+        <td><?php i18n("Print Margin"); ?></td>
         <td>
         
         <select class="setting" data-setting="print-margin">
-            <option value="true">Show</option>
-            <option value="false">Hide</option>
+            <option value="true"><?php i18n("Show"); ?></option>
+            <option value="false"><?php i18n("Hide"); ?></option>
         </select>
         
         </td>
@@ -149,12 +154,25 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td>Wrapping</td>
+        <td><?php i18n("Wrap Lines"); ?></td>
         <td>
         
         <select class="setting" data-setting="wrap-mode">
-            <option value="false">No Wrapping</option>
-            <option value="true">Wrap Lines</option>
+            <option value="false"><?php i18n("No wrap"); ?></option>
+            <option value="true"><?php i18n("Wrap Lines"); ?></option>
+        </select>
+        
+        </td>
+        
+    </tr>
+    <tr>
+    
+        <td><?php i18n("Right Sidebar Trigger"); ?></td>
+        <td>
+        
+        <select class="setting" data-setting="right-sidebar-trigger">
+            <option value="false"><?php i18n("Hover"); ?></option>
+            <option value="true"><?php i18n("Click"); ?></option>
         </select>
         
         </td>
@@ -162,7 +180,7 @@ switch($_GET['action']){
     </tr>
     </table>
     
-    <button onclick="codiad.modal.unload(); return false;">Close</button
+    <button onclick="codiad.modal.unload(); return false;"><?php i18n("Close"); ?></button
     
     <?php
     
@@ -201,6 +219,9 @@ var editor_settings = {
                 case 'wrap-mode':
                     $(this).children('option[value="'+codiad.editor.settings.wrapMode+'"]').prop('selected',true);
                     break;
+                case 'right-sidebar-trigger':
+                    $(this).children('option[value="'+codiad.editor.settings.rightSidebarTrigger+'"]').prop('selected',true);
+                    break;
             }
         });
     },
@@ -211,7 +232,7 @@ var editor_settings = {
             var setting = $(this).data('setting');
             var val = $(this).val();
             if(val===null){
-                codiad.message.alert('You Must Choose A Value');
+                codiad.message.alert(i18n("You Must Choose A Value"));
             }else{
                 switch($(this).data('setting')){
                     case 'theme':
@@ -235,6 +256,10 @@ var editor_settings = {
                     case 'wrap-mode':
                         var bool_val = (val == "true");
                         codiad.editor.setWrapMode(bool_val);
+                        break;
+                    case 'right-sidebar-trigger':
+                        var bool_val = (val == "true");
+                        codiad.editor.setRightSidebarTrigger(bool_val);
                         break;
                 }
             }

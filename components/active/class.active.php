@@ -42,7 +42,8 @@ class Active {
             foreach($this->actives as $active=>$data){
               if($data['username']==$this->username){
                 if (file_exists(dirname(__FILE__)."/../../workspace".$data['path'])) {
-                    $active_list[] = $data['path'];
+                    $focused = isset($data['focused']) ? $data['focused'] : false;
+                    $active_list[] = array('path'=>$data['path'], 'focused'=>$focused);
                 } else {
                     unset($this->actives[$active]);
                     $tainted = TRUE;
@@ -113,6 +114,24 @@ class Active {
         foreach($this->actives as $active=>$data){
             if($this->username==$data['username'] && $this->path==$data['path']){
                 unset($this->actives[$active]);
+            }
+        }
+        saveJSON('active.php',$this->actives);
+        echo formatJSEND("success");
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Mark File As Focused 
+    //  All other files will be marked as non-focused.
+    //////////////////////////////////////////////////////////////////
+
+    public function MarkFileAsFocused(){
+        foreach($this->actives as $active=>$data){
+            if($this->username==$data['username']){
+                $this->actives[$active]['focused']=false;
+                if($this->path==$data['path']){
+                    $this->actives[$active]['focused']=true;
+                }
             }
         }
         saveJSON('active.php',$this->actives);
