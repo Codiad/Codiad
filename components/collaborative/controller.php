@@ -6,6 +6,7 @@
     *  [root]/license.txt for more. This information must remain intact.
     */
 
+//TODO Change this comment!
     /*
      * Suppose a user wants to register as a collaborator of file '/test/test.js'.
      * He registers by creating a marker file 'data/_test_test.js%%username'. Then
@@ -273,6 +274,11 @@
         flock($shadowTextFilename, LOCK_UN);  
 
         echo formatJSEND('success', $patchFromServer);
+        break;
+
+    case 'sendHeartbeat':
+
+        echo formatJSEND('success');
         break;
 
     default:

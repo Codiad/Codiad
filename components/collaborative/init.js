@@ -44,6 +44,9 @@
          * [username: {start: {row: 12, column: 14}, end: {row: 14, column: 19}}, ... ] */
         displayedSelections: [],
 
+        /* Time interval in milisecond to send an heartbeat to the server. */
+        heartbeatInterval: 5000,
+
         init: function () {
             var _this = this;
 
@@ -63,6 +66,8 @@
             this.$applyCollaboratorsChanges = this.applyCollaboratorsChanges.bind(this);
 
             this.$synchronizeText = this.synchronizeText.bind(this);
+
+            this.$sendHeartbeat = this.sendHeartbeat.bind(this);
 
             /* Subscribe to know when a file is being closed. */
             amplify.subscribe('active.onClose', function (path) {
@@ -93,6 +98,10 @@
              * changes. */
             setInterval(this.$applyCollaboratorsChanges, 1000);
             setInterval(this.$synchronizeText, 1000);
+
+            /* Start to send an heartbeat to notify the server that we are
+             * alive. */
+            setInterval(this.$sendHeartbeat, this.heartbeatInterval);
             
             $(".collaborative-selection").live({
                 mouseenter: function() {
@@ -172,6 +181,16 @@
             }
         },
 
+        sendHeartbeat: function () {
+            $.post(this.controller,
+                    { action: 'sendHeartbeat' },
+                    function (data) {
+                        console.log('complete sendHeartbeat');
+                        console.log(data);
+                        codiad.jsend.parse(data);
+                    });
+        },
+
         /* Add appropriate listeners to the current EditSession. */
         addListeners: function () {
             this.addListenerToOnDocumentChange();
@@ -220,9 +239,10 @@
             // console.log(post);
 
             $.post(this.controller, post, function (data) {
-                    // console.log('complete doc change');
-                    // console.log(data);
-                });
+                // console.log('complete doc change');
+                // console.log(data);
+                codiad.jsend.parse(data);
+            });
         },
 
         onSelectionChange: function (e) {
@@ -233,9 +253,10 @@
             // console.log(post);
 
             $.post(this.controller, post, function (data) {
-                    // console.log('complete selection change');
-                    // console.log(data);
-                });
+                // console.log('complete selection change');
+                // console.log(data);
+                codiad.jsend.parse(data);
+            });
         },
 
         /* Request the server for the collaborators selections for the current
@@ -330,6 +351,11 @@
             var _this = this;
             var currentFilename = this.currentFilename;
 
+            /* Do not send any request if no file is focused. */
+            if (currentFilename === null) {
+                return;
+            }
+
             /* Save the current text state, because it can be modified by the
              * user on the UI thread. */
             var currentText = this._getCurrentFileText();
@@ -391,6 +417,7 @@
                 function (data) {
                     console.log('complete sendShadow');
                     console.log(data);
+                    codiad.jsend.parse(data);
                 });
         },
 
