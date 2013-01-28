@@ -255,7 +255,7 @@
                 var listResponse = codiad.jsend.parse(data);
                 if (listResponse !== null) {
                     $.each(listResponse, function(index, data) {
-                        codiad.filemanager.openFile(data.path, data.focus);
+                        codiad.filemanager.openFile(data.path, data.focused);
                     });
                     // Run resize command to fix render issues
                     codiad.editor.resize();
@@ -372,7 +372,7 @@
         //////////////////////////////////////////////////////////////////
 
         focus: function(path, moveToTabList) {
-            if (typeof moveToTabList == 'undefined') {
+            if (moveToTabList === undefined) {
                 moveToTabList = true;
             }
             
@@ -382,12 +382,12 @@
                 codiad.editor.setSession(this.sessions[path]);
                 this.check(path);
                 this.history.push(path);
-                $.get(this.controller, {'action':'focus', 'path':path});
+                $.get(this.controller, {'action':'focused', 'path':path});
             }
         },
 
         highlightEntry: function(path, moveToTabList) {
-            if (typeof moveToTabList == 'undefined') {
+            if (moveToTabList === undefined) {
                 moveToTabList = true;
             }
             
@@ -777,7 +777,7 @@
         },
 
         moveTabToDropdownMenu: function(tab, prepend) {
-            if (typeof prepend == 'undefined') {
+            if (prepend === undefined) {
                 prepend = false;
             }
 
@@ -800,7 +800,7 @@
         },
 
         moveDropdownMenuItemToTab: function(menuItem, prepend) {
-            if (typeof prepend == 'undefined') {
+            if (prepend === undefined) {
                 prepend = false;
             }
 
@@ -823,7 +823,7 @@
         },
 
         isTabListOverflowed: function(includeFictiveTab) {
-            if (typeof includeFictiveTab == 'undefined') {
+            if (includeFictiveTab === undefined) {
                 includeFictiveTab = false;
             }
 
