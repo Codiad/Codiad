@@ -44,8 +44,14 @@
     // Get JSON
     //////////////////////////////////////////////////////////////////
 
-    function getJSON($file){
-        $json = file_get_contents(BASE_PATH . "/data/" . $file);
+    function getJSON($file,$namespace=""){
+        $path = BASE_PATH . "/data/";
+        if($namespace != ""){
+            $path = $path . $namespace . "/";
+            $path = preg_replace('#/+#','/',$path);
+        }
+        
+        $json = file_get_contents($path . $file);
         $json = str_replace("|*/?>","",str_replace("<?php/*|","",$json));
         $json = json_decode($json,true);
         return $json;
@@ -55,9 +61,16 @@
     // Save JSON
     //////////////////////////////////////////////////////////////////
 
-    function saveJSON($file,$data){
+    function saveJSON($file,$data,$namespace=""){
+        $path = BASE_PATH . "/data/";
+        if($namespace != ""){
+            $path = $path . $namespace . "/";
+            $path = preg_replace('#/+#','/',$path);
+            if(!is_dir($path)) mkdir($path);
+        }
+        
         $data = "<?php/*|" . json_encode($data) . "|*/?>";
-        $write = fopen(BASE_PATH . "/data/" . $file, 'w') or die("can't open file");
+        $write = fopen($path . $file, 'w') or die("can't open file");
         fwrite($write, $data);
         fclose($write);
     }
