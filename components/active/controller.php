@@ -68,13 +68,13 @@
     }
     
     //////////////////////////////////////////////////////////////////
-    // Notify focus
+    // Mark file as focused
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='focused'){
         $Active->username = $_SESSION['user'];
         $Active->path = $_GET['path'];
-        $Active->NotifyFocused();
+        $Active->MarkFileAsFocused();
     }
 
 ?>

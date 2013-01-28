@@ -121,10 +121,11 @@ class Active {
     }
     
     //////////////////////////////////////////////////////////////////
-    // Notify Focus
+    // Mark File As Focused 
+    //  All other files will be marked as non-focused.
     //////////////////////////////////////////////////////////////////
 
-    public function NotifyFocused(){
+    public function MarkFileAsFocused(){
         foreach($this->actives as $active=>$data){
             if($this->username==$data['username']){
                 $this->actives[$active]['focused']=false;
