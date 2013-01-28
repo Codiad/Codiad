@@ -53,5 +53,6 @@ $lang = array(
    "Copied to Clipboard"                                 => "Скопированно в Буффер",
    "Nothing in Your Clipboard"                           => "Пусто в Буффере",
    "Cannot Paste Directory Into Itself"                  => "Нельзя вставить папку внутрь самой себя.",
-   "File could not be saved"                             => "Файл не может быть сохранен";
+   "File could not be saved"                             => "Файл не может быть сохранен"
+);
 ?>
