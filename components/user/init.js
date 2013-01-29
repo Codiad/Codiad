@@ -32,7 +32,7 @@
             // Language Selector
             $('.show-language-selector').click(function(){
                 $(this).hide();
-                $('.language-selector').show();
+                $('.language-selector').animate({height:'toggle'}, "fast");
             });
         },
 
