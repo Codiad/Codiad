@@ -703,6 +703,7 @@
             case 'c':
             case 'cpp':
             case 'h':
+            case 'hpp':
                 return 'c_cpp';
             case 'py':
                 return 'python';
