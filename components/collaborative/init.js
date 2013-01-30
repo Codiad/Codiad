@@ -102,7 +102,7 @@
             /* Start to send an heartbeat to notify the server that we are
              * alive. */
             setInterval(this.$sendHeartbeat, this.heartbeatInterval);
-            
+
             $(".collaborative-selection").live({
                 mouseenter: function() {
                         $(this).parent().find(".collaborative-selection-tooltip").fadeIn('fast');
@@ -398,7 +398,7 @@
 
                         var diff = dmp.diff_main(currentText, patchedCurrentText);
                         var deltas = _this.diffToAceDeltas(diff, currentText);
-                        
+
                         _this._getDocument().applyDeltas(deltas);
                     });
                 } else {
@@ -426,7 +426,7 @@
         diffToAceDeltas: function (diff, text) {
             var dmp = new diff_match_patch();
             var deltas = dmp.diff_toDelta(diff).split('\t');
-            
+
             /*
              * chaoscollective / Space_Editor
              */
@@ -435,14 +435,14 @@
             var row = 1;
             var col = 1;
             var aceDeltas = [];
-            
+
             for(var i=0; i<deltas.length; i++){
               var type = deltas[i].charAt(0);
               var data = decodeURI(deltas[i].substring(1));
-              
+
               //console.log(type + " >> " + data);
               switch(type){
-                  
+
                 case "=": { // equals for number of characters.
                   var sameLen = parseInt(data);
                   for(var j=0; j<sameLen; j++){
@@ -456,10 +456,10 @@
                   offset += sameLen;
                   break;
                 }
-                
+
                 case "+": { // add string.
                   var newLen = data.length;
-                  
+
                   //console.log("at row="+row+" col="+col+" >> " + data);
                   var aceDelta = {
                           action: "insertText",
@@ -467,7 +467,7 @@
                           text: data
                       };
                   aceDeltas.push(aceDelta);
-                  
+
                   var innerRows = data.split("\n");
                   var innerRowsCount = innerRows.length-1;
                   row += innerRowsCount;
@@ -479,7 +479,7 @@
                   //console.log("ended at row="+row+" col="+col);
                   break;
                 }
-                
+
                 case "-": { // subtract number of characters.
                   var delLen = parseInt(data);
                   //console.log("at row="+row+" col="+col+" >> " + data);
@@ -496,7 +496,7 @@
                   }else{
                     endCol = removedRows[removedRowsCount].length+1;
                   }
-                  
+
                   //console.log("end delete selection at row="+endRow+" col="+endCol);
                   var aceDelta = {
                           action: "removeText",
@@ -504,12 +504,12 @@
                           text: data
                       };
                   aceDeltas.push(aceDelta);
-                  
-                  //console.log("ended at row="+row+" col="+col);      
+
+                  //console.log("ended at row="+row+" col="+col);
                   offset += delLen;
                   break;
                 }
-                
+
               }
             }
             return aceDeltas;

@@ -6,14 +6,18 @@
     *  [root]/license.txt for more. This information must remain intact.
     */
 
-//TODO Change this comment!
     /*
      * Suppose a user wants to register as a collaborator of file '/test/test.js'.
-     * He registers by creating a marker file 'data/_test_test.js%%username'. Then
-     * his current selection will be in file
-     * 'data/_test_test.js%%username%%selection' and his changes history in
-     * 'data/_test_test.js%%username%%changes'. He can unregister by deleting his
-     * marker file.
+     * He registers to a specific file by creating a marker file
+     * 'data/_test_test.js%%filename%%username%%registered', and he can
+     * unregister by deleting this file. Then his current selection will be in
+     * file 'data/_test_test.js%%username%%selection'.
+     * The collaborative editing algorithm is based on the differential synchronization
+     * algorithm by Neil Fraser. The text shadow and server text are stored
+     * respectively in 'data/_test_test.js%%filename%%username%%shadow' and
+     * 'data/_test_test.js%%filename%%text'.
+     * At regular time intervals, the user send an heartbeat which is stored in
+     * 'data/_test_test.js%%username%%heartbeat' .
      */
 
     require_once('../../config.php');
@@ -41,12 +45,16 @@
         }
 
         /* FIXME beware of filenames with '%' characters. */
-        $filename = BASE_PATH . '/data/' . str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'] . '%%registered';
+        $filename = makeRegisteredMarkerFilename($_POST['filename'], $_SESSION['user']);
         if (file_exists($filename)) {
             echo formatJSEND('error', 'Already registered as collaborator for ' . $_POST['filename']);
         } else {
-            touch($filename);
-            echo formatJSEND('success');
+            $succes = touch($filename);
+            if ($success) {
+                echo formatJSEND('success');
+            } else {
+                echo formatJSEND('error', 'Unable to register as collaborator for ' . $_POST['filename']);
+            }
         }
         break;
 
@@ -56,7 +64,7 @@
             exit(formatJSEND('error', 'No filename specified in unregister'));
         }
 
-        $filename = BASE_PATH . '/data/' . str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'] . '%%registered';
+        $filename = makeRegisteredMarkerFilename($_POST['filename'], $_SESSION['user']);
         if (!file_exists($filename)) {
             echo formatJSEND('error', 'Not registered as collaborator for ' . $_POST['filename']);
         } else {
@@ -120,7 +128,7 @@
         }
 
         if (isUserRegisteredForFile($_SESSION['user'], $_POST['filename'])) {
-            $filename = str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'] . '%%selection';
+            $filename = makeSelectionMarkerFilename($_POST['filename'], $_SESSION['user']);
             $selection = json_decode($_POST['selection']);
             saveJSON($filename, $selection);
             echo formatJSEND('success');
@@ -140,7 +148,7 @@
         }
 
         if (isUserRegisteredForFile($_SESSION['user'], $_POST['filename'])) {
-            $filename = str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'] . '%%changes';
+            $filename = makeChangesMarkerFilename($_POST['filename'], $_SESSION['user']);
 
             $changes = array();
             if (file_exists(BASE_PATH . '/data/' . $filename)) {
@@ -244,40 +252,40 @@
 
         /* First acquire a lock or wait until a lock can be acquired for server
          * text and shadow. */
-        $serverTextFilename = BASE_PATH . '/data/' . str_replace('/', '_', $_POST['filename']) . '%%text';
-        $shadowTextFilename = BASE_PATH . '/data/' . str_replace('/', '_', $_POST['filename']) . '%%' . $_SESSION['user'] . '%%shadow';
-        flock($serverTextFilename, LOCK_EX);  
-        flock($shadowTextFilename, LOCK_EX);  
+        $serverTextFilename = makeServerTextMarkerFilename($_POST['filename']);
+        $shadowTextFilename = makeShadowMarkerFilename($_POST['filename']);
+        flock($serverTextFilename, LOCK_EX);
+        flock($shadowTextFilename, LOCK_EX);
 
-        $serverText = file_get_contents($serverTextFilename); 
-        $shadowText = file_get_contents($shadowTextFilename); 
+        $serverText = file_get_contents($serverTextFilename);
+        $shadowText = file_get_contents($shadowTextFilename);
 
         $patchFromClient = $_POST['patch'];
 
         /* Patch the shadow and server texts with the edits from the client. */
         $dmp = new diff_match_patch();
-        $patchedServerText = $dmp->patch_apply($dmp->patch_fromText($patchFromClient), $serverText);  
-        file_put_contents($serverTextFilename, $patchedServerText[0]);  
+        $patchedServerText = $dmp->patch_apply($dmp->patch_fromText($patchFromClient), $serverText);
+        file_put_contents($serverTextFilename, $patchedServerText[0]);
 
-        $patchedShadowText = $dmp->patch_apply($dmp->patch_fromText($patchFromClient), $shadowText);   
+        $patchedShadowText = $dmp->patch_apply($dmp->patch_fromText($patchFromClient), $shadowText);
 
-        /* Make a diff between server text and shadow to get the edits to send 
+        /* Make a diff between server text and shadow to get the edits to send
          * back to the client. */
         $patchFromServer = $dmp->patch_toText($dmp->patch_make($patchedShadowText[0], $patchedServerText[0]));
 
         /* Apply it to the shadow. */
-        $patchedShadowText = $dmp->patch_apply($dmp->patch_fromText($patchFromServer), $patchedShadowText[0]);  
-        file_put_contents($shadowTextFilename, $patchedShadowText[0]);   
+        $patchedShadowText = $dmp->patch_apply($dmp->patch_fromText($patchFromServer), $patchedShadowText[0]);
+        file_put_contents($shadowTextFilename, $patchedShadowText[0]);
 
         /* Release locks. */
-        flock($serverTextFilename, LOCK_UN);  
-        flock($shadowTextFilename, LOCK_UN);  
+        flock($serverTextFilename, LOCK_UN);
+        flock($shadowTextFilename, LOCK_UN);
 
         echo formatJSEND('success', $patchFromServer);
         break;
 
     case 'sendHeartbeat':
-
+        updateHeartbeatMarker($_SESSION['user']);
         echo formatJSEND('success');
         break;
 
@@ -285,10 +293,72 @@
         exit(formatJSEND('error', 'Unknown Action ' . $_POST['action']));
     }
 
+    // --------------------
+    /* Helper functions to make the marker filenames corresponding to the given
+     * parameters. */
+    function makeRegisteredMarkerFilename($filename, $user) {
+        $sanitizedFilename = str_replace('/', '_', $filename);
+        validatePathOrDie($sanitizedFilename);
+        validatePathOrDie($user);
+        return BASE_PATH . '/data/' . $sanitizedFilename . '%%' . $user . '%%registered';
+    }
+
+    function makeSelectionMarkerFilename($filename, $user) {
+        $sanitizedFilename = str_replace('/', '_', $filename);
+        validatePathOrDie($sanitizedFilename);
+        validatePathOrDie($user);
+        return $sanitizedFilename . '%%' . $user . '%%selection';
+    }
+
+    function makeChangesMarkerFilename($filename, $user) {
+        $sanitizedFilename = str_replace('/', '_', $filename);
+        validatePathOrDie($sanitizedFilename);
+        validatePathOrDie($user);
+        return $sanitizedFilename . '%%' . $user . '%%changes';
+    }
+
+    function makeShadowMarkerFilename($filename, $user) {
+        $sanitizedFilename = str_replace('/', '_', $filename);
+        validatePathOrDie($sanitizedFilename);
+        validatePathOrDie($user);
+        return BASE_PATH . '/data/' . $sanitizedFilename . '%%' . $username . '%%shadow';
+    }
+
+    function makeServerTextMarkerFilename($filename) {
+        $sanitizedFilename = str_replace('/', '_', $filename);
+        validatePathOrDie($sanitizedFilename);
+        validatePathOrDie($user);
+        return BASE_PATH . '/data/' . $sanitizedFilename . '%%shadow';
+    }
+
+    function makeHeartbeatMarkerFilename($user) {
+        validatePathOrDie($user);
+        return BASE_PATH . '/data/' . $user . '%%heartbeat';
+    }
+
+    // TODO Put this in a more robust way in common.php
+    /* Validate that a path does not contain '..' or stuff like that for security. */
+    function validatePathOrDie($path) {
+        if (strstr($path, '/') ||
+            strstr($path, '\\') ||
+            strstr($path, '..') ) {
+            // Security fault.
+            die();
+        }
+    }
+
+    // --------------------
     /* $filename must contain only the basename of the file. */
     function isUserRegisteredForFile($user, $filename) {
         $marker = BASE_PATH . '/data/' . str_replace('/', '_', $filename) . '%%' . $user . '%%registered';
         return file_exists($marker);
+    }
+
+    /* Touch the heartbeat marker file for the given user. Return true on
+     * success, false on failure. */
+    function updateHeartbeatMarker($user) {
+        $marker = BASE_PATH . '/data/' . $user . '%%heartbeat';
+        return touch($marker);
     }
 
     /* $filename must contain only the basename of the file. */
