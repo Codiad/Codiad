@@ -49,7 +49,7 @@
         if (file_exists($filename)) {
             echo formatJSEND('error', 'Already registered as collaborator for ' . $_POST['filename']);
         } else {
-            $succes = touch($filename);
+            $success = touch($filename);
             if ($success) {
                 echo formatJSEND('success');
             } else {
@@ -76,15 +76,7 @@
     case 'unregisterFromAllFiles':
         /* Find all the files for which the current user is registered as
          * collaborator and unregister him. */
-        $basePath = BASE_PATH . '/data/';
-        if ($handle = opendir($basePath)) {
-            $regex = '/' . $_SESSION['user'] . '%%registered$/';
-            while (false !== ($entry = readdir($handle))) {
-                if (preg_match($regex, $entry)) {
-                    unlink($basePath . $entry);
-                }
-            }
-        }
+        unregisterFromAllFiles($_SESSION['user']);
 
         echo formatJSEND('success');
         break;
@@ -127,7 +119,7 @@
             exit(formatJSEND('error', 'No selection specified in sendSelectionChange'));
         }
 
-        if (isUserRegisteredForFile($_SESSION['user'], $_POST['filename'])) {
+        if (isUserRegisteredForFile($_POST['filename'], $_SESSION['user'])) {
             $filename = makeSelectionMarkerFilename($_POST['filename'], $_SESSION['user']);
             $selection = json_decode($_POST['selection']);
             saveJSON($filename, $selection);
@@ -147,7 +139,7 @@
             exit(formatJSEND('error', 'No change specified in sendDocumentChange'));
         }
 
-        if (isUserRegisteredForFile($_SESSION['user'], $_POST['filename'])) {
+        if (isUserRegisteredForFile($_POST['filename'], $_SESSION['user'])) {
             $filename = makeChangesMarkerFilename($_POST['filename'], $_SESSION['user']);
 
             $changes = array();
@@ -253,7 +245,15 @@
         /* First acquire a lock or wait until a lock can be acquired for server
          * text and shadow. */
         $serverTextFilename = makeServerTextMarkerFilename($_POST['filename']);
-        $shadowTextFilename = makeShadowMarkerFilename($_POST['filename']);
+        if (!file_exists($serverTextFilename)) {
+            exit(formatJSEND('error', 'Inconsistent sever text filename in synchronizeText: ' . $serverTextFilename));
+        }
+
+        $shadowTextFilename = makeShadowMarkerFilename($_POST['filename'], $_SESSION['user']);
+        if (!file_exists($shadowTextFilename)) {
+            exit(formatJSEND('error', 'Inconsistent sever text filename in synchronizeText: ' . $serverTextFilename));
+        }
+
         flock($serverTextFilename, LOCK_EX);
         flock($shadowTextFilename, LOCK_EX);
 
@@ -286,6 +286,21 @@
 
     case 'sendHeartbeat':
         updateHeartbeatMarker($_SESSION['user']);
+
+        /* Hard coded heartbeat time interval. Beware to keep this value here 
+        * twice the value on client side. */
+        $heartbeatInterval = 5;
+        $currentTime = time();
+        $usersAndHeartbeatTime = getUsersAndHeartbeatTime();
+        foreach ($usersAndHeartbeatTime as $user => $heartbeatTime) { 
+            if (($currentTime - $heartbeatTime) > $heartbeatInterval) {
+                /* The $user heartbeat time is too old, consider him dead and 
+                 * remove his 'registered'  and 'heartbeat' marker files. */
+                unregisterFromAllFiles($user);
+                removeHeartbeatMarker($user);
+            }
+        } 
+        
         echo formatJSEND('success');
         break;
 
@@ -321,14 +336,13 @@
         $sanitizedFilename = str_replace('/', '_', $filename);
         validatePathOrDie($sanitizedFilename);
         validatePathOrDie($user);
-        return BASE_PATH . '/data/' . $sanitizedFilename . '%%' . $username . '%%shadow';
+        return BASE_PATH . '/data/' . $sanitizedFilename . '%%' . $user . '%%shadow';
     }
 
     function makeServerTextMarkerFilename($filename) {
         $sanitizedFilename = str_replace('/', '_', $filename);
         validatePathOrDie($sanitizedFilename);
-        validatePathOrDie($user);
-        return BASE_PATH . '/data/' . $sanitizedFilename . '%%shadow';
+        return BASE_PATH . '/data/' . $sanitizedFilename . '%%text';
     }
 
     function makeHeartbeatMarkerFilename($user) {
@@ -349,9 +363,23 @@
 
     // --------------------
     /* $filename must contain only the basename of the file. */
-    function isUserRegisteredForFile($user, $filename) {
+    function isUserRegisteredForFile($filename, $user) {
         $marker = BASE_PATH . '/data/' . str_replace('/', '_', $filename) . '%%' . $user . '%%registered';
         return file_exists($marker);
+    }
+
+    /* Unregister the given user from all the files by removing his 
+     * 'registered' marker file. */
+    function unregisterFromAllFiles($user) {
+        $basePath = BASE_PATH . '/data/';
+        if ($handle = opendir($basePath)) {
+            $regex = '/' . $user . '%%registered$/';
+            while (false !== ($entry = readdir($handle))) {
+                if (preg_match($regex, $entry)) {
+                    unlink($basePath . $entry);
+                }
+            }
+        }
     }
 
     /* Touch the heartbeat marker file for the given user. Return true on
@@ -359,6 +387,32 @@
     function updateHeartbeatMarker($user) {
         $marker = BASE_PATH . '/data/' . $user . '%%heartbeat';
         return touch($marker);
+    }
+
+    function removeHeartbeatMarker($user) {
+        $marker = BASE_PATH . '/data/' . $user . '%%heartbeat';
+        unlink($marker);
+    }
+
+    /* Return an array containing the user as key and his last heartbeat time 
+     * as value. */
+    function getUsersAndHeartbeatTime() {
+        $usersAndHeartbeatTime = array();
+        $basePath = BASE_PATH . '/data/';
+        if ($handle = opendir($basePath)) {
+            while (false !== ($entry = readdir($handle))) {
+                if (strpos($entry, '%%heartbeat') !== false) {
+                    $matches = array();
+                    preg_match('/^(\w+)%/', $entry, $matches);
+                    if (count($matches) !== 2) {
+                        exit(formatJSEND('error', 'Unable To Match Username in getUsersAndHeartbeatTime'));
+                    }
+                    $usersAndHeartbeatTime[$matches[1]] = filemtime($basePath . $entry);
+                }
+            }
+        }
+
+        return $usersAndHeartbeatTime;
     }
 
     /* $filename must contain only the basename of the file. */
@@ -424,7 +478,7 @@
      * is a string. */
     function setShadow($filename, $username, $shadow) {
         $sanitizedFilename = BASE_PATH . '/data/' . str_replace('/', '_', $filename) . '%%' . $username . '%%shadow';
-        file_put_contents($sanitizedFilename, $shadow, LOCK_EX);
+        file_put_contents($sanitizedFilename, $shadow, LOCK_EX); 
     }
 
     /* Return the shadow for the given filename as a string or an empty string
@@ -436,7 +490,6 @@
             foreach ($markers as $entry) {
                 if (strpos($entry, 'shadow')) {
                     $shadow = file_get_contents($entry);
-                    print_r($shadow);
                 }
             }
         }
@@ -465,7 +518,6 @@
             foreach ($markers as $entry) {
                 if (strpos($entry, 'text')) {
                     $serverText = file_get_contents($entry);
-                    print_r($serverText);
                 }
             }
         }

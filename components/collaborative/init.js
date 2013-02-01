@@ -96,7 +96,7 @@
 
             /* Start to ask periodically for the potential other collaborators
              * changes. */
-            setInterval(this.$applyCollaboratorsChanges, 1000);
+            // setInterval(this.$applyCollaboratorsChanges, 1000);
             setInterval(this.$synchronizeText, 1000);
 
             /* Start to send an heartbeat to notify the server that we are
@@ -185,8 +185,8 @@
             $.post(this.controller,
                     { action: 'sendHeartbeat' },
                     function (data) {
-                        console.log('complete sendHeartbeat');
-                        console.log(data);
+                        // console.log('complete sendHeartbeat');
+                        // console.log(data);
                         codiad.jsend.parse(data);
                     });
         },
@@ -371,25 +371,25 @@
                 if (success) {
                     /* Send our edits to the server, and get in response a
                      * patch of the edits in the server text. */
-                    console.log(patch);
+                    // console.log(patch);
                     _this.shadows[currentFilename] = currentText;
 
                     var post = { action: 'synchronizeText',
                         filename: currentFilename,
                         patch: patch };
-                    console.log(post);
+                    // console.log(post);
 
                     $.post(this.controller, post, function (data) {
-                        console.log('complete synchronizeText');
-                        console.log(data);
+                        // console.log('complete synchronizeText');
+                        // console.log(data);
                         patchFromServer = codiad.jsend.parse(data);
-                        console.log(patchFromServer);
+                        // console.log(patchFromServer);
 
                         /* Apply the patch from the server text to the shadow
                          * and the current text. */
                         var dmp = new diff_match_patch();
                         var patchedShadow = dmp.patch_apply(dmp.patch_fromText(patchFromServer), _this.shadows[currentFilename]);
-                        console.log(patchedShadow);
+                        // console.log(patchedShadow);
                         _this.shadows[currentFilename] = patchedShadow[0];
 
                         /* Update the current text. */
@@ -415,8 +415,8 @@
                     filename: filename,
                     shadow: shadow },
                 function (data) {
-                    console.log('complete sendShadow');
-                    console.log(data);
+                    // console.log('complete sendShadow');
+                    // console.log(data);
                     codiad.jsend.parse(data);
                 });
         },
