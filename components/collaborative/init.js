@@ -422,94 +422,94 @@
         },
 
         /* Helper method that return a Ace editor delta change from a
-         * diff_match_patch diff object. */
-        diffToAceDeltas: function (diff, text) {
+         * diff_match_patch diff object and the original text that was
+         * used to compute the diff. */
+        diffToAceDeltas: function (diff, originalText) {
             var dmp = new diff_match_patch();
             var deltas = dmp.diff_toDelta(diff).split('\t');
 
             /*
-             * chaoscollective / Space_Editor
+             * Code deeply inspired by chaoscollective / Space_Editor
              */
-
             var offset = 0;
             var row = 1;
             var col = 1;
             var aceDeltas = [];
+            for (var i = 0; i < deltas.length; ++i) {
+                var type = deltas[i].charAt(0);
+                var data = decodeURI(deltas[i].substring(1));
 
-            for(var i=0; i<deltas.length; i++){
-              var type = deltas[i].charAt(0);
-              var data = decodeURI(deltas[i].substring(1));
+                switch (type) {
+                    case "=":
+                        /* The new text is equal to the original text for a
+                        * number of characters. */
+                        var unchangedCharactersCount = parseInt(data, 10);
+                        for (var j = 0; j < unchangedCharactersCount; ++j) {
+                            if (originalText.charAt(offset + j) == "\n") {
+                                ++row;
+                                col = 1;
+                            } else {
+                                col++;
+                            }
+                        }
+                        offset += unchangedCharactersCount;
+                        break;
 
-              //console.log(type + " >> " + data);
-              switch(type){
+                case "+":
+                    /* Some characters were added. */
+                    var aceDelta = {
+                        action: "insertText",
+                        range: {
+                            start: {row: (row - 1), column: (col - 1)},
+                            end: {row: (row - 1), column: (col - 1)}
+                        },
+                        text: data
+                    };
+                    aceDeltas.push(aceDelta);
 
-                case "=": { // equals for number of characters.
-                  var sameLen = parseInt(data);
-                  for(var j=0; j<sameLen; j++){
-                    if(text.charAt(offset+j) == "\n"){
-                      row++;
-                      col = 1;
-                    }else{
-                      col++;
+                    var innerRows = data.split("\n");
+                    var innerRowsCount = innerRows.length - 1;
+                    row += innerRowsCount;
+                    if (innerRowsCount <= 0) {
+                        col += data.length;
+                    } else {
+                        col = innerRows[innerRowsCount].length + 1;
                     }
-                  }
-                  offset += sameLen;
-                  break;
-                }
+                    break;
 
-                case "+": { // add string.
-                  var newLen = data.length;
+                case "-":
+                    /* Some characters were subtracted. */
+                    var deletedCharactersCount = parseInt(data, 10);
+                    var removedData = originalText.substring(offset, offset + deletedCharactersCount);
+                    
+                    var removedRows = removedData.split("\n");
+                    var removedRowsCount = removedRows.length - 1;
+                    
+                    var endRow = row + removedRowsCount;
+                    var endCol = col;
+                    if (removedRowsCount <= 0) {
+                        endCol = col + deletedCharactersCount;
+                    } else {
+                        endCol = removedRows[removedRowsCount].length + 1;
+                    }
 
-                  //console.log("at row="+row+" col="+col+" >> " + data);
-                  var aceDelta = {
-                          action: "insertText",
-                          range: {start: {row: (row-1), column: (col-1)}, end: {row: (row-1), column: (col-1)}}, //Range.fromPoints(position, end),
-                          text: data
-                      };
-                  aceDeltas.push(aceDelta);
+                    var aceDelta = {
+                        action: "removeText",
+                        range: {
+                            start: {row: (row - 1), column: (col - 1)},
+                            end: {row: (endRow - 1), column: (endCol - 1)}
+                        },
+                        text: data
+                    };
+                    aceDeltas.push(aceDelta);
 
-                  var innerRows = data.split("\n");
-                  var innerRowsCount = innerRows.length-1;
-                  row += innerRowsCount;
-                  if(innerRowsCount <= 0){
-                    col += data.length;
-                  }else{
-                    col = innerRows[innerRowsCount].length+1;
-                  }
-                  //console.log("ended at row="+row+" col="+col);
-                  break;
-                }
+                    offset += deletedCharactersCount;
+                    break;
 
-                case "-": { // subtract number of characters.
-                  var delLen = parseInt(data);
-                  //console.log("at row="+row+" col="+col+" >> " + data);
-                  var removedData = text.substring(offset, offset+delLen);
-                  //console.log("REMOVING: " + removedData);
-                  var removedRows = removedData.split("\n");
-                  //console.log(removedRows);
-                  var removedRowsCount = removedRows.length-1;
-                  //console.log("removed rows count: " + removedRowsCount);
-                  var endRow = row + removedRowsCount;
-                  var endCol = col;
-                  if(removedRowsCount <= 0){
-                    endCol = col+delLen;
-                  }else{
-                    endCol = removedRows[removedRowsCount].length+1;
-                  }
-
-                  //console.log("end delete selection at row="+endRow+" col="+endCol);
-                  var aceDelta = {
-                          action: "removeText",
-                          range: {start: {row: (row-1), column: (col-1)}, end: {row: (endRow-1), column: (endCol-1)}}, //Range.fromPoints(position, end),
-                          text: data
-                      };
-                  aceDeltas.push(aceDelta);
-
-                  //console.log("ended at row="+row+" col="+col);
-                  offset += delLen;
-                  break;
-                }
-
+                  default:
+                    /* Return an innofensive empty list of Ace deltas. */
+                    console.log("Unhandled case '" + type + "' while building Ace deltas.");
+                    return [];
               }
             }
             return aceDeltas;
