@@ -28,6 +28,12 @@
                 e.preventDefault();
                 _this.authenticate();
             });
+            
+            // Language Selector
+            $('.show-language-selector').click(function(){
+                $(this).hide();
+                $('.language-selector').animate({height:'toggle'}, "fast");
+            });
         },
 
         //////////////////////////////////////////////////////////////////

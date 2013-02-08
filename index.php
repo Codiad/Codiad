@@ -86,19 +86,25 @@ $components = json_decode($components,true);
 
                 <label><span class="icon-lock login-icon"></span> Password</label>
                 <input type="password" name="password">
-                <label><span class="icon-language login-icon"></span> Language</label>
-                <select name="language">
-                    <?php
-                    include 'languages/code.php';
-                    foreach(glob("languages/*.php") as $filename): 
-                        $lang_code = str_replace(array("languages/", ".php"), "", $filename);
-                        if(!isset($languages[$lang_code])) continue;
-                        $lang_disp = ucfirst(strtolower($languages[$lang_code]));
-                        ?>
-                        <option value="<?php echo $lang_code; ?>"><?php echo $lang_disp; ?></option>
-                    <?php endforeach; ?>
-                </select>
+                
+                <div class="language-selector">
+                    <label><span class="icon-language login-icon"></span> Language</label>
+                    <select name="language">
+                        <?php
+                        include 'languages/code.php';
+                        foreach(glob("languages/*.php") as $filename): 
+                            $lang_code = str_replace(array("languages/", ".php"), "", $filename);
+                            if(!isset($languages[$lang_code])) continue;
+                            $lang_disp = ucfirst(strtolower($languages[$lang_code]));
+                            ?>
+                            <option value="<?php echo $lang_code; ?>"><?php echo $lang_disp; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                
                 <button>Login</button>
+
+                <a class="show-language-selector">Language</a>
 
             </form>
 

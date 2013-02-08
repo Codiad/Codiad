@@ -324,7 +324,7 @@
                 }
             });
 
-            $.each(['printMargin', 'highlightLine', 'indentGuides', 'wrapMode'],
+            $.each(['printMargin', 'highlightLine', 'indentGuides', 'wrapMode', 'rightSidebarTrigger'],
                    function(idx, key) {
                        var localValue =
                            localStorage.getItem('codiad.editor.' + key);
@@ -703,6 +703,7 @@
             case 'c':
             case 'cpp':
             case 'h':
+            case 'hpp':
                 return 'c_cpp';
             case 'py':
                 return 'python';
@@ -937,6 +938,22 @@
             localStorage.setItem('codiad.editor.wrapMode', w);
         },
 
+        //////////////////////////////////////////////////////////////////
+        //
+        // Set trigger for opening the right sidebar
+        //
+        // Parameters:
+        //   t - {Boolean} (false for Hover, true for Click)
+        //   i - {Editor}  (If omitted, Defaults to all editors)
+        //
+        //////////////////////////////////////////////////////////////////
+
+        setRightSidebarTrigger: function(t, i) {
+            this.settings.rightSidebarTrigger = t;
+            // LocalStorage
+            localStorage.setItem('codiad.editor.rightSidebarTrigger', t);
+        },
+        
         //////////////////////////////////////////////////////////////////
         //
         // Get content from editor

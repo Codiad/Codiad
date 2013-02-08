@@ -107,6 +107,14 @@ a:hover,a:active {;
 
 .login-icon { padding-top: 3px; }
 
+.language-selector {
+    position: relative;
+    display: none; 
+}
+
+.show-language-selector { display: block; float: right; color: #666; margin: 20px 0 0 0; }
+.show-language-selector:hover { color: #fff; }
+
 /* FORMS */
 
 label {
