@@ -208,7 +208,7 @@ $components = json_decode($components,true);
 
         <div id="sb-right" class="sidebar">
 
-            <div class="sidebar-handle"><span>||</span></div>
+            <div class="sidebar-handle"><span><a class="icon-menu"></a></span></div>
 
             <div class="sb-right-content">
 
