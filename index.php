@@ -24,6 +24,7 @@ $components = json_decode($components,true);
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/screen.css">
+    <link rel="icon"       href="favicon.ico" type="image/x-icon" />
     <?php
     // Load Component CSS Files
     foreach($components as $component){
