@@ -309,10 +309,31 @@
                     var screenCoordinates = this._getEditor().renderer
                         .textToScreenCoordinates(selections[username].start.row,
                                                 selections[username].start.column);
-                    markup.css({
-                        left: screenCoordinates.pageX,
-                        top: screenCoordinates.pageY
-                    });
+
+                    /* Check if the selection has changed. */
+                    if (markup.css('left') !== screenCoordinates.pageX ||
+                            markup.css('top') !== screenCoordinates.pageY) {
+                        markup.css({
+                            left: screenCoordinates.pageX,
+                            top: screenCoordinates.pageY
+                        });
+
+                        markup.children('.collaborative-selection-tooltip').fadeIn('fast');
+
+                        /* Create a static variable to hold the timeout reference. */
+                        if (typeof this.displaySelection.hideTooltipTimeoutRef == 'undefined') {
+                            this.displaySelection.hideTooltipTimeoutRef = null;
+                        } else if (this.displaySelection.hideTooltipTimeoutRef !== null) {
+                            clearTimeout(this.displaySelection.hideTooltipTimeoutRef);
+                            this.displaySelection.hideTooltipTimeoutRef = null;
+                        }
+
+                        this.displaySelection.hideTooltipTimeoutRef = setTimeout(function () {
+                            markup.children('.collaborative-selection-tooltip')
+                                    .fadeOut('fast');
+                        }, 500);
+
+                    }
                 }
             }
         },
