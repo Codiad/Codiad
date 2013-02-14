@@ -311,8 +311,8 @@
                                                 selections[username].start.column);
 
                     /* Check if the selection has changed. */
-                    if (markup.css('left') !== screenCoordinates.pageX ||
-                            markup.css('top') !== screenCoordinates.pageY) {
+                    if (markup.css('left').slice(0, -2) !== String(screenCoordinates.pageX) ||
+                            markup.css('top').slice(0, -2) !== String(screenCoordinates.pageY)) {
                         markup.css({
                             left: screenCoordinates.pageX,
                             top: screenCoordinates.pageY
@@ -321,17 +321,19 @@
                         markup.children('.collaborative-selection-tooltip').fadeIn('fast');
 
                         /* Create a static variable to hold the timeout reference. */
-                        if (typeof this.displaySelection.hideTooltipTimeoutRef == 'undefined') {
-                            this.displaySelection.hideTooltipTimeoutRef = null;
-                        } else if (this.displaySelection.hideTooltipTimeoutRef !== null) {
-                            clearTimeout(this.displaySelection.hideTooltipTimeoutRef);
-                            this.displaySelection.hideTooltipTimeoutRef = null;
+                        if (typeof this.displaySelections.hideTooltipTimeoutRef == 'undefined') {
+                            console.log('create');
+                            this.displaySelections.hideTooltipTimeoutRef = null;
+                        } else if (this.displaySelections.hideTooltipTimeoutRef !== null) {
+                            console.log('delete');
+                            clearTimeout(this.displaySelections.hideTooltipTimeoutRef);
+                            this.displaySelections.hideTooltipTimeoutRef = null;
                         }
 
-                        this.displaySelection.hideTooltipTimeoutRef = setTimeout(function () {
+                        this.displaySelections.hideTooltipTimeoutRef = setTimeout(function () {
                             markup.children('.collaborative-selection-tooltip')
                                     .fadeOut('fast');
-                        }, 500);
+                        }, 2000);
 
                     }
                 }
