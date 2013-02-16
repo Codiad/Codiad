@@ -340,6 +340,7 @@
          * the tooltip to hide. */
         _hideTooltipForBoundMarkup: function() {
             this.children('.collaborative-selection-tooltip').fadeOut('fast');
+            this.removeAttr('hideTooltipTimeoutRef');
         },
 
         /* Remove the selection corresponding to the given username. */
