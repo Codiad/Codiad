@@ -319,29 +319,27 @@
                             top: screenCoordinates.pageY
                         });
                         
-                        markup.children('.collaborative-selection ').css('background-color', selections[username].color);
+                        markup.children('.collaborative-selection').css('background-color', selections[username].color);
                         markup.children('.collaborative-selection-tooltip').css('background-color', selections[username].color);
-
-                        markup.children('.collaborative-selection-tooltip').fadeIn('fast');
-
-                        /* Create a static variable to hold the timeout reference. */
-                        if (typeof this.displaySelections.hideTooltipTimeoutRef == 'undefined') {
-                            console.log('create');
-                            this.displaySelections.hideTooltipTimeoutRef = null;
-                        } else if (this.displaySelections.hideTooltipTimeoutRef !== null) {
-                            console.log('delete');
-                            clearTimeout(this.displaySelections.hideTooltipTimeoutRef);
-                            this.displaySelections.hideTooltipTimeoutRef = null;
+                        
+                        var timeoutRef = markup.attr('hideTooltipTimeoutRef');
+                        if (timeoutRef !== null) {
+                            clearTimeout(timeoutRef);
+                            markup.removeAttr('hideTooltipTimeoutRef');
                         }
-
-                        this.displaySelections.hideTooltipTimeoutRef = setTimeout(function () {
-                            markup.children('.collaborative-selection-tooltip')
-                                    .fadeOut('fast');
-                        }, 2000);
-
+                        
+                        markup.children('.collaborative-selection-tooltip').fadeIn('fast');
+                        timeoutRef = setTimeout(this._hideTooltipForBoundMarkup.bind(markup), 2000);
+                        markup.attr('hideTooltipTimeoutRef', timeoutRef);
                     }
                 }
             }
+        },
+        
+        /* This function must be bound with the markup which contains
+         * the tooltip to hide. */
+        _hideTooltipForBoundMarkup: function() {
+            this.children('.collaborative-selection-tooltip').fadeOut('fast');
         },
 
         /* Remove the selection corresponding to the given username. */
