@@ -55,7 +55,7 @@
             this.removeSelectionAndChangesForAllFiles();
 
             /* TODO For debug only, remove this for production. */
-            this.removeServerTextForAllFiles();
+            //this.removeServerTextForAllFiles();
 
             this.$onDocumentChange = this.onDocumentChange.bind(this);
             this.$onSelectionChange = this.onSelectionChange.bind(this);
@@ -92,12 +92,12 @@
 
             /* Start to ask periodically for the potential other collaborators
              * selection. */
-            setInterval(this.$updateCollaboratorsSelections, 1000);
+            setInterval(this.$updateCollaboratorsSelections, 500);
 
             /* Start to ask periodically for the potential other collaborators
              * changes. */
             // setInterval(this.$applyCollaboratorsChanges, 1000);
-            setInterval(this.$synchronizeText, 1000);
+            setInterval(this.$synchronizeText, 500);
 
             /* Start to send an heartbeat to notify the server that we are
              * alive. */
@@ -307,16 +307,20 @@
                     }
 
                     var screenCoordinates = this._getEditor().renderer
-                        .textToScreenCoordinates(selections[username].start.row,
-                                                selections[username].start.column);
+                        .textToScreenCoordinates(selections[username].selection.start.row,
+                                                selections[username].selection.start.column);
 
                     /* Check if the selection has changed. */
                     if (markup.css('left').slice(0, -2) !== String(screenCoordinates.pageX) ||
-                            markup.css('top').slice(0, -2) !== String(screenCoordinates.pageY)) {
+                        markup.css('top').slice(0, -2) !== String(screenCoordinates.pageY)) {
+
                         markup.css({
                             left: screenCoordinates.pageX,
                             top: screenCoordinates.pageY
                         });
+                        
+                        markup.children('.collaborative-selection ').css('background-color', selections[username].color);
+                        markup.children('.collaborative-selection-tooltip').css('background-color', selections[username].color);
 
                         markup.children('.collaborative-selection-tooltip').fadeIn('fast');
 

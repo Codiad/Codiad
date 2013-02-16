@@ -176,7 +176,11 @@
             if ($user !== $_SESSION['user']) {
                 $selection = getSelection($filename, $user);
                 if (!empty($selection)) {
-                    $usersAndSelections[$user] = $selection;
+                    $data = array(
+                        "selection" => $selection,
+                        "color" => getColorForUser($user)
+                    );
+                    $usersAndSelections[$user] = $data;
                 }
             }
         }
@@ -285,11 +289,39 @@
         break;
 
     case 'sendHeartbeat':
-        updateHeartbeatMarker($_SESSION['user']);
-
         /* Hard coded heartbeat time interval. Beware to keep this value here 
         * twice the value on client side. */
         $heartbeatInterval = 5;
+        
+        /* Check if the user is a new user, or if it is just an update of
+         * his heartbeat. */
+        $isUserNewlyConnected = false;
+        $usersAndHeartbeatTime = getUsersAndHeartbeatTime();
+        if(isset($usersAndHeartbeatTime[$_SESSION['user']])) {
+            $heartbeatTime = $usersAndHeartbeatTime[$_SESSION['user']];
+            $isUserNewlyConnected = ($heartbeatTime > $heartbeatInterval);
+            
+            /* If the user is newly connected and if the heartbeat file
+             * exits, that mean that the user was the latest in the previous
+             * collaborative session. We need to call the disconnect method
+             * to clear the data relatives to the user before calling the 
+             * connect method. */
+            if($isUserNewlyConnected) {
+                onCollaboratorDisconnect($_SESSION['user']);
+            }
+        }
+        else {
+            $isUserNewlyConnected = true;
+        }
+        
+        updateHeartbeatMarker($_SESSION['user']);
+        
+        /* If the user is newly connected, we fire the
+         * corresponding method. */
+        if($isUserNewlyConnected) {
+            onCollaboratorConnect($_SESSION['user']);
+        }
+        
         $currentTime = time();
         $usersAndHeartbeatTime = getUsersAndHeartbeatTime();
         foreach ($usersAndHeartbeatTime as $user => $heartbeatTime) { 
@@ -298,6 +330,7 @@
                  * remove his 'registered'  and 'heartbeat' marker files. */
                 unregisterFromAllFiles($user);
                 removeHeartbeatMarker($user);
+                onCollaboratorDisconnect($user);
             }
         } 
         
@@ -348,6 +381,11 @@
     function makeHeartbeatMarkerFilename($user) {
         validatePathOrDie($user);
         return BASE_PATH . '/data/' . $user . '%%heartbeat';
+    }
+    
+    function makeColorMarkerFilename($user) {
+        validatePathOrDie($user);
+        return BASE_PATH . '/data/' . $user . '%%color';
     }
 
     // TODO Put this in a more robust way in common.php
@@ -523,6 +561,64 @@
         }
 
         return $serverText;
+    }
+    
+    /* Return the color of the given user. */
+    function getColorForUser($user) {
+        $colorMarkerFile = makeColorMarkerFilename($user);
+        if (file_exists($colorMarkerFile)) { 
+            $color = file_get_contents($colorMarkerFile);
+            return $color;
+        }
+        
+        $colors = array(
+            "#0000FF",
+            "#FF0000",
+            "#00FF00",
+            "#FF00FF",
+            "#0F00F0",
+            "#F0000F",
+            "#0F0F0F",
+            "#F0F0F0"
+        );
+        
+        $usedColors = array();
+        $users = array_keys(getUsersAndHeartbeatTime());
+        foreach ($users as $user) {
+            $colorMarkerFile = makeColorMarkerFilename($user);
+            if (file_exists($colorMarkerFile)) { 
+                $color = file_get_contents($colorMarkerFile);
+                $usedColors[] = $color;
+            }
+        }
+
+        $colors = array_diff($colors, $usedColors);
+        
+        if(count($colors) > 0) {
+            return array_shift($colors);
+        }
+        else {
+            return "#FFFFFF";
+        }
+    }
+    
+    /* This function is called when a new collaborator
+    /* is connected. */
+    function onCollaboratorConnect($user) {
+        /* Create the color file for the user. */
+        $color = getColorForUser($user);
+        $colorMarkerFile = makeColorMarkerFilename($user);
+        file_put_contents($colorMarkerFile, $color, LOCK_EX);
+    }
+    
+    /* This function is called when a collaborator is
+     * disconnected. */
+    function onCollaboratorDisconnect($user) {
+        /* Remove the color file for the user. */
+        $colorMarkerFile = makeColorMarkerFilename($user);
+        if (file_exists($colorMarkerFile)) { 
+            unlink ($colorMarkerFile); 
+        }
     }
 
 ?>
