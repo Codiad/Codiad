@@ -10,8 +10,8 @@
     
     //////////////////////////////////////////////////////////////////
     // Log debug message
-    // They will be displayed in the consol when the respons is make
-    // with the formatJSEND command.
+    // Messages will be displayed in the console when the response is 
+    // made with the formatJSEND function.
     //////////////////////////////////////////////////////////////////
     
     function debug($message) {
