@@ -323,7 +323,7 @@
                         markup.children('.collaborative-selection-tooltip').css('background-color', selections[username].color);
                         
                         var timeoutRef = markup.attr('hideTooltipTimeoutRef');
-                        if (timeoutRef !== null) {
+                        if (timeoutRef !== undefined) {
                             clearTimeout(timeoutRef);
                             markup.removeAttr('hideTooltipTimeoutRef');
                         }
