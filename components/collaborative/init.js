@@ -105,13 +105,12 @@
 
             $(".collaborative-selection").live({
                 mouseenter: function() {
-                        $(this).parent().find(".collaborative-selection-tooltip").fadeIn('fast');
+                        var markup = $(this).parent();
+                        _this.showTooltipForMarkup(markup);
                     },
                 mouseleave: function() {
-                        var $this = $(this);
-                        setTimeout(function() {
-                            $this.parent().find(".collaborative-selection-tooltip").fadeOut('fast');
-                        }, 300);
+                        var markup = $(this).parent();
+                        _this.showTooltipForMarkup(markup, 300);
                     }
             });
 
@@ -322,23 +321,32 @@
                         markup.children('.collaborative-selection').css('background-color', selections[username].color);
                         markup.children('.collaborative-selection-tooltip').css('background-color', selections[username].color);
                         
-                        var timeoutRef = markup.attr('hideTooltipTimeoutRef');
-                        if (timeoutRef !== undefined) {
-                            clearTimeout(timeoutRef);
-                            markup.removeAttr('hideTooltipTimeoutRef');
-                        }
-                        
-                        markup.children('.collaborative-selection-tooltip').fadeIn('fast');
-                        timeoutRef = setTimeout(this._hideTooltipForBoundMarkup.bind(markup), 2000);
-                        markup.attr('hideTooltipTimeoutRef', timeoutRef);
+                        this.showTooltipForMarkup(markup, 2000);
                     }
                 }
             }
         },
         
+        /* Show the tooltip of the given markup. If the duration is define,
+         * the tooltip is automaticaly hide when the time is elapsed. */
+        showTooltipForMarkup: function(markup, duration) {
+            var timeoutRef = markup.attr('hideTooltipTimeoutRef');
+            if (timeoutRef !== undefined) {
+                clearTimeout(timeoutRef);
+                markup.removeAttr('hideTooltipTimeoutRef');
+            }
+
+            markup.children('.collaborative-selection-tooltip').fadeIn('fast');
+            
+            if(duration !== undefined) {
+                timeoutRef = setTimeout(this._hideTooltipAndRemoveAttrForBoundMarkup.bind(markup), duration);
+                markup.attr('hideTooltipTimeoutRef', timeoutRef);
+            }           
+        },
+        
         /* This function must be bound with the markup which contains
          * the tooltip to hide. */
-        _hideTooltipForBoundMarkup: function() {
+        _hideTooltipAndRemoveAttrForBoundMarkup: function() {
             this.children('.collaborative-selection-tooltip').fadeOut('fast');
             this.removeAttr('hideTooltipTimeoutRef');
         },
