@@ -65,8 +65,6 @@
             $path = preg_replace('#/+#','/',$path);
         }
         
-        debug('get json in: '.$path.$file);
-        
         $json = file_get_contents($path . $file);
         $json = str_replace("|*/?>","",str_replace("<?php/*|","",$json));
         $json = json_decode($json,true);
@@ -84,8 +82,6 @@
             $path = preg_replace('#/+#','/',$path);
             if(!is_dir($path)) mkdir($path);
         }
-        
-        debug('save json in: '.$path.$file);
         
         $data = "<?php/*|" . json_encode($data) . "|*/?>";
         $write = fopen($path . $file, 'w') or die("can't open file");
