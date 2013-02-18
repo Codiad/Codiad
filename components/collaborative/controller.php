@@ -22,12 +22,24 @@
 
     require_once('../../config.php');
     require_once('../../lib/diff_match_patch.php');
+    require_once('../../lib/file_db.php');
 
     //////////////////////////////////////////////////////////////////
     // Verify Session or Key
     //////////////////////////////////////////////////////////////////
 
     checkSession();
+    
+    //////////////////////////////////////////////////////////////////
+    // Initialize Data Base
+    //////////////////////////////////////////////////////////////////
+    
+    $collaborativeDataBase = new file_db(BASE_PATH . '/data/collaborative');
+    
+    function &getDB() {
+        global $collaborativeDataBase;
+        return $collaborativeDataBase;
+    } 
 
     //////////////////////////////////////////////////////////////////
     // Get Action
@@ -43,14 +55,14 @@
         if(!isset($_POST['filename']) || empty($_POST['filename'])) {
             exit(formatJSEND('error', 'No filename specified in register'));
         }
-
-        /* FIXME beware of filenames with '%' characters. */
-        $filename = makeRegisteredMarkerFilename($_POST['filename'], $_SESSION['user']);
-        if (file_exists($filename)) {
+        
+        $query = array('user' => $_SESSION['user'], 'filename' => $_POST['filename']);
+        $entry = getDB()->select($query, 'registered');
+        if ($entry != null) {
             echo formatJSEND('error', 'Already registered as collaborator for ' . $_POST['filename']);
         } else {
-            $success = touch($filename);
-            if ($success) {
+            $entry = getDB()->create($query, 'registered');
+            if ($entry != null) {
                 echo formatJSEND('success');
             } else {
                 echo formatJSEND('error', 'Unable to register as collaborator for ' . $_POST['filename']);
@@ -64,12 +76,13 @@
             exit(formatJSEND('error', 'No filename specified in unregister'));
         }
 
-        $filename = makeRegisteredMarkerFilename($_POST['filename'], $_SESSION['user']);
-        if (!file_exists($filename)) {
-            echo formatJSEND('error', 'Not registered as collaborator for ' . $_POST['filename']);
-        } else {
-            unlink($filename);
+        $query = array('user' => $_SESSION['user'], 'filename' => $_POST['filename']);
+        $entry = getDB()->select($query, 'registered');
+        if ($entry != null) {
+            $entry->remove();
             echo formatJSEND('success');
+        } else {
+            echo formatJSEND('error', 'Not registered as collaborator for ' . $_POST['filename']);
         }
         break;
 
@@ -82,30 +95,17 @@
         break;
 
     case 'removeSelectionAndChangesForAllFiles':
-        $basePath = BASE_PATH . '/data/';
-        if ($handle = opendir($basePath)) {
-            $regex = '/' . $_SESSION['user'] . '/';
-            while (false !== ($entry = readdir($handle))) {
-                if (preg_match($regex, $entry)) {
-                    unlink($basePath . $entry);
-                }
-            }
-        }
-
+        $query = array('user' => $_SESSION['user'], 'filename' => '*');
+        $entries = getDB()->select($query, 'selection');
+        foreach($entries as $entry) $entry->remove();
+        $entries = getDB()->select($query, 'change');
+        foreach($entries as $entry) $entry->remove();
         echo formatJSEND('success');
         break;
 
     case 'removeServerTextForAllFiles':
-        $basePath = BASE_PATH . '/data/';
-        if ($handle = opendir($basePath)) {
-            $regex = '/%%text$/';
-            while (false !== ($entry = readdir($handle))) {
-                if (preg_match($regex, $entry)) {
-                    unlink($basePath . $entry);
-                }
-            }
-        }
-
+        $entries = getDB()->select_group('text');
+        foreach($entries as $entry) $entry->remove();
         echo formatJSEND('success');
         break;
 
@@ -120,9 +120,10 @@
         }
 
         if (isUserRegisteredForFile($_POST['filename'], $_SESSION['user'])) {
-            $filename = makeSelectionMarkerFilename($_POST['filename'], $_SESSION['user']);
             $selection = json_decode($_POST['selection']);
-            saveJSON($filename, $selection);
+            $query = array('user' => $_SESSION['user'], 'filename' => $_POST['filename']);
+            $entry = getDB()->create($query, 'selection');
+            $entry->put_value($selection);
             echo formatJSEND('success');
         } else {
             echo formatJSEND('error', 'Not registered as collaborator for ' . $_POST['filename']);
@@ -140,11 +141,14 @@
         }
 
         if (isUserRegisteredForFile($_POST['filename'], $_SESSION['user'])) {
-            $filename = makeChangesMarkerFilename($_POST['filename'], $_SESSION['user']);
-
             $changes = array();
-            if (file_exists(BASE_PATH . '/data/' . $filename)) {
-                $changes = getJSON($filename);
+            $query = array('user' => $_SESSION['user'], 'filename' => $_POST['filename']);
+            $entry = getDB()->select($query, 'change');
+            if ($entry != null) {
+                $changes = $entry->get_value();
+            }
+            else {
+                $entry = getDB()->create($query, 'change');
             }
 
             $maxChangeIndex = max(array_keys($changes));
@@ -153,7 +157,7 @@
             $change['revision'] = json_decode($_POST['revision']);
             $changes[++$maxChangeIndex] = $change;
 
-            saveJSON($filename, $changes);
+            $entry->put_value($changes);
             echo formatJSEND('success');
         } else {
             echo formatJSEND('error', 'Not registered as collaborator for ' . $_POST['filename']);
@@ -245,31 +249,33 @@
         if(!isset($_POST['patch'])) {
             exit(formatJSEND('error', 'No patch specified in synchronizeText'));
         }
+        
+        $query = array('filename' => $_POST['filename']);
+        $serverTextEntry = getDB()->select($query, 'text');
+        if ($serverTextEntry == null) {
+            exit(formatJSEND('error', 'Inconsistent sever text filename in synchronizeText: ' . $serverTextEntry));
+        }
+
+        $query = array('user' => $_SESSION['user'], 'filename' => $_POST['filename']);
+        $shadowTextEntry = getDB()->select($query, 'shadow');
+        if ($shadowTextEntry == null) {
+            exit(formatJSEND('error', 'Inconsistent sever text filename in synchronizeText: ' . $shadowTextEntry));
+        }
 
         /* First acquire a lock or wait until a lock can be acquired for server
          * text and shadow. */
-        $serverTextFilename = makeServerTextMarkerFilename($_POST['filename']);
-        if (!file_exists($serverTextFilename)) {
-            exit(formatJSEND('error', 'Inconsistent sever text filename in synchronizeText: ' . $serverTextFilename));
-        }
+        $serverTextEntry->lock();
+        $shadowTextEntry->lock();
 
-        $shadowTextFilename = makeShadowMarkerFilename($_POST['filename'], $_SESSION['user']);
-        if (!file_exists($shadowTextFilename)) {
-            exit(formatJSEND('error', 'Inconsistent sever text filename in synchronizeText: ' . $serverTextFilename));
-        }
-
-        flock($serverTextFilename, LOCK_EX);
-        flock($shadowTextFilename, LOCK_EX);
-
-        $serverText = file_get_contents($serverTextFilename);
-        $shadowText = file_get_contents($shadowTextFilename);
-
+        $serverText = $serverTextEntry->get_value();
+        $shadowText = $shadowTextEntry->get_value();
+        
         $patchFromClient = $_POST['patch'];
 
         /* Patch the shadow and server texts with the edits from the client. */
         $dmp = new diff_match_patch();
         $patchedServerText = $dmp->patch_apply($dmp->patch_fromText($patchFromClient), $serverText);
-        file_put_contents($serverTextFilename, $patchedServerText[0]);
+        $serverTextEntry->put_value($patchedServerText[0]);
 
         $patchedShadowText = $dmp->patch_apply($dmp->patch_fromText($patchFromClient), $shadowText);
 
@@ -279,11 +285,11 @@
 
         /* Apply it to the shadow. */
         $patchedShadowText = $dmp->patch_apply($dmp->patch_fromText($patchFromServer), $patchedShadowText[0]);
-        file_put_contents($shadowTextFilename, $patchedShadowText[0]);
+        $shadowTextEntry->put_value($patchedShadowText[0]);
 
         /* Release locks. */
-        flock($serverTextFilename, LOCK_UN);
-        flock($shadowTextFilename, LOCK_UN);
+        $serverTextEntry->unlock();
+        $shadowTextEntry->unlock();
 
         echo formatJSEND('success', $patchFromServer);
         break;
@@ -297,9 +303,11 @@
         /* Check if the user is a new user, or if it is just an update of
          * his heartbeat. */
         $isUserNewlyConnected = true;
-        $usersAndHeartbeatTime = getUsersAndHeartbeatTime();
-        if(isset($usersAndHeartbeatTime[$_SESSION['user']])) {
-            $heartbeatTime = $usersAndHeartbeatTime[$_SESSION['user']];
+        
+        $query = array('user' => $_SESSION['user']);
+        $entry = getDB()->select($query, 'heartbeat');
+        if($entry != null) {
+            $heartbeatTime = $entry->get_value();
             $heartbeatInterval = $currentTime - $heartbeatTime;
             $isUserNewlyConnected = ($heartbeatInterval > 1.5*$maxHeartbeatInterval);
             
@@ -338,237 +346,135 @@
     default:
         exit(formatJSEND('error', 'Unknown Action ' . $_POST['action']));
     }
-
-    // --------------------
-    /* Helper functions to make the marker filenames corresponding to the given
-     * parameters. */
-    function makeRegisteredMarkerFilename($filename, $user) {
-        $sanitizedFilename = str_replace('/', '_', $filename);
-        validatePathOrDie($sanitizedFilename);
-        validatePathOrDie($user);
-        return BASE_PATH . '/data/' . $sanitizedFilename . '%%' . $user . '%%registered';
-    }
-
-    function makeSelectionMarkerFilename($filename, $user) {
-        $sanitizedFilename = str_replace('/', '_', $filename);
-        validatePathOrDie($sanitizedFilename);
-        validatePathOrDie($user);
-        return $sanitizedFilename . '%%' . $user . '%%selection';
-    }
-
-    function makeChangesMarkerFilename($filename, $user) {
-        $sanitizedFilename = str_replace('/', '_', $filename);
-        validatePathOrDie($sanitizedFilename);
-        validatePathOrDie($user);
-        return $sanitizedFilename . '%%' . $user . '%%changes';
-    }
-
-    function makeShadowMarkerFilename($filename, $user) {
-        $sanitizedFilename = str_replace('/', '_', $filename);
-        validatePathOrDie($sanitizedFilename);
-        validatePathOrDie($user);
-        return BASE_PATH . '/data/' . $sanitizedFilename . '%%' . $user . '%%shadow';
-    }
-
-    function makeServerTextMarkerFilename($filename) {
-        $sanitizedFilename = str_replace('/', '_', $filename);
-        validatePathOrDie($sanitizedFilename);
-        return BASE_PATH . '/data/' . $sanitizedFilename . '%%text';
-    }
-
-    function makeHeartbeatMarkerFilename($user) {
-        validatePathOrDie($user);
-        return BASE_PATH . '/data/' . $user . '%%heartbeat';
-    }
     
-    function makeColorMarkerFilename($user) {
-        validatePathOrDie($user);
-        return BASE_PATH . '/data/' . $user . '%%color';
-    }
-
-    // TODO Put this in a more robust way in common.php
-    /* Validate that a path does not contain '..' or stuff like that for security. */
-    function validatePathOrDie($path) {
-        if (strstr($path, '/') ||
-            strstr($path, '\\') ||
-            strstr($path, '..') ) {
-            // Security fault.
-            die();
-        }
-    }
-
     // --------------------
     /* $filename must contain only the basename of the file. */
     function isUserRegisteredForFile($filename, $user) {
-        $marker = BASE_PATH . '/data/' . str_replace('/', '_', $filename) . '%%' . $user . '%%registered';
-        return file_exists($marker);
+        $query = array('user' => $user, 'filename' => $filename);
+        $entry = getDB()->select($query, 'registered');
+        return ($entry != null);
     }
 
     /* Unregister the given user from all the files by removing his 
      * 'registered' marker file. */
     function unregisterFromAllFiles($user) {
-        $basePath = BASE_PATH . '/data/';
-        if ($handle = opendir($basePath)) {
-            $regex = '/' . $user . '%%registered$/';
-            while (false !== ($entry = readdir($handle))) {
-                if (preg_match($regex, $entry)) {
-                    unlink($basePath . $entry);
-                }
-            }
+        $query = array('user' => $user, 'filename' => '*');
+        $entries = getDB()->select($query, 'registered');
+        foreach($entries as $entry) {
+            $entry->remove();
         }
     }
 
     /* Touch the heartbeat marker file for the given user. Return true on
      * success, false on failure. */
     function updateHeartbeatMarker($user) {
-        $marker = BASE_PATH . '/data/' . $user . '%%heartbeat';
-        return touch($marker);
+        $query = array('user' => $user);
+        $entry = getDB()->create($query, 'heartbeat');
+        if($entry == null) return false;
+        $entry->put_value(time());
+        return true;
     }
 
     function removeHeartbeatMarker($user) {
-        $marker = BASE_PATH . '/data/' . $user . '%%heartbeat';
-        unlink($marker);
+        $query = array('user' => $user);
+        $entry = getDB()->select($query, 'heartbeat');
+        if($entry != null) $entry->remove();
     }
 
     /* Return an array containing the user as key and his last heartbeat time 
      * as value. */
-    function getUsersAndHeartbeatTime() {
+    function &getUsersAndHeartbeatTime() {
         $usersAndHeartbeatTime = array();
-        $basePath = BASE_PATH . '/data/';
-        if ($handle = opendir($basePath)) {
-            while (false !== ($entry = readdir($handle))) {
-                if (strpos($entry, '%%heartbeat') !== false) {
-                    $matches = array();
-                    preg_match('/^(\w+)%/', $entry, $matches);
-                    if (count($matches) !== 2) {
-                        exit(formatJSEND('error', 'Unable To Match Username in getUsersAndHeartbeatTime'));
-                    }
-                    $usersAndHeartbeatTime[$matches[1]] = filemtime($basePath . $entry);
-                }
-            }
+        $query = array('user' => '*');
+        $entries = getDB()->select($query, 'heartbeat');
+        foreach($entries as $entry) {
+            $user = $entry->get_field('user');
+            $usersAndHeartbeatTime[$user] = $entry->get_value();
         }
-
         return $usersAndHeartbeatTime;
     }
 
     /* $filename must contain only the basename of the file. */
-    function getRegisteredUsersForFile($filename) {
+    function &getRegisteredUsersForFile($filename) {
         $usernames = array();
-        $markers = getMarkerFilesForFilename($filename);
-        if (!empty($markers)) {
-            foreach ($markers as $entry) {
-                if (strpos($entry, 'registered')) {
-                    /* $entry is a marker file marking a registered user.
-                     * Extract the user name from the filename. */
-                    $matches = array();
-                    $entry = substr($entry, 0, strlen($entry) - 12); // Remove '%%registered' from $entry.
-                    preg_match('/\w+$/', $entry, $matches);
-                    if (count($matches) !== 1) {
-                        exit(formatJSEND('error', 'Unable To Match Username in getMarkerFilesForFilename'));
-                    }
-
-                    $usernames[] = $matches[0];
-                }
-            }
+        $query = array('user' => '*', 'filename' => $filename);
+        $entries = getDB()->select($query, 'registered');
+        foreach($entries as $entry) {
+            $user = $entry->get_field('user');
+            $usernames[] = $user;
         }
-
         return $usernames;
-    }
-
-    /* Return all marker files related to $filename. $filename must contain
-     * only the basename of the file. */
-    function getMarkerFilesForFilename($filename) {
-        $markers = array();
-        $basePath = BASE_PATH . '/data/';
-        if ($handle = opendir($basePath)) {
-            $sanitizedFilename = str_replace('/', '_', $filename);
-            while (false !== ($entry = readdir($handle))) {
-                if (strpos($entry, $sanitizedFilename) !== false) {
-                    $markers[] = $entry;
-                }
-            }
-        }
-
-        return $markers;
     }
 
     /* Return the selection object, if any, for the given filename and user.
      * $filename must contain only the basename of the file. */
-    function getSelection($filename, $user) {
-        $sanitizedFilename = str_replace('/', '_', $filename);
-        $json = getJSON($sanitizedFilename . '%%' . $user . '%%selection');
-        return $json;
+    function &getSelection($filename, $user) {
+        $query = array('user' => $user, 'filename' => $filename);
+        $entry = getDB()->select($query, 'selection');
+        if($entry == null) return null;
+        return $entry->get_value();
     }
 
     /* Return the list of changes, if any, for the given filename, user and
      * from the given revision number.
      * $filename must contain only the basename of the file. */
-    function getChanges($filename, $user, $fromRevision) {
-        $sanitizedFilename = str_replace('/', '_', $filename);
-        $json = getJSON($sanitizedFilename . '%%' . $user . '%%changes');
-        /* print_r(array_slice($json, $fromRevision, NULL, true));  */
-        return array_slice($json, $fromRevision, NULL, true);
+    function &getChanges($filename, $user, $fromRevision) {
+        $query = array('user' => $user, 'filename' => $filename);
+        $entry = getDB()->select($query, 'change');
+        if($entry == null) return null;
+        return array_slice($entry->get_value(), $fromRevision, NULL, true);
     }
 
     /* Set the server shadow acquiring an exclusive lock on the file. $shadow
      * is a string. */
-    function setShadow($filename, $username, $shadow) {
-        $sanitizedFilename = BASE_PATH . '/data/' . str_replace('/', '_', $filename) . '%%' . $username . '%%shadow';
-        file_put_contents($sanitizedFilename, $shadow, LOCK_EX); 
+    function setShadow($filename, $user, $shadow) {
+        $query = array('user' => $user, 'filename' => $filename);
+        $entry = getDB()->create($query, 'shadow');
+        if($entry == null) return null;
+        $entry->put_value($shadow);
     }
 
     /* Return the shadow for the given filename as a string or an empty string
      * if no shadow exists. */
-    function getShadow($filename) {
-        $shadow = '';
-        $markers = getMarkerFilesForFilename($filename);
-        if (!empty($markers)) {
-            foreach ($markers as $entry) {
-                if (strpos($entry, 'shadow')) {
-                    $shadow = file_get_contents($entry);
-                }
-            }
-        }
-
-        return $shadow;
+    function &getShadow($filename, $user) {
+        $query = array('user' => $user, 'filename' => $filename);
+        $entry = getDB()->select($query, 'shadow');
+        if($entry == null) return null;
+        return $entry->get_value();
     }
 
     function existsServerText($filename) {
-        $sanitizedFilename = BASE_PATH . '/data/' . str_replace('/', '_', $filename) . '%%text';
-        return file_exists($sanitizedFilename);
+        $query = array('filename' => $filename);
+        $entry = getDB()->select($query, 'text');
+        return ($entry != null);
     }
 
     /* Set the server text acquiring an exclusive lock on the file. $serverText
      * is a string. */
     function setServerText($filename, $serverText) {
-        $sanitizedFilename = BASE_PATH . '/data/' . str_replace('/', '_', $filename) . '%%text';
-        file_put_contents($sanitizedFilename, $serverText, LOCK_EX);
+        $query = array('filename' => $filename);
+        $entry = getDB()->create($query, 'text');
+        if($entry == null) return null;
+        $entry->put_value($serverText);
     }
 
     /* Return the server text for the given filename as a string or an empty string
      * if no server text exists. */
-    function getServerText($filename) {
-        $serverText = '';
-        $markers = getMarkerFilesForFilename($filename);
-        if (!empty($markers)) {
-            foreach ($markers as $entry) {
-                if (strpos($entry, 'text')) {
-                    $serverText = file_get_contents($entry);
-                }
-            }
-        }
-
-        return $serverText;
+    function &getServerText($filename) {
+        $query = array('filename' => $filename);
+        $entry = getDB()->select($query, 'text');
+        if($entry == null) return null;
+        return $entry->get_value();
     }
     
     /* Return the color of the given user. */
     function getColorForUser($user) {
         /* Check if the color is already defined for the
          * user. */
-        $colorMarkerFile = makeColorMarkerFilename($user);
-        if (file_exists($colorMarkerFile)) {
-            $color = file_get_contents($colorMarkerFile);
-            return $color;
+        $query = array('user' => $user);
+        $entry = getDB()->select($query, 'color');
+        if ($entry != null) {
+            return $entry->get_value();
         }
         
         /* If the color is not defined for the given user,
@@ -584,14 +490,12 @@
             "#F0F0F0"
         );
         
+        /* Retreive all used colors. */
+        $query = array('user' => '*');
+        $entries = getDB()->select($query, 'color');
         $usedColors = array();
-        $users = array_keys(getUsersAndHeartbeatTime());
-        foreach ($users as $otherUser) {
-            $colorMarkerFile = makeColorMarkerFilename($otherUser);
-            if (file_exists($colorMarkerFile)) { 
-                $color = file_get_contents($colorMarkerFile);
-                $usedColors[] = $color;
-            }
+        foreach ($entries as $entry) {
+            $usedColors[] = $entry->get_value();
         }
         
         $colors = array_diff($colors, $usedColors);
@@ -604,29 +508,30 @@
         }
         
         /* Save the picked color. */
-        file_put_contents($colorMarkerFile, $color, LOCK_EX);
+        $query = array('user' => $user);
+        $entry = getDB()->create($query, 'color');
+        $entry->put_value($color);
         
         return $color;
     }
     
     /* Remove the color file for the given user. */
     function resetColorForUser($user) {
-        $colorMarkerFile = makeColorMarkerFilename($user);
-        if (file_exists($colorMarkerFile)) { 
-            unlink ($colorMarkerFile); 
-        }
+        $query = array('user' => $user);
+        $entry = getDB()->create($query, 'color');
+        if($entry != null) $entry->remove();
     }
     
     /* This function is called when a new collaborator
     /* is connected. */
     function onCollaboratorConnect($user) {
-        debug('User connected: '.$user);
+        //debug('User connected: '.$user);
     }
     
     /* This function is called when a collaborator is
      * disconnected. */
     function onCollaboratorDisconnect($user) {
-        debug('User disconnected: '.$user);
+        //debug('User disconnected: '.$user);
         resetColorForUser($user);
     }
 

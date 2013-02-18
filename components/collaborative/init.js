@@ -417,6 +417,7 @@
                         // console.log('complete synchronizeText');
                         // console.log(data);
                         patchFromServer = codiad.jsend.parse(data);
+                        if(patchFromServer === 'error') return;
                         // console.log(patchFromServer);
 
                         /* Apply the patch from the server text to the shadow
