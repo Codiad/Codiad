@@ -24,9 +24,14 @@
 /* */
 class file_db {
     
-    public $separator = '%%%';
-    public $key_value_separator = ':%:';
+    /* They should be the same as those
+     * in the file_db_entry class. */
+    private $separator = '|';
+    private $separator_regex = '\|';
+    private $key_value_separator = ':';
+    private $key_value_separator_regex = '\:';
     
+    private $index_name = 'index.db';
     private $base_path;
     private $null_ref = null;
     
@@ -39,22 +44,40 @@ class file_db {
     
     /* Create a new entry into the data base. */
     public function &create($query, $group=null) {
+        $query = $this->_normalize_query($query);
+        
         if(!$this->_is_direct_query($query)) {
             return $this->null_ref;
         }
+        
         $base_path = $this->base_path;
         if($group != null) {
             $base_path .= '/' . $group;
         }
+        $index_file = $base_path . '/' . $this->index_name;
+        
         if(!is_dir($base_path)) {
             mkdir($base_path);
         }
-        $query = $this->_sanitize_query($query);
-        ksort($query);
-        $filename = $this->_make_file_name($query);
-        $entry = new file_db_entry($this, $this->base_path, $filename, $group);
+        
+        $entry_name = $this->_make_entry_name($query);
+        $entry_hash = md5($entry_name);
+        $entry_file = $base_path . '/' . $entry_hash;
+        
+        if(!file_exists($entry_file)) {
+            if(!file_exists($index_file)) {
+                touch($index_file);
+            }
+            
+            $entry = $entry_name . '>' . $entry_hash . '>' . PHP_EOL;
+            file_put_contents($index_file, $entry, FILE_APPEND | LOCK_EX);
+            touch($entry_file);
+        }
+        
+        $entry = new file_db_entry($entry_name, $entry_file, $index_file, $group);
         $entry->clear();
-        if(file_exists($base_path . '/' . $filename)) {
+        
+        if(file_exists($entry_file)) {
             return $entry;
         }
         return $this->null_ref;
@@ -62,63 +85,85 @@ class file_db {
 
     /* Get the content for the given query. */
     public function &select($query, $group=null) {
-        $query = $this->_sanitize_query($query);
-        ksort($query);
+        $query = $this->_normalize_query($query);
+        
         $base_path = $this->base_path;
         if($group != null) {
             $base_path .= '/' . $group;
         }
+        $index_file = $base_path . '/' . $this->index_name;
+        
         if($this->_is_direct_query($query)) {
-            $filename = $this->_make_file_name($query);
-            if(file_exists($base_path . '/' . $filename)) {
-                return new file_db_entry($this, $this->base_path, $filename, $group);
+            $entry_name = $this->_make_entry_name($query);
+            $entry_hash = md5($entry_name);
+            $entry_file = $base_path . '/' . $entry_hash;
+            
+            if(file_exists($entry_file)) {
+                return new file_db_entry($entry_name, $entry_file, $index_file, $group);
             }
             return $this->null_ref;
         }
+        
         $entries = array();
-        $regex = $this->_make_regex($query);
-        if ($handle = opendir($base_path)) {
-            while (false !== ($entry = readdir($handle))) {
-                if (preg_match($regex, $entry)) {
-                    $entries[] = new file_db_entry($this, $this->base_path, $entry, $group);
+        if(file_exists($index_file)) {
+            $regex = $this->_make_regex($query);
+            $file = fopen($index_file, 'r');
+            while(!feof($file)) { 
+                $line = fgets($file);
+                if (preg_match($regex, $line, $matches)) {
+                    $entry_file = $base_path . '/' . $matches[2];
+                    $entries[] = new file_db_entry($base_path, $matches[1], $entry_file, $group);
                 }
             }
+            fclose($file);
         }
+        
         return $entries;
     }
     
     /* Select all entries into the given group. */
     public function &select_group($group) {
         $entries = array();
+        
         $base_path = $this->base_path . '/' . $group;
-         if ($handle = opendir($base_path)) {
-            while (false !== ($entry = readdir($handle))) {
-                if(strpos($entry, $this->separator) === 0) {
-                    $entries[] = new file_db_entry($this, $this->base_path, $entry, $group);
+        $index_file = $base_path . '/' . $this->index_name;
+        
+        if(file_exists($index_file)) {
+            $sep = $this->separator_regex;
+            $regex = '/(' . $sep . '.*?' . $sep . ')\>(.*?)\>/'; 
+            $file = fopen($index_file, 'r');
+            while(!feof($file)) { 
+                $line = fgets($file);
+                if (preg_match($regex, $line, $matches)) {
+                    $entry_file = $base_path . '/' . $matches[2];
+                    $entries[] = new file_db_entry($matches[1], $entry_file, $index_file, $group);
                 }
             }
+            fclose($file);
         }
+        
         return $entries;
     }
     
     /* Make the regex for the given query. */
     private function _make_regex($query) {
-        $regex = '/' . $this->separator;
+        $regex = '/(' . $this->separator_regex;
         foreach($query as $key => $value) {
-            $regex .= $key . $this->key_value_separator;
-            if($value == '*') {
+            $regex .= $key . $this->key_value_separator_regex;
+            if($value == '%2A') { // %2A=*
                 $regex .= '.*?';
             }
             else {
                 $regex .= $value;
             }
-            $regex .= $this->separator;
+            $regex .= $this->separator_regex;
         }
-        return $regex . '/';
+        $regex .= ')' . '\>(.*?)\>' . '/';
+        return $regex;
     }
-    
-    /* Make a file name from the given sorted query. */
-    private function _make_file_name($query) {
+        
+    /* Make an entry name from the given normalized query. */
+    private function _make_entry_name($query) {
         $filename = $this->separator;
         foreach($query as $key => $value) {
             $filename .= $key . $this->key_value_separator . $value;
@@ -130,17 +175,18 @@ class file_db {
     /* Check if the given query is a direct query. */
     private function _is_direct_query($query) {
         foreach($query as $key => $value) {
-            if($value == '*'){
+            if($value == '%2A'){ // %2A=*
                 return false;
             }
         }
         return true;
     }
     
-    /* Sanitize the given query. */
-    private function &_sanitize_query(&$query) {
+    /* Normalize the given query. */
+    private function &_normalize_query(&$query) {
+        ksort($query);
         foreach($query as $key => $value) {
-            $query[$key] = str_replace('/', '_', $value);
+            $query[$key] = rawurlencode($value);
         }
         return $query;
     }
@@ -150,36 +196,37 @@ class file_db {
 /* */
 class file_db_entry {
     
-    private $separator;
-    private $key_value_separator;
+    /* They should be the same as those
+     * in the file_db class. */
+    private $separator = '|';
+    private $separator_regex = '\|';
+    private $key_value_separator = ':';
+    private $key_value_separator_regex = '\:';
     
-    private $base_path;
-    private $filename;
-    private $full_filename;
+    private $entry_name;
+    private $entry_hash;
+    private $entry_file;
+    private $index_file;
     private $group;
     
     /* Construct the entry with the given filename. */
-    public function __construct($db, $base_path, $filename, $group) {
-        $this->separator = $db->separator;
-        $this->key_value_separator = $db->key_value_separator;
-        $this->base_path = $base_path;
-        $this->filename = $filename;
+    public function __construct($entry_name, $entry_file, $index_file, $group) {
+        $this->entry_name = $entry_name;
+        $this->entry_file = $entry_file;
+        $this->index_file = $index_file;
         $this->group = $group;
-        if($group != null) {
-            $this->full_filename = $base_path . '/' . $group . '/' . $filename;
-        }
-        else {
-            $this->full_filename = $base_path . '/' . $filename;
-        }
     }
     
     /* Get the value of the field with the given name. */
     public function get_field($name) {
-        $regex = '/' . $this->separator . $name;
-        $regex .= $this->key_value_separator;
-        $regex .= '(.*?)' . $this->separator . '/';
-        if(preg_match($regex, $this->filename, $matches)) {
-            return $matches[1];
+        $regex = '/'
+            . $this->separator_regex 
+            . rawurlencode($name)
+            . $this->key_value_separator_regex
+            . '(.*?)' . $this->separator_regex 
+            . '/';
+        if(preg_match($regex, $this->entry_name, $matches)) {
+            return rawurldecode($matches[1]);
         }
         return null;
     }
@@ -191,21 +238,37 @@ class file_db_entry {
     
     /* Set the value of the entry. */
     public function put_value($value) {
-        file_put_contents($this->full_filename, serialize($value), LOCK_EX);
+        file_put_contents($this->entry_file, serialize($value), LOCK_EX);
     }
     
     /* Get the value of the entry. */
     public function &get_value() {
-        if(file_exists($this->full_filename)) {
-            return unserialize(file_get_contents($this->full_filename));
+        if(file_exists($this->entry_file)) {
+            $value = unserialize(file_get_contents($this->entry_file));
+            return $value;
         }
         return null;
     }
     
     /* Remove the entry. */
     public function remove() {
-        if(file_exists($this->full_filename)) {
-            unlink($this->full_filename);
+        if(file_exists($this->index_file)) {
+            flock($this->index_file, LOCK_EX);
+            
+            $lines = file($this->index_file, FILE_SKIP_EMPTY_LINES);
+            $file = fopen($this->index_file, 'w');
+            foreach($lines as $line) {
+                if (strpos($line, $this->entry_name) !== 0) {
+                    fwrite($file, $line);
+                }
+            }
+            fclose($file);
+            
+            flock($this->index_file, LOCK_EX);
+        }
+        
+        if(file_exists($this->entry_file)) {
+            unlink($this->entry_file);
         }
     }
     
@@ -216,15 +279,15 @@ class file_db_entry {
     
     /* Lock the entry. */
     public function lock() {
-        if(file_exists($this->full_filename)) {
-            flock($this->full_filename, LOCK_EX);
+        if(file_exists($this->entry_file)) {
+            flock($this->entry_file, LOCK_EX);
         }
     }
     
     /* Unlock the entry. */
     public function unlock() {
-        if(file_exists($this->full_filename)) {
-            flock($this->full_filename, LOCK_UN);
+        if(file_exists($this->entry_file)) {
+            flock($this->entry_file, LOCK_UN);
         }
     }
 }
