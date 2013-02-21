@@ -112,7 +112,9 @@ class file_db {
                 $line = fgets($file);
                 if (preg_match($regex, $line, $matches)) {
                     $entry_file = $base_path . '/' . $matches[2];
-                    $entries[] = new file_db_entry($base_path, $matches[1], $entry_file, $group);
+                    if(file_exists($entry_file)) {
+                        $entries[] = new file_db_entry($matches[1], $entry_file, $index_file, $group);
+                    }
                 }
             }
             fclose($file);
@@ -252,6 +254,7 @@ class file_db_entry {
     
     /* Remove the entry. */
     public function remove() {
+        $success = false;
         if(file_exists($this->index_file)) {
             flock($this->index_file, LOCK_EX);
             
@@ -261,15 +264,20 @@ class file_db_entry {
                 if (strpos($line, $this->entry_name) !== 0) {
                     fwrite($file, $line);
                 }
+                else {
+                    $success = true;
+                }
             }
             fclose($file);
             
-            flock($this->index_file, LOCK_EX);
+            flock($this->index_file, LOCK_UN);
         }
         
-        if(file_exists($this->entry_file)) {
+        if($success && file_exists($this->entry_file)) {
             unlink($this->entry_file);
+            return true;
         }
+        return false;
     }
     
     /* Clear the value of the entry. */

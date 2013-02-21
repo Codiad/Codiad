@@ -97,9 +97,13 @@
     case 'removeSelectionAndChangesForAllFiles':
         $query = array('user' => $_SESSION['user'], 'filename' => '*');
         $entries = getDB()->select($query, 'selection');
-        foreach($entries as $entry) $entry->remove();
+        foreach($entries as $entry) {
+            $entry->remove();
+        }
         $entries = getDB()->select($query, 'change');
-        foreach($entries as $entry) $entry->remove();
+        foreach($entries as $entry) {
+            $entry->remove();
+        }
         echo formatJSEND('success');
         break;
 

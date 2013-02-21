@@ -411,14 +411,14 @@
                     var post = { action: 'synchronizeText',
                         filename: currentFilename,
                         patch: patch };
-                    // console.log(post);
+                    console.log(post);
 
                     $.post(this.controller, post, function (data) {
                         // console.log('complete synchronizeText');
                         // console.log(data);
                         patchFromServer = codiad.jsend.parse(data);
                         if(patchFromServer === 'error') return;
-                        // console.log(patchFromServer);
+                        console.log(patchFromServer);
 
                         /* Apply the patch from the server text to the shadow
                          * and the current text. */
