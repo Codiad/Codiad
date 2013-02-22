@@ -97,7 +97,7 @@ $components = json_decode($components,true);
                             if(!isset($languages[$lang_code])) continue;
                             $lang_disp = ucfirst(strtolower($languages[$lang_code]));
                             ?>
-                            <option value="<?php echo $lang_code; ?>"><?php echo $lang_disp; ?></option>
+                            <option value="<?php echo $lang_code; ?>" <?php if ($lang_code == "en"){echo "selected";}?>><?php echo $lang_disp; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
