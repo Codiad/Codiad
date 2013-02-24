@@ -47,6 +47,9 @@
         /* Time interval in milisecond to send an heartbeat to the server. */
         heartbeatInterval: 5000,
 
+        /* Status of the collaboration logic. */
+        enableCollaboration: false,
+
         init: function () {
             var _this = this;
 
@@ -74,7 +77,6 @@
                 if (_this.currentFilename === path) {
                     _this.unregisterAsCollaboratorOfCurrentFile();
                     _this.removeAllSelections();
-                    _this.displayedSelections = [];
                 }
             });
 
@@ -92,30 +94,53 @@
                 _this.addListeners();
             });
 
-            /* Start to ask periodically for the potential other collaborators
-             * selection. */
-            setInterval(this.$updateCollaboratorsSelections, 500);
-
-            /* Start to ask periodically for the potential other collaborators
-             * changes. */
-            // setInterval(this.$applyCollaboratorsChanges, 1000);
-            setInterval(this.$synchronizeText, 500);
-
             /* Start to send an heartbeat to notify the server that we are
              * alive. */
             setInterval(this.$sendHeartbeat, this.heartbeatInterval);
 
             $(".collaborative-selection").live({
-                mouseenter: function() {
+                mouseenter: function () {
                         var markup = $(this).parent();
                         _this.showTooltipForMarkup(markup);
                     },
-                mouseleave: function() {
+                mouseleave: function () {
                         var markup = $(this).parent();
                         _this.showTooltipForMarkup(markup, 300);
                     }
             });
 
+        },
+
+        /* Start or stop the collaboration logic. */
+        setCollaborationStatus: function (enableCollaboration) {
+            /* Some static variables to hold the setInterval reference. */
+            if (typeof this.setCollaborationStatus.updateSelectionsIntervalRef === 'undefined') {
+                this.setCollaborationStatus.updateSelectionsIntervalRef = null;
+            }
+
+            if (typeof this.setCollaborationStatus.synchronizeTextIntervalRef === 'undefined') {
+                this.setCollaborationStatus.synchronizeTextIntervalRef = null;
+            }
+
+            if (enableCollaboration && !this.enableCollaboration) {
+                console.log('Starting collaboration logic.');
+                this.enableCollaboration = true;
+                /* Start to ask periodically for the potential other collaborators
+                 * selection. */
+                this.setCollaborationStatus.updateSelectionsIntervalRef =
+                    setInterval(this.$updateCollaboratorsSelections, 500);
+
+                /* Start to ask periodically for the potential other collaborators
+                 * changes. */
+                this.setCollaborationStatus.synchronizeTextIntervalRef =
+                    setInterval(this.$synchronizeText, 500);
+            } else if (!enableCollaboration && this.enableCollaboration) {
+                console.log('Stopping collaboration logic.');
+                this.enableCollaboration = false;
+                clearInterval(this.setCollaborationStatus.updateSelectionsIntervalRef);
+                clearInterval(this.setCollaborationStatus.synchronizeTextIntervalRef);
+                this.removeAllSelections();
+            }
         },
 
         removeSelectionAndChangesForAllFiles: function () {
@@ -183,12 +208,22 @@
         },
 
         sendHeartbeat: function () {
+            var _this = this;
             $.post(this.controller,
                     { action: 'sendHeartbeat' },
                     function (data) {
-                        // console.log('complete sendHeartbeat');
-                        // console.log(data);
-                        codiad.jsend.parse(data);
+                        /* The data returned by the server contains the number
+                         * of connected collaborators. */
+                        data = codiad.jsend.parse(data);
+                        if (data.collaboratorCount > 1) {
+                            /* Someone else is connected, start the
+                             * collaboration logic. */
+                            _this.setCollaborationStatus(true);
+                        } else {
+                            /* We are the only conected user, stop the
+                             * collaboration logic. */
+                            _this.setCollaborationStatus(false);
+                        }
                     });
         },
 
@@ -350,7 +385,7 @@
 
         /* This function must be bound with the markup which contains
          * the tooltip to hide. */
-        _hideTooltipAndRemoveAttrForBoundMarkup: function() {
+        _hideTooltipAndRemoveAttrForBoundMarkup: function () {
             this.children('.collaborative-selection-tooltip').fadeOut('fast');
             this.removeAttr('hideTooltipTimeoutRef');
         },
@@ -359,6 +394,7 @@
         removeSelection: function (username) {
             console.log('remove ' + username);
             $('#selection-' + username).remove();
+            delete this.displayedSelections[username];
         },
 
         /* Remove all the visible selections. */
@@ -426,14 +462,14 @@
                     var post = { action: 'synchronizeText',
                         filename: currentFilename,
                         patch: patch };
-                    console.log(post);
+                    // console.log(post);
 
                     $.post(this.controller, post, function (data) {
                         // console.log('complete synchronizeText');
                         // console.log(data);
                         var patchFromServer = codiad.jsend.parse(data);
                         if (patchFromServer === 'error') { return; }
-                        console.log(patchFromServer);
+                        // console.log(patchFromServer);
 
                         /* Apply the patch from the server text to the shadow
                          * and the current text. */
@@ -485,29 +521,30 @@
             var row = 1;
             var col = 1;
             var aceDeltas = [];
+            var aceDelta = {};
             for (var i = 0; i < deltas.length; ++i) {
                 var type = deltas[i].charAt(0);
                 var data = decodeURI(deltas[i].substring(1));
 
                 switch (type) {
-                    case "=":
-                        /* The new text is equal to the original text for a
-                        * number of characters. */
-                        var unchangedCharactersCount = parseInt(data, 10);
-                        for (var j = 0; j < unchangedCharactersCount; ++j) {
-                            if (originalText.charAt(offset + j) == "\n") {
-                                ++row;
-                                col = 1;
-                            } else {
-                                col++;
-                            }
+                case "=":
+                    /* The new text is equal to the original text for a
+                    * number of characters. */
+                    var unchangedCharactersCount = parseInt(data, 10);
+                    for (var j = 0; j < unchangedCharactersCount; ++j) {
+                        if (originalText.charAt(offset + j) == "\n") {
+                            ++row;
+                            col = 1;
+                        } else {
+                            col++;
                         }
-                        offset += unchangedCharactersCount;
-                        break;
+                    }
+                    offset += unchangedCharactersCount;
+                    break;
 
                 case "+":
                     /* Some characters were added. */
-                    var aceDelta = {
+                    aceDelta = {
                         action: "insertText",
                         range: {
                             start: {row: (row - 1), column: (col - 1)},
@@ -543,7 +580,7 @@
                         endCol = removedRows[removedRowsCount].length + 1;
                     }
 
-                    var aceDelta = {
+                    aceDelta = {
                         action: "removeText",
                         range: {
                             start: {row: (row - 1), column: (col - 1)},
@@ -556,11 +593,11 @@
                     offset += deletedCharactersCount;
                     break;
 
-                  default:
+                default:
                     /* Return an innofensive empty list of Ace deltas. */
                     console.log("Unhandled case '" + type + "' while building Ace deltas.");
                     return [];
-              }
+                }
             }
             return aceDeltas;
         },

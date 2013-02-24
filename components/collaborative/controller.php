@@ -344,7 +344,11 @@
             }
         } 
         
-        echo formatJSEND('success');
+        /* Return the number of connected collaborators. */
+        $collaboratorCount = count(getUsersAndHeartbeatTime());
+        $data = array();
+        $data['collaboratorCount'] = $collaboratorCount;
+        echo formatJSEND('success', $data);
         break;
 
     default:
