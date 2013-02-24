@@ -73,6 +73,8 @@
             amplify.subscribe('active.onClose', function (path) {
                 if (_this.currentFilename === path) {
                     _this.unregisterAsCollaboratorOfCurrentFile();
+                    _this.removeAllSelections();
+                    _this.displayedSelections = [];
                 }
             });
 
@@ -271,7 +273,9 @@
                             var selections = codiad.jsend.parse(data);
                             _this.$displaySelections(selections);
 
-                            /* Nobody is registered, remove every displayed selections. */
+                            /* The server returned the selections for the
+                             * currently active users. If a user which is no
+                             * more active has a visible selection, remove it. */
                             if (_this.displayedSelections !== null) {
                                 for (var username in _this.displayedSelections) {
                                     if (_this.displayedSelections.hasOwnProperty(username)) {
@@ -317,19 +321,19 @@
                             left: screenCoordinates.pageX,
                             top: screenCoordinates.pageY
                         });
-                        
+
                         markup.children('.collaborative-selection').css('background-color', selections[username].color);
                         markup.children('.collaborative-selection-tooltip').css('background-color', selections[username].color);
-                        
+
                         this.showTooltipForMarkup(markup, 2000);
                     }
                 }
             }
         },
-        
-        /* Show the tooltip of the given markup. If the duration is define,
-         * the tooltip is automaticaly hide when the time is elapsed. */
-        showTooltipForMarkup: function(markup, duration) {
+
+        /* Show the tooltip of the given markup. If duration is defined,
+         * the tooltip is automaticaly hidden when the time is elapsed. */
+        showTooltipForMarkup: function (markup, duration) {
             var timeoutRef = markup.attr('hideTooltipTimeoutRef');
             if (timeoutRef !== undefined) {
                 clearTimeout(timeoutRef);
@@ -337,13 +341,13 @@
             }
 
             markup.children('.collaborative-selection-tooltip').fadeIn('fast');
-            
-            if(duration !== undefined) {
+
+            if (duration !== undefined) {
                 timeoutRef = setTimeout(this._hideTooltipAndRemoveAttrForBoundMarkup.bind(markup), duration);
                 markup.attr('hideTooltipTimeoutRef', timeoutRef);
-            }           
+            }
         },
-        
+
         /* This function must be bound with the markup which contains
          * the tooltip to hide. */
         _hideTooltipAndRemoveAttrForBoundMarkup: function() {
@@ -355,6 +359,17 @@
         removeSelection: function (username) {
             console.log('remove ' + username);
             $('#selection-' + username).remove();
+        },
+
+        /* Remove all the visible selections. */
+        removeAllSelections: function () {
+            if (this.displayedSelections !== null) {
+                for (var username in this.displayedSelections) {
+                    if (this.displayedSelections.hasOwnProperty(username)) {
+                        this.removeSelection(username);
+                    }
+                }
+            }
         },
 
         /* Request the server for the collaborators changes and apply them if
@@ -416,8 +431,8 @@
                     $.post(this.controller, post, function (data) {
                         // console.log('complete synchronizeText');
                         // console.log(data);
-                        patchFromServer = codiad.jsend.parse(data);
-                        if(patchFromServer === 'error') return;
+                        var patchFromServer = codiad.jsend.parse(data);
+                        if (patchFromServer === 'error') { return; }
                         console.log(patchFromServer);
 
                         /* Apply the patch from the server text to the shadow
@@ -516,10 +531,10 @@
                     /* Some characters were subtracted. */
                     var deletedCharactersCount = parseInt(data, 10);
                     var removedData = originalText.substring(offset, offset + deletedCharactersCount);
-                    
+
                     var removedRows = removedData.split("\n");
                     var removedRowsCount = removedRows.length - 1;
-                    
+
                     var endRow = row + removedRowsCount;
                     var endCol = col;
                     if (removedRowsCount <= 0) {
