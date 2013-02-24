@@ -24,6 +24,7 @@ $components = json_decode($components,true);
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/screen.css">
+    <link rel="icon"       href="favicon.ico" type="image/x-icon" />
     <?php
     // Load Component CSS Files
     foreach($components as $component){
@@ -97,7 +98,7 @@ $components = json_decode($components,true);
                             if(!isset($languages[$lang_code])) continue;
                             $lang_disp = ucfirst(strtolower($languages[$lang_code]));
                             ?>
-                            <option value="<?php echo $lang_code; ?>"><?php echo $lang_disp; ?></option>
+                            <option value="<?php echo $lang_code; ?>" <?php if ($lang_code == "en"){echo "selected";}?>><?php echo $lang_disp; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -209,7 +210,7 @@ $components = json_decode($components,true);
 
         <div id="sb-right" class="sidebar">
 
-            <div class="sidebar-handle"><span>||</span></div>
+            <div class="sidebar-handle"><span><a class="icon-menu"></a></span></div>
 
             <div class="sb-right-content">
 

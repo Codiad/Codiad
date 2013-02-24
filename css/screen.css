@@ -527,6 +527,24 @@ table [class^="icon-"], [class*=" icon-"] {
     cursor: col-resize;
 }
 
+#sb-right .sidebar-handle span {
+    width: 18px;
+    height: 30px;
+    margin-left: -18px;
+    background: #474747;
+    border-radius: 5px 0px 0px 5px;
+    box-shadow: -8px 0px 10px 0px rgba(0, 0, 0, .7);
+    border-left: 2px solid #707070;
+    color: #c2c2c2;
+}
+
+#sb-right .sidebar-handle span a {
+    font-size: 22px;
+    padding-top: 5px;
+}
+
+#sb-right .sidebar-handle span a:hover { background-color: transparent; }
+
 .sb-left-content {
     position: absolute;
     top: 33px;

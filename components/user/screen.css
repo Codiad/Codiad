@@ -3,7 +3,7 @@
     border-radius: 5px;
     box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, .5);
     overflow: scroll;
-    max-height: 200px;
+    max-height: 250px;
 }
 
 #project-selector table td { border: none; border-bottom: 1px solid #666; }
