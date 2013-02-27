@@ -85,11 +85,9 @@
                 _this.unregisterAsCollaboratorOfCurrentFile();
                 _this.registerAsCollaboratorOfActiveFile();
 
-                if (!(_this.currentFilename in _this.shadows)) {
-                    /* Create the initial shadow for the current file. */
-                    _this.shadows[_this.currentFilename] = _this._getCurrentFileText();
-                    _this.sendAsShadow(_this.currentFilename, _this.shadows[_this.currentFilename]);
-                }
+                /* Create the initial shadow for the current file. */
+                _this.shadows[_this.currentFilename] = _this._getCurrentFileText();
+                _this.sendAsShadow(_this.currentFilename, _this.shadows[_this.currentFilename]);
 
                 _this.addListeners();
             });
