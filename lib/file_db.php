@@ -211,6 +211,8 @@ class file_db_entry {
     private $index_file;
     private $group;
     
+    private $handler;
+    
     /* Construct the entry with the given filename. */
     public function __construct($entry_name, $entry_file, $index_file, $group) {
         $this->entry_name = $entry_name;
@@ -256,10 +258,11 @@ class file_db_entry {
     public function remove() {
         $success = false;
         if(file_exists($this->index_file)) {
-            flock($this->index_file, LOCK_EX);
-            
             $lines = file($this->index_file, FILE_SKIP_EMPTY_LINES);
+            
             $file = fopen($this->index_file, 'w');
+            flock($file, LOCK_EX);
+            
             foreach($lines as $line) {
                 if (strpos($line, $this->entry_name) !== 0) {
                     fwrite($file, $line);
@@ -268,9 +271,9 @@ class file_db_entry {
                     $success = true;
                 }
             }
-            fclose($file);
             
-            flock($this->index_file, LOCK_UN);
+            flock($file, LOCK_UN);
+            fclose($file);  
         }
         
         if($success && file_exists($this->entry_file)) {
@@ -287,15 +290,18 @@ class file_db_entry {
     
     /* Lock the entry. */
     public function lock() {
-        if(file_exists($this->entry_file)) {
-            flock($this->entry_file, LOCK_EX);
+        $lock = $this->entry_file . '.lock';
+        while(file_exists($lock)) {
+            usleep(100);
         }
+        touch($this->entry_file . '.lock');
     }
     
     /* Unlock the entry. */
     public function unlock() {
-        if(file_exists($this->entry_file)) {
-            flock($this->entry_file, LOCK_UN);
+        $lock = $this->entry_file . '.lock';
+        if(file_exists($lock)) {
+            unlink($lock);
         }
     }
 }

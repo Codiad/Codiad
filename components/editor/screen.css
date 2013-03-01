@@ -16,7 +16,7 @@
     -webkit-box-shadow: inset -3px 0px 10px 0px rgba(0, 0, 0, .5);
     -moz-box-shadow: inset -3px 0px 10px 0px rgba(0, 0, 0, .5);
     box-shadow: inset -3px 0px 10px 0px rgba(0, 0, 0, .5);
-    background: url(gutter-bg.jpg);
+    background: url(/img/gutter-bg.jpg);
     color: #ccc;
 }
 .ace_error {
