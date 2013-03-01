@@ -75,10 +75,7 @@
 
             // Autocomplete [CTRL+SPACE] /////////////////////////////////
             $.ctrl('32', function() {
-                // TODO remove this it is for testing purpose.
-                // codiad.autocomplete.suggest();
-                console.log('synchronizing');
-                codiad.collaborative.synchronizeText();
+                codiad.autocomplete.suggest();
             });
 
             $.ctrl('71', function(){
