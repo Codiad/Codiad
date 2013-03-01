@@ -29,17 +29,17 @@
     //////////////////////////////////////////////////////////////////
 
     checkSession();
-    
+
     //////////////////////////////////////////////////////////////////
     // Initialize Data Base
     //////////////////////////////////////////////////////////////////
-    
+
     $collaborativeDataBase = new file_db(BASE_PATH . '/data/collaborative');
-    
+
     function &getDB() {
         global $collaborativeDataBase;
         return $collaborativeDataBase;
-    } 
+    }
 
     //////////////////////////////////////////////////////////////////
     // Get Action
@@ -55,7 +55,7 @@
         if(!isset($_POST['filename']) || empty($_POST['filename'])) {
             exit(formatJSEND('error', 'No filename specified in register'));
         }
-        
+
         $query = array('user' => $_SESSION['user'], 'filename' => $_POST['filename']);
         $entry = getDB()->select($query, 'registered');
         if ($entry != null) {
@@ -239,8 +239,8 @@
 
         setShadow($filename, $_SESSION['user'], $clientShadow);
 
-        /* If there is no server text for $filename or if there is still no or 
-        * only one user registered for $filename, set the server text equal 
+        /* If there is no server text for $filename or if there is still no or
+        * only one user registered for $filename, set the server text equal
         * to the shadow. */
         $registeredUsersForFileCount = count(getRegisteredUsersForFile($filename));
         if (!existsServerText($filename) || $registeredUsersForFileCount == 0) {
@@ -258,7 +258,7 @@
         if(!isset($_POST['patch'])) {
             exit(formatJSEND('error', 'No patch specified in synchronizeText'));
         }
-        
+
         $query = array('filename' => $_POST['filename']);
         $serverTextEntry = getDB()->select($query, 'text');
         if ($serverTextEntry == null) {
@@ -278,7 +278,7 @@
 
         $serverText = $serverTextEntry->get_value();
         $shadowText = $shadowTextEntry->get_value();
-        
+
         $patchFromClient = $_POST['patch'];
 
         /* Patch the shadow and server texts with the edits from the client. */
@@ -304,51 +304,51 @@
         break;
 
     case 'sendHeartbeat':
-        /* Hard coded heartbeat time interval. Beware to keep this value here 
+        /* Hard coded heartbeat time interval. Beware to keep this value here
         * twice the value on client side. */
         $maxHeartbeatInterval = 5;
         $currentTime = time();
-        
+
         /* Check if the user is a new user, or if it is just an update of
          * his heartbeat. */
         $isUserNewlyConnected = true;
-        
+
         $query = array('user' => $_SESSION['user']);
         $entry = getDB()->select($query, 'heartbeat');
         if($entry != null) {
             $heartbeatTime = $entry->get_value();
             $heartbeatInterval = $currentTime - $heartbeatTime;
             $isUserNewlyConnected = ($heartbeatInterval > 1.5*$maxHeartbeatInterval);
-            
+
             /* If the user is newly connected and if the heartbeat file
              * exits, that mean that the user was the latest in the previous
              * collaborative session. We need to call the disconnect method
-             * to clear the data relatives to the user before calling the 
+             * to clear the data relatives to the user before calling the
              * connect method. */
             if($isUserNewlyConnected) {
                 onCollaboratorDisconnect($_SESSION['user']);
             }
         }
-        
+
         updateHeartbeatMarker($_SESSION['user']);
-        
+
         /* If the user is newly connected, we fire the
          * corresponding method. */
         if($isUserNewlyConnected) {
             onCollaboratorConnect($_SESSION['user']);
         }
-        
+
         $usersAndHeartbeatTime = getUsersAndHeartbeatTime();
-        foreach ($usersAndHeartbeatTime as $user => $heartbeatTime) { 
+        foreach ($usersAndHeartbeatTime as $user => $heartbeatTime) {
             if (($currentTime - $heartbeatTime) > $maxHeartbeatInterval) {
-                /* The $user heartbeat time is too old, consider him dead and 
+                /* The $user heartbeat time is too old, consider him dead and
                  * remove his 'registered'  and 'heartbeat' marker files. */
                 unregisterFromAllFiles($user);
                 removeHeartbeatMarker($user);
                 onCollaboratorDisconnect($user);
             }
-        } 
-        
+        }
+
         /* Return the number of connected collaborators. */
         $collaboratorCount = count(getUsersAndHeartbeatTime());
         $data = array();
@@ -359,7 +359,7 @@
     default:
         exit(formatJSEND('error', 'Unknown Action ' . $_POST['action']));
     }
-    
+
     // --------------------
     /* $filename must contain only the basename of the file. */
     function isUserRegisteredForFile($filename, $user) {
@@ -368,7 +368,7 @@
         return ($entry != null);
     }
 
-    /* Unregister the given user from all the files by removing his 
+    /* Unregister the given user from all the files by removing his
      * 'registered' marker file. */
     function unregisterFromAllFiles($user) {
         $query = array('user' => $user, 'filename' => '*');
@@ -394,7 +394,7 @@
         if($entry != null) $entry->remove();
     }
 
-    /* Return an array containing the user as key and his last heartbeat time 
+    /* Return an array containing the user as key and his last heartbeat time
      * as value. */
     function &getUsersAndHeartbeatTime() {
         $usersAndHeartbeatTime = array();
@@ -479,7 +479,7 @@
         if($entry == null) return null;
         return $entry->get_value();
     }
-    
+
     /* Return the color of the given user. */
     function getColorForUser($user) {
         /* Check if the color is already defined for the
@@ -489,7 +489,7 @@
         if ($entry != null) {
             return $entry->get_value();
         }
-        
+
         /* If the color is not defined for the given user,
          * we pick an unused color. */
         $colors = array(
@@ -502,7 +502,7 @@
             "#0F0F0F",
             "#F0F0F0"
         );
-        
+
         /* Retreive all used colors. */
         $query = array('user' => '*');
         $entries = getDB()->select($query, 'color');
@@ -510,37 +510,37 @@
         foreach ($entries as $entry) {
             $usedColors[] = $entry->get_value();
         }
-        
+
         $colors = array_diff($colors, $usedColors);
-        
+
         if(count($colors) > 0) {
             $color = array_shift($colors);
         }
         else {
             $color = "#FFFFFF";
         }
-        
+
         /* Save the picked color. */
         $query = array('user' => $user);
         $entry = getDB()->create($query, 'color');
         $entry->put_value($color);
-        
+
         return $color;
     }
-    
+
     /* Remove the color file for the given user. */
     function resetColorForUser($user) {
         $query = array('user' => $user);
         $entry = getDB()->create($query, 'color');
         if($entry != null) $entry->remove();
     }
-    
+
     /* This function is called when a new collaborator
     /* is connected. */
     function onCollaboratorConnect($user) {
         //debug('User connected: '.$user);
     }
-    
+
     /* This function is called when a collaborator is
      * disconnected. */
     function onCollaboratorDisconnect($user) {
