@@ -1,9 +1,9 @@
-importScripts('diff_match_patch.js');
+importScripts('../../lib/diff_match_patch.js');
 
 tasks = {
     diff: function(config){
-        var dmf = new diff_match_patch();
-        var patchTxt = dmf.patch_toText(dmf.patch_make(config.original, config.changed));
+        var dmp = new diff_match_patch();
+        var patchTxt = dmp.patch_toText(dmp.patch_make(config.original, config.changed));
         return {
             success: true,
             result: patchTxt

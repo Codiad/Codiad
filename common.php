@@ -5,6 +5,20 @@
     *  [root]/license.txt for more. This information must remain intact.
     */
     
+    /* The stack of debug messages. */
+    $debugMessageStack = array();
+    
+    //////////////////////////////////////////////////////////////////
+    // Log debug message
+    // Messages will be displayed in the console when the response is 
+    // made with the formatJSEND function.
+    //////////////////////////////////////////////////////////////////
+    
+    function debug($message) {
+        global $debugMessageStack;
+        $debugMessageStack[] = $message;
+    }
+    
     //////////////////////////////////////////////////////////////////
     // Localization
     //////////////////////////////////////////////////////////////////
@@ -81,24 +95,32 @@
 
     function formatJSEND($status,$data=false){
 
+        /// Debug /////////////////////////////////////////////////
+        global $debugMessageStack;
+        $debug = "";
+        if(count($debugMessageStack) > 0) {
+            $debug .= ',"debug":';
+            $debug .= json_encode($debugMessageStack);
+        }
+
         // Success ///////////////////////////////////////////////
         if($status=="success"){
             if($data){
-                $jsend = '{"status":"success","data":'.json_encode($data).'}';
+                $jsend = '{"status":"success","data":'.json_encode($data).$debug.'}';
             }else{
-                $jsend = '{"status":"success","data":null}';
+                $jsend = '{"status":"success","data":null'.$debug.'}';
             }
 
         // Error /////////////////////////////////////////////////
         }else{
-            $jsend = '{"status":"error","message":"'.$data.'"}';
+            $jsend = '{"status":"error","message":"'.$data.'"'.$debug.'}';
         }
 
         // Return ////////////////////////////////////////////////
         return $jsend;
 
     }
-
+    
     //////////////////////////////////////////////////////////////////
     // Check Function Availability
     //////////////////////////////////////////////////////////////////
