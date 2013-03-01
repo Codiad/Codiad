@@ -384,6 +384,9 @@
                 this.history.push(path);
                 $.get(this.controller, {'action':'focused', 'path':path});
             }
+
+            /* Notify listeners. */
+            amplify.publish('active.onFocus', path);
         },
 
         highlightEntry: function(path, moveToTabList) {
@@ -509,6 +512,9 @@
         },
 
         close: function(path) {
+            /* Notify listeners. */
+            amplify.publish('active.onClose', path);
+
             var _this = this;
             var session = this.sessions[path];
 
@@ -551,8 +557,7 @@
                 var nextSession = this.sessions[nextPath];
                 codiad.editor.removeSession(session, nextSession);
 
-                nextSession.listThumb.addClass('active');
-                nextSession.tabThumb.addClass('active');
+                this.focus(nextPath);
             }
             delete this.sessions[path];
             $.get(this.controller + '?action=remove&path=' + path);
