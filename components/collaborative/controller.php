@@ -238,7 +238,12 @@
         $clientShadow = $_POST['shadow'];
 
         setShadow($filename, $_SESSION['user'], $clientShadow);
-        if (!existsServerText($filename)) {
+
+        /* If there is no server text for $filename or if there is still no or 
+        * only one user registered for $filename, set the server text equal 
+        * to the shadow. */
+        $registeredUsersForFileCount = count(getRegisteredUsersForFile($filename));
+        if (!existsServerText($filename) || $registeredUsersForFileCount == 0) {
             setServerText($filename, $clientShadow);
         }
 
