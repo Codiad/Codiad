@@ -96,6 +96,9 @@
              * alive. */
             setInterval(this.$sendHeartbeat, this.heartbeatInterval);
 
+            /* Start the collaboration logic. */
+            this.setCollaborationStatus(true);
+
             $(".collaborative-selection").live({
                 mouseenter: function () {
                         var markup = $(this).parent();
