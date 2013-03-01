@@ -28,9 +28,6 @@
 
         controller: 'components/collaborative/controller.php',
 
-        /* Store the filenames and their corresponding local revisions. */
-        filenamesAndRevision: {},
-
         /* The filename of the file to wich we are currently registered as a
          * collaborator. Might be null if we are not collaborating to any file. */
         currentFilename: null,
@@ -60,13 +57,10 @@
             /* TODO For debug only, remove this for production. */
             //this.removeServerTextForAllFiles();
 
-            this.$onDocumentChange = this.onDocumentChange.bind(this);
             this.$onSelectionChange = this.onSelectionChange.bind(this);
 
             this.$updateCollaboratorsSelections = this.updateCollaboratorsSelections.bind(this);
             this.$displaySelections = this.displaySelections.bind(this);
-
-            this.$applyCollaboratorsChanges = this.applyCollaboratorsChanges.bind(this);
 
             this.$synchronizeText = this.synchronizeText.bind(this);
 
@@ -99,14 +93,14 @@
             /* Start the collaboration logic. */
             this.setCollaborationStatus(true);
 
-            $(".collaborative-selection").live({
+            $(".collaborative-selection,.collaborative-selection-tooltip").live({
                 mouseenter: function () {
                         var markup = $(this).parent();
                         _this.showTooltipForMarkup(markup);
                     },
                 mouseleave: function () {
                         var markup = $(this).parent();
-                        _this.showTooltipForMarkup(markup, 300);
+                        _this.showTooltipForMarkup(markup, 500);
                     }
             });
 
@@ -176,11 +170,6 @@
 
         registerAsCollaboratorOfActiveFile: function () {
             var filename = codiad.active.getPath();
-            if (!(filename in this.filenamesAndRevision)) {
-                /* If the current file has not already been edited, initialize
-                 * its revision to 0. */
-                this.filenamesAndRevision[filename] = 0;
-            }
 
             this.currentFilename = filename;
 
@@ -230,24 +219,12 @@
 
         /* Add appropriate listeners to the current EditSession. */
         addListeners: function () {
-            this.addListenerToOnDocumentChange();
             this.addListenerToOnSelectionChange();
         },
 
         /* Remove listeners from the current EditSession. */
         removeListeners: function () {
-            this.removeListenerToOnDocumentChange();
             this.removeListenerToOnSelectionChange();
-        },
-
-        addListenerToOnDocumentChange: function () {
-            var session = this._getEditSession();
-            session.addEventListener('change', this.$onDocumentChange);
-        },
-
-        removeListenerToOnDocumentChange: function () {
-            var session = this._getEditSession();
-            session.removeEventListener('change', this.$onDocumentChange);
         },
 
         addListenerToOnSelectionChange: function () {
@@ -260,26 +237,6 @@
             var selection = this._getSelection();
             selection.removeEventListener('changeCursor', this.$onSelectionChange);
             selection.removeEventListener('changeSelection', this.$onSelectionChange);
-        },
-
-        onDocumentChange: function (e) {
-            /* Increment the current document revision and send the change to
-             * the server along with the revision number. */
-            var filename = codiad.active.getPath();
-            ++this.filenamesAndRevision[filename];
-            // console.log('document change');
-            var post = { action: 'sendDocumentChange',
-                filename: codiad.active.getPath(),
-                change: JSON.stringify(e.data),
-                revision: this.filenamesAndRevision[filename]
-            };
-            // console.log(post);
-
-            $.post(this.controller, post, function (data) {
-                // console.log('complete doc change');
-                // console.log(data);
-                codiad.jsend.parse(data);
-            });
         },
 
         onSelectionChange: function (e) {
@@ -406,28 +363,6 @@
                         this.removeSelection(username);
                     }
                 }
-            }
-        },
-
-        /* Request the server for the collaborators changes and apply them if
-         * any. */
-        applyCollaboratorsChanges: function () {
-            var _this = this;
-            if (this.currentFilename !== null) {
-                // console.log( { action: 'getUsersAndChangesForFile',
-                            // filename: this.currentFilename,
-                            // fromRevision: this.filenamesAndRevision[this.currentFilename]  });
-
-                $.post(this.controller,
-                        { action: 'getUsersAndChangesForFile',
-                            filename: this.currentFilename,
-                            fromRevision: this.filenamesAndRevision[this.currentFilename] },
-                        function (data) {
-                            // console.log('complete getUsersAndChangesForFile');
-                            // console.log(data);
-                            var changes = codiad.jsend.parse(data);
-                            // _this.$applyChanges(changes);
-                        });
             }
         },
 
