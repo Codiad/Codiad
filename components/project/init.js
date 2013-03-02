@@ -76,8 +76,12 @@
                 .live('submit', function(e) {
                 e.preventDefault();
                 var projectName = $('#modal-content form input[name="project_name"]')
+                    .val(),
+                    gitRepo = $('#modal-content form input[name="git_repo"]')
+                    .val(),
+                    gitBranch = $('#modal-content form input[name="git_branch"]')
                     .val();
-                $.get(_this.controller + '?action=create&project_name=' + projectName, function(data) {
+                $.get(_this.controller + '?action=create&project_name=' + projectName + '&git_repo=' + gitRepo + '&git_branch=' + gitBranch, function(data) {
                     createResponse = codiad.jsend.parse(data);
                     if (createResponse != 'error') {
                         _this.open(createResponse.path);

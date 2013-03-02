@@ -3,3 +3,8 @@
     overflow: auto;
     margin: 15px 0;
 }
+
+#git-clone { border: none; }
+#git-clone td { border: none; padding: 0; margin: 0; }
+
+.note { padding: 10px 0; color: #a8a6a8; }

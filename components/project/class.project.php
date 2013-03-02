@@ -12,11 +12,14 @@ class Project {
     // PROPERTIES
     //////////////////////////////////////////////////////////////////
 
-    public $name        = '';
-    public $path        = '';
-    public $projects    = '';
-    public $no_return   = false;
-    public $assigned    = false;
+    public $name         = '';
+    public $path         = '';
+    public $gitrepo      = false;
+    public $gitbranch    = '';
+    public $projects     = '';
+    public $no_return    = false;
+    public $assigned     = false;
+    public $command_exec = '';
 
     //////////////////////////////////////////////////////////////////
     // METHODS
@@ -106,6 +109,13 @@ class Project {
             $this->projects[] = array("name"=>$this->name,"path"=>$this->path);
             saveJSON('projects.php',$this->projects);
             mkdir(WORKSPACE . "/" . $this->path);
+            
+            // Pull from Git Repo?
+            if($this->gitrepo){
+                $this->command_exec = "cd " . WORKSPACE . "/" . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
+                $this->ExecuteCMD();
+            }
+            
             echo formatJSEND("success",array("name"=>$this->name,"path"=>$this->path));
         }else{
             echo formatJSEND("error","A Project With the Same Name or Path Exists");
@@ -151,6 +161,32 @@ class Project {
     public function SanitizePath(){
         $sanitized = str_replace(" ","_",$this->name);
         return preg_replace('/[^\w-]/', '', $sanitized);
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Execute Command
+    //////////////////////////////////////////////////////////////////
+    
+    public function ExecuteCMD(){
+        if(function_exists('system')){
+            ob_start();
+            system($this->command_exec);
+            ob_end_clean();
+        }
+        //passthru
+        else if(function_exists('passthru')){
+            ob_start();
+            passthru($this->command_exec);
+            ob_end_clean();
+        }
+        //exec
+        else if(function_exists('exec')){
+            exec($this->command_exec , $this->output);
+        }
+        //shell_exec
+        else if(function_exists('shell_exec')){
+            shell_exec($this->command_exec);
+        }
     }
 
 }

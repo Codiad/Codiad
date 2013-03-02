@@ -53,6 +53,11 @@
 
     if($_GET['action']=='create'){
         $Project->name = $_GET['project_name'];
+        // Git Clone?
+        if(!empty($_GET['git_repo'])){
+            $Project->gitrepo = $_GET['git_repo'];
+            $Project->gitbranch = $_GET['git_branch'];
+        }
         $Project->Create();
     }
 
