@@ -59,7 +59,7 @@
         $query = array('user' => $_SESSION['user'], 'filename' => $_POST['filename']);
         $entry = getDB()->select($query, 'registered');
         if ($entry != null) {
-            echo formatJSEND('error', 'Already registered as collaborator for ' . $_POST['filename']);
+            echo formatJSEND('success', 'Already registered as collaborator for ' . $_POST['filename']);
         } else {
             $entry = getDB()->create($query, 'registered');
             if ($entry != null) {
@@ -82,7 +82,7 @@
             $entry->remove();
             echo formatJSEND('success');
         } else {
-            echo formatJSEND('error', 'Not registered as collaborator for ' . $_POST['filename']);
+            echo formatJSEND('success', 'Not registered as collaborator for ' . $_POST['filename']);
         }
         break;
 
