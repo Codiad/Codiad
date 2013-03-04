@@ -1067,7 +1067,7 @@
             this.setActive(i);
             if (! i) return;
             i.focus();
-            codiad.active.highlightEntry(i.getSession().path);
+            codiad.active.focus(i.getSession().path);
             this.cursorTracking(i);
         },
 
