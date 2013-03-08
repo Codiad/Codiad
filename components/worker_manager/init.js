@@ -46,14 +46,16 @@
             this.worker.postMessage(taskConfig);
         },
         concludeTask: function(msg){
-            var tq = this.taskQueue[0];
-            callback = tq.callback;
-            context = tq.context;
-            this.taskQueue.splice(0, 1);
             if (this.taskQueue.length > 0) {
-                this.scheduleNext();
+                var tq = this.taskQueue[0];
+                callback = tq.callback;
+                context = tq.context;
+                this.taskQueue.splice(0, 1);
+                if (this.taskQueue.length > 0) {
+                    this.scheduleNext();
+                }
+                tq.callback.apply(context, [msg.success, msg.result]);
             }
-            tq.callback.apply(context, [msg.success, msg.result]);
         }
     }
 

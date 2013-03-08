@@ -56,17 +56,11 @@
             exit(formatJSEND('error', 'No filename specified in register'));
         }
 
-        $query = array('user' => $_SESSION['user'], 'filename' => $_POST['filename']);
-        $entry = getDB()->select($query, 'registered');
-        if ($entry != null) {
-            echo formatJSEND('success', 'Already registered as collaborator for ' . $_POST['filename']);
+        $isRegistered = registerToFile($_SESSION['user'], $_POST['filename']);
+        if ($isRegistered) {
+            echo formatJSEND('success');
         } else {
-            $entry = getDB()->create($query, 'registered');
-            if ($entry != null) {
-                echo formatJSEND('success');
-            } else {
-                echo formatJSEND('error', 'Unable to register as collaborator for ' . $_POST['filename']);
-            }
+            echo formatJSEND('error', 'Unable to register as collaborator for ' . $_POST['filename']);
         }
         break;
 
@@ -123,15 +117,20 @@
             exit(formatJSEND('error', 'No selection specified in sendSelectionChange'));
         }
 
-        if (isUserRegisteredForFile($_POST['filename'], $_SESSION['user'])) {
-            $selection = json_decode($_POST['selection']);
-            $query = array('user' => $_SESSION['user'], 'filename' => $_POST['filename']);
-            $entry = getDB()->create($query, 'selection');
-            $entry->put_value($selection);
-            echo formatJSEND('success');
-        } else {
-            echo formatJSEND('error', 'Not registered as collaborator for ' . $_POST['filename']);
+        /* If user is not already registerd for the given file, register him. */
+        if (!isUserRegisteredForFile($_POST['filename'], $_SESSION['user'])) {
+            $isRegistered = registerToFile($_POST['filename'], $_SESSION['user']);
+            if (!$isRegistered) {
+                echo formatJSEND('error', 'Unable to register as collaborator for ' . $_POST['filename']);
+                exit;
+            }
         }
+
+        $selection = json_decode($_POST['selection']);
+        $query = array('user' => $_SESSION['user'], 'filename' => $_POST['filename']);
+        $entry = getDB()->create($query, 'selection');
+        $entry->put_value($selection);
+        echo formatJSEND('success');
         break;
 
     case 'sendDocumentChange':
@@ -375,6 +374,25 @@
         $entries = getDB()->select($query, 'registered');
         foreach($entries as $entry) {
             $entry->remove();
+        }
+    }
+
+    /* Register as a collaborator for the given filename. Return false if
+    * failed. */
+    function registerToFile($user, $filename) {
+        $query = array('user' => $user, 'filename' => $filename);
+        $entry = getDB()->select($query, 'registered');
+        if ($entry != null) {
+            debug('Warning: already registered as collaborator for ' . $filename);
+            return true;
+        } else {
+            $entry = getDB()->create($query, 'registered');
+            if ($entry != null) {
+                return true;
+            } else {
+                debug('Error: unable to register as collaborator for ' . $filename);
+                return false;
+            }
         }
     }
 
