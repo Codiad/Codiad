@@ -133,40 +133,6 @@
         echo formatJSEND('success');
         break;
 
-    case 'sendDocumentChange':
-        /* Push a document change to the server. */
-        if(!isset($_POST['filename']) || empty($_POST['filename'])) {
-            exit(formatJSEND('error', 'No filename specified in sendDocumentChange'));
-        }
-
-        if(!isset($_POST['change']) || empty($_POST['change'])) {
-            exit(formatJSEND('error', 'No change specified in sendDocumentChange'));
-        }
-
-        if (isUserRegisteredForFile($_POST['filename'], $_SESSION['user'])) {
-            $changes = array();
-            $query = array('user' => $_SESSION['user'], 'filename' => $_POST['filename']);
-            $entry = getDB()->select($query, 'change');
-            if ($entry != null) {
-                $changes = $entry->get_value();
-            }
-            else {
-                $entry = getDB()->create($query, 'change');
-            }
-
-            $maxChangeIndex = max(array_keys($changes));
-
-            $change = json_decode($_POST['change'], true);
-            $change['revision'] = json_decode($_POST['revision']);
-            $changes[++$maxChangeIndex] = $change;
-
-            $entry->put_value($changes);
-            echo formatJSEND('success');
-        } else {
-            echo formatJSEND('error', 'Not registered as collaborator for ' . $_POST['filename']);
-        }
-        break;
-
     case 'getUsersAndSelectionsForFile':
         /* Get an object containing all the users registered to the given file
          * and their associated selections. The data corresponding to the
@@ -193,35 +159,6 @@
         }
 
         echo formatJSEND('success', $usersAndSelections);
-        break;
-
-    case 'getUsersAndChangesForFile':
-        /* Get an object containing all the users registered to the given file
-        * and their associated list of changes from the given revision
-        * number. The data corresponding to the current user is omitted. */
-        if(!isset($_POST['filename']) || empty($_POST['filename'])) {
-            exit(formatJSEND('error', 'No filename specified in getUsersAndChangesForFile'));
-        }
-
-        if(!isset($_POST['fromRevision'])) {
-            exit(formatJSEND('error', 'No fromRevision argument Specified in getUsersAndChangesForFile'));
-        }
-
-        $filename = $_POST['filename'];
-        $fromRevision = $_POST['fromRevision'];
-
-        $usersAndChanges = array();
-        $users = getRegisteredUsersForFile($filename);
-        foreach ($users as $user) {
-            if ($user !== $_SESSION['user']) {
-                $changes = getChanges($filename, $user, $fromRevision);
-                if (!empty($changes)) {
-                    $usersAndChanges[$user] = $changes;
-                }
-            }
-        }
-
-        echo formatJSEND('success', $usersAndChanges);
         break;
 
     case 'sendShadow':
