@@ -482,7 +482,7 @@
                             success: handleSuccess
                         });
                     } else {
-                        condiad.filemanager.saveFile(path, newContent, {
+                        codiad.filemanager.saveFile(path, newContent, {
                             success: handleSuccess
                         });
                     }
