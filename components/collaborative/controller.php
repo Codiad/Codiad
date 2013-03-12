@@ -60,7 +60,8 @@
         if ($isRegistered) {
             echo formatJSEND('success');
         } else {
-            echo formatJSEND('error', 'Unable to register as collaborator for ' . $_POST['filename']);
+            // Should only be enabled when testing
+            //echo formatJSEND('success', 'Not registered as collaborator for ' . $_POST['filename']);
         }
         break;
 
@@ -76,7 +77,8 @@
             $entry->remove();
             echo formatJSEND('success');
         } else {
-            echo formatJSEND('success', 'Not registered as collaborator for ' . $_POST['filename']);
+            // Should only be enabled when testing
+            //echo formatJSEND('success', 'Not registered as collaborator for ' . $_POST['filename']);
         }
         break;
 
@@ -121,7 +123,8 @@
         if (!isUserRegisteredForFile($_POST['filename'], $_SESSION['user'])) {
             $isRegistered = registerToFile($_POST['filename'], $_SESSION['user']);
             if (!$isRegistered) {
-                echo formatJSEND('error', 'Unable to register as collaborator for ' . $_POST['filename']);
+                // Should only be enabled when testing
+                //echo formatJSEND('success', 'Not registered as collaborator for ' . $_POST['filename']);
                 exit;
             }
         }
