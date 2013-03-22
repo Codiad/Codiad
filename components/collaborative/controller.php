@@ -379,7 +379,7 @@
 
     /* Return the selection object, if any, for the given filename and user.
      * $filename must contain only the basename of the file. */
-    function &getSelection($filename, $user) {
+    function getSelection($filename, $user) {
         $query = array('user' => $user, 'filename' => $filename);
         $entry = getDB()->select($query, 'selection');
         if($entry == null) return null;
@@ -389,7 +389,7 @@
     /* Return the list of changes, if any, for the given filename, user and
      * from the given revision number.
      * $filename must contain only the basename of the file. */
-    function &getChanges($filename, $user, $fromRevision) {
+    function getChanges($filename, $user, $fromRevision) {
         $query = array('user' => $user, 'filename' => $filename);
         $entry = getDB()->select($query, 'change');
         if($entry == null) return null;
@@ -407,7 +407,7 @@
 
     /* Return the shadow for the given filename as a string or an empty string
      * if no shadow exists. */
-    function &getShadow($filename, $user) {
+    function getShadow($filename, $user) {
         $query = array('user' => $user, 'filename' => $filename);
         $entry = getDB()->select($query, 'shadow');
         if($entry == null) return null;
@@ -431,7 +431,7 @@
 
     /* Return the server text for the given filename as a string or an empty string
      * if no server text exists. */
-    function &getServerText($filename) {
+    function getServerText($filename) {
         $query = array('filename' => $filename);
         $entry = getDB()->select($query, 'text');
         if($entry == null) return null;
