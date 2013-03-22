@@ -33,7 +33,6 @@ class file_db {
     
     private $index_name = 'index.db';
     private $base_path;
-    private $null_ref = null;
     
     function __construct($base_path) {
         $this->base_path = $base_path;
@@ -43,11 +42,11 @@ class file_db {
     }
     
     /* Create a new entry into the data base. */
-    public function &create($query, $group=null) {
+    public function create($query, $group=null) {
         $query = $this->_normalize_query($query);
         
         if(!$this->_is_direct_query($query)) {
-            return $this->null_ref;
+            return null;
         }
         
         $base_path = $this->base_path;
@@ -80,11 +79,11 @@ class file_db {
         if(file_exists($entry_file)) {
             return $entry;
         }
-        return $this->null_ref;
+        return null;
     }
 
     /* Get the content for the given query. */
-    public function &select($query, $group=null) {
+    public function select($query, $group=null) {
         $query = $this->_normalize_query($query);
         
         $base_path = $this->base_path;
@@ -101,7 +100,7 @@ class file_db {
             if(file_exists($entry_file)) {
                 return new file_db_entry($entry_name, $entry_file, $index_file, $group);
             }
-            return $this->null_ref;
+            return null;
         }
         
         $entries = array();
@@ -124,7 +123,7 @@ class file_db {
     }
     
     /* Select all entries into the given group. */
-    public function &select_group($group) {
+    public function select_group($group) {
         $entries = array();
         
         $base_path = $this->base_path . '/' . $group;
@@ -246,10 +245,9 @@ class file_db_entry {
     }
     
     /* Get the value of the entry. */
-    public function &get_value() {
+    public function get_value() {
         if(file_exists($this->entry_file)) {
-            $value = unserialize(file_get_contents($this->entry_file));
-            return $value;
+            return unserialize(file_get_contents($this->entry_file));
         }
         return null;
     }
