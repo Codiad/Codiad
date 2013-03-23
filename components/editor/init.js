@@ -475,7 +475,7 @@
 
             $('#changemode-menu a').click(function(e){
                 e.stopPropagation();
-                var newMode = "ace/mode/" + e.srcElement.text;
+                var newMode = "ace/mode/" + $(e.currentTarget).text();
                 var actSession = _this.activeInstance.getSession();
 
                 // handle async mode change
