@@ -320,7 +320,7 @@ class Filemanager {
         if($this->new_name){
             $explode = explode('/',$this->path);
             array_pop($explode);
-            $new_path = "/" . implode("/",$explode) . "/" . $this->new_name;
+            $new_path = implode("/",$explode) . "/" . $this->new_name;
             if(!file_exists($new_path)){
                 if(rename($this->path,$new_path)){
                     //unlink($this->path);
