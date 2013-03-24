@@ -40,7 +40,7 @@ class Active {
         $tainted = FALSE;
         if($this->actives){
             foreach($this->actives as $active=>$data){
-              if($data['username']==$this->username){
+              if(is_array($data) && ($data['username'] == $this->username) ) {
                 if (file_exists(dirname(__FILE__)."/../../workspace".$data['path'])) {
                     $focused = isset($data['focused']) ? $data['focused'] : false;
                     $active_list[] = array('path'=>$data['path'], 'focused'=>$focused);
