@@ -14,7 +14,7 @@
                 .css({
                     'top': '15%',
                     'left': '50%',
-                    'width': width + 'px',
+                    'min-width': width + 'px',
                     'margin-left': '-' + Math.ceil(width / 2) + 'px'
                 })
                 .draggable({
