@@ -225,7 +225,7 @@ class Filemanager {
     public function open(){
         if(is_file($this->path)){
             $this->status = "success";
-            $this->data = '"content":' . json_encode(file_get_contents($this->path));
+            $this->data = '"content":' . json_encode(utf8_encode(file_get_contents($this->path)));
             $mtime = filemtime($this->path);
             $this->data .= ', "mtime":'.$mtime;
         }else{
