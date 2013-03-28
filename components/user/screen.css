@@ -2,7 +2,7 @@
     margin: 10px 0 5px 0;
     border-radius: 5px;
     box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, .5);
-    overflow: scroll;
+    overflow: auto;
     max-height: 250px;
 }
 

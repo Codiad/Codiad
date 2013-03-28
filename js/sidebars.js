@@ -25,13 +25,13 @@
                     _this.userLock = false;
                     $('#lock-left-sidebar')
                         .removeClass('icon-lock')
-                        .addClass('icon-lock-open');
+                        .addClass('icon-switch');
 
                 } else {
 
                     _this.userLock = true;
                     $('#lock-left-sidebar')
-                        .removeClass('icon-lock-open')
+                        .removeClass('icon-switch')
                         .addClass('icon-lock');
 
                 }
