@@ -18,6 +18,7 @@
         clipboard: '',
 
         noOpen: ['jpg', 'jpeg', 'png', 'gif', 'svg', 'bmp', 'exe', 'zip', 'tar', 'tar.gz'],
+        noBrowser: ['jpg', 'jpeg', 'png', 'gif', 'bmp'],
 
         controller: 'components/filemanager/controller.php',
         dialog: 'components/filemanager/dialog.php',
@@ -289,7 +290,11 @@
                     }
                 });
             } else {
-                this.download(path);
+                if ($.inArray(ext, this.noBrowser) < 0) {
+                    this.download(path);
+                } else {
+                    this.openInModal(path);
+                }
             }
         },
 
@@ -304,6 +309,12 @@
                     window.open(openIBResponse.url, '_newtab');
                 }
             });
+        },
+        openInModal: function(path) {
+            codiad.modal.load(250, this.dialog, {
+                        action: 'preview',
+                        path: path
+                    });
         },
         saveModifications: function(path, data, callbacks){
             callbacks = callbacks || {};
