@@ -83,7 +83,7 @@ class Filemanager {
             if(is_dir($this->path) && $handle = opendir($this->path)){
                 while (false !== ($object = readdir($handle))) {
                     if ($object != "." && $object != ".." && $object != $this->controller) {
-                        if(is_dir($this->path.'/'.$object)){ $type = "directory"; $size=0; }
+                        if(is_dir($this->path.'/'.$object)){ $type = "directory"; $size=count(glob($this->path.'/'.$object.'/*')); }
                         else{ $type = "file"; $size=filesize($this->path.'/'.$object); }
                         $index[] = array(
                             "name"=>$this->rel_path . $object,
@@ -97,10 +97,10 @@ class Filemanager {
                 $files = array();
                 foreach($index as $item=>$data){
                     if($data['type']=='directory'){
-                        $folders[] = array("name"=>$data['name'],"type"=>$data['type'],"size"=>$data['type']);
+                        $folders[] = array("name"=>$data['name'],"type"=>$data['type'],"size"=>$data['size']);
                     }
                     if($data['type']=='file'){
-                        $files[] = array("name"=>$data['name'],"type"=>$data['type'],"size"=>$data['type']);
+                        $files[] = array("name"=>$data['name'],"type"=>$data['type'],"size"=>$data['size']);
                     }
                 }
 
