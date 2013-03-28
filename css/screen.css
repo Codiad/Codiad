@@ -627,7 +627,7 @@ table [class^="icon-"], [class*=" icon-"] {
     float: left;
     height: 100%;
     padding: 15px;
-    overflow: scroll;
+    overflow: auto;
 }
 
 #sb-right a {

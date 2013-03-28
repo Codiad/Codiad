@@ -86,7 +86,7 @@
 
 /* TERMINAL */
 
-    #terminal { overflow: scroll; background: #1a1a1a; width: 100%; height: 100%; color: #fff; font-family: monospace; padding: 5px; line-height: 135%; 
+    #terminal { overflow: auto; background: #1a1a1a; width: 100%; height: 100%; color: #fff; font-family: monospace; padding: 5px; line-height: 135%; 
         -webkit-box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .8);
         box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .8);
     }
