@@ -30,7 +30,8 @@
 #tab-list-active-files li {
     margin-top: 7px;
     height: 60px;
-    width: 200px;
+    width: auto;
+    max-width: 200px;
     position: relative;
     float: left;
     border-top-right-radius: 20px 60px;

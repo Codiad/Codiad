@@ -4,7 +4,7 @@
     float: left;
     margin: 0;
     padding: 15px;
-    overflow: scroll;
+    overflow: auto;
 }
 #file-manager ul {
     display: block;
