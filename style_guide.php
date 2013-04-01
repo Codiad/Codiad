@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8">
     <title>CODIAD STYLE GUIDE</title>
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/fonts.css">
-    <link rel="stylesheet" href="css/screen.css">
+    <link rel="stylesheet" href="themes/default/reset.css">
+    <link rel="stylesheet" href="themes/default/fonts.css">
+    <link rel="stylesheet" href="themes/default/screen.css">
     <style type="text/css">
         html { overflow: scroll; }
         body { width: 100%; margin: 0 auto; overflow: scroll; }
