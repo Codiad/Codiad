@@ -13,9 +13,16 @@
 $rel = "";
 define("BASE_PATH",$_SERVER["DOCUMENT_ROOT"] . $rel);
 define("COMPONENTS",BASE_PATH . "/components");
+define("THEMES",BASE_PATH . "/themes");
 define("DATA",BASE_PATH . "/data");
 define("WORKSPACE",BASE_PATH . "/workspace");
 define("WSURL",$_SERVER["HTTP_HOST"] . $rel . "/workspace");
+
+//////////////////////////////////////////////////////////////////
+// THEME
+//////////////////////////////////////////////////////////////////
+
+define("THEME", "default");
 
 //////////////////////////////////////////////////////////////////
 // TIMEZONE

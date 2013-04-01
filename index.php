@@ -21,19 +21,33 @@ $components = json_decode($components,true);
     <meta charset="utf-8">
     <title>CODIAD</title>
     <link rel="stylesheet" href="css/jquery.toastmessage.css">
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/fonts.css">
-    <link rel="stylesheet" href="css/screen.css">
-    <link rel="icon"       href="favicon.ico" type="image/x-icon" />
     <?php
-    // Load Component CSS Files
+    // Load System CSS Files
+    $stylesheets = array("jquery.toastmessage.css","reset.css","fonts.css","screen.css");
+    foreach($stylesheets as $sheet){
+        if(file_exists(THEMES . "/". THEME . "/".$sheet)){
+            echo('<link rel="stylesheet" href="themes/'.THEME.'/'.$sheet.'">');
+        } else {
+            echo('<link rel="stylesheet" href="themes/default/'.$sheet.'">');
+        }
+    }
+    
+    // Load Component CSS Files    
     foreach($components as $component){
-        if(file_exists(COMPONENTS . "/" . $component . "/screen.css")){
-            echo('<link rel="stylesheet" href="components/'.$component.'/screen.css">');
+        if(file_exists(THEMES . "/". THEME . "/" . $component . "/screen.css")){
+            echo('<link rel="stylesheet" href="themes/'.THEME.'/'.$component.'/screen.css">');
+        } else {
+            if(file_exists(THEMES . "/default/" . $component . "/screen.css")){
+                echo('<link rel="stylesheet" href="themes/default/'.$component.'/screen.css">');
+            } else {
+                if(file_exists(COMPONENTS . "/" . $component . "/screen.css")){
+                    echo('<link rel="stylesheet" href="components/'.$component.'/screen.css">');
+                }
+            }
         }
     }
     ?>
-
+    <link rel="icon"       href="favicon.ico" type="image/x-icon" />
 </head>
 
 <body>
