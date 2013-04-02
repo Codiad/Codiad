@@ -47,7 +47,7 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     // Get POST responses
     //////////////////////////////////////////////////////////////////
     
-    $username = $_POST['username'];
+    $username = User::CleanUsername( $_POST['username'] );
     $password = encryptPassword($_POST['password']);
     $project_name = $_POST['project'];
     $timezone = $_POST['timezone'];

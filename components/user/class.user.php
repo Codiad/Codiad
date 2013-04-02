@@ -199,4 +199,12 @@ class User {
         $this->password = sha1(md5($this->password));
     }
 
+    //////////////////////////////////////////////////////////////////
+    // Clean username
+    //////////////////////////////////////////////////////////////////
+
+    public static function CleanUsername( $username ){
+        return preg_replace('#[^A-Za-z0-9'.preg_quote('-_@. ').']#','', $username);
+    }
+
 }
