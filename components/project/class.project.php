@@ -160,6 +160,14 @@ class Project {
 
     public function SanitizePath(){
         $sanitized = str_replace(" ","_",$this->name);
+
+        // prevent Poison Null Byte injections
+        $sanitized = str_replace(chr(0), '', $sanitized );
+
+        // prevent go out of the workspace
+        while (strpos($sanitized , '../') !== false)
+            $sanitized = str_replace( '../', '', $sanitized );
+
         return preg_replace('/[^\w-]/', '', $sanitized);
     }
     
