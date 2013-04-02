@@ -156,7 +156,7 @@
                     $action = 'codiad.modal.unload();';
                 } 
             ?>           
-            <button class="btn-left">Create Project</button>&nbsp;<button class="btn-right" onclick="<?php echo $action;?>return false;">Cancel</button>
+            <button class="btn-left">Create Project</button>&nbsp;<button onclick="$('#git-clone').slideToggle(300); $(this).hide(); return false;" class="btn-mid">...From Git Repo</button>&nbsp;<button class="btn-right" onclick="<?php echo $action;?>return false;">Cancel</button>
             <form>
             <?php
             break;
