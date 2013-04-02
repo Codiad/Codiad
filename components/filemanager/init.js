@@ -17,7 +17,7 @@
 
         clipboard: '',
 
-        noOpen: ['jpg', 'jpeg', 'png', 'gif', 'svg', 'bmp', 'exe', 'zip', 'tar', 'tar.gz'],
+        noOpen: ['jpg', 'jpeg', 'png', 'gif', 'svg', 'bmp', 'exe', 'zip', 'tar', 'tar.gz', 'ico'],
         noDownload: ['jpg', 'jpeg', 'png', 'gif', 'bmp'],
 
         controller: 'components/filemanager/controller.php',
@@ -333,7 +333,11 @@
                 });
             } else {
                 if ($.inArray(ext, this.noDownload) < 0) {
-                    this.download(path);
+                    if($('#file-manager a[data-type="root"]').attr('data-path').indexOf('/') == 0) {
+                        codiad.message.error(i18n('Downloading not allowed for ' + ext));
+                    } else {
+                        this.download(path);
+                    }
                 } else {
                     this.openInModal(path);
                 }
