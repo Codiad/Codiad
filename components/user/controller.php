@@ -48,7 +48,7 @@
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='create'){
-        $User->username = User::CleanUsername( $_POST['username'] ); 
+        $User->username = $User->CleanUsername( $_POST['username'] ); 
         $User->password = $_POST['password'];
         $User->Create();
     }
