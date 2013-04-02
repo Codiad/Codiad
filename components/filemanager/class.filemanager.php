@@ -46,12 +46,13 @@ class Filemanager {
     //////////////////////////////////////////////////////////////////
 
     public function __construct($get,$post,$files) {
-        $this->rel_path = $get['path'];
+        $this->rel_path = Filemanager::cleanPath( $get['path'] );
+
         if($this->rel_path!="/"){ $this->rel_path .= "/"; }
         if(!empty($get['query'])){ $this->query = $get['query']; }
         if(!empty($get['options'])){ $this->foptions = $get['options']; }
         $this->root = $get['root'];
-        $this->path = $this->root . $get['path'];
+        $this->path = $this->root . Filemanager::cleanPath( $get['path'] );
         // Search
         if(!empty($post['search_string'])){ $this->search_string = $post['search_string']; }
         // Create
@@ -69,7 +70,10 @@ class Filemanager {
             }
         }
         // Duplicate
-        if(!empty($get['destination'])){ $this->destination = $this->root . $get['destination']; }
+        if(!empty($get['destination'])){
+            $get['destination'] = Filemanager::cleanPath( $get['destination'] );
+            $this->destination = $this->root . $get['destination'];
+        }
     }
 
     //////////////////////////////////////////////////////////////////
@@ -504,6 +508,22 @@ class Filemanager {
         // Output ////////////////////////////////////////////////
         echo($json);
 
+    }
+
+    //////////////////////////////////////////////////////////////////
+    // Clean a path
+    //////////////////////////////////////////////////////////////////
+
+    public static function cleanPath( $path ){
+
+        // prevent Poison Null Byte injections
+        $path = str_replace(chr(0), '', $path );
+
+        // prevent go out of the workspace
+        while (strpos($path , '../') !== false)
+            $path = str_replace( '../', '', $path );
+
+        return $path;
     }
 
 }
