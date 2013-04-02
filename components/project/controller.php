@@ -7,7 +7,7 @@
     */
 
 
-    require_once('../../config.php');
+    require_once('../../common.php');
     require_once('class.project.php');
 
     //////////////////////////////////////////////////////////////////
@@ -53,12 +53,22 @@
 
     if($_GET['action']=='create'){
         $Project->name = $_GET['project_name'];
+        $Project->path = $_GET['project_path'];
         // Git Clone?
         if(!empty($_GET['git_repo'])){
             $Project->gitrepo = $_GET['git_repo'];
             $Project->gitbranch = $_GET['git_branch'];
         }
         $Project->Create();
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Rename Project
+    //////////////////////////////////////////////////////////////////
+
+    if($_GET['action']=='rename'){
+        $Project->path = $_GET['project_path'];
+        $Project->Rename();
     }
 
     //////////////////////////////////////////////////////////////////

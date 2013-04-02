@@ -6,7 +6,7 @@
     *  [root]/license.txt for more. This information must remain intact.
     */
 
-    require_once('../../config.php');
+    require_once('../../common.php');
     require_once('class.user.php');
 
     //////////////////////////////////////////////////////////////////
@@ -48,7 +48,7 @@
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='create'){
-        $User->username = User::CleanUsername( $_POST['username'] );
+        $User->username = User::CleanUsername( $_POST['username'] ); 
         $User->password = $_POST['password'];
         $User->Create();
     }

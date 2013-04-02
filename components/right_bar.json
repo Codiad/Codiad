@@ -55,9 +55,24 @@
         "onclick": "codiad.modal.load(400, 'components/editor/dialog.php?action=settings');codiad.modal.hideOverlay();"
     },
     {
+        "title": "break",
+        "icon": null,
+        "onclick": null
+    },
+    {
         "title": "Password",
         "icon": "icon-flashlight",
         "onclick": "codiad.user.password();"
+    },
+    {
+        "title": "break",
+        "icon": null,
+        "onclick": null
+    },
+        {
+        "title": "Check For Update",
+        "icon": "icon-share",
+        "onclick": "codiad.update.check();"
     },
     {
         "title": "break",

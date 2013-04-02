@@ -34,6 +34,12 @@ class Filemanager {
     public $status        = "";
     public $data          = "";
     public $message       = "";
+    
+    //////////////////////////////////////////////////////////////////
+    // CONSTANTS
+    //////////////////////////////////////////////////////////////////
+    
+    private $hidden = array(".","..",".svn");
 
     //////////////////////////////////////////////////////////////////
     // METHODS
@@ -46,13 +52,14 @@ class Filemanager {
     //////////////////////////////////////////////////////////////////
 
     public function __construct($get,$post,$files) {
-        $this->rel_path = Filemanager::cleanPath( $get['path'] );
-
+        $this->rel_path = cleanPath($get['path']);
         if($this->rel_path!="/"){ $this->rel_path .= "/"; }
         if(!empty($get['query'])){ $this->query = $get['query']; }
         if(!empty($get['options'])){ $this->foptions = $get['options']; }
-        $this->root = $get['root'];
-        $this->path = $this->root . Filemanager::cleanPath( $get['path'] );
+        if(strpos($get['path'], "/") !== 0 || $_SESSION['project'] == '') {
+            $this->root = $get['root'].'/';
+        }
+        $this->path = $this->root . cleanPath($get['path']);
         // Search
         if(!empty($post['search_string'])){ $this->search_string = $post['search_string']; }
         // Create
@@ -70,10 +77,7 @@ class Filemanager {
             }
         }
         // Duplicate
-        if(!empty($get['destination'])){
-            $get['destination'] = Filemanager::cleanPath( $get['destination'] );
-            $this->destination = $this->root . $get['destination'];
-        }
+        if(!empty($get['destination'])){ $this->destination = $this->root . cleanPath($get['destination'];) }
     }
 
     //////////////////////////////////////////////////////////////////
@@ -81,12 +85,11 @@ class Filemanager {
     //////////////////////////////////////////////////////////////////
 
     public function index(){
-
         if(file_exists($this->path)){
             $index = array();
             if(is_dir($this->path) && $handle = opendir($this->path)){
                 while (false !== ($object = readdir($handle))) {
-                    if ($object != "." && $object != ".." && $object != $this->controller) {
+                    if (!in_array($object, $this->hidden) && $object != $this->controller) {
                         if(is_dir($this->path.'/'.$object)){ $type = "directory"; $size=count(glob($this->path.'/'.$object.'/*')); }
                         else{ $type = "file"; $size=filesize($this->path.'/'.$object); }
                         $index[] = array(
@@ -123,7 +126,7 @@ class Filemanager {
             }
         }else{
             $this->status = "error";
-            $this->message = "Path Does Not Exist";
+            $this->message = "Path Does Not Exist ".$this->path;
         }
 
         $this->respond();
@@ -145,7 +148,7 @@ class Filemanager {
               case 'regexp':      $cmd = "$cmd -regex \"$input\"";    break;
               }
             } else {
-                $cmd = 'find -iname "' . $input . '*"';
+                $cmd = 'find '.$this->path.'/ -iname "' . $input . '*"';
             }
             $cmd = "$cmd  -printf \"%h/%f %y\n\"";
             $output = shell_exec($cmd);
@@ -162,8 +165,9 @@ class Filemanager {
               } else {
                 $ftype = 'directory';
               }
-              if (strlen($fname) != 0){
-                $fname = $this->rel_path . substr($fname, 1);
+              if (strlen($fname) != 0 && strpos($fname, ".") !== 0){
+                //$fname = $this->rel_path . substr($fname, 1);
+                $fname = str_replace($this->path, '', $fname);
                 $f = array('path' => $fname, 'type' => $ftype );
                 array_push( $output_arr, $f);
               }
@@ -190,23 +194,24 @@ class Filemanager {
             $this->status = "error";
             $this->message = "Shell_exec() Command Not Enabled.";
         }else{
-            chdir(WORKSPACE);
             if($this->path[0] == "/"){
                 $path = substr($this->path,1);
             }else{
                 $path = $this->path;
             }
+            chdir($this->path);
             $input = str_replace('"' , '', $this->search_string);
             $input = preg_quote($input);
-            $output = shell_exec('grep -i -I -n -R "' . $input . '" /' . $path . '/* ');
+            $output = shell_exec('grep -i -I -n -R "' . $input . '" /' . $path . '* ');
             $output_arr = explode("\n", $output);
             $return = array();
             foreach($output_arr as $line){
                 $data = explode(":", $line);
                 $da = array();
-                if(count($data) > 2){
+                if(count($data) > 2 && strpos($data[0], ".") !== 0){
                     $da['line'] = $data[1];
-                    $da['file'] = str_replace(WORKSPACE,'',$data[0]);
+                    $da['file'] = substr($data[0], strpos($data[0], $path) + strlen($path) - 1);
+                    $da['result'] = $data[0];
                     $da['string'] = str_replace($data[0] . ":" . $data[1] . ':' , '', $line);
                     $return[] = $da;
                 }
@@ -228,13 +233,19 @@ class Filemanager {
 
     public function open(){
         if(is_file($this->path)){
-            $this->status = "success";
-            $this->data = '"content":' . json_encode(utf8_encode(file_get_contents($this->path)));
-            $mtime = filemtime($this->path);
-            $this->data .= ', "mtime":'.$mtime;
+            $tmp = json_encode(utf8_encode(file_get_contents($this->path)));
+            if($tmp != 'null') {
+                $this->status = "success";
+                $this->data = '"content":' . $tmp;
+                $mtime = filemtime($this->path);
+                $this->data .= ', "mtime":'.$mtime;
+            } else {
+                $this->status = "error";
+                $this->message = "Unable To Open File ".$this->path;
+            }
         }else{
             $this->status = "error";
-            $this->message = "Not A File :".$this->path;
+            $this->message = "Not A File ".$this->path;
         }
 
         $this->respond();
@@ -244,10 +255,14 @@ class Filemanager {
     // OPEN IN BROWSER (Return URL)
     //////////////////////////////////////////////////////////////////
 
-    public function openinbrowser(){
+    public function external(){
         $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         $domainName = $_SERVER['HTTP_HOST'];
-        $url =  $protocol.WSURL.$this->rel_path;
+        if (strpos($this->rel_path, "/") !== 0) {
+            $url =  $protocol.WSURL.'/'.$this->rel_path;
+        } else {
+            $url =  $protocol.WSURL.$this->rel_path;
+        }
         $this->status = "success";
         $this->data = '"url":' . json_encode(rtrim($url,"/"));
         $this->respond();
@@ -270,7 +285,7 @@ class Filemanager {
                     $this->status = "success";
                 }else{
                     $this->status = "error";
-                    $this->message = "Cannot Create File";
+                    $this->message = "Cannot Create File ".$this->path;
                 }
             }else{
                 $this->status = "error";
@@ -297,18 +312,42 @@ class Filemanager {
     //////////////////////////////////////////////////////////////////
 
     public function delete(){
+        
+        function rrmdir($path, $follow) { 
+           $files = array_diff(scandir($path), array('.','..')); 
+           foreach ($files as $file) {
+              if($follow) {
+                if(is_link("$path/$file")) {
+                    rrmdir("$path/$file");
+                    unlink("$path/$file");
+                } else if(is_dir("$path/$file")) {
+                    rrmdir("$path/$file");
+                } else {
+                    unlink("$path/$file");
+                }
+              } else {
+                if(is_link("$path/$file")) {
+                    unlink("$path/$file");
+                } else if(is_dir("$path/$file")) {
+                    rrmdir("$path/$file");
+                } else {
+                    unlink("$path/$file");
+                }
+              }  
+           } 
+           return rmdir($path); 
+        } 
 
-        function rrmdir($path){
-            return is_file($path)?
-            @unlink($path):
-            @array_map('rrmdir',glob($path.'/*'))==@rmdir($path);
-        }
-
-        if(file_exists($this->path)){ rrmdir($this->path);
+        if(file_exists($this->path)){ 
+            if(isset($_GET['follow'])) {
+                rrmdir($this->path, true);
+            } else {
+                rrmdir($this->path, false);
+            }
             $this->status = "success";
         }else{
             $this->status = "error";
-            $this->message = "Path Does Not Exist";
+            $this->message = "Path Does Not Exist ".$this->path;
         }
 
         $this->respond();

@@ -6,7 +6,7 @@
 *  [root]/license.txt for more. This information must remain intact.
 */
 
-require_once('../../config.php');
+require_once('../../common.php');
 require_once('class.filemanager.php');
 
 //////////////////////////////////////////////////////////////////
@@ -30,7 +30,7 @@ switch($_GET['action']){
     <input type="hidden" name="type" value="<?php echo($_GET['type']); ?>">
     <label><span class="icon-pencil"></span><?php echo(ucfirst($_GET['type'])); ?> Name</label>    
     <input type="text" name="object_name" autofocus="autofocus" autocomplete="off">  
-    <button class="btn-left">Create</button><button class="btn-right" onclick="codiad.modal.unload(); return false;">Cancel</button>
+    <button class="btn-left">Create</button>&nbsp;<button class="btn-right" onclick="codiad.modal.unload(); return false;">Cancel</button>
     <?php
     break;
     
@@ -43,7 +43,7 @@ switch($_GET['action']){
     <input type="hidden" name="type" value="<?php echo($_GET['type']); ?>"> 
     <label><span class="icon-pencil"></span>Rename <?php echo(ucfirst($_GET['type'])); ?></label>    
     <input type="text" name="object_name" autofocus="autofocus" autocomplete="off" value="<?php echo($_GET['short_name']); ?>">  
-    <button class="btn-left">Rename</button><button class="btn-right" onclick="codiad.modal.unload(); return false;">Cancel</button>
+    <button class="btn-left">Rename</button>&nbsp;<button class="btn-right" onclick="codiad.modal.unload(); return false;">Cancel</button>
     <?php
     break;
     
@@ -55,18 +55,7 @@ switch($_GET['action']){
     <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>"> 
     <label>Are you sure you wish to delete the following:</label>
     <pre><?php echo($_GET['path']); ?></pre>
-    <button class="btn-left">Delete</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Cancel</button>
-    <?php
-    break;
-    
-    //////////////////////////////////////////////////////////////////
-    // Preview
-    //////////////////////////////////////////////////////////////////
-    case 'preview':
-    ?> 
-    <label>Inline Preview</label>
-    <div><br><br><img src="<?php echo($_GET['path']); ?>"><br><br></div>
-    <button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
+    <button class="btn-left">Delete</button>&nbsp;<button class="btn-right" onclick="codiad.modal.unload();return false;">Cancel</button>
     <?php
     break;
     
@@ -82,7 +71,17 @@ switch($_GET['action']){
         <option value="0">Overwrite Original</option>
         <option value="1">Create Duplicate</option>
     </select>
-    <button class="btn-left">Continue</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Cancel</button>
+    <button class="btn-left">Continue</button>&nbsp;<button class="btn-right" onclick="codiad.modal.unload();return false;">Cancel</button>
+    <?php
+    break;
+    //////////////////////////////////////////////////////////////////
+    // Preview
+    //////////////////////////////////////////////////////////////////
+    case 'preview':
+    ?> 
+    <label>Inline Preview</label>
+    <div><br><br><img src="<?php echo($_GET['path']); ?>"><br><br></div>
+    <button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
     <?php
     break;
     
@@ -96,7 +95,7 @@ switch($_GET['action']){
     <input type="text" name="search_string" autofocus="autofocus">
     <pre id="filemanager-search-results"></pre>
     <div id="filemanager-search-processing"></div>
-    <button class="btn-left">Search</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Cancel</button>
+    <button class="btn-left">Search</button>&nbsp;<button class="btn-right" onclick="codiad.modal.unload();return false;">Cancel</button>
     <?php
     break;
     

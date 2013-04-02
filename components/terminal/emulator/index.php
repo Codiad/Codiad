@@ -28,7 +28,7 @@ checkSession();
 <body>
 
     
-    <div id="terminal">
+    <div id="terminal" style="overflow:auto">
     
         <div id="output"></div>
     

@@ -1,6 +1,6 @@
 <?php
 
-if(file_exists('config.php')){ require_once('config.php'); }
+require_once('common.php');
 
 // Context Menu
 $context_menu = file_get_contents(COMPONENTS . "/filemanager/context_menu.json");
@@ -20,7 +20,6 @@ $components = json_decode($components,true);
 <head>
     <meta charset="utf-8">
     <title>CODIAD</title>
-    <link rel="stylesheet" href="css/jquery.toastmessage.css">
     <?php
     // Load System CSS Files
     $stylesheets = array("jquery.toastmessage.css","reset.css","fonts.css","screen.css");
@@ -47,10 +46,10 @@ $components = json_decode($components,true);
         }
     }
     ?>
-    <link rel="icon"       href="favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="../favicon.ico" type="image/x-icon" />
 </head>
 
-<body>
+<body onLoad="javascript:if(document.getElementById('username')) { document.getElementById('username').focus();}">
     <script>
     var i18n = (function(lang) {
         return function(word) {
@@ -58,12 +57,12 @@ $components = json_decode($components,true);
         }
     })(<?php echo json_encode($lang); ?>)
     </script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script>!window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.7.2.min.js"%3E%3C/script%3E'));</script>
     <script src="js/jquery-ui-1.8.23.custom.min.js"></script>
     <script src="js/jquery.css3.min.js"></script>
     <script src="js/jquery.easing.js"></script>
     <script src="js/jquery.toastmessage.js"></script>
+    <script src="js/jquery-ui-1.8.23.custom.min.js"></script>
     <script src="js/amplify.min.js"></script>
     <script src="js/localstorage.js"></script>
     <script src="js/jquery.hoverIntent.min.js"></script>
@@ -97,7 +96,7 @@ $components = json_decode($components,true);
             <form id="login" method="post" style="position: fixed; width: 350px; top: 30%; left: 50%; margin-left: -175px; padding: 35px;">
 
                 <label><span class="icon-user login-icon"></span> Username</label>
-                <input type="text" name="username" autofocus="autofocus" autocomplete="off">
+                <input type="text" name="username" id="username" autofocus="autofocus" autocomplete="off">
 
                 <label><span class="icon-lock login-icon"></span> Password</label>
                 <input type="password" name="password">
@@ -154,7 +153,9 @@ $components = json_decode($components,true);
                    </ul>
                 </div>
                 <a id="lock-left-sidebar" class="icon-lock icon"></a>
+                <a id="finder-quick" class="icon icon-archive"></a>
                 <a id="tree-search" class="icon-search icon"></a>
+
             </div>
 
             <div class="sb-left-content">
@@ -183,7 +184,21 @@ $components = json_decode($components,true);
                 <div id="file-manager"></div>
 
                 <ul id="list-active-files"></ul>
-
+                
+            </div>
+            
+            <div id="side-projects" class="sb-left-projects">
+                <div id="project-list" class="sb-project-list">
+                
+                    <div class="project-list-title">
+                        <h2>Projects</h2>
+                        <a id="projects-collapse" class="icon-down-dir icon"></a>
+                        <a id="projects-create" class="icon-plus icon"></a>
+                    </div>
+                    
+                    <div class="sb-projects-content"></div>
+                    
+                </div>
             </div>
 
             <div class="sidebar-handle"><span>||</span></div>
@@ -197,6 +212,9 @@ $components = json_decode($components,true);
                 <ul id="tab-list-active-files"> </ul>
                 <div id="tab-dropdown">
                     <a id="tab-dropdown-button" class="icon-down-open"></a>
+                </div>
+                <div id="tab-close">
+                    <a id="tab-close-button" class="icon-layout"></a>
                 </div>
                 <ul id="dropdown-list-active-files"></ul>
                 <div class="bar"></div>
@@ -253,7 +271,7 @@ $components = json_decode($components,true);
     </div>
 
     <div id="modal-overlay"></div>
-    <div id="modal"><div id="drag-handle" class="icon-location"></div><div id="modal-content"></div></div>
+    <div id="modal"><div id="close-handle" class="icon-cancel" onclick="codiad.modal.unload();"></div><div id="drag-handle" class="icon-location"></div><div id="modal-content"></div></div>
 
     <iframe id="download"></iframe>
 

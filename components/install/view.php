@@ -23,7 +23,7 @@ if(!$workspace || !$data || !$config){
     <h1>Installation Error</h1>
     <p>Please make sure the following exist and are writeable:</p>
     <pre>[SYSTEM]/config.php
-[SYSTEM]/workspace
+[SYSTEM]/workspace    
 [SYSTEM]/data</pre>
 <button onclick="window.location.reload();">Re-Test</button>
     <?php
@@ -55,7 +55,7 @@ if(!$workspace || !$data || !$config){
     
     <hr>
     
-    <label>New Project Name</label>
+    <label>Master Project Name</label>
     <input type="text" name="project">
     
     <hr>

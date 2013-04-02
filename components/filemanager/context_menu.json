@@ -32,13 +32,25 @@
     {
         "title": "Upload Files",
         "icon": "icon-upload",
-        "applies-to" : "directory-only",
+        "applies-to" : "directory-only no-external",
         "onclick": "codiad.filemanager.uploadToNode($('#context-menu').attr('data-path'));"
     },
     {
         "title": "Break",
         "icon": null,
         "applies-to" : "directory-only",
+        "onclick": null
+    },
+    {
+        "title": "View",
+        "icon": "icon-eye",
+        "applies-to" : "file-only no-external",
+        "onclick": "codiad.filemanager.openInBrowser($('#context-menu').attr('data-path'));"
+    },
+    {
+        "title": "Break",
+        "icon": null,
+        "applies-to" : "file-only",
         "onclick": null
     },
     {
@@ -56,7 +68,7 @@
     {
         "title": "Break",
         "icon": null,
-        "applies-to" : "non-root",
+        "applies-to" : "both",
         "onclick": null
     },
     {
@@ -65,6 +77,12 @@
         "applies-to" : "non-root",
         "onclick": "codiad.filemanager.renameNode($('#context-menu').attr('data-path'));"
     },
+    {
+        "title": "Rename",
+        "icon": "icon-pencil",
+        "applies-to" : "root-only",
+        "onclick": "codiad.project.rename($('#context-menu').attr('data-path'));"
+    },    
     {
         "title": "Break",
         "icon": null,
@@ -86,7 +104,7 @@
     {
         "title": "Download",
         "icon": "icon-download",
-        "applies-to" : "both",
+        "applies-to" : "both no-external",
         "onclick": "codiad.filemanager.download($('#context-menu').attr('data-path'));"
     },
     {
