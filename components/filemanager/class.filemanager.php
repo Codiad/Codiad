@@ -194,15 +194,10 @@ class Filemanager {
             $this->status = "error";
             $this->message = "Shell_exec() Command Not Enabled.";
         }else{
-            if($this->path[0] == "/"){
-                $path = substr($this->path,1);
-            }else{
-                $path = $this->path;
-            }
             chdir($this->path);
             $input = str_replace('"' , '', $this->search_string);
             $input = preg_quote($input);
-            $output = shell_exec('grep -i -I -n -R "' . $input . '" /' . $path . '* ');
+            $output = shell_exec('grep -i -I -n -R "' . $input . '" ' . $this->path . '* ');
             $output_arr = explode("\n", $output);
             $return = array();
             foreach($output_arr as $line){
@@ -210,15 +205,15 @@ class Filemanager {
                 $da = array();
                 if(count($data) > 2 && strpos($data[0], ".") !== 0){
                     $da['line'] = $data[1];
-                    $da['file'] = substr($data[0], strpos($data[0], $path) + strlen($path) - 1);
-                    $da['result'] = $data[0];
+                    $da['file'] = substr($data[0], strpos($data[0], $this->path) + strlen($this->path) - 1);
+                    $da['result'] = str_replace($this->root, '', $data[0]);
                     $da['string'] = str_replace($data[0] . ":" . $data[1] . ':' , '', $line);
                     $return[] = $da;
                 }
             }
             if(count($return)==0){
                 $this->status = "error";
-                $this->message = "No Results Returned";
+                $this->message = "No Results Returned for ".$this->path;
             }else{
                 $this->status = "success";
                 $this->data = '"index":' . json_encode($return);
