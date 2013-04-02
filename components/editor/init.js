@@ -691,6 +691,7 @@
                 return 'less';
             case 'php':
             case 'php5':
+            case 'phtml':
                 return 'php';
             case 'json':
                 return 'json';
