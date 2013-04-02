@@ -722,7 +722,7 @@ table [class^="icon-"], [class*=" icon-"] {
 
 #modal-loading {
     height: 100px;
-    background: url(loading.gif) no-repeat center;
+    background: url(images/loading.gif) no-repeat center;
 }
 
     /* Download iFrame */
