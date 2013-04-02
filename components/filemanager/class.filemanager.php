@@ -52,14 +52,14 @@ class Filemanager {
     //////////////////////////////////////////////////////////////////
 
     public function __construct($get,$post,$files) {
-        $this->rel_path = $get['path'];
+        $this->rel_path = $this->cleanPath($get['path']);
         if($this->rel_path!="/"){ $this->rel_path .= "/"; }
         if(!empty($get['query'])){ $this->query = $get['query']; }
         if(!empty($get['options'])){ $this->foptions = $get['options']; }
         if(strpos($get['path'], "/") !== 0 || $_SESSION['project'] == '') {
             $this->root = $get['root'].'/';
         }
-        $this->path = $this->root . $get['path'];
+        $this->path = $this->root . $this->cleanPath($get['path']);
         // Search
         if(!empty($post['search_string'])){ $this->search_string = $post['search_string']; }
         // Create
@@ -77,7 +77,7 @@ class Filemanager {
             }
         }
         // Duplicate
-        if(!empty($get['destination'])){ $this->destination = $this->root . $get['destination']; }
+        if(!empty($get['destination'])){ $this->destination = $this->root . $this->cleanPath($get['destination']); }
     }
 
     //////////////////////////////////////////////////////////////////
