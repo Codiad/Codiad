@@ -24,7 +24,14 @@
     if($_GET['action']=='authenticate'){
         $User->username = $_POST['username'];
         $User->password = $_POST['password'];
-        $User->lang = $_POST['language'];
+
+        // check if the asked languages exist and is registered in languages/code.php
+        require_once '../../languages/code.php';
+        if ( isset( $languages[ $_POST['language'] ] ) )
+            $User->lang = $_POST['language'];
+        else
+            $User->lang = 'en';
+
         $User->Authenticate();
     }
 
