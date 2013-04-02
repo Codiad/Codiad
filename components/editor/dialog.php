@@ -6,7 +6,7 @@
 *  [root]/license.txt for more. This information must remain intact.
 */
 
-require_once('../../config.php');
+require_once('../../common.php');
 
 //////////////////////////////////////////////////////////////////
 // Verify Session or Key
@@ -39,10 +39,10 @@ switch($_GET['action']){
     
     <?php } ?>
 
-    <button class="btn-left" onclick="codiad.editor.search('find');return false;"><?php i18n("Find"); ?></button>
+    <button class="btn-left" onclick="codiad.editor.search('find');return false;"><?php i18n("Find"); ?></button>&nbsp;
     <?php if($type=='replace'){ ?>
-        <button class="btn-mid" onclick="codiad.editor.search('replace');return false;"><?php i18n("Replace"); ?></button>
-        <button class="btn-mid" onclick="codiad.editor.search('replaceAll');return false;"><?php i18n("Replace ALL"); ?></button>
+        <button class="btn-mid" onclick="codiad.editor.search('replace');return false;"><?php i18n("Replace"); ?></button>&nbsp;
+        <button class="btn-mid" onclick="codiad.editor.search('replaceAll');return false;"><?php i18n("Replace ALL"); ?></button>&nbsp;
     <?php } ?>
     <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Cancel"); ?></button>
     <?php

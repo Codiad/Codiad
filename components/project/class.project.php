@@ -103,23 +103,46 @@ class Project {
     //////////////////////////////////////////////////////////////////
 
     public function Create(){
-        $this->path = $this->SanitizePath();
         $pass = $this->checkDuplicate();
         if($pass){
-            $this->projects[] = array("name"=>$this->name,"path"=>$this->path);
-            saveJSON('projects.php',$this->projects);
-            mkdir(WORKSPACE . "/" . $this->path);
+            if(strpos($this->path, "/") === false || strpos($this->path, "/") === 0) {
+                $this->projects[] = array("name"=>$this->name,"path"=>$this->path);
+                saveJSON('projects.php',$this->projects);
+                if(strpos($this->path, "/") === false && !file_exists(WORKSPACE . '/' . $this->path)) {
+                    mkdir(WORKSPACE . '/' . $this->path);
+                }
             
-            // Pull from Git Repo?
-            if($this->gitrepo){
-                $this->command_exec = "cd " . WORKSPACE . "/" . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
-                $this->ExecuteCMD();
+                // Pull from Git Repo?
+                if(strpos($this->path, "/") === false) {
+                    $this->command_exec = "cd " . WORKSPACE . '/' . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
+                } else {
+                    $this->command_exec = "cd " . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
+                }
+                echo formatJSEND("success",array("name"=>$this->name,"path"=>$this->path));
+            } else {
+                echo formatJSEND("error","Invalid Project Path for Workspace Project ");
             }
-            
-            echo formatJSEND("success",array("name"=>$this->name,"path"=>$this->path));
         }else{
             echo formatJSEND("error","A Project With the Same Name or Path Exists");
         }
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Rename
+    //////////////////////////////////////////////////////////////////
+
+    public function Rename(){
+        $revised_array = array();
+        foreach($this->projects as $project=>$data){
+            if($data['path']!=$this->path){
+                $revised_array[] = array("name"=>$data['name'],"path"=>$data['path']);
+            }
+        }
+        $revised_array[] = $this->projects[] = array("name"=>$_GET['project_name'],"path"=>$this->path);
+        // Save array back to JSON
+        saveJSON('projects.php',$revised_array);
+        // Response
+        echo formatJSEND("success",null);
     }
 
     //////////////////////////////////////////////////////////////////
@@ -129,7 +152,7 @@ class Project {
     public function Delete(){
         $revised_array = array();
         foreach($this->projects as $project=>$data){
-            if($data['path']!=str_replace("/","",$this->path)){
+            if($data['path']!=$this->path){
                 $revised_array[] = array("name"=>$data['name'],"path"=>$data['path']);
             }
         }
@@ -147,28 +170,11 @@ class Project {
     public function CheckDuplicate(){
         $pass = true;
         foreach($this->projects as $project=>$data){
-            if($data['name']==$this->name || $data['path']==$this->path){
+            if($data['name']==$this->name||$data['path']==$this->path){
                 $pass = false;
             }
         }
         return $pass;
-    }
-
-    //////////////////////////////////////////////////////////////////
-    // Sanitize Path
-    //////////////////////////////////////////////////////////////////
-
-    public function SanitizePath(){
-        $sanitized = str_replace(" ","_",$this->name);
-
-        // prevent Poison Null Byte injections
-        $sanitized = str_replace(chr(0), '', $sanitized );
-
-        // prevent go out of the workspace
-        while (strpos($sanitized , '../') !== false)
-            $sanitized = str_replace( '../', '', $sanitized );
-
-        return preg_replace('/[^\w-]/', '', $sanitized);
     }
     
     //////////////////////////////////////////////////////////////////

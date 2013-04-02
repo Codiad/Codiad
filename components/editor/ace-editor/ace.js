@@ -10223,7 +10223,7 @@ background-image: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCA
 .ace_scrollbar {\
 position: absolute;\
 overflow-x: hidden;\
-overflow-y: scroll;\
+overflow-y: auto;\
 right: 0;\
 }\
 .ace_scrollbar-inner {\

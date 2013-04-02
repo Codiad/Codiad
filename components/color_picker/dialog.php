@@ -4,7 +4,7 @@
 *  [root]/license.txt for more. This information must remain intact.
 */--> 
 <?php
-include "../../config.php";
+include "../../common.php";
 ?>
 <div id="colorpicker_region">
 
@@ -12,8 +12,7 @@ include "../../config.php";
 
 <button class="right" onclick="codiad.modal.unload();"><?php i18n("Close"); ?></button>
 
-<button class="btn-left" onclick="codiad.colorPicker.insert('hex');"><?php i18n("Insert HEX"); ?></button
-><button class="btn-right" onclick="codiad.colorPicker.insert('rgb');"><?php i18n("Insert RGB"); ?></button>
+<button class="btn-left" onclick="codiad.colorPicker.insert('hex');"><?php i18n("Insert HEX"); ?></button>&nbsp;<button class="btn-right" onclick="codiad.colorPicker.insert('rgb');"><?php i18n("Insert RGB"); ?></button>
 
 <script>
 

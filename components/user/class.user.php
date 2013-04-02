@@ -49,7 +49,7 @@ class User {
                 $pass = true;
                 $_SESSION['user'] = $this->username;
                 $_SESSION['lang'] = $this->lang;
-                if($user['project']!=''){ $_SESSION['project'] = $user['project']; }
+                $_SESSION['project'] = $user['project'];
             }
         }
 

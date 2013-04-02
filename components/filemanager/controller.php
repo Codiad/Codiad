@@ -6,7 +6,7 @@
     *  [root]/license.txt for more. This information must remain intact.
     */
 
-    require_once('../../config.php');
+    require_once('../../common.php');
     require_once('class.filemanager.php');
 
     //////////////////////////////////////////////////////////////////
@@ -50,7 +50,7 @@
         case 'search': $Filemanager->search(); break;
         case 'find': $Filemanager->find(); break;
         case 'open' : $Filemanager->open(); break;
-        case 'open_in_browser': $Filemanager->openinbrowser(); break;
+        case 'external': $Filemanager->external(); break;
         case 'create': $Filemanager->create(); break;
         case 'delete': $Filemanager->delete(); break;
         case 'modify': $Filemanager->modify(); break;

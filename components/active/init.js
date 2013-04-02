@@ -458,7 +458,7 @@
             var content = session.getValue();
             var path = session.path;
             var handleSuccess = function(mtime){
-    	var session = codiad.active.sessions[path];
+                var session = codiad.active.sessions[path];
                 session.untainted = newContent;
                 session.serverMTime = mtime;
                 if (session.listThumb) session.listThumb.removeClass('changed');
@@ -510,11 +510,29 @@
                 this.close(path);
             }
         },
+        
+        removeAll: function() {
+            path = $('#tab-list-active-files li:first-child').attr('data-path');
+            if (!this.isOpen(path)) return;
+            var session = this.sessions[path];
+            var closeFile = true;
+            if (session.listThumb.hasClass('changed')) {
+                codiad.modal.load(450, 'components/active/dialog.php?action=confirm&path=' + path);
+                closeFile = false;
+            }
+            if (closeFile) {
+                this.close(path);
+            }
+            var tabThumbs = $('#tab-list-active-files li[data-path!="' + path + '"]');
+            if (tabThumbs.length != 0) {
+                setTimeout('codiad.active.removeAll();', 500);
+            }
+        },
+        
 
         close: function(path) {
             /* Notify listeners. */
             amplify.publish('active.onClose', path);
-
             var _this = this;
             var session = this.sessions[path];
 
@@ -533,17 +551,15 @@
             }
 
             session.listThumb.remove();
-
             /* Remove closed path from history */
             var history = [];
             $.each(this.history, function(index) {
                 if(this != path) history.push(this);
             })
             this.history = history
-            
+
             /* Select all the tab tumbs except the one which is to be removed. */
             var tabThumbs = $('#tab-list-active-files li[data-path!="' + path + '"]');
-
             if (tabThumbs.length == 0) {
                 codiad.editor.exterminate();
             } else {
@@ -739,13 +755,19 @@
             var _this = this;
             
             var menu = $('#dropdown-list-active-files');
-            var button = $('#tab-dropdown-button');
+            var dropbutton = $('#tab-dropdown-button');
+            var closebutton = $('#tab-close-button');
             
             menu.appendTo($('body'));
 
-            button.click(function(e) {
+            dropbutton.click(function(e) {
                 e.stopPropagation();
                 _this.toggleTabDropdownMenu();
+            });
+            
+            closebutton.click(function(e) {
+                e.stopPropagation();
+                _this.removeAll();
             });
         },
         
@@ -862,7 +884,8 @@
 
             var tabListWidth = $("#tab-list-active-files").width();
             var dropdownWidth = $('#tab-dropdown').width();
-            var room = window.innerWidth - lsbarWidth - rsbarWidth - dropdownWidth - width - 30;
+            var closeWidth = $('#tab-close').width();
+            var room = window.innerWidth - lsbarWidth - rsbarWidth - dropdownWidth - closeWidth - width - 30;
             return (room < 0);
         },
 
@@ -886,6 +909,11 @@
                 // Be sure to hide the menu if it is opened.
                 $('#dropdown-list-active-files').hide();
             }
+            if ($('#tab-list-active-files li').length > 1) {
+                $('#tab-close').show();
+            } else {
+                $('#tab-close').hide();
+            }
         },
 
         //////////////////////////////////////////////////////////////////
@@ -899,22 +927,41 @@
                 directory: path.substring(0, index + 1)
             }
         },
+        
+        removeProjectFromTab: function(path) {
+                var project = codiad.project.getCurrent();
+                if(project !== null) {
+                    return path.substring(project.length+1);
+                } else {
+                    return path;
+                }
+        },
 
         createListThumb: function(path) {
-            return $('<li data-path="' + path + '"><a title="'+path+'"><span></span><div>' + path.substring(1) + '</div></a></li>');
+            var directory = path;
+            if(directory.lastIndexOf('/') == 0) {
+                directory = directory.substring(1);
+            }
+            return $('<li data-path="' + path + '"><a title="'+path+'"><span></span><div>' + directory + '</div></a></li>');
         },
 
         createTabThumb: function(path) {
             split = this.splitDirectoryAndFileName(path);
+            if(split.directory.lastIndexOf('/') == 0) {
+                split.directory = split.directory.substring(1);
+            }
             return $('<li class="tab-item" data-path="' + path + '"><a class="label" title="' + path + '">' 
-                    + split.directory.substring(1) + '<span class="file-name">' + split.fileName + '</span>' 
+                    + this.removeProjectFromTab(split.directory) + '<span class="file-name">' + split.fileName + '</span>' 
                     + '</a><a class="close">x</a></li>');
         },
 
         createMenuItemThumb: function(path) {
             split = this.splitDirectoryAndFileName(path);
+            if(split.directory.lastIndexOf('/') == 0) {
+                split.directory = split.directory.substring(1);
+            }
             return $('<li data-path="' + path + '"><a title="' + path + '"><span class="label"></span><div class="label">' 
-                    + split.directory.substring(1) + '<span class="file-name">' + split.fileName + '</span>'
+                    + split.directory + '<span class="file-name">' + split.fileName + '</span>'
                     + '</div></a></li>');
         },
 

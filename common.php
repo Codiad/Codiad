@@ -5,6 +5,19 @@
     *  [root]/license.txt for more. This information must remain intact.
     */
     
+    if(strpos($_SERVER['SCRIPT_FILENAME'], "components")) {
+        if(file_exists('../../config.php')){ require_once('../../config.php'); }
+    } else {
+        if(file_exists('config.php')){ require_once('config.php'); }
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // SESSIONS
+    //////////////////////////////////////////////////////////////////
+
+    ini_set("session.cookie_lifetime","0");
+    session_start();
+    
     /* The stack of debug messages. */
     $debugMessageStack = array();
     

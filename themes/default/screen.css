@@ -476,7 +476,7 @@ table [class^="icon-"], [class*=" icon-"] {
 }
 
 .sidebar#sb-left {
-    width: 300px;
+    width: 250px;
     left: 0;
 }
 #sb-left-title{
@@ -550,7 +550,15 @@ table [class^="icon-"], [class*=" icon-"] {
     top: 33px;
     left: 0;
     right: 10px;
-    bottom: 0;
+    bottom: 276px;
+}
+
+.sb-left-projects {
+    position:absolute;
+    height:276px;
+    bottom:0;
+    left:0;
+    right:10px;
 }
 
 /*#lock-left-sidebar {
@@ -691,6 +699,19 @@ table [class^="icon-"], [class*=" icon-"] {
     color: #999;
 }
 
+#modal #close-handle {
+    float: right;
+    font-size: 20px;
+    margin: -4px 0 0 0;
+    padding: 5px;
+    cursor: pointer;
+    color: #999;
+}
+
+#modal #close-handle:hover {
+    color: #fff;
+}
+
 #modal #drag-handle:hover {
     color: #fff;
 }
@@ -701,7 +722,7 @@ table [class^="icon-"], [class*=" icon-"] {
 
 #modal-loading {
     height: 100px;
-    background: url(loading.gif) no-repeat center;
+    background: url(images/loading.gif) no-repeat center;
 }
 
     /* Download iFrame */

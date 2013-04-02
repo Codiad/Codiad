@@ -36,6 +36,10 @@
     function encryptPassword($p){
         return sha1(md5($p));
     }
+    
+    function cleanUsername($username){
+        return preg_replace('#[^A-Za-z0-9'.preg_quote('-_@. ').']#','', $username);
+    }
 
 //////////////////////////////////////////////////////////////////////
 // Verify no overwrites
@@ -47,7 +51,7 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     // Get POST responses
     //////////////////////////////////////////////////////////////////
     
-    $username = $_POST['username'];
+    $username = cleanUsername($_POST['username']);
     $password = encryptPassword($_POST['password']);
     $project_name = $_POST['project'];
     $timezone = $_POST['timezone'];
@@ -56,9 +60,7 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     // Create Projects files
     //////////////////////////////////////////////////////////////////
     
-    $project_path = str_replace(" ","_",preg_replace('/[^\w-]/', '', $project_name));
-    mkdir($workspace . "/" . $project_path);
-    $project_data = array("name"=>$project_name,"path"=>$project_path);
+    $project_data = array("name"=>$project_name,"path"=>"");
     saveJSON($projects,$project_data);
     
     
@@ -66,7 +68,7 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     // Create Users file
     //////////////////////////////////////////////////////////////////
     
-    $user_data = array("username"=>$username,"password"=>$password,"project"=>$project_path);
+    $user_data = array("username"=>$username,"password"=>$password,"project"=>"");
     saveJSON($users,$user_data);
     
     //////////////////////////////////////////////////////////////////
@@ -91,8 +93,8 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
 // PATH
 //////////////////////////////////////////////////////////////////
 
-$rel = "' . $path . '";
-define("BASE_PATH",$rel);
+$rel = "' . str_replace($_SERVER["DOCUMENT_ROOT"], '', $path) . '";
+define("BASE_PATH",$_SERVER["DOCUMENT_ROOT"] . $rel);
 define("COMPONENTS",BASE_PATH . "/components");
 define("THEMES",BASE_PATH . "/themes");
 define("DATA",BASE_PATH . "/data");
@@ -110,19 +112,6 @@ define("THEME", "default");
 //////////////////////////////////////////////////////////////////
 
 date_default_timezone_set("' . $timezone . '");
-
-//////////////////////////////////////////////////////////////////
-// SESSIONS
-//////////////////////////////////////////////////////////////////
-
-ini_set("session.cookie_lifetime","0");
-session_start();
-
-//////////////////////////////////////////////////////////////////
-// COMMON
-//////////////////////////////////////////////////////////////////
-
-require_once("common.php");
 
 ?>';
 

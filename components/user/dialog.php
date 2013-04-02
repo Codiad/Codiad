@@ -6,7 +6,7 @@
     *  [root]/license.txt for more. This information must remain intact.
     */
 
-    require_once('../../config.php');
+    require_once('../../common.php');
     
     //////////////////////////////////////////////////////////////////
     // Verify Session or Key
@@ -65,7 +65,7 @@
             ?>
             </table>
             </div>
-            <button class="btn-left" onclick="codiad.user.createNew();">New Account</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
+            <button class="btn-left" onclick="codiad.user.createNew();">New Account</button>&nbsp;<button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
             <?php
             }
             
@@ -85,7 +85,7 @@
             <input type="password" name="password1">
             <label>Confirm Password</label>
             <input type="password" name="password2">
-            <button class="btn-left">Create Account</button><button class="btn-right" onclick="codiad.user.list();return false;">Cancel</button>
+            <button class="btn-left">Create Account</button>&nbsp;<button class="btn-right" onclick="codiad.user.list();return false;">Cancel</button>
             <form>
             <?php
             break;
@@ -124,7 +124,7 @@
                 ?>
                 </table>
             </div>
-            <button class="btn-left">Confirm</button><button class="btn-right" onclick="codiad.user.list();return false;">Cancel</button>
+            <button class="btn-left">Confirm</button>&nbsp;<button class="btn-right" onclick="codiad.user.list();return false;">Cancel</button>
             <?php
             break;
         
@@ -139,7 +139,7 @@
             <input type="hidden" name="username" value="<?php echo($_GET['username']); ?>">
             <label>Confirm User Deletion</label>
             <pre>Account: <?php echo($_GET['username']); ?></pre>
-            <button class="btn-left">Confirm</button><button class="btn-right" onclick="codiad.user.list();return false;">Cancel</button>
+            <button class="btn-left">Confirm</button>&nbsp;<button class="btn-right" onclick="codiad.user.list();return false;">Cancel</button>
             <?php
             break;
             
@@ -162,7 +162,7 @@
             <input type="password" name="password1" autofocus="autofocus">
             <label>Confirm Password</label>
             <input type="password" name="password2">
-            <button class="btn-left">Change <?php echo(ucfirst($username)); ?>&apos;s Password</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Cancel</button>
+            <button class="btn-left">Change <?php echo(ucfirst($username)); ?>&apos;s Password</button>&nbsp;<button class="btn-right" onclick="codiad.modal.unload();return false;">Cancel</button>
             <?php
             break;
         

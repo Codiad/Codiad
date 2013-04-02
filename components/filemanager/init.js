@@ -17,8 +17,8 @@
 
         clipboard: '',
 
-        noOpen: ['jpg', 'jpeg', 'png', 'gif', 'svg', 'bmp', 'exe', 'zip', 'tar', 'tar.gz'],
-        noBrowser: ['jpg', 'jpeg', 'png', 'gif', 'bmp'],
+        noOpen: ['jpg', 'jpeg', 'png', 'gif', 'svg', 'bmp', 'exe', 'zip', 'tar', 'tar.gz', 'ico'],
+        noDownload: ['jpg', 'jpeg', 'png', 'gif', 'bmp'],
 
         controller: 'components/filemanager/controller.php',
         dialog: 'components/filemanager/dialog.php',
@@ -39,7 +39,26 @@
 
         nodeListener: function() {
             var _this = this;
-
+            $('#file-manager').on('selectstart', false);
+            $('#file-manager span')
+                .live('click', function() { // Open or Expand
+                    if ($(this).parent().children("a").attr('data-type') == 'directory') {
+                        _this.index($(this).parent().children("a")
+                            .attr('data-path'));
+                    } else {
+                        _this.openFile($(this).parent().children("a")
+                            .attr('data-path'));
+                    }
+                    if (!$(this).hasClass('none')) {
+                        if ($(this).hasClass('plus')) {
+                            $(this).removeClass('plus')
+                            $(this).addClass('minus');
+                        } else {
+                            $(this).removeClass('minus')
+                            $(this).addClass('plus');
+                        }
+                    }
+                });
             $('#file-manager a')
                 .live('dblclick', function() { // Open or Expand
                     if ($(this)
@@ -49,6 +68,15 @@
                     } else {
                         _this.openFile($(this)
                             .attr('data-path'));
+                    }
+                    if (!$(this).parent().children("span").hasClass('none')) {
+                        if ($(this).parent().children("span").hasClass('plus')) {
+                            $(this).parent().children("span").removeClass('plus')
+                            $(this).parent().children("span").addClass('minus');
+                        } else {
+                            $(this).parent().children("span").removeClass('minus')
+                            $(this).parent().children("span").addClass('plus');
+                        }
                     }
                 })
                 .live("contextmenu", function(e) { // Context Menu
@@ -74,22 +102,27 @@
             case 'directory':
                 $('#context-menu .directory-only, #context-menu .non-root')
                     .show();
-                $('#context-menu .file-only')
+                $('#context-menu .file-only,#context-menu .root-only')
                     .hide();
                 break;
             case 'file':
-                $('#context-menu .directory-only')
+                $('#context-menu .directory-only,#context-menu  .root-only')
                     .hide();
                 $('#context-menu .file-only,#context-menu .non-root')
                     .show();
                 break;
             case 'root':
-                $('#context-menu .directory-only')
+                $('#context-menu .directory-only,#context-menu .root-only')
                     .show();
                 $('#context-menu .non-root, #context-menu .file-only')
                     .hide();
                 break;
             }
+
+            if($('#file-manager a[data-type="root"]').attr('data-path').indexOf('/') == 0) {
+                $('#context-menu .no-external').hide();
+            }
+            
             // Show menu
             $('#context-menu')
                 .css({
@@ -165,9 +198,9 @@
                 if (parentNode.hasClass('open') && parentNode.hasClass('directory')) { // Only append node if parent is open (and a directory)
                     var shortName = this.getShortName(path);
                     if (type == 'directory') {
-                        var appendage = '<li><a class="directory" data-type="directory" data-path="' + path + '">' + shortName + '</a></li>';
+                        var appendage = '<li><span class="none"></span><a class="directory" data-type="directory" data-path="' + path + '">' + shortName + '</a></li>';
                     } else {
-                        var appendage = '<li><a class="file ext-' +
+                        var appendage = '<li><span class="none"></span><a class="file ext-' +
                             this.getExtension(shortName) +
                             '" data-type="file" data-path="' +
                             path + '">' + shortName + '</a></li>';
@@ -180,6 +213,9 @@
                         $('<ul>' + appendage + '</ul>')
                             .insertAfter(parentNode);
                     }
+                } else {
+                    parentNode.parent().children('span').removeClass('none');  
+                    parentNode.parent().children('span').addClass('plus');  
                 }
             }
         },
@@ -217,13 +253,17 @@
                             $.each(files, function(index) {
                                 var ext = '';
                                 var name = files[index].name.replace(path, '');
+                                var nodeClass = 'none';
                                 name = name.split('/')
                                     .join(' ');
                                 if (files[index].type == 'file') {
                                     var ext = ' ext-' + name.split('.')
                                         .pop();
                                 }
-                                appendage += '<li><a class="' + files[index].type + ext + '" data-type="' + files[index].type + '" data-path="' + files[index].name + '">' + name + '</a></li>';
+                                if(files[index].type == 'directory' && files[index].size > 0) {
+                                    nodeClass = 'plus';
+                                } 
+                                appendage += '<li><span class="' + nodeClass + '"></span><a class="' + files[index].type + ext + '" data-type="' + files[index].type + '" data-path="' + files[index].name + '">' + name + '</a></li>';
                             });
                             appendage += '</ul>';
                             if (rescan) {
@@ -284,14 +324,20 @@
                 node.addClass('loading');
                 $.get(this.controller + '?action=open&path=' + path, function(data) {
                     var openResponse = codiad.jsend.parse(data);
+                    node.removeClass('loading');
                     if (openResponse != 'error') {
-                        node.removeClass('loading');
                         codiad.active.open(path, openResponse.content, openResponse.mtime, false, focus);
+                    } else {
+                        node.addClass('error');
                     }
                 });
             } else {
-                if ($.inArray(ext, this.noBrowser) < 0) {
-                    this.download(path);
+                if ($.inArray(ext, this.noDownload) < 0) {
+                    if($('#file-manager a[data-type="root"]').attr('data-path').indexOf('/') == 0) {
+                        codiad.message.error(i18n('Downloading not allowed for ' + ext));
+                    } else {
+                        this.download(path);
+                    }
                 } else {
                     this.openInModal(path);
                 }
@@ -303,7 +349,7 @@
         //////////////////////////////////////////////////////////////////
 
         openInBrowser: function(path) {
-            $.get(this.controller + '?action=open_in_browser&path=' + path, function(data) {
+            $.get(this.controller + '?action=external&path=' + path, function(data) {
                 var openIBResponse = codiad.jsend.parse(data);
                 if (openIBResponse != 'error') {
                     window.open(openIBResponse.url, '_newtab');
@@ -311,10 +357,22 @@
             });
         },
         openInModal: function(path) {
-            codiad.modal.load(250, this.dialog, {
-                        action: 'preview',
-                        path: 'workspace' + path
-                    });
+            var openIBResponse = null;
+            $.ajax({
+                url: this.controller + '?action=external&path=' + path,
+                type: 'get',
+                dataType: 'html',
+                async: false,
+                success: function(data) {
+                    openIBResponse = codiad.jsend.parse(data);
+                } 
+             });
+             if (openIBResponse != 'error') {
+                codiad.modal.load(250, this.dialog, {
+                            action: 'preview',
+                            path: openIBResponse.url
+                        });
+             }
         },
         saveModifications: function(path, data, callbacks){
             callbacks = callbacks || {};
@@ -432,9 +490,14 @@
                 var shortName = _this.getShortName(_this.clipboard);
                 if ($('#file-manager a[data-path="' + path + '/' + shortName + '"]')
                     .length) { // Confirm overwrite?
+                    var project = codiad.project.getCurrent();
+                    var stripPath = path;
+                    if(project !== null) {
+                        stripPath = path.substring(project.length+1);
+                    }
                     codiad.modal.load(400, this.dialog, {
                         action: 'overwrite',
-                        path: path + '/' + shortName
+                        path: stripPath + '/' + shortName
                     });
                     $('#modal-content form')
                         .live('submit', function(e) {
@@ -536,9 +599,14 @@
 
         deleteNode: function(path) {
             var _this = this;
+            var project = codiad.project.getCurrent();
+            var stripPath = path;
+            if(project !== null) {
+                stripPath = path.substring(project.length);
+            }
             codiad.modal.load(400, this.dialog, {
                 action: 'delete',
-                path: path
+                path: stripPath
             });
             $('#modal-content form')
                 .live('submit', function(e) {
@@ -569,7 +637,7 @@
         //////////////////////////////////////////////////////////////////
 
         search: function(path) {
-            codiad.modal.load(500, this.dialog,{
+            codiad.modal.load(600, this.dialog,{
                 action: 'search',
                 path: path
             });
@@ -589,7 +657,7 @@
                     if (searchResponse != 'error') {
                         var results = '';
                         $.each(searchResponse.index, function(key, val) {
-                            results += '<div><a onclick="codiad.filemanager.openFile(\'' + val['file'] + '\');setTimeout( function() { codiad.active.gotoLine(' + val['line'] + '); }, 500);codiad.modal.unload();">Line ' + val['line'] + ': ' + val['file'] + '</a></div>';
+                            results += '<div><a onclick="codiad.filemanager.openFile(\'' + val['result'] + '\');setTimeout( function() { codiad.active.gotoLine(' + val['line'] + '); }, 500);codiad.modal.unload();">Line ' + val['line'] + ': ' + val['file'] + '</a></div>';
                         });
                         $('#filemanager-search-results')
                             .slideDown()

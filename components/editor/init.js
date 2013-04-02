@@ -272,10 +272,10 @@
         settings: {
             theme: 'twilight',
             fontSize: '13px',
-            printMargin: false,
+            printMargin: true,
             highlightLine: true,
-            indentGuides: true,
-            wrapMode: false
+            indentGuides: false,
+            wrapMode: true
         },
 
         rootContainer: null,
