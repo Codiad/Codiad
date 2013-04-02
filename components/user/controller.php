@@ -48,8 +48,8 @@
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='create'){
-        $User->username = User::CleanUsername( $_GET['username'] );
-        $User->password = $_GET['password'];
+        $User->username = User::CleanUsername( $_POST['username'] );
+        $User->password = $_POST['password'];
         $User->Create();
     }
 
@@ -77,8 +77,8 @@
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='password'){
-        $User->username = $_GET['username'];
-        $User->password = $_GET['password'];
+        $User->username = $_POST['username'];
+        $User->password = $_POST['password'];
         $User->Password();
     }
 

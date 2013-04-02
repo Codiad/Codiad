@@ -89,7 +89,7 @@
                 if (password1 != password2) {
                     codiad.message.error('Passwords Do Not Match');
                 } else {
-                    $.get(_this.controller + '?action=create&username=' + username + '&password=' + password1, function(data) {
+                    $.post(_this.controller + '?action=create', {'username' : username , 'password' : password1 }, function(data) {
                         var createResponse = codiad.jsend.parse(data);
                         if (createResponse != 'error') {
                             codiad.message.success('User Account Created');
@@ -174,7 +174,7 @@
                 if (password1 != password2) {
                     codiad.message.error('Passwords Do Not Match');
                 } else {
-                    $.get(_this.controller + '?action=password&username=' + username + '&password=' + password1, function(data) {
+                    $.post(_this.controller + '?action=password', {'username' : username , 'password' : password1 }, function(data) {
                         var passwordResponse = codiad.jsend.parse(data);
                         if (passwordResponse != 'error') {
                             codiad.message.success('Password Changed');
