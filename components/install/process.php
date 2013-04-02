@@ -37,7 +37,7 @@
         return sha1(md5($p));
     }
     
-    public static function cleanUsername($username){
+    function cleanUsername($username){
         return preg_replace('#[^A-Za-z0-9'.preg_quote('-_@. ').']#','', $username);
     }
 
