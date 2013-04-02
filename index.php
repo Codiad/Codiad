@@ -20,7 +20,6 @@ $components = json_decode($components,true);
 <head>
     <meta charset="utf-8">
     <title>CODIAD</title>
-    <link rel="stylesheet" href="css/jquery.toastmessage.css">
     <?php
     // Load System CSS Files
     $stylesheets = array("jquery.toastmessage.css","reset.css","fonts.css","screen.css");
