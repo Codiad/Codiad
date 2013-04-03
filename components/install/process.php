@@ -36,6 +36,10 @@
     function encryptPassword($p){
         return sha1(md5($p));
     }
+    
+    function cleanUsername($username){
+        return preg_replace('#[^A-Za-z0-9'.preg_quote('-_@. ').']#','', $username);
+    }
 
 //////////////////////////////////////////////////////////////////////
 // Verify no overwrites
@@ -47,7 +51,7 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     // Get POST responses
     //////////////////////////////////////////////////////////////////
     
-    $username = $_POST['username'];
+    $username = cleanUsername($_POST['username']);
     $password = encryptPassword($_POST['password']);
     $project_name = $_POST['project'];
     $timezone = $_POST['timezone'];
@@ -110,19 +114,6 @@ define("THEME", "default");
 //////////////////////////////////////////////////////////////////
 
 date_default_timezone_set("' . $timezone . '");
-
-//////////////////////////////////////////////////////////////////
-// SESSIONS
-//////////////////////////////////////////////////////////////////
-
-ini_set("session.cookie_lifetime","0");
-session_start();
-
-//////////////////////////////////////////////////////////////////
-// COMMON
-//////////////////////////////////////////////////////////////////
-
-require_once("common.php");
 
 ?>';
 
