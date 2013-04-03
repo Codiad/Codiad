@@ -8,7 +8,7 @@
 -->
 <?php
 
-require_once('../../../config.php');
+require_once('../../../common.php');
     
 //////////////////////////////////////////////////////////////////
 // Verify Session or Key

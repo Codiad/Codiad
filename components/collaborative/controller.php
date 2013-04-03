@@ -20,7 +20,7 @@
      * 'data/_test_test.js%%username%%heartbeat' .
      */
 
-    require_once('../../config.php');
+    require_once('../../common.php');
     require_once('../../lib/diff_match_patch.php');
     require_once('../../lib/file_db.php');
 

@@ -4,7 +4,7 @@
 *  [root]/license.txt for more. This information must remain intact.
 */--> 
 <?php
-include "../../config.php";
+require_once('../../common.php');
 ?>
 <div id="colorpicker_region">
 

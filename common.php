@@ -4,6 +4,22 @@
     *  as-is and without warranty under the MIT License. See
     *  [root]/license.txt for more. This information must remain intact.
     */
+
+    if(strpos($_SERVER['SCRIPT_FILENAME'], "components")) {
+        foreach(explode("/", substr($_SERVER['SCRIPT_FILENAME'],strpos($_SERVER['SCRIPT_FILENAME'], "components") + 11)) as $part) {
+            $path .= '../';
+        }
+        if(file_exists($path.'config.php')){ require_once($path.'config.php'); }
+    } else {
+        if(file_exists('config.php')){ require_once('config.php'); }
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // SESSIONS
+    //////////////////////////////////////////////////////////////////
+
+    ini_set("session.cookie_lifetime","0");
+    session_start();
     
     /* The stack of debug messages. */
     $debugMessageStack = array();
