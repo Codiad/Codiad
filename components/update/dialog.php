@@ -22,6 +22,12 @@
         
         case 'check':
         
+            if(file_exists(BASE_PATH . "/data/" . $_SESSION['user'] . '_acl.php')){ 
+            ?>
+            <label>Restricted</label>
+            <pre>You can not update the system</pre>
+            <button onclick="codiad.modal.unload();return false;">Close</button>
+            <?php } else {
             ?>
             <form>
             <input type="hidden" name="archive" value="<?php echo($_GET['remote']); ?>">
@@ -42,7 +48,7 @@
                 }
             ?><button class="btn-right" onclick="codiad.modal.unload();return false;">Cancel</button>
             <form>
-            <?php
+            <?php }
             break;
             
     }
