@@ -272,7 +272,7 @@ $components = json_decode($components,true);
     </div>
 
     <div id="modal-overlay"></div>
-    <div id="modal"><div id="drag-handle" class="icon-location"></div><div id="modal-content"></div></div>
+    <div id="modal"><div id="close-handle" class="icon-cancel" onclick="codiad.modal.unload();"></div><div id="drag-handle" class="icon-location"></div><div id="modal-content"></div></div>
 
     <iframe id="download"></iframe>
 
