@@ -159,6 +159,7 @@ $components = json_decode($components,true);
                    </ul>
                 </div>
                 <a id="lock-left-sidebar" class="icon-lock icon"></a>
+                <a id="finder-quick" class="icon icon-archive"></a>
                 <a id="tree-search" class="icon-search icon"></a>
             </div>
 
