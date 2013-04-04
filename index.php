@@ -190,6 +190,20 @@ $components = json_decode($components,true);
                 <ul id="list-active-files"></ul>
 
             </div>
+            
+            <div id="side-projects" class="sb-left-projects">
+                <div id="project-list" class="sb-project-list">
+                
+                    <div class="project-list-title">
+                        <h2>Projects</h2>
+                        <a id="projects-collapse" class="icon-down-dir icon"></a>
+                        <a id="projects-create" class="icon-plus icon"></a>
+                    </div>
+                    
+                    <div class="sb-projects-content"></div>
+                    
+                </div>
+            </div>
 
             <div class="sidebar-handle"><span>||</span></div>
 

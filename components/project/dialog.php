@@ -18,6 +18,44 @@
     switch($_GET['action']){
     
         //////////////////////////////////////////////////////////////
+        // List Projects Mini Sidebar
+        //////////////////////////////////////////////////////////////
+        case 'sidelist':
+            
+            // Get access control data
+            $projects_assigned = false;
+            if(file_exists(BASE_PATH . "/data/" . $_SESSION['user'] . '_acl.php')){
+                $projects_assigned = getJSON($_SESSION['user'] . '_acl.php');
+            }
+            
+            ?>  
+                    
+            <ul>
+            
+            <?php
+            
+            // Get projects JSON data
+            $projects = getJSON('projects.php');
+            sort($projects);
+            foreach($projects as $project=>$data){
+                $show = true;
+                if($projects_assigned && !in_array($data['path'],$projects_assigned)){ $show=false; }
+                if($show){
+                ?>
+                <li onclick="codiad.project.open('<?php echo($data['path']); ?>');"><div class="icon-folder icon"></div><?php echo($data['name']); ?></li>
+                
+                <?php
+                }
+            } 
+            ?>
+            
+            </ul>
+                    
+            <?php
+            
+            break;
+        
+        //////////////////////////////////////////////////////////////
         // List Projects
         //////////////////////////////////////////////////////////////
         
@@ -106,9 +144,13 @@
                     <td colspan="3" class="note">Note: This will only work if your Git repo DOES NOT require interactive authentication and your server has git installed.</td>
                 </tr>
             </table>
-            <!-- /Clone From GitHub -->
-            
-            <button class="btn-left">Create Project</button><button onclick="$('#git-clone').slideToggle(300); $(this).hide(); return false;" class="btn-mid">...From Git Repo</button><button class="btn-right" onclick="codiad.project.list();return false;">Cancel</button>
+            <!-- /Clone From GitHub --><?php
+                $action = 'codiad.project.list();';
+                if($_GET['close'] == 'true') {
+                    $action = 'codiad.modal.unload();';
+                } 
+            ?>           
+            <button class="btn-left">Create Project</button><button onclick="$('#git-clone').slideToggle(300); $(this).hide(); return false;" class="btn-mid">...From Git Repo</button><button class="btn-right" onclick="<?php echo $action;?>return false;">Cancel</button>
             <form>
             <?php
             break;

@@ -4,6 +4,74 @@
     margin: 15px 0;
 }
 
+.project-list-title {
+    position: absolute;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    right: 0px;
+    height: 35px;
+    background: white;  
+}
+
+.project-list-title h2 {
+    float: left;
+    font-size: 15px;
+    font-weight: 500;
+    color: #FFA138;
+    display: block;
+    margin: 10px;    
+}
+
+.project-list-title .icon {
+    display: block;
+    font-size: 15px;
+    color: #FFA138;
+    z-index: 99999;
+    cursor: pointer;
+    margin: 10px;
+    float: right;
+}
+
+.sb-project-list {
+    max-height:276px !important;
+    margin:0 0 !important;
+    overflow: auto !important;
+}
+
+.sb-projects-content {
+    height:100%;
+    width:100%;
+    overflow: auto;
+    position: absolute;
+}
+
+.sb-projects-content li:hover {
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.sb-projects-content ul {
+    height:100%;
+    display:block;
+    padding-top:35px;
+}
+
+.sb-projects-content div {
+    color: #FFA138;
+}
+
+.sb-projects-content ul li {
+    padding-left:15px;
+    padding-top:4px;
+    padding-bottom:4px;
+    white-space: nowrap;
+}
+
+.sb-projects-content div {
+    padding-top: 2px;
+}
+
 #git-clone { border: none; }
 #git-clone td { border: none; padding: 0; margin: 0; }
 
