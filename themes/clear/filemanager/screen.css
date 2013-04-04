@@ -23,7 +23,7 @@
     white-space: nowrap;
 }
 #file-manager a {
-    display: block;
+    display: inline-block;
     width: 100%;
     cursor: pointer;
     padding: 5px;
@@ -45,6 +45,39 @@
     background-color: white;
     background-color: 1px solid white;
     /*border: 2px solid #EC715A;*/
+}
+#file-manager span {
+    width:10px;
+    height:10px;
+    display: inline-block;
+    margin-left:-10px;
+}
+#file-manager .plus:before {
+    content: "\25b8";
+}
+#file-manager .plus {
+    color: #D6654C;
+    font-family: entypo;
+    font-style: normal;
+    display: inline-block;
+}
+#file-manager .none {
+    background: none;
+}
+#file-manager .minus:before {
+    content: "\25be";
+}
+#file-manager .minus {
+    color: #D6654C;
+    font-family: entypo;
+    font-style: normal;
+    display: inline-block;
+}
+#file-manager .plus:hover {
+    cursor: pointer;
+}
+#file-manager .minus:hover {
+    cursor: pointer;
 }
 
 /* CONTEXT MENU */
@@ -179,7 +212,7 @@
     background-repeat: no-repeat;
     background-position: 4px 4px;
     text-indent: 22px;
-    padding-top: 6px;
+    padding-top: 5px;
 }
 #file-manager .directory {
     background-image: url(images/directory.png);

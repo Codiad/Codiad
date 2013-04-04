@@ -22,7 +22,7 @@
     white-space: nowrap;
 }
 #file-manager a {
-    display: block;
+    display: inline-block;
     min-width: 100%;
     cursor: pointer;
     padding: 5px;
@@ -30,6 +30,41 @@
 }
 #file-manager a:hover, #file-manager a.context-menu-active {
     background-color: #333;
+}
+#file-manager span {
+    width:10px;
+    height:10px;
+    display: inline-block;
+    margin-left:-10px;
+}
+#file-manager .plus:before {
+    content: "\25b8";
+}
+#file-manager .plus {
+    color: gray;
+    font-family: entypo;
+    font-style: normal;
+    display: inline-block;
+}
+#file-manager .none {
+    background: none;
+}
+#file-manager .minus:before {
+    content: "\25be";
+}
+#file-manager .minus {
+    color: gray;
+    font-family: entypo;
+    font-style: normal;
+    display: inline-block;
+}
+#file-manager .plus:hover {
+    cursor: pointer;
+    color: #fff;
+}
+#file-manager .minus:hover {
+    cursor: pointer;
+    color: #fff;
 }
 /* CONTEXT MENU */
 
@@ -162,7 +197,7 @@
     background-repeat: no-repeat;
     background-position: 4px 4px;
     text-indent: 22px;
-    padding-top: 6px;
+    padding-top: 5px;
 }
 #file-manager .directory {
     background-image: url(images/directory.png);
