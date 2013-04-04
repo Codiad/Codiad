@@ -5,3 +5,5 @@ config.php
 data/
 workspace/
 .project
+.settings/
+.buildpath
