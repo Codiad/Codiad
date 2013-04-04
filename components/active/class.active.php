@@ -40,7 +40,7 @@ class Active {
         $tainted = FALSE;
         if($this->actives){
             foreach($this->actives as $active=>$data){
-              if(is_array($data) && ($data['username'] == $this->username) ) {
+              if(is_array($data) && isset($data['username']) && $data['username']==$this->username){
                 if (file_exists(dirname(__FILE__)."/../../workspace".$data['path'])) {
                     $focused = isset($data['focused']) ? $data['focused'] : false;
                     $active_list[] = array('path'=>$data['path'], 'focused'=>$focused);
@@ -64,7 +64,7 @@ class Active {
     public function Check(){
         $cur_users = array();
         foreach($this->actives as $active=>$data){
-            if($data['username']!=$this->username && $data['path']==$this->path){
+            if(is_array($data) && isset($data['username']) && $data['username']!=$this->username && $data['path']==$this->path){
                 $cur_users[] = $data['username'];
             }
         }
@@ -82,7 +82,7 @@ class Active {
     public function Add(){
         $process_add = true;
         foreach($this->actives as $active=>$data){
-            if($data['username']==$this->username && $data['path']==$this->path){
+            if(is_array($data) && isset($data['username']) && $data['username']==$this->username && $data['path']==$this->path){
                 $process_add = false;
             }
         }
@@ -100,7 +100,9 @@ class Active {
     public function Rename(){
         $revised_actives = array();
         foreach($this->actives as $active=>$data){
-            $revised_actives[] = array("username"=>$data['username'],"path"=>str_replace($this->path,$this->new_path,$data['path']));
+        	if(is_array($data) && isset($data['username'])){
+        		$revised_actives[] = array("username"=>$data['username'],"path"=>str_replace($this->path,$this->new_path,$data['path']));
+        	}
         }
         saveJSON('active.php',$revised_actives);
         echo formatJSEND("success");
@@ -112,7 +114,7 @@ class Active {
 
     public function Remove(){
         foreach($this->actives as $active=>$data){
-            if($this->username==$data['username'] && $this->path==$data['path']){
+            if(is_array($data) && isset($data['username']) && $this->username==$data['username'] && $this->path==$data['path']){
                 unset($this->actives[$active]);
             }
         }
@@ -127,7 +129,7 @@ class Active {
 
     public function MarkFileAsFocused(){
         foreach($this->actives as $active=>$data){
-            if($this->username==$data['username']){
+            if(is_array($data) && isset($data['username']) && $this->username==$data['username']){
                 $this->actives[$active]['focused']=false;
                 if($this->path==$data['path']){
                     $this->actives[$active]['focused']=true;

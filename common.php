@@ -7,7 +7,11 @@
 
     if(strpos($_SERVER['SCRIPT_FILENAME'], "components")) {
         foreach(explode("/", substr($_SERVER['SCRIPT_FILENAME'],strpos($_SERVER['SCRIPT_FILENAME'], "components") + 11)) as $part) {
-            $path .= '../';
+            if(!isset($path)){
+            	$path = '../';
+            }else{
+            	$path .= '../';
+            }
         }
         if(file_exists($path.'config.php')){ require_once($path.'config.php'); }
     } else {
@@ -15,11 +19,13 @@
     }
     
     // Ensure theme vars are present (upgrade with legacy config.php)
-    if(!defined(THEMES) || !defined(THEME)){
-        define("THEMES", BASE_PATH . "/themes");
-        define("THEME", "default");
+    if(!defined('THEMES')){
+    	define("THEMES", BASE_PATH . "/themes");
     }
-
+    
+    if(!defined('THEME')){
+    	define("THEME", "default");
+    }
     
     //////////////////////////////////////////////////////////////////
     // SESSIONS
