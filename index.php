@@ -163,6 +163,7 @@ foreach ($allFiles as $fname){
                    </ul>
                 </div>
                 <a id="lock-left-sidebar" class="icon-lock icon"></a>
+                <a id="finder-quick" class="icon icon-archive"></a>
                 <a id="tree-search" class="icon-search icon"></a>
             </div>
 

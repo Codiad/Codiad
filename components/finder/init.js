@@ -18,7 +18,7 @@
         // Create DOM node for a particular tree element
         _makeDomNode: function(name, obj){
             var str, path, ext, chStr;
-            str = "<li><a";
+            str = "<li><span class=\"none\"></span><a";
 
             if (obj.type === 'directory'){
                 str += " class='directory open'";
@@ -178,6 +178,7 @@
                 _this._checkFinder();
             }, 500);
             $("#finder").focus();
+            $("#finder-quick").hide();
             $("#sb-left-title").addClass('active');
             $("#tree-search")
                 .removeClass('icon-search')
@@ -192,6 +193,7 @@
             clearInterval(this._poller);
             this.finderMenu.hide();
             this._clearFilters();
+            $("#finder-quick").show();
             $("#sb-left-title").removeClass('active');
             $("#tree-search")
                 .removeClass('icon-cancel-squared active')
@@ -242,8 +244,15 @@
                 }
                 $finderOptionsMenu.hide();
             });
+            
+            // Setup the menu for selection of finding strategy
+            $('#finder-quick').click(function(e){
+                codiad.filemanager['search']('/');
+                _this.contractFinder();
+            });
 
             /*
+
 
               TODO: provide configuration option
               to automatically collapse finder
