@@ -550,7 +550,15 @@ table [class^="icon-"], [class*=" icon-"] {
     top: 33px;
     left: 0;
     right: 10px;
-    bottom: 0;
+    bottom: 276px;
+}
+
+.sb-left-projects {
+    position:absolute;
+    height:276px;
+    bottom:0;
+    left:0;
+    right:10px;
 }
 
 /*#lock-left-sidebar {
