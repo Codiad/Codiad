@@ -23,11 +23,6 @@ $components = json_decode($components,true);
     <?php
     // Load System CSS Files
     $stylesheets = array("jquery.toastmessage.css","reset.css","fonts.css","screen.css");
-    // Ensure theme vars are present (upgrade with legacy config.php)
-    if(!defined(THEMES) || !defined(THEME)){
-        define("THEMES", BASE_PATH . "/themes");
-        define("THEME", "default");
-    }
     // Loop
     foreach($stylesheets as $sheet){
         if(file_exists(THEMES . "/". THEME . "/".$sheet)){
@@ -42,7 +37,7 @@ $components = json_decode($components,true);
         if(file_exists(THEMES . "/". THEME . "/" . $component . "/screen.css")){
             echo('<link rel="stylesheet" href="themes/'.THEME.'/'.$component.'/screen.css">');
         } else {
-            if(file_exists(THEMES . "/default/" . $component . "/screen.css")){
+            if(file_exists("themes/default/" . $component . "/screen.css")){
                 echo('<link rel="stylesheet" href="themes/default/'.$component.'/screen.css">');
             } else {
                 if(file_exists(COMPONENTS . "/" . $component . "/screen.css")){
