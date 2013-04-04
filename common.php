@@ -18,11 +18,17 @@
         if(file_exists('config.php')){ require_once('config.php'); }
     }
     
+    // Ensure theme vars are present (upgrade with legacy config.php)
+    if(!defined(THEMES) || !defined(THEME)){
+        define("THEMES", BASE_PATH . "/themes");
+        define("THEME", "default");
+    }
+
+    
     //////////////////////////////////////////////////////////////////
     // SESSIONS
     //////////////////////////////////////////////////////////////////
 
-    ini_set("session.cookie_lifetime","0");
     session_start();
     
     /* The stack of debug messages. */

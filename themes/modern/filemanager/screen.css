@@ -3,7 +3,7 @@
     height: 100%;
     float: left;
     margin: 0;
-    padding: 15px;
+    padding: 10px;
     overflow: auto;
 }
 #file-manager ul {
@@ -35,16 +35,10 @@
     width:10px;
     height:10px;
     display: inline-block;
-    margin-left:-6px;
-    padding-top: 0;
-    line-height: 6px;
+    margin-left:-10px;
 }
 #file-manager .plus:before {
-    display: block;
     content: "\25b8";
-    padding: 5px;
-    margin-left: -10px;
-    font-size: 16px;
 }
 #file-manager .plus {
     color: gray;
@@ -56,11 +50,7 @@
     background: none;
 }
 #file-manager .minus:before {
-    display: block;
     content: "\25be";
-    padding: 5px;
-    margin-left: -10px;
-    font-size: 16px;
 }
 #file-manager .minus {
     color: gray;
@@ -205,9 +195,9 @@
 
 #file-manager a {
     background-repeat: no-repeat;
-    background-position: 4px 4px;
-    text-indent: 22px;
-    padding-top: 5px;
+    background-position: 6px 4px;
+    text-indent: 23px;
+    padding-top: 6px;
 }
 #file-manager .directory {
     background-image: url(images/directory.png);
@@ -386,10 +376,10 @@
     background-image: url(images/picture.png);
 }
 #file-manager .ext-txt {
-    background-image: url(images/file.png);
+    background-image: url(images/txt.png);
 }
 #file-manager .ext-vb {
-    background-image: url(images/code.png);
+    background-image: url(images/vb.png);
 }
 #file-manager .ext-wav {
     background-image: url(images/music.png);
@@ -401,10 +391,20 @@
     background-image: url(images/xls.png);
 }
 #file-manager .ext-xml {
-    background-image: url(images/code.png);
+    background-image: url(images/xml.png);
+}
+#file-manager .ext-reg {
+    background-image: url(images/config.png);
 }
 #file-manager .ext-zip {
     background-image: url(images/zip.png);
+}
+#file-manager .ext-mobileconfig {
+    background-image: url(images/secure.png);
+}
+
+#file-manager .error {
+    background-image: url(images/error.png);
 }
 
 #file-manager .loading {

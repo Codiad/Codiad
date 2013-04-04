@@ -11,17 +11,8 @@ $right_bar = file_get_contents(COMPONENTS . "/right_bar.json");
 $right_bar = json_decode($right_bar,true);
 
 // Components
-$components = array();
-//read all directories from components
-$allFiles = scandir(COMPONENTS);
-foreach ($allFiles as $fname){
-	if($fname == '.' || $fname == '..' ){
-		continue;
-	}
-	if(is_dir(COMPONENTS.'/'.$fname)){
-		$components[] = $fname;
-	}
-}
+$components = file_get_contents(COMPONENTS . "/load.json");
+$components = json_decode($components,true);
 
 ?>
 <!doctype html>
@@ -32,7 +23,7 @@ foreach ($allFiles as $fname){
     <?php
     // Load System CSS Files
     $stylesheets = array("jquery.toastmessage.css","reset.css","fonts.css","screen.css");
-    }    // Loop
+    // Loop
     foreach($stylesheets as $sheet){
         if(file_exists(THEMES . "/". THEME . "/".$sheet)){
             echo('<link rel="stylesheet" href="themes/'.THEME.'/'.$sheet.'">');

@@ -39,7 +39,28 @@
 
         nodeListener: function() {
             var _this = this;
+            
+            $('#file-manager').on('selectstart', false);
 
+            $('#file-manager span')
+                .live('click', function() { // Open or Expand
+                    if ($(this).parent().children("a").attr('data-type') == 'directory') {
+                        _this.index($(this).parent().children("a")
+                            .attr('data-path'));
+                    } else {
+                        _this.openFile($(this).parent().children("a")
+                            .attr('data-path'));
+                    }
+                    if (!$(this).hasClass('none')) {
+                        if ($(this).hasClass('plus')) {
+                            $(this).removeClass('plus')
+                            $(this).addClass('minus');
+                        } else {
+                            $(this).removeClass('minus')
+                            $(this).addClass('plus');
+                        }
+                    }
+                });
             $('#file-manager a')
                 .live('dblclick', function() { // Open or Expand
                     if ($(this)
@@ -49,6 +70,15 @@
                     } else {
                         _this.openFile($(this)
                             .attr('data-path'));
+                    }
+                    if (!$(this).parent().children("span").hasClass('none')) {
+                        if ($(this).parent().children("span").hasClass('plus')) {
+                            $(this).parent().children("span").removeClass('plus')
+                            $(this).parent().children("span").addClass('minus');
+                        } else {
+                            $(this).parent().children("span").removeClass('minus')
+                            $(this).parent().children("span").addClass('plus');
+                        }
                     }
                 })
                 .live("contextmenu", function(e) { // Context Menu
@@ -165,9 +195,9 @@
                 if (parentNode.hasClass('open') && parentNode.hasClass('directory')) { // Only append node if parent is open (and a directory)
                     var shortName = this.getShortName(path);
                     if (type == 'directory') {
-                        var appendage = '<li><a class="directory" data-type="directory" data-path="' + path + '">' + shortName + '</a></li>';
+                        var appendage = '<li><span class="none"></span><a class="directory" data-type="directory" data-path="' + path + '">' + shortName + '</a></li>';
                     } else {
-                        var appendage = '<li><a class="file ext-' +
+                        var appendage = '<li><span class="none"></span><a class="file ext-' +
                             this.getExtension(shortName) +
                             '" data-type="file" data-path="' +
                             path + '">' + shortName + '</a></li>';
@@ -180,6 +210,9 @@
                         $('<ul>' + appendage + '</ul>')
                             .insertAfter(parentNode);
                     }
+                } else {
+                    parentNode.parent().children('span').removeClass('none');  
+                    parentNode.parent().children('span').addClass('plus');  
                 }
             }
         },
@@ -217,13 +250,17 @@
                             $.each(files, function(index) {
                                 var ext = '';
                                 var name = files[index].name.replace(path, '');
+                                var nodeClass = 'none';
                                 name = name.split('/')
                                     .join(' ');
                                 if (files[index].type == 'file') {
                                     var ext = ' ext-' + name.split('.')
                                         .pop();
                                 }
-                                appendage += '<li><a class="' + files[index].type + ext + '" data-type="' + files[index].type + '" data-path="' + files[index].name + '">' + name + '</a></li>';
+                                if(files[index].type == 'directory' && files[index].size > 0) {
+                                    nodeClass = 'plus';
+                                } 
+                                appendage += '<li><span class="' + nodeClass + '"></span><a class="' + files[index].type + ext + '" data-type="' + files[index].type + '" data-path="' + files[index].name + '">' + name + '</a></li>';
                             });
                             appendage += '</ul>';
                             if (rescan) {

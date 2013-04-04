@@ -32,7 +32,12 @@ foreach ($allFiles as $fname){
     <?php
     // Load System CSS Files
     $stylesheets = array("jquery.toastmessage.css","reset.css","fonts.css","screen.css");
-    }    // Loop
+<<<<<<< HEAD
+    // Ensure theme vars are present (upgrade with legacy config.php)
+    
+=======
+>>>>>>> 62c471b92c67834a5ec11cf7107fd47a60ed5cd7
+    // Loop
     foreach($stylesheets as $sheet){
         if(file_exists(THEMES . "/". THEME . "/".$sheet)){
             echo('<link rel="stylesheet" href="themes/'.THEME.'/'.$sheet.'">');

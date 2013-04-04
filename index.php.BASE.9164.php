@@ -11,17 +11,8 @@ $right_bar = file_get_contents(COMPONENTS . "/right_bar.json");
 $right_bar = json_decode($right_bar,true);
 
 // Components
-$components = array();
-//read all directories from components
-$allFiles = scandir(COMPONENTS);
-foreach ($allFiles as $fname){
-	if($fname == '.' || $fname == '..' ){
-		continue;
-	}
-	if(is_dir(COMPONENTS.'/'.$fname)){
-		$components[] = $fname;
-	}
-}
+$components = file_get_contents(COMPONENTS . "/load.json");
+$components = json_decode($components,true);
 
 ?>
 <!doctype html>
@@ -32,7 +23,12 @@ foreach ($allFiles as $fname){
     <?php
     // Load System CSS Files
     $stylesheets = array("jquery.toastmessage.css","reset.css","fonts.css","screen.css");
-    }    // Loop
+    // Ensure theme vars are present (upgrade with legacy config.php)
+    if(!defined(THEMES) || !defined(THEME)){
+        define("THEMES", BASE_PATH . "/themes");
+        define("THEME", "default");
+    }
+    // Loop
     foreach($stylesheets as $sheet){
         if(file_exists(THEMES . "/". THEME . "/".$sheet)){
             echo('<link rel="stylesheet" href="themes/'.THEME.'/'.$sheet.'">');
@@ -46,7 +42,7 @@ foreach ($allFiles as $fname){
         if(file_exists(THEMES . "/". THEME . "/" . $component . "/screen.css")){
             echo('<link rel="stylesheet" href="themes/'.THEME.'/'.$component.'/screen.css">');
         } else {
-            if(file_exists("themes/default/" . $component . "/screen.css")){
+            if(file_exists(THEMES . "/default/" . $component . "/screen.css")){
                 echo('<link rel="stylesheet" href="themes/default/'.$component.'/screen.css">');
             } else {
                 if(file_exists(COMPONENTS . "/" . $component . "/screen.css")){
@@ -194,20 +190,6 @@ foreach ($allFiles as $fname){
                 <ul id="list-active-files"></ul>
 
             </div>
-            
-            <div id="side-projects" class="sb-left-projects">
-                <div id="project-list" class="sb-project-list">
-                
-                    <div class="project-list-title">
-                        <h2>Projects</h2>
-                        <a id="projects-collapse" class="icon-down-dir icon" alt="Collapse"></a>
-                        <a id="projects-create" class="icon-plus icon" alt="Create Project"></a>
-                    </div>
-                    
-                    <div class="sb-projects-content"></div>
-                    
-                </div>
-            </div>
 
             <div class="sidebar-handle"><span>||</span></div>
 
@@ -276,7 +258,7 @@ foreach ($allFiles as $fname){
     </div>
 
     <div id="modal-overlay"></div>
-    <div id="modal"><div id="close-handle" class="icon-cancel" onclick="codiad.modal.unload();"></div><div id="drag-handle" class="icon-location"></div><div id="modal-content"></div></div>
+    <div id="modal"><div id="drag-handle" class="icon-location"></div><div id="modal-content"></div></div>
 
     <iframe id="download"></iframe>
 
