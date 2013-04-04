@@ -19,11 +19,13 @@
     }
     
     // Ensure theme vars are present (upgrade with legacy config.php)
-    if(!defined(THEMES) || !defined(THEME)){
-        define("THEMES", BASE_PATH . "/themes");
-        define("THEME", "default");
+    if(!defined('THEMES')){
+    	define("THEMES", BASE_PATH . "/themes");
     }
-
+    
+    if(!defined('THEME')){
+    	define("THEME", "default");
+    }
     
     //////////////////////////////////////////////////////////////////
     // SESSIONS

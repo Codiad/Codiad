@@ -32,7 +32,7 @@ foreach ($allFiles as $fname){
     <?php
     // Load System CSS Files
     $stylesheets = array("jquery.toastmessage.css","reset.css","fonts.css","screen.css");
-    }    // Loop
+   
     foreach($stylesheets as $sheet){
         if(file_exists(THEMES . "/". THEME . "/".$sheet)){
             echo('<link rel="stylesheet" href="themes/'.THEME.'/'.$sheet.'">');
