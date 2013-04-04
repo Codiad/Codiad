@@ -14,6 +14,8 @@ $right_bar = json_decode($right_bar,true);
 $components = file_get_contents(COMPONENTS . "/load.json");
 $components = json_decode($components,true);
 
+if(!isset($_SESSION["security"]))
+    $_SESSION["security"] = base64_encode(json_encode(sha1(rand()).md5(rand()))).base64_encode(strrev(md5(rand()))).rand();
 ?>
 <!doctype html>
 <html>
@@ -24,7 +26,7 @@ $components = json_decode($components,true);
     // Load System CSS Files
     $stylesheets = array("jquery.toastmessage.css","reset.css","fonts.css","screen.css");
     // Ensure theme vars are present (upgrade with legacy config.php)
-    if(isset($_POST["theme"]))
+    if(isset($_POST["theme"]) && isset($_POST["security"]) && $_POST["security"] == $_SESSION["security"])
         define("THEME", $_POST["theme"]);
     if(!defined("THEMES") || !defined("THEME")){
         define("THEMES", BASE_PATH . "/themes");
@@ -102,7 +104,7 @@ $components = json_decode($components,true);
             ?>
 
             <form id="login" method="post" style="position: fixed; width: 350px; top: 30%; left: 50%; margin-left: -175px; padding: 35px;">
-
+                <input type="hidden" name="security" value="<?=$_SESSION['security']; ?>" />
                 <label><span class="icon-user login-icon"></span> Username</label>
                 <input type="text" name="username" autofocus="autofocus" autocomplete="off">
 
