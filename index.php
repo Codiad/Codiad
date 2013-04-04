@@ -33,13 +33,6 @@ foreach ($allFiles as $fname){
     // Load System CSS Files
     $stylesheets = array("jquery.toastmessage.css","reset.css","fonts.css","screen.css");
     // Ensure theme vars are present (upgrade with legacy config.php)
-    if(!defined('THEMES')){
-        define("THEMES", BASE_PATH . "/themes");
-    }
-    
-    if(!defined('THEME')){
-    	define("THEME", "default");
-    }
     
     // Loop
     foreach($stylesheets as $sheet){
