@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Codiad is an open source, web-based, cloud IDE and code editor with minimal footprint and requirements">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'/>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Codiad Web Based IDE by Fluidbyte</title>
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-34692757-1']);
+      _gaq.push(['_trackPageview']);
+    
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    
+    </script>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <a id="logo" href="http://www.codiad.com"><img src="logo.png"></a>
+          <h1>Codiad</h1>
+          <h2>Web Based, Cloud IDE</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/Codiad/Codiad/zipball/master" id="download-zip" class="button" onClick="_gaq.push(['_trackEvent', 'Download', 'Zip', 'Download Zip']);"><span>Download .zip</span></a>
+          <a href="https://github.com/Codiad/Codiad/tarball/master" id="download-tar-gz" class="button" onClick="_gaq.push(['_trackEvent', 'Download', 'Tar', 'Download Tarball']);"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/Codiad/Codiad" id="view-on-github" class="button" onClick="_gaq.push(['_trackEvent', 'GitHub', 'ViewSource', 'View Source on GitHub']);"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>Codiad Web IDE</h1>
+
+<p>Codiad is a web-based IDE framework with a small footprint and minimal requirements.</p>
+
+<p>Keep up to date with the latest changes and news on <strong><a href="http://twitter.com/codiadide">Twitter</a></strong> or <strong><a href="http://www.facebook.com/Codiad">Facebook</a></strong></p>
+
+<h2>Features</h2>
+
+<p>Codiad was built with simplicity in mind, allowing for fast, interactive development without the massive overhead of some of the larger desktop editors. That being said even users of IDE's 
+    such as Eclipse, NetBeans and Aptana are finding Codiad's simplicity to be a huge benefit. While simplicity was key, we didn't skimp on features and have a team of dedicated developer actively adding more. 
+</p>
+
+<ul class="features_left">
+    <li>Support for 40+ languages</li>
+    <li>Error checking &amp; notifications</li>
+    <li>Mutliple user support</li>
+    <li>Editor screen splitting</li>
+    <li>Built-in Console</li>
+    <li>LocalStorage redundancy</li>
+    <li>Advanced searching tools</li>
+    <li>Smart auto-complete</li>
+</ul>
+
+<ul class="features_right">
+    <li>Real-Time Collaborative editing</li>
+    <li>Over 20 Syntax color themes</li>
+    <li>Completely Open-Source</li>
+    <li>Easily customized source</li>
+    <li>Runs on your own server</li>
+    <li>Quick-Download backups</li>
+    <li>Maximum editor screen space</li>
+    <li>i18n Language Support</li>
+</ul>
+
+<div style="clear:both;"></div>
+
+<br>
+
+<p>...and with a team of passionate collaborators the list keeps growing.</p>
+
+<h2>Requirements</h2>
+
+<p>Codiad requires a minimal server installation with Apache2, PHP 5+ and basic r/w access to several directories. There is no database requirement</p>
+
+<p>The application will work in modern browsers including Chrome, Firefox, and IE9+.</p>
+
+<h2>Getting Started</h2>
+
+<p>Installation of Codiad requires uploading the files and making several directories and a config file writeable. There is no database and no other server components are required. PHP 5.3 or above is recommended, however, the system will work with any version of PHP over v.5.</p>
+
+<p>For more information please <strong><a href="https://github.com/Codiad/Codiad/wiki/Installation">read the installation instructions</a></strong> on the Wiki.</p>
+
+<h2>Interface</h2>
+
+<p>Codiad consists of three panels; a left panel which houses the file manager and active files, center panel which is where editors reside, and a right panel which contains system and other controls. The right &amp; left side panels collapse providing maximum real-estate to the editor.</p>
+
+<p><a onclick="openModal(); _gaq.push(['_trackEvent', 'Screenshot', 'Open', 'View Larger Screenshot']);"><img src="screenshot_12_27.png" alt="Codiad Screenshot"></a></p>
+<p class="caption">Click Image for Larger View</p>
+
+<div id="modal">
+    <a onclick="closeModal();">x</a>
+    <img src="screenshot_12_27.png">
+</div>
+<div id="modal-overlay"></div>
+
+<!--
+<h2>Video Overview</h2>
+
+<p>Quick runthrough of some of the core features and functionality of the Codiad system.</p>
+
+<div class="video-container">
+         <iframe src="https://www.youtube.com/embed/UGA8nlUFYDc?color=white&theme=light" frameborder="0" width="560" height="315"></iframe>
+</div>
+
+-->
+
+<br>
+
+<h2>Support &amp; Issues</h2>
+<p>If you need assistance, please check the <strong><a href="https://groups.google.com/forum/#!forum/codiadide" target="_blank">Google Groups Forum</a></strong>. If you still can't resolve the issue or feel that it may be a bug in the system please submit it through the <strong><a href="https://github.com/Codiad/Codiad/issues" target="_blank">Issues Page</a></strong>.</p>
+
+<h2>Getting More Advanced</h2>
+
+<p>Codiad is a very complete package, however, it was designed to allow developers to easily expand upon the base platform.</p>
+
+<p>If you're looking to develop components or custom functionality please <strong><a href="https://github.com/Codiad/Codiad/wiki">check out the Wiki</a></strong> for information about the architecture and API.</p>
+
+<h2>Support the Codiad Project</h2>
+
+<p>A <i>LOT</i> of time and energy has been put into the system, and there are a lot of new features in the works. If you 
+like the system and would like to say thanks, here&apos;s your chance!</p>
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" style="background: none; text-align: center; padding: 5px;">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+<hr><p><em>Project developed by <a href="http://www.fluidbyte.net">Kent Safranski</a> with support from <a href="http://www.tictonix.com">Tictonix</a></em></p>
+        </section>
+
+        <footer>
+          Codiad is maintained by <a href="https://github.com/Fluidbyte">Fluidbyte</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        <script src="javascripts/jquery.js"></script>
+        <script src="javascripts/main.js"></script>
+
+      </div>
+    </div>
+  </body>
+</html>
