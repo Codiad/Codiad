@@ -10,7 +10,7 @@
 
         parse: function(d) { // (Data)
             var obj = $.parseJSON(d);
-            if (obj.debug !== undefined) {
+            if (obj.debug !== undefined && Array.isArray(obj.debug)) {
                 var debug = obj.debug.join('\nDEBUG: ');
                 if(debug !== '') {
                     debug = 'DEBUG: ' + debug;
