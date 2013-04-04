@@ -45,6 +45,7 @@
     width:100%;
     overflow: auto;
     position: absolute;
+    padding: 15px;
 }
 
 .sb-projects-content li:hover {
@@ -59,10 +60,13 @@
 }
 
 .sb-projects-content ul li {
-    padding-left:15px;
-    padding-top:4px;
-    padding-bottom:4px;
+    padding: 5px;
     white-space: nowrap;
+    border-radius: 3px;
+}
+
+.sb-projects-content ul li .icon {
+    font-size: 12px;
 }
 
 .sb-projects-content div {
