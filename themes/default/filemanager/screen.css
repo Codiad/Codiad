@@ -22,7 +22,7 @@
     white-space: nowrap;
 }
 #file-manager a {
-    display: block;
+    display: inline-block;
     min-width: 100%;
     cursor: pointer;
     padding: 5px;
@@ -30,6 +30,27 @@
 }
 #file-manager a:hover, #file-manager a.context-menu-active {
     background-color: #333;
+}
+#file-manager span {
+    width:10px;
+    height:10px;
+    display: inline-block;
+    margin-left:-10px;
+}
+#file-manager .plus {
+    background: url(images/plus.png) no-repeat 1px 1px;
+}
+#file-manager .none {
+    background: none;
+}
+#file-manager .minus {
+    background: url(images/minus.png) no-repeat 1px 1px;
+}
+#file-manager .plus:hover {
+    cursor: pointer;
+}
+#file-manager .minus:hover {
+    cursor: pointer;
 }
 /* CONTEXT MENU */
 
@@ -162,7 +183,7 @@
     background-repeat: no-repeat;
     background-position: 4px 4px;
     text-indent: 22px;
-    padding-top: 6px;
+    padding-top: 5px;
 }
 #file-manager .directory {
     background-image: url(images/directory.png);
