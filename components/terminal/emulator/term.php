@@ -1,4 +1,5 @@
 <?php
+	//FIXME Support of windows, use command 'cd' instead of 'pwd'
 
     /*
     *  PHP+JQuery Temrinal Emulator by Fluidbyte <http://www.fluidbyte.net>
@@ -54,7 +55,7 @@
         ////////////////////////////////////////////////////
         
         public function __construct(){
-            if(!isset($_SESSION['dir'])){
+            if(!isset($_SESSION['dir']) || empty($_SESSION['dir'])){
                 if(ROOT==''){
                     $this->command_exec = 'pwd';
                     $this->Execute();
