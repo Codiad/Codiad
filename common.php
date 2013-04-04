@@ -5,6 +5,9 @@
     *  [root]/license.txt for more. This information must remain intact.
     */
 
+    if(!isset($path))
+        $path = "";
+
     if(strpos($_SERVER['SCRIPT_FILENAME'], "components")) {
         foreach(explode("/", substr($_SERVER['SCRIPT_FILENAME'],strpos($_SERVER['SCRIPT_FILENAME'], "components") + 11)) as $part) {
             $path .= '../';
