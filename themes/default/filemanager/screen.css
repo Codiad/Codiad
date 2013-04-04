@@ -35,10 +35,16 @@
     width:10px;
     height:10px;
     display: inline-block;
-    margin-left:-10px;
+    margin-left:-6px;
+    padding-top: 0;
+    line-height: 6px;
 }
 #file-manager .plus:before {
+    display: block;
     content: "\25b8";
+    padding: 5px;
+    margin-left: -10px;
+    font-size: 16px;
 }
 #file-manager .plus {
     color: gray;
@@ -50,7 +56,11 @@
     background: none;
 }
 #file-manager .minus:before {
+    display: block;
     content: "\25be";
+    padding: 5px;
+    margin-left: -10px;
+    font-size: 16px;
 }
 #file-manager .minus {
     color: gray;
