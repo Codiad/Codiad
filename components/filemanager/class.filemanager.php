@@ -18,6 +18,7 @@ class Filemanager {
     public $project       = "";
     public $rel_path      = "";
     public $path          = "";
+    public $patch         = "";
     public $type          = "";
     public $new_name      = "";
     public $content       = "";
