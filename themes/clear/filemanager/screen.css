@@ -52,14 +52,26 @@
     display: inline-block;
     margin-left:-10px;
 }
+#file-manager .plus:before {
+    content: "\25b8";
+}
 #file-manager .plus {
-    background: url(images/plus.png) no-repeat 1px 1px;
+    color: #D6654C;
+    font-family: entypo;
+    font-style: normal;
+    display: inline-block;
 }
 #file-manager .none {
     background: none;
 }
+#file-manager .minus:before {
+    content: "\25be";
+}
 #file-manager .minus {
-    background: url(images/minus.png) no-repeat 1px 1px;
+    color: #D6654C;
+    font-family: entypo;
+    font-style: normal;
+    display: inline-block;
 }
 #file-manager .plus:hover {
     cursor: pointer;
