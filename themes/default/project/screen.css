@@ -12,7 +12,8 @@
     right: 0px;
     height: 35px;
     background-color: #303030;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.898) inset;    
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.898) inset;
+    border-top: 2px solid #141414;
 }
 
 .project-list-title h2 {
@@ -30,8 +31,13 @@
     color: #666;
     z-index: 99999;
     cursor: pointer;
-    margin: 10px;
+    margin: 5px;
+    padding: 5px;
     float: right;
+}
+
+.project-list-title .icon:hover {
+    color: #fff;
 }
 
 .sb-project-list {

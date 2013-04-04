@@ -196,8 +196,8 @@ $components = json_decode($components,true);
                 
                     <div class="project-list-title">
                         <h2>Projects</h2>
-                        <a id="projects-collapse" class="icon-down-dir icon"></a>
-                        <a id="projects-create" class="icon-plus icon"></a>
+                        <a id="projects-collapse" class="icon-down-dir icon" alt="Collapse"></a>
+                        <a id="projects-create" class="icon-plus icon" alt="Create Project"></a>
                     </div>
                     
                     <div class="sb-projects-content"></div>
