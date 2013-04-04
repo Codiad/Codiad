@@ -698,6 +698,19 @@ table [class^="icon-"], [class*=" icon-"] {
     color: #fff;
 }
 
+#modal #close-handle {
+    float: right;
+    font-size: 20px;
+    margin: -4px 0 0 0;
+    padding: 5px;
+    cursor: pointer;
+    color: #999;
+}
+
+#modal #close-handle:hover {
+    color: #fff;
+}
+
 #modal-content {
     padding: 20px;
 }
