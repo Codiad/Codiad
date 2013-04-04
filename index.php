@@ -16,7 +16,7 @@ $components = json_decode($components,true);
 
 ?>
 <!doctype html>
-
+<html>
 <head>
     <meta charset="utf-8">
     <title>CODIAD</title>
@@ -24,7 +24,9 @@ $components = json_decode($components,true);
     // Load System CSS Files
     $stylesheets = array("jquery.toastmessage.css","reset.css","fonts.css","screen.css");
     // Ensure theme vars are present (upgrade with legacy config.php)
-    if(!defined(THEMES) || !defined(THEME)){
+    if(isset($_POST["theme"]))
+        define("THEME", $_POST["theme"]);
+    if(!defined("THEMES") || !defined("THEME")){
         define("THEMES", BASE_PATH . "/themes");
         define("THEME", "default");
     }
@@ -118,6 +120,18 @@ $components = json_decode($components,true);
                             $lang_disp = ucfirst(strtolower($languages[$lang_code]));
                             ?>
                             <option value="<?php echo $lang_code; ?>" <?php if ($lang_code == "en"){echo "selected";}?>><?php echo $lang_disp; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                
+                <div class="themes-selector">
+                    <label><span class="icon-window widnow-icon"></span> Theme</label>
+                    <select name="theme">
+                        <?php
+                        foreach(glob("themes/*/") as $foldername): 
+                            $theme = str_replace(array("themes/", "/"), "", $foldername);
+                            ?>
+                            <option value="<?php echo $theme; ?>" <?php if ($theme == "default"){echo "selected";}?>><?php echo $theme; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
