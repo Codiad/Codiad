@@ -14,9 +14,11 @@ $right_bar = json_decode($right_bar,true);
 $components = file_get_contents(COMPONENTS . "/load.json");
 $components = json_decode($components,true);
 
+if(!isset($_SESSION["security"]))
+    $_SESSION["security"] = base64_encode(json_encode(sha1(rand()).md5(rand()))).base64_encode(strrev(md5(rand()))).rand();
 ?>
 <!doctype html>
-
+<html>
 <head>
     <meta charset="utf-8">
     <title>CODIAD</title>
@@ -24,7 +26,9 @@ $components = json_decode($components,true);
     // Load System CSS Files
     $stylesheets = array("jquery.toastmessage.css","reset.css","fonts.css","screen.css");
     // Ensure theme vars are present (upgrade with legacy config.php)
-    if(!defined(THEMES) || !defined(THEME)){
+    if(isset($_POST["theme"]) && isset($_POST["security"]) && $_POST["security"] == $_SESSION["security"])
+        define("THEME", $_POST["theme"]);
+    if(!defined("THEMES") || !defined("THEME")){
         define("THEMES", BASE_PATH . "/themes");
         define("THEME", "default");
     }
@@ -100,7 +104,7 @@ $components = json_decode($components,true);
             ?>
 
             <form id="login" method="post" style="position: fixed; width: 350px; top: 30%; left: 50%; margin-left: -175px; padding: 35px;">
-
+                <input type="hidden" name="security" value="<?=$_SESSION['security']; ?>" />
                 <label><span class="icon-user login-icon"></span> Username</label>
                 <input type="text" name="username" autofocus="autofocus" autocomplete="off">
 
@@ -118,6 +122,18 @@ $components = json_decode($components,true);
                             $lang_disp = ucfirst(strtolower($languages[$lang_code]));
                             ?>
                             <option value="<?php echo $lang_code; ?>" <?php if ($lang_code == "en"){echo "selected";}?>><?php echo $lang_disp; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                
+                <div class="themes-selector">
+                    <label><span class="icon-window widnow-icon"></span> Theme</label>
+                    <select name="theme">
+                        <?php
+                        foreach(glob("themes/*/") as $foldername): 
+                            $theme = str_replace(array("themes/", "/"), "", $foldername);
+                            ?>
+                            <option value="<?php echo $theme; ?>" <?php if ($theme == "default"){echo "selected";}?>><?php echo $theme; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>

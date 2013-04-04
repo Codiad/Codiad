@@ -26,6 +26,7 @@ class Filemanager {
     public $controller    = "";
     public $upload_json   = "";
     public $search_string = "";
+    public $patch        = "";
 
     public $query         = "";
     public $foptions     = "";
@@ -344,7 +345,7 @@ class Filemanager {
             if($this->content==' '){
                 $this->content=''; // Blank out file
             }
-            if ($this->patch && ! $this->mtime){
+            if($this->patch && !$this->mtime){
                 $this->status = "error";
                 $this->message = "mtime parameter not found";
                 $this->respond();
