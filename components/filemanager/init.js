@@ -193,9 +193,9 @@
                 if (parentNode.hasClass('open') && parentNode.hasClass('directory')) { // Only append node if parent is open (and a directory)
                     var shortName = this.getShortName(path);
                     if (type == 'directory') {
-                        var appendage = '<li><span class="none"><a class="directory" data-type="directory" data-path="' + path + '">' + shortName + '</a></li>';
+                        var appendage = '<li><span class="none"></span><a class="directory" data-type="directory" data-path="' + path + '">' + shortName + '</a></li>';
                     } else {
-                        var appendage = '<li><span class="none"><a class="file ext-' +
+                        var appendage = '<li><span class="none"></span><a class="file ext-' +
                             this.getExtension(shortName) +
                             '" data-type="file" data-path="' +
                             path + '">' + shortName + '</a></li>';
