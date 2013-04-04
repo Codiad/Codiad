@@ -208,6 +208,9 @@
                         $('<ul>' + appendage + '</ul>')
                             .insertAfter(parentNode);
                     }
+                } else {
+                    parentNode.parent().children('span').removeClass('none');  
+                    parentNode.parent().children('span').addClass('plus');  
                 }
             }
         },
