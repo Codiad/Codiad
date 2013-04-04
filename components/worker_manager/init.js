@@ -5,32 +5,39 @@
         worker: null,
         addTask: function(taskConfig, callback, context){
             var _this = this;
-            this.taskQueue.push({
-                config: taskConfig,
-                callback: callback,
-                context: context
-            });
+            if(_this.worker !== null) {
+                this.taskQueue.push({
+                    config: taskConfig,
+                    callback: callback,
+                    context: context
+                });
 
-            this.clearSubsidableTasks(taskConfig.id);
+                this.clearSubsidableTasks(taskConfig.id);
 
-            if (! this.workerRunning()) {
-                var initStatus = this.initiateWorker();
-                if (! initStatus) {
-                    callback(null, false);
-                    return;
+                if (! this.workerRunning()) {
+                    var initStatus = this.initiateWorker();
+                    if (! initStatus) {
+                        callback(null, false);
+                        return;
+                    }
+                    this.worker.addEventListener('message', function(e){
+                        _this.concludeTask(e.data);
+                    }, false);
                 }
-                this.worker.addEventListener('message', function(e){
-                    _this.concludeTask(e.data);
-                }, false);
+                this.scheduleNext();
+            } else {
+                callback(false,taskConfig.id);
             }
-            this.scheduleNext();
         },
         workerRunning: function(){
             return !! this.worker;
         },
         initiateWorker: function(){
-            this.worker = new Worker('components/worker_manager/worker.js');
-            return !! this.worker;
+            if ( typeof Worker !== 'undefined' && Worker !== null )
+        	{
+        		this.worker = new Worker('components/worker_manager/worker.js');
+        		return !! this.worker;
+        	}
         },
         clearSubsidableTasks: function(id){
             var i = this.taskQueue.length -2;

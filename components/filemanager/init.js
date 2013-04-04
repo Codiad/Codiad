@@ -39,6 +39,8 @@
 
         nodeListener: function() {
             var _this = this;
+            
+            $('#file-manager').on('selectstart', false);
 
             $('#file-manager a')
                 .live('dblclick', function() { // Open or Expand
