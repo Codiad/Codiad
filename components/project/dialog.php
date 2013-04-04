@@ -128,6 +128,7 @@
             <input name="project_name" autofocus="autofocus" autocomplete="off">
             
             <!-- Clone From GitHub -->
+            <div style="width: 500px;">
             <table class="hide" id="git-clone">
                 <tr>
                     <td>
@@ -144,13 +145,14 @@
                     <td colspan="3" class="note">Note: This will only work if your Git repo DOES NOT require interactive authentication and your server has git installed.</td>
                 </tr>
             </table>
+            </div>
             <!-- /Clone From GitHub --><?php
                 $action = 'codiad.project.list();';
                 if($_GET['close'] == 'true') {
                     $action = 'codiad.modal.unload();';
                 } 
             ?>           
-            <button class="btn-left">Create Project</button><button onclick="$('#git-clone').slideToggle(300); $(this).hide(); return false;" class="btn-mid">...From Git Repo</button><button class="btn-right" onclick="<?php echo $action;?>return false;">Cancel</button>
+            <button class="btn-left">Create Project</button><button onclick="$('#git-clone').slideDown(300); $(this).hide(); return false;" class="btn-mid">...From Git Repo</button><button class="btn-right" onclick="<?php echo $action;?>return false;">Cancel</button>
             <form>
             <?php
             break;
