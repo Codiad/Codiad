@@ -135,6 +135,18 @@ if(!isset($_SESSION["security"]))
                     </select>
                 </div>
                 
+                <div class="themes-selector">
+                    <label><span class="icon-window widnow-icon"></span> Theme</label>
+                    <select name="theme">
+                        <?php
+                        foreach(glob("themes/*/") as $foldername): 
+                            $theme = str_replace(array("themes/", "/"), "", $foldername);
+                            ?>
+                            <option value="<?php echo $theme; ?>" <?php if ($theme == "default"){echo "selected";}?>><?php echo $theme; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                
                 <button>Login</button>
 
                 <a class="show-language-selector">Language</a>
