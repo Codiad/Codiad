@@ -23,7 +23,7 @@
         case 'list':
             
             $projects_assigned = false;
-            if(file_exists(BASE_PATH . "/data/" . $_SESSION['user'] . '_acl.php')){ 
+            if(!checkAccess()){ 
             ?>
             <label>Restricted</label>
             <pre>You can not edit the user list</pre>

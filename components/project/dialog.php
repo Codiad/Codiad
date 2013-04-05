@@ -75,7 +75,7 @@
                     <th width="5">Open</th>
                     <th>Project Name</th>
                     <th>Path</th>
-                    <?php if(!$projects_assigned){ ?><th width="5">Delete</th><?php } ?>
+                    <?php if(checkAccess()){ ?><th width="5">Delete</th><?php } ?>
                 </tr>
             <?php
             
@@ -92,7 +92,7 @@
                     <td><?php echo($data['name']); ?></td>
                     <td>/<?php echo($data['path']); ?></td>
                     <?php
-                        if(!$projects_assigned){
+                        if(checkAccess()){
                             if($_SESSION['project'] == $data['path']){
                             ?>
                             <td><a onclick="codiad.message.error('Active Project Cannot Be Removed');" class="icon-block bigger-icon"></a></td>
@@ -111,7 +111,7 @@
             ?>
             </table>
             </div>
-            <?php if(!$projects_assigned){ ?><button class="btn-left" onclick="codiad.project.create();">New Project</button><?php } ?><button class="<?php if(!$projects_assigned){ echo('btn-right'); } ?>" onclick="codiad.modal.unload();return false;">Close</button>
+            <?php if(checkAccess()){ ?><button class="btn-left" onclick="codiad.project.create();">New Project</button><?php } ?><button class="<?php if(checkAccess()){ echo('btn-right'); } ?>" onclick="codiad.modal.unload();return false;">Close</button>
             <?php
             
             break;
