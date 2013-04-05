@@ -239,12 +239,13 @@ table [class^="icon-"], [class*=" icon-"] {
 /* INSTALLER */
 
 #installer {
-    position: fixed;
+    position: absolute;
     width: 450px;
     top: 15%;
     left: 50%;
     margin-left: -175px;
     padding: 35px;
+    overflow:auto;
 }
 
 #installer h1 {

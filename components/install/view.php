@@ -164,6 +164,9 @@ if(!$workspace || !$data || !$config){
 <script>
 
     $(function(){
+    
+        $('html, body').css('overflow', 'auto');
+    
         $('#install').on('submit',function(e){
             e.preventDefault();
             
