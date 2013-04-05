@@ -15,24 +15,51 @@
     checkSession();
     
     //////////////////////////////////////////////////////////////////
-    // Check system() command
+    // Check $_GET for incorrect chars or '..' for workspace ecape
     //////////////////////////////////////////////////////////////////
-    
-    if(!isAvailable('system')){ exit('<script>parent.message.error("System Command Not Supported")</script>'); }
+    //FIXME prevent path-variable from beeing something like ././././ which download all projects
+    //TODO check if the User is allowed to access the project
+    if(!isset($_GET['path']) 
+    		|| preg_match('#^[\\\/]?$#i', trim($_GET['path'])) // download all Projects
+    		|| preg_match('#[\:*?\"<>\|]#i', $_GET['path']) //illegal chars in filenames
+    		|| strpos('..', $_GET['path']) !== false ){ // change directory up to escape Workspace
+    	exit('<script>parent.message.error("Wrong data send")</script>');
+    }
     
     //////////////////////////////////////////////////////////////////
     // Run Download
     //////////////////////////////////////////////////////////////////
 
-    if($_GET['type']=='directory' || $_GET['type']=='root'){
+    if(isset($_GET['type']) && ($_GET['type']=='directory' || $_GET['type']=='root')){
         // Create tarball
         $filename = explode("/",$_GET['path']);
-        $filename = array_pop($filename) . "-" . date('Y.m.d') . ".tar.gz";
+        //$filename = array_pop($filename) . "-" . date('Y.m.d') . ".tar.gz";
+        $filename = array_pop($filename) . "-" . date('Y.m.d');
         $targetPath = DATA . '/';
         $dir = WORKSPACE . $_GET['path'];
-        # Execute the tar command and save file
-        system("tar -pczf ".$targetPath ."/".$filename." ".$dir);
-        $download_file = $targetPath.$filename;
+        if(!is_dir($dir)){
+        	exit('<script>parent.message.error("Directory not found.")</script>');
+        }
+        	
+        //////////////////////////////////////////////////////////////////
+        // Check system() command and a non windows OS
+        //////////////////////////////////////////////////////////////////
+        if(isAvailable('system') && stripos(PHP_OS, 'win') === false){
+	        # Execute the tar command and save file
+        	$filename .= '.tag.gz';
+        	
+        	system("tar -pczf ".$targetPath.$filename." ".$dir);
+	        $download_file = $targetPath.$filename;
+        }elseif(extension_loaded('zip')){ //Check if zip-Extension is availiable
+        	//build zipfile
+        	require_once 'class.dirzip.php';
+        	
+        	$filename .= '.zip';
+        	$download_file = $targetPath.$filename;
+        	DirZip::zipDir($dir, $targetPath .$filename);
+        }else{
+        	exit('<script>parent.message.error("Could not pack the folder, zip-extension missing")</script>');
+        }
     }else{
         $filename = explode("/",$_GET['path']);
         $filename = array_pop($filename);
