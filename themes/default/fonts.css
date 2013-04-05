@@ -2,22 +2,22 @@
 
 @font-face {
     font-family: 'Ubuntu';
-    src: url('../fonts/ubuntu-webfont.eot');
-    src: url('../fonts/ubuntu-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/ubuntu-webfont.woff') format('woff'),
-         url('../fonts/ubuntu-webfont.ttf') format('truetype'),
-         url('../fonts/ubuntu-webfont.svg#ubunturegular') format('svg');
+    src: url('fonts/ubuntu-webfont.eot');
+    src: url('fonts/ubuntu-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/ubuntu-webfont.woff') format('woff'),
+         url('fonts/ubuntu-webfont.ttf') format('truetype'),
+         url('fonts/ubuntu-webfont.svg#ubunturegular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
   font-family: 'entypo';
-  src: url('../fonts/entypo.eot');
-  src: url('../fonts/entypo.eot?#iefix') format('embedded-opentype'),
-       url('../fonts/entypo.woff') format('woff'),
-       url('../fonts/entypo.ttf') format('truetype'),
-       url('../fonts/entypo.svg#entypo') format('svg');
+  src: url('fonts/entypo.eot');
+  src: url('fonts/entypo.eot?#iefix') format('embedded-opentype'),
+       url('fonts/entypo.woff') format('woff'),
+       url('fonts/entypo.ttf') format('truetype'),
+       url('fonts/entypo.svg#entypo') format('svg');
   font-weight: normal; font-style: normal;
 }
 
