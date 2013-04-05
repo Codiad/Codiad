@@ -11,12 +11,21 @@ $path = rtrim(str_replace("index.php", "", $_SERVER['SCRIPT_FILENAME']),"/");
 
 $workspace = is_writable( $path . "/workspace");
 $data = is_writable($path . "/data");
-if(!file_exists($path . "/config.php")){
-	file_put_contents($path . "/config.php",file_get_contents($path . "/config.example.php"));
+
+$conf = $path . '/config.php';
+
+if(!file_exists($conf) && !is_writable($path)) {
+    $config = false;
+} elseif(!file_exists($conf)  && is_writable($path)) {
+    $config = file_put_contents($conf, file_get_contents($path . "/config.example/php"));
+    if(!is_writable($conf))
+    {
+        $config = false;
+    }
+} elseif(file_exists($conf)) {
+    $config = is_writable($conf);
 }
-if(file_exists($path . "/config.php")){
-    $config = is_writable($path . "/config.php");
-}else{ $config=false; }
+
 
 if(!$workspace || !$data || !$config){
     ?>
