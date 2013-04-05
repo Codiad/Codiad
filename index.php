@@ -22,7 +22,8 @@ foreach ($allFiles as $fname){
 		$components[] = $fname;
 	}
 }
-
+if(!isset($_SESSION["security"]))
+    $_SESSION["security"] = base64_encode(json_encode(sha1(rand()).md5(rand()))).base64_encode(strrev(md5(rand()))).rand();
 ?>
 <!doctype html>
 
@@ -39,6 +40,14 @@ foreach ($allFiles as $fname){
         } else {
             echo('<link rel="stylesheet" href="themes/default/'.$sheet.'">');
         }
+    }
+    
+    // Choose Theme
+    if(isset($_POST["theme"]) && isset($_POST["security"]) && $_POST["security"] == $_SESSION["security"])
+        define("THEME", $_POST["theme"]);
+    if(!defined("THEMES") || !defined("THEME")){
+        define("THEMES", BASE_PATH . "/themes");
+        define("THEME", "default");
     }
     
     // Load Component CSS Files    
@@ -104,7 +113,7 @@ foreach ($allFiles as $fname){
             ?>
 
             <form id="login" method="post" style="position: fixed; width: 350px; top: 30%; left: 50%; margin-left: -175px; padding: 35px;">
-
+		<input type="hidden" name="security" value="<?=$_SESSION['security']; ?>" />
                 <label><span class="icon-user login-icon"></span> Username</label>
                 <input type="text" name="username" autofocus="autofocus" autocomplete="off">
 
