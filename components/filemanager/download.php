@@ -50,13 +50,15 @@
         	
         	system("tar -pczf ".$targetPath.$filename." ".$dir);
 	        $download_file = $targetPath.$filename;
-        }else{
+        }elseif(extension_loaded('zip')){ //Check if zip-Extension is availiable
         	//build zipfile
         	require_once 'class.dirzip.php';
         	
         	$filename .= '.zip';
         	$download_file = $targetPath.$filename;
         	DirZip::zipDir($dir, $targetPath .$filename);
+        }else{
+        	exit('<script>parent.message.error("Could not pack the folder, zip-extension missing")</script>');
         }
     }else{
         $filename = explode("/",$_GET['path']);
