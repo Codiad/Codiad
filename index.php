@@ -45,10 +45,6 @@ if(!isset($_SESSION["security"]))
     // Choose Theme
     if(isset($_SESSION["theme"]))
         define("THEME", $_SESSION["theme"]);
-    if(!defined("THEMES"))
-        define("THEMES", BASE_PATH . "/themes");
-    if(!defined("THEME"))
-        define("THEME", "default");
     
     // Load Component CSS Files    
     foreach($components as $component){
