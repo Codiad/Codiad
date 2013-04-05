@@ -43,12 +43,12 @@ if(!isset($_SESSION["security"]))
     }
     
     // Choose Theme
-    if(isset($_POST["theme"]) && isset($_POST["security"]) && $_POST["security"] == $_SESSION["security"])
-        define("THEME", $_POST["theme"]);
-    if(!defined("THEMES") || !defined("THEME")){
+    if(isset($_SESSION["theme"]))
+        define("THEME", $_SESSION["theme"]);
+    if(!defined("THEMES"))
         define("THEMES", BASE_PATH . "/themes");
+    if(!defined("THEME"))
         define("THEME", "default");
-    }
     
     // Load Component CSS Files    
     foreach($components as $component){
