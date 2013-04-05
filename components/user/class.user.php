@@ -19,6 +19,7 @@ class User {
     public $users       = '';
     public $actives     = '';
     public $lang        = '';
+    public $theme       = '';
 
     //////////////////////////////////////////////////////////////////
     // METHODS
@@ -49,6 +50,7 @@ class User {
                 $pass = true;
                 $_SESSION['user'] = $this->username;
                 $_SESSION['lang'] = $this->lang;
+                $_SESSION['theme'] = $this->theme;
                 if($user['project']!=''){ $_SESSION['project'] = $user['project']; }
             }
         }

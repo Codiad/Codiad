@@ -22,7 +22,8 @@ foreach ($allFiles as $fname){
 		$components[] = $fname;
 	}
 }
-
+if(!isset($_SESSION["security"]))
+    $_SESSION["security"] = base64_encode(json_encode(sha1(rand()).md5(rand()))).base64_encode(strrev(md5(rand()))).rand();
 ?>
 <!doctype html>
 
@@ -40,6 +41,10 @@ foreach ($allFiles as $fname){
             echo('<link rel="stylesheet" href="themes/default/'.$sheet.'">');
         }
     }
+    
+    // Choose Theme
+    if(isset($_SESSION["theme"]))
+        define("THEME", $_SESSION["theme"]);
     
     // Load Component CSS Files    
     foreach($components as $component){
@@ -104,7 +109,7 @@ foreach ($allFiles as $fname){
             ?>
 
             <form id="login" method="post" style="position: fixed; width: 350px; top: 30%; left: 50%; margin-left: -175px; padding: 35px;">
-
+		<input type="hidden" name="security" value="<?=$_SESSION['security']; ?>" />
                 <label><span class="icon-user login-icon"></span> Username</label>
                 <input type="text" name="username" autofocus="autofocus" autocomplete="off">
 
@@ -122,6 +127,18 @@ foreach ($allFiles as $fname){
                             $lang_disp = ucfirst(strtolower($languages[$lang_code]));
                             ?>
                             <option value="<?php echo $lang_code; ?>" <?php if ($lang_code == "en"){echo "selected";}?>><?php echo $lang_disp; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                
+                <div class="themes-selector">
+                    <label><span class="icon-window widnow-icon"></span> Theme</label>
+                    <select name="theme">
+                        <?php
+                        foreach(glob("themes/*/") as $foldername): 
+                            $theme = str_replace(array("themes/", "/"), "", $foldername);
+                            ?>
+                            <option value="<?php echo $theme; ?>" <?php if ($theme == "default"){echo "selected";}?>><?php echo $theme; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>

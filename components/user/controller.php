@@ -31,7 +31,10 @@
             $User->lang = $_POST['language'];
         else
             $User->lang = 'en';
-
+        if(isset($_POST["theme"]) && isset($_POST["security"]) && $_POST["security"] == $_SESSION["security"])
+            $User->theme = $_POST["theme"];
+        else
+            $User->theme = "default";
         $User->Authenticate();
     }
 
