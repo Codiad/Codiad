@@ -168,6 +168,10 @@
             <input type="hidden" name="project_path" value="/<?php echo($_GET['path']); ?>">
             <label>Confirm Project Deletion</label>
             <pre>Name: <?php echo($_GET['name']); ?>, Path: /<?php echo($_GET['path']); ?></pre>
+            <table>
+            <tr><td width="5"><input type="checkbox" name="delete" id="delete" value="true"></td><td>Delete Project Files</td></tr>
+            <tr><td width="5"><input type="checkbox" name="follow" id="follow" value="true"></td><td>Follow Symbolic Links </td></tr>
+            </table>
             <button class="btn-left">Confirm</button><button class="btn-right" onclick="codiad.project.list();return false;">Cancel</button>
             <?php
             break;
