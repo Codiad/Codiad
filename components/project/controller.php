@@ -60,6 +60,8 @@
                 $Project->gitbranch = $_GET['git_branch'];
             }
             $Project->Create();
+        } else{
+            echo formatJSEND("error","You don't have permission to create a project");
         }
     }
 

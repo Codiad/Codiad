@@ -154,7 +154,7 @@
     //////////////////////////////////////////////////////////////////
 
     function checkAccess() {
-        return file_exists(BASE_PATH . "/data/" . $_SESSION['user'] . '_acl.php')?false:true;
+        return !file_exists(BASE_PATH . "/data/" . $_SESSION['user'] . '_acl.php');
     }
     
     //////////////////////////////////////////////////////////////////
