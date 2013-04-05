@@ -180,7 +180,7 @@ switch($_GET['action']){
     </tr>
     </table>
     
-    <button onclick="codiad.modal.unload(); return false;"><?php i18n("Close"); ?></button
+    <button onclick="codiad.modal.unload(); return false;"><?php i18n("Close"); ?></button>
     
     <?php
     
