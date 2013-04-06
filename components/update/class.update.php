@@ -38,13 +38,13 @@ class Update {
     public function Init() {
         $version = array();
         if(!file_exists(DATA ."/version.php")) {
-            $remote = json_decode(file_get_contents($this->remote),true);
+            $remote = json_decode(file_get_contents($this->remote.'/HEAD'),true);
             $version[] = array("version"=>$remote[0]["sha"],"time"=>time(),"name"=>"");
             saveJSON('version.php',$version);
         } else {
             $app = getJSON('version.php');
             if($app[0]['version'] == '' && $app[0]['name'] == $_SESSION['user']) {
-                $remote = json_decode(file_get_contents($this->remote),true);
+                $remote = json_decode(file_get_contents($this->remote.'/HEAD'),true);
                 $version[] = array("version"=>$remote[0]["sha"],"time"=>time(),"name"=>$_SESSION['user']);
                 saveJSON('version.php',$version);
             }
@@ -52,7 +52,6 @@ class Update {
                 $data = file(BASE_PATH."/.git/FETCH_HEAD");
                 $line = explode("	", $data[count($data)-1]);
                 if($app[0]['version'] != $line[0]) {
-                    $remote = json_decode(file_get_contents($this->remote),true);
                     $version[] = array("version"=>$line[0],"time"=>time(),"name"=>$_SESSION['user']);
                     saveJSON('version.php',$version);
                 }
