@@ -56,33 +56,6 @@
         }, 
         
         //////////////////////////////////////////////////////////////////
-        // Update System
-        //////////////////////////////////////////////////////////////////
-
-        update: function () {
-            var _this = this;
-            var remoteversion = $('#modal-content form input[name="remoteversion"]')
-                        .val();
-            codiad.modal.load(350, this.dialog + '?action=update&remoteversion=' + remoteversion);            
-            $('#modal-content form')
-                    .live('submit', function (e) {
-                    e.preventDefault();
-                    var remoteversion = $('#modal-content form input[name="remoteversion"]')
-                        .val();
-                        $('#modal-content').html('<div id="modal-loading"></div><br>Downloading ' + remoteversion + '...<br><br>');
-                        $.get(_this.controller + '?action=update&remoteversion=' + remoteversion, function(data) {
-                            var response = codiad.jsend.parse(data);
-                            codiad.modal.unload();
-                            if (response != 'error') {
-                                window.open('./' + remoteversion + '.php','_self');
-                            } else {
-                                codiad.message.error('Update failed');
-                            }
-                        });
-                });
-        },
-        
-        //////////////////////////////////////////////////////////////////
         // Download Archive
         //////////////////////////////////////////////////////////////////
 

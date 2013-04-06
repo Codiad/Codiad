@@ -8,5 +8,5 @@ workspace/
 .buildpath
 .settings/
 .svn/
-component/update/version.json
+components/update/version.json
 

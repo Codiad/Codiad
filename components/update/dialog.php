@@ -50,15 +50,7 @@
             <?php } } ?>
             <br><br><?php
                 if($vars[0]['data']['currentversion'] != $vars[0]['data']['remoteversion']) {
-                    if($vars[0]['data']['autoupdate'] == '1') {
-                        echo '<button class="btn-left" onclick="codiad.update.update();return false;">Update Codiad</button>&nbsp;<button class="btn-left" onclick="codiad.update.download();return false;">Download Codiad</button>&nbsp;';
-                    } else {
-                        if($vars[0]['data']['autoupdate'] == '-1') {
-                            echo '<button class="btn-left" onclick="codiad.update.download();return false;">Download Codiad</button>&nbsp;';
-                        } else {
-                            echo '<button class="btn-left" onclick="codiad.update.test();return false;">Test Permission</button>&nbsp;<button class="btn-left" onclick="codiad.update.download();return false;">Download Codiad</button>&nbsp;';
-                        }
-                    }
+                    echo '<button class="btn-left" onclick="codiad.update.download();return false;">Download Codiad</button>&nbsp;';
                 }
             ?><button class="btn-right" onclick="codiad.modal.unload();return false;">Cancel</button>
             <form>
