@@ -37,27 +37,16 @@ class Update {
     
     public function Init() {
         $version = array();
-        if($this->remote != '' && !file_exists("version.json") && !file_exists("../../data/version.php")) {
+        if(!file_exists(DATA ."/version.php")) {
             $remote = json_decode(file_get_contents($this->remote),true);
             $version[] = array("version"=>$remote[0]["sha"],"time"=>time(),"name"=>"");
-            if(!file_put_contents("version.json",json_encode($version))) {
-                saveJSON('version.php',$version);
-            }
+            saveJSON('version.php',$version);
         } else {
-            if(file_exists("../../data/version.php")) {
-                $app = getJSON('version.php');
-                if($app[0]['version'] == '' && $app[0]['name'] == $_SESSION['user']) {
-                    $remote = json_decode(file_get_contents($this->remote),true);
-                    $version[] = array("version"=>$remote[0]["sha"],"time"=>time(),"name"=>$_SESSION['user']);
-                    saveJSON('version.php',$version);
-                }
-            } else if(file_exists("version.json")) {
-                $app = json_decode(file_get_contents("version.json"),true);
-                if($app[0]['version'] == '' && $app[0]['name'] == $_SESSION['user']) {
-                    $remote = json_decode(file_get_contents($this->remote),true);
-                    $version[] = array("version"=>$remote[0]["sha"],"time"=>time(),"name"=>$_SESSION['user']);
-                    file_put_contents("version.json",json_encode($version));
-                }
+            $app = getJSON('version.php');
+            if($app[0]['version'] == '' && $app[0]['name'] == $_SESSION['user']) {
+                $remote = json_decode(file_get_contents($this->remote),true);
+                $version[] = array("version"=>$remote[0]["sha"],"time"=>time(),"name"=>$_SESSION['user']);
+                saveJSON('version.php',$version);
             }
         }
     }
@@ -68,11 +57,7 @@ class Update {
     
     public function Clear() {
         $version[] = array("version"=>"","time"=>time(),"name"=>$_SESSION['user']);
-        if(file_exists("../../data/version.php")) {
-            saveJSON('version.php',$version);
-        } else if(file_exists("version.json")) {
-            file_put_contents("version.json",json_encode($version));
-        }
+        saveJSON('version.php',$version);
     }   
     
     //////////////////////////////////////////////////////////////////
@@ -80,11 +65,7 @@ class Update {
     //////////////////////////////////////////////////////////////////
     
     public function Check() {
-        if(file_get_contents("version.json")) {
-            $app = json_decode(file_get_contents("version.json"),true);
-        } else {
-            $app = getJSON('version.php');
-        }
+        $app = getJSON('version.php');
         
         if($this->remote != '') {
             $remote = json_decode(file_get_contents($this->remote),true);
