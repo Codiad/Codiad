@@ -1,0 +1,6 @@
+{
+    "name": "finder",
+    "priority": "12",
+    "description": "Description of finder",
+    "package": "core"
+}

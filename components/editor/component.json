@@ -1,0 +1,6 @@
+{
+    "name": "editor",
+    "priority": "5",
+    "description": "Description of editor",
+    "package": "core"
+}

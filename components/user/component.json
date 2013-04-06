@@ -1,0 +1,6 @@
+{
+    "name": "user",
+    "priority": "2",
+    "description": "Description of user",
+    "package": "core"
+}

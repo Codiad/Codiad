@@ -1,0 +1,6 @@
+{
+    "name": "collaborative",
+    "priority": "13",
+    "description": "Description of collaborative",
+    "package": "core"
+}

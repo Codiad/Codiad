@@ -1,0 +1,6 @@
+{
+    "name": "poller",
+    "priority": "7",
+    "description": "Description of poller",
+    "package": "core"
+}

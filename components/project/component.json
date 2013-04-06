@@ -1,0 +1,6 @@
+{
+    "name": "project",
+    "priority": "3",
+    "description": "Description of project",
+    "package": "core"
+}

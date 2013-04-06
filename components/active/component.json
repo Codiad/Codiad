@@ -1,0 +1,6 @@
+{
+    "name": "active",
+    "priority": "6",
+    "description": "Description of active",
+    "package": "core"
+}

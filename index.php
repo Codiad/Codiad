@@ -18,10 +18,18 @@ foreach ($allFiles as $fname){
 	if($fname == '.' || $fname == '..' ){
 		continue;
 	}
-	if(is_dir(COMPONENTS.'/'.$fname)){
-		$components[] = $fname;
+	if(is_dir(COMPONENTS.'/'.$fname) && file_exists(COMPONENTS.'/'.$fname.'/component.json')){
+		//read component.json
+		$component = json_decode(file_get_contents(COMPONENTS.'/'.$fname.'/component.json'),true);
+		if(isset($component['priority'])){
+			$components[$fname] = $component['priority'];
+		}
 	}
 }
+//sort by prority
+asort($components);
+
+$components = array_keys($components);
 
 ?>
 <!doctype html>
