@@ -48,7 +48,7 @@
             <?php if($vars[0]['data']['name'] != '') { ?>
             <em>Last update was done by <?php echo $vars[0]['data']['name']; ?>.</em>
             <?php } } ?>
-            <br><br><?php
+            <br><?php
                 if($vars[0]['data']['currentversion'] != $vars[0]['data']['remoteversion']) {
                     echo '<button class="btn-left" onclick="codiad.update.download();return false;">Download Codiad</button>&nbsp;';
                 }
