@@ -239,12 +239,13 @@ table [class^="icon-"], [class*=" icon-"] {
 /* INSTALLER */
 
 #installer {
-    position: fixed;
+    position: absolute;
     width: 450px;
     top: 15%;
     left: 50%;
     margin-left: -175px;
     padding: 35px;
+    overflow:auto;
 }
 
 #installer h1 {
@@ -257,6 +258,21 @@ table [class^="icon-"], [class*=" icon-"] {
     border: none;
     border-top: 1px solid #ccc;
     margin: 20px 0;
+}
+
+.install_issues {
+    background: #404040;
+    padding: 10px;
+    margin: 10px 0 5px 0;
+    border-radius: 5px;
+    font-family: monospace;
+    box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, .5);
+    overflow: auto;
+}
+
+.install_issues p {
+    padding:0;
+    margin:0;
 }
 
 /* MESSAGES */

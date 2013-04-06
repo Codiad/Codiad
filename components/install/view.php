@@ -11,21 +11,33 @@ $path = rtrim(str_replace("index.php", "", $_SERVER['SCRIPT_FILENAME']),"/");
 
 $workspace = is_writable( $path . "/workspace");
 $data = is_writable($path . "/data");
-if(!file_exists($path . "/config.php")){
-	file_put_contents($path . "/config.php",file_get_contents($path . "/config.example.php"));
+
+$conf = $path . '/config.php';
+
+if(!file_exists($conf) && !is_writable($path)) {
+    $config = false;
+} elseif(!file_exists($conf)  && is_writable($path)) {
+    $config = file_put_contents($conf, file_get_contents($path . "/config.example.php"));
+    if($config !== false) {
+        $config = true;
+    }
+} elseif(file_exists($conf)) {
+    $config = is_writable($conf);
 }
-if(file_exists($path . "/config.php")){
-    $config = is_writable($path . "/config.php");
-}else{ $config=false; }
+
 
 if(!$workspace || !$data || !$config){
     ?>
     <h1>Installation Error</h1>
     <p>Please make sure the following exist and are writeable:</p>
-    <pre>[SYSTEM]/config.php
-[SYSTEM]/workspace
-[SYSTEM]/data</pre>
-<button onclick="window.location.reload();">Re-Test</button>
+    <div class="install_issues">
+        <?php if(!$config) { echo '<p>[SYSTEM]/config.php</p>'; } ?>
+        <?php if(!$workspace) { echo '<p>[SYSTEM]/workspace</p>'; } ?>
+        <?php if(!$data) { echo '<p>[SYSTEM]/data</p>'; } ?>    
+    </div>
+
+    <button onclick="window.location.reload();">Re-Test</button>
+    
     <?php
 }else{
     ?>
@@ -164,6 +176,9 @@ if(!$workspace || !$data || !$config){
 <script>
 
     $(function(){
+    
+        $('html, body').css('overflow', 'auto');
+    
         $('#install').on('submit',function(e){
             e.preventDefault();
             
