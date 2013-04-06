@@ -23,4 +23,4 @@ Stick to the conventions defined in other components as closely as possible.
 In order to maintain a consistant code structure to the code across the application please run any changes through JSBeautifier (http://jsbeautifier.org/) with 
 the default settings.
 
-If you have questions, please ask. Submit an issue or [contact me (fluidbyte) directly](mailto:dev@codiad.com).
+If you have questions, please ask. Submit an issue or [contact me (fluidbyte) directly](mailto:dev@codiad.com). 
