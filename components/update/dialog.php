@@ -57,21 +57,6 @@
             <?php }
             break;
             
-        //////////////////////////////////////////////////////////////////
-        // Update
-        //////////////////////////////////////////////////////////////////
-        
-        case 'update':
-            ?>
-            <form>
-            <input type="hidden" name="remoteversion" value="<?php echo($_GET['remoteversion']); ?>">
-            <label>Confirm Update</label>
-            <pre>Update: <?php echo($_GET['remoteversion']); ?></pre>
-            <button class="btn-left">Confirm</button>&nbsp;<button class="btn-right" onclick="codiad.modal.unload(); return false;">Cancel</button>
-            <form>
-            <?php
-            break;
-            
     }
     
 ?>
