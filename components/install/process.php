@@ -83,6 +83,8 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     // Create Config
     //////////////////////////////////////////////////////////////////
     
+    
+    
     $config_data = '<?php
 
 /*

@@ -260,6 +260,21 @@ table [class^="icon-"], [class*=" icon-"] {
     margin: 20px 0;
 }
 
+.install_issues {
+    background: #404040;
+    padding: 10px;
+    margin: 10px 0 5px 0;
+    border-radius: 5px;
+    font-family: monospace;
+    box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, .5);
+    overflow: auto;
+}
+
+.install_issues p {
+    padding:0;
+    margin:0;
+}
+
 /* MESSAGES */
 
 #message {

@@ -18,9 +18,8 @@ if(!file_exists($conf) && !is_writable($path)) {
     $config = false;
 } elseif(!file_exists($conf)  && is_writable($path)) {
     $config = file_put_contents($conf, file_get_contents($path . "/config.example.php"));
-    if(!is_writable($conf))
-    {
-        $config = false;
+    if($config !== false) {
+        $config = true;
     }
 } elseif(file_exists($conf)) {
     $config = is_writable($conf);
@@ -31,10 +30,14 @@ if(!$workspace || !$data || !$config){
     ?>
     <h1>Installation Error</h1>
     <p>Please make sure the following exist and are writeable:</p>
-    <pre>[SYSTEM]/config.php
-[SYSTEM]/workspace
-[SYSTEM]/data</pre>
-<button onclick="window.location.reload();">Re-Test</button>
+    <div class="install_issues">
+        <?php if(!$config) { echo '<p>[SYSTEM]/config.php</p>'; } ?>
+        <?php if(!$workspace) { echo '<p>[SYSTEM]/workspace</p>'; } ?>
+        <?php if(!$data) { echo '<p>[SYSTEM]/data</p>'; } ?>    
+    </div>
+
+    <button onclick="window.location.reload();">Re-Test</button>
+    
     <?php
 }else{
     ?>
