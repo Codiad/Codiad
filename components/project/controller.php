@@ -52,13 +52,15 @@
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='create'){
-        $Project->name = $_GET['project_name'];
-        // Git Clone?
-        if(!empty($_GET['git_repo'])){
-            $Project->gitrepo = $_GET['git_repo'];
-            $Project->gitbranch = $_GET['git_branch'];
+        if(checkAccess()) {
+            $Project->name = $_GET['project_name'];
+            // Git Clone?
+            if(!empty($_GET['git_repo'])){
+                $Project->gitrepo = $_GET['git_repo'];
+                $Project->gitbranch = $_GET['git_branch'];
+            }
+            $Project->Create();
         }
-        $Project->Create();
     }
 
     //////////////////////////////////////////////////////////////////
@@ -66,8 +68,10 @@
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='delete'){
-        $Project->path = $_GET['project_path'];
-        $Project->Delete();
+        if(checkAccess()) {
+            $Project->path = $_GET['project_path'];
+            $Project->Delete();
+        }
     }
 
     //////////////////////////////////////////////////////////////////

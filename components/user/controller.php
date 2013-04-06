@@ -48,9 +48,11 @@
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='create'){
-        $User->username = User::CleanUsername( $_POST['username'] );
-        $User->password = $_POST['password'];
-        $User->Create();
+        if(checkAccess()) {
+            $User->username = User::CleanUsername( $_POST['username'] );
+            $User->password = $_POST['password'];
+            $User->Create();
+        }
     }
 
     //////////////////////////////////////////////////////////////////
@@ -58,8 +60,10 @@
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='delete'){
-        $User->username = $_GET['username'];
-        $User->Delete();
+        if(checkAccess()) {
+            $User->username = $_GET['username'];
+            $User->Delete();
+        }
     }
 
     //////////////////////////////////////////////////////////////////
@@ -67,9 +71,11 @@
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='project_access'){
-        $User->username = $_GET['username'];
-        $User->projects = $_POST['projects'];
-        $User->Project_Access();
+        if(checkAccess()) {
+            $User->username = $_GET['username'];
+            $User->projects = $_POST['projects'];
+            $User->Project_Access();
+        }
     }
 
     //////////////////////////////////////////////////////////////////
@@ -77,9 +83,11 @@
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='password'){
-        $User->username = $_POST['username'];
-        $User->password = $_POST['password'];
-        $User->Password();
+        if(checkAccess() || $_POST['username'] == $_SESSION['user']) {
+            $User->username = $_POST['username'];
+            $User->password = $_POST['password'];
+            $User->Password();
+        }
     }
 
     //////////////////////////////////////////////////////////////////
