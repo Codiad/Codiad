@@ -46,14 +46,14 @@ class Update {
         } else {
             if(file_exists("../../data/version.php")) {
                 $app = getJSON('version.php');
-                if($app[0]['name'] == $_SESSION['user']) {
+                if($app[0]['version'] == '' && $app[0]['name'] == $_SESSION['user']) {
                     $remote = json_decode(file_get_contents($this->remote),true);
                     $version[] = array("version"=>$remote[0]["sha"],"time"=>time(),"name"=>$_SESSION['user']);
                     saveJSON('version.php',$version);
                 }
             } else if(file_exists("version.json")) {
                 $app = json_decode(file_get_contents("version.json"),true);
-                if($app[0]['name'] == $_SESSION['user']) {
+                if($app[0]['version'] == '' && $app[0]['name'] == $_SESSION['user']) {
                     $remote = json_decode(file_get_contents($this->remote),true);
                     $version[] = array("version"=>$remote[0]["sha"],"time"=>time(),"name"=>$_SESSION['user']);
                     file_put_contents("version.json",json_encode($version));
