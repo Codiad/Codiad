@@ -64,6 +64,16 @@
         "icon": null,
         "onclick": null
     },
+        {
+        "title": "Check For Update",
+        "icon": "icon-share",
+        "onclick": "codiad.update.check();"
+    },
+    {
+        "title": "break",
+        "icon": null,
+        "onclick": null
+    },
     {
         "title": "Logout",
         "icon": "icon-logout",
