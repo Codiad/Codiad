@@ -153,6 +153,14 @@
     // Check Function Availability
     //////////////////////////////////////////////////////////////////
 
+    function checkAccess() {
+        return !file_exists(BASE_PATH . "/data/" . $_SESSION['user'] . '_acl.php');
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Check Function Availability
+    //////////////////////////////////////////////////////////////////
+
     function isAvailable($func) {
         if (ini_get('safe_mode')) return false;
         $disabled = ini_get('disable_functions');
