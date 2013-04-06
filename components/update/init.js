@@ -51,7 +51,6 @@
                 .attr('src', archive);            
             $.get(_this.controller + '?action=clear');             
             codiad.modal.unload();    
-            codiad.user.logout();
         }
 
     };
