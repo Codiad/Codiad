@@ -1,0 +1,6 @@
+{
+    "name": "keybindings",
+    "priority": "1",
+    "description": "Description of keybindings",
+    "package": "core"
+}

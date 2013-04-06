@@ -1,0 +1,6 @@
+{
+    "name": "color_picker",
+    "priority": "8",
+    "description": "Description of color_picker",
+    "package": "core"
+}

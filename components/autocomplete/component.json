@@ -1,0 +1,6 @@
+{
+    "name": "autocomplete",
+    "priority": "11",
+    "description": "Description of autocomplete",
+    "package": "core"
+}

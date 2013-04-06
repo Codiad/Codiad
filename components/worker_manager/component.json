@@ -1,0 +1,6 @@
+{
+    "name": "worker_manager",
+    "priority": "10",
+    "description": "Description of worker_manager",
+    "package": "core"
+}

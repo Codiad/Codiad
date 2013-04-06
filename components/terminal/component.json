@@ -1,0 +1,6 @@
+{
+    "name": "terminal",
+    "priority": "9",
+    "description": "Description of terminal",
+    "package": "core"
+}

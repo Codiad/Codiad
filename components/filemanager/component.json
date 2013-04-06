@@ -1,0 +1,6 @@
+{
+    "name": "filemanager",
+    "priority": "4",
+    "description": "Description of filemanager",
+    "package": "core"
+}
