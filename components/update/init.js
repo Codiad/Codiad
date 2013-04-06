@@ -26,22 +26,6 @@
             var _this = this;
             $.get(_this.controller + '?action=init');
         },
-        
-        //////////////////////////////////////////////////////////////////
-        // Test Permission
-        //////////////////////////////////////////////////////////////////
-
-        test: function () {
-            var _this = this;
-            $.get(_this.controller + '?action=test', function(data) {
-                var response = codiad.jsend.parse(data);
-                if (response != 'error') {
-                    codiad.update.update();
-                } else {
-                    codiad.message.error('No Write Permission');
-                }
-            });
-        },
 
         //////////////////////////////////////////////////////////////////
         // Update Check
