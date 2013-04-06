@@ -299,17 +299,37 @@ class Filemanager {
 
     public function delete(){
 
-        function rrmdir($path){
-            return is_file($path)?
-            @unlink($path):
-            @array_map('rrmdir',glob($path.'/*'))==@rmdir($path);
-        }
+        function rrmdir($path, $follow) { 
+           if(is_file($path)) {
+               unlink($path);
+           } else {
+               $files = array_diff(scandir($path), array('.','..')); 
+               foreach ($files as $file) {
+                  if(is_link("$path/$file")) {
+                        if($follow) {
+                            rrmdir("$path/$file", $follow);
+                        }
+                        unlink("$path/$file");
+                    } else if(is_dir("$path/$file")) {
+                        rrmdir("$path/$file", $follow);
+                    } else {
+                        unlink("$path/$file");
+                    }   
+               } 
+               return rmdir($path);
+           }
+        } 
 
-        if(file_exists($this->path)){ rrmdir($this->path);
+        if(file_exists($this->path)){ 
+            if(isset($_GET['follow'])) {
+                rrmdir($this->path, true);
+            } else {
+                rrmdir($this->path, false);
+            }
             $this->status = "success";
         }else{
             $this->status = "error";
-            $this->message = "Path Does Not Exist";
+            $this->message = "Path Does Not Exist ";
         }
 
         $this->respond();
