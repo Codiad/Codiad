@@ -4,7 +4,7 @@
     *  as-is and without warranty under the MIT License. See
     *  [root]/license.txt for more. This information must remain intact.
     */
-
+    
     if(strpos($_SERVER['SCRIPT_FILENAME'], "components")) {
         foreach(explode("/", substr($_SERVER['SCRIPT_FILENAME'],strpos($_SERVER['SCRIPT_FILENAME'], "components") + 11)) as $part) {
             if(!isset($path)){
@@ -18,6 +18,14 @@
         if(file_exists('config.php')){ require_once('config.php'); }
     }
     
+    if(!defined('BASE_PATH')) {
+        define('BASE_PATH', dirname(__FILE__));
+    }
+    
+    if(!defined('COMPONENTS')) {
+        define('COMPONENTS', dirname(__FILE__) . '/components');
+    }
+    
     // Ensure theme vars are present (upgrade with legacy config.php)
     if(!defined('THEMES')){
     	define("THEMES", BASE_PATH . "/themes");
@@ -26,6 +34,8 @@
     if(!defined('THEME')){
     	define("THEME", "default");
     }
+    
+    
     
     //////////////////////////////////////////////////////////////////
     // SESSIONS
@@ -53,7 +63,7 @@
     
     if (isset($_SESSION['lang'])) {
         include BASE_PATH."/languages/{$_SESSION['lang']}.php";
-    } else {
+    } else {  
         include BASE_PATH."/languages/en.php";
     }
     
@@ -171,5 +181,4 @@
         }
         return true;
     }
-
 ?>
