@@ -7,3 +7,6 @@ workspace/
 .project
 .buildpath
 .settings/
+.svn/
+components/update/version.json
+
