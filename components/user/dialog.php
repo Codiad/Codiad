@@ -124,7 +124,7 @@
                 ?>
                 </table>
             </div>
-            <button class="btn-left">Confirm</button><button class="btn-right" onclick="codiad.user.list();return false;">Cancel</button>
+            <button class="btn-left">Confirm</button><button class="btn-right" onclick="codiad.user.list();return false;">Close</button>
             <?php
             break;
         
