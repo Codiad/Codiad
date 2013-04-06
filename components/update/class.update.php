@@ -59,7 +59,7 @@ class Update {
                 $data = file(BASE_PATH."/.git/FETCH_HEAD");
                 $line = explode("	", $data[count($data)-1]);
                 if($app[0]['version'] != $line[0]) {
-                    $version[] = array("version"=>$line[0],"time"=>time(),"name"=>$_SESSION['user']);
+                    $version[] = array("version"=>$line[0],"time"=>time(),"name"=>"");
                     saveJSON('version.php',$version);
                 }
             }
