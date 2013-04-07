@@ -12,16 +12,16 @@
     // CTRL Key Bind
     //////////////////////////////////////////////////////////////////////
 
-    $.ctrl = function(key, callback, args) {
-        $(document)
-            .keydown(function(e) {
-            if (!args) args = [];
-            if (e.keyCode == key && e.ctrlKey) {
-                callback.apply(this, args);
-                return false;
-            }
-        });
-    };
+	$.ctrl = function(key, callback, args) {
+	    $(document)
+	        .keydown(function(e) {
+	        if (!args) args = [];
+	        if (e.keyCode == key && (e.ctrlKey || e.metaKey)) {
+	            callback.apply(this, args);
+	            return false;
+	        }
+	    });
+	};
 
     $(function() {
         codiad.keybindings.init();
@@ -44,9 +44,9 @@
             });
 
             // Save [CTRL+S] /////////////////////////////////////////////
-            $.ctrl('83', function() {
+			$.ctrl('83', function() {
                 codiad.active.save();
-            });
+			});
 
             // Open in browser [CTRL+O] //////////////////////////////////
             $.ctrl('79', function() {
@@ -83,6 +83,15 @@
                     codiad.finder.expandFinder();
                 }
             });
+			
+            // Autocomplete ZEN [CTRL+E] ///////////////////////////////////
+            $.ctrl('69', function(){
+                if (codiad.zencoding) {
+                    codiad.zencoding.convert();
+                }
+            });
+
+			
         }
     };
 
