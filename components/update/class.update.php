@@ -40,8 +40,13 @@ class Update {
         if(!file_exists(DATA ."/version.php")) {
             if(file_exists(BASE_PATH."/.git/FETCH_HEAD")) {
                 $data = file(BASE_PATH."/.git/FETCH_HEAD");
-                $line = explode("	", $data[count($data)-1]);
-                $version[] = array("version"=>$line[0],"time"=>time(),"name"=>"");
+                foreach($data as $line) {
+                    $branch = explode("	", $line);
+                    if(strpos($branch[2], "master") !== false) {
+                        break;
+                    }
+                }
+                $version[] = array("version"=>$branch[0],"time"=>time(),"name"=>"");
                 saveJSON('version.php',$version);
             } else {
                 $remote = json_decode(file_get_contents($this->remote.'/HEAD'),true);
@@ -57,9 +62,14 @@ class Update {
             }
             if(file_exists(BASE_PATH."/.git/FETCH_HEAD")) {
                 $data = file(BASE_PATH."/.git/FETCH_HEAD");
-                $line = explode("	", $data[count($data)-1]);
-                if($app[0]['version'] != $line[0]) {
-                    $version[] = array("version"=>$line[0],"time"=>time(),"name"=>"");
+                foreach($data as $line) {
+                    $branch = explode("	", $line);
+                    if(strpos($branch[2], "master") !== false) {
+                        break;
+                    }
+                }
+                if($app[0]['version'] != $branch[0]) {
+                    $version[] = array("version"=>$branch[0],"time"=>time(),"name"=>"");
                     saveJSON('version.php',$version);
                 }
             }
