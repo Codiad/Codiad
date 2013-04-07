@@ -12,16 +12,16 @@
     // CTRL Key Bind
     //////////////////////////////////////////////////////////////////////
 
-    $.ctrl = function(key, callback, args) {
-        $(document)
-            .keydown(function(e) {
-            if (!args) args = [];
-            if (e.keyCode == key && e.ctrlKey) {
-                callback.apply(this, args);
-                return false;
-            }
-        });
-    };
+	$.ctrl = function(key, callback, args) {
+	    $(document)
+	        .keydown(function(e) {
+	        if (!args) args = [];
+	        if (e.keyCode == key && (e.ctrlKey || e.metaKey)) {
+	            callback.apply(this, args);
+	            return false;
+	        }
+	    });
+	};
 
     $(function() {
         codiad.keybindings.init();
