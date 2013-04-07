@@ -84,7 +84,7 @@
                 }
             });
 			
-			// Autocomplete ZEN [CTRL+E] ///////////////////////////////////
+            // Autocomplete ZEN [CTRL+E] ///////////////////////////////////
             $.ctrl('69', function(){
                 if (codiad.zencoding) {
                     codiad.zencoding.convert();
