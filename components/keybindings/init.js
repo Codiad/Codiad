@@ -44,9 +44,9 @@
             });
 
             // Save [CTRL+S] /////////////////////////////////////////////
-            $.ctrl('83', function() {
+			$.ctrl('83', function() {
                 codiad.active.save();
-            });
+			});
 
             // Open in browser [CTRL+O] //////////////////////////////////
             $.ctrl('79', function() {
@@ -83,6 +83,15 @@
                     codiad.finder.expandFinder();
                 }
             });
+			
+			// Autocomplete [CTRL+E] ///////////////////////////////////
+            $.ctrl('69', function(){
+                if (codiad.zencoding) {
+                    codiad.zencoding.convert();
+                }
+            });
+
+			
         }
     };
 
