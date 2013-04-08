@@ -61,6 +61,7 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     // Create Projects files
     //////////////////////////////////////////////////////////////////
     
+    $project_path = str_replace(" ","_",preg_replace('/[^\w-\/]/', '', $project_path)); 
     if(substr($project_path, -1) == '/') {
         $project_path = substr($project_path,0, strlen($project_path)-1);
     }    
