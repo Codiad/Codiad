@@ -239,7 +239,7 @@
                         .removeClass('chosen');
                     $target.parent('li').addClass('chosen');
                 } else if (action){
-                    codiad.filemanager[action]('/');
+                    codiad.filemanager[action](codiad.project.getCurrent());
                     _this.contractFinder();
                 }
                 $finderOptionsMenu.hide();
@@ -247,7 +247,7 @@
             
             // Setup the menu for selection of finding strategy
             $('#finder-quick').click(function(e){
-                codiad.filemanager['search']('/');
+                codiad.filemanager['search'](codiad.project.getCurrent());
                 _this.contractFinder();
             });
 
