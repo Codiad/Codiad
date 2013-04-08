@@ -90,7 +90,7 @@
                 <tr>
                     <td><a onclick="codiad.project.open('<?php echo($data['path']); ?>');" class="icon-folder bigger-icon"></a></td>
                     <td><?php echo($data['name']); ?></td>
-                    <td>/<?php echo($data['path']); ?></td>
+                    <td><?php echo($data['path']); ?></td>
                     <?php
                         if(checkAccess()){
                             if($_SESSION['project'] == $data['path']){
@@ -126,6 +126,8 @@
             <form>
             <label>Project Name</label>
             <input name="project_name" autofocus="autofocus" autocomplete="off">
+            <label>Project Folder or Absolute Path</label>
+            <input name="project_path" autofocus="off" autocomplete="off">
             
             <!-- Clone From GitHub -->
             <div style="width: 500px;">
@@ -165,9 +167,9 @@
         
         ?>
             <form>
-            <input type="hidden" name="project_path" value="/<?php echo($_GET['path']); ?>">
+            <input type="hidden" name="project_path" value="<?php echo($_GET['path']); ?>">
             <label>Confirm Project Deletion</label>
-            <pre>Name: <?php echo($_GET['name']); ?>, Path: /<?php echo($_GET['path']); ?></pre>
+            <pre>Name: <?php echo($_GET['name']); ?>, Path: <?php echo($_GET['path']); ?></pre>
             <table>
             <tr><td width="5"><input type="checkbox" name="delete" id="delete" value="true"></td><td>Delete Project Files</td></tr>
             <tr><td width="5"><input type="checkbox" name="follow" id="follow" value="true"></td><td>Follow Symbolic Links </td></tr>

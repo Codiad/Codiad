@@ -53,7 +53,11 @@ class Filemanager {
         if(!empty($get['query'])){ $this->query = $get['query']; }
         if(!empty($get['options'])){ $this->foptions = $get['options']; }
         $this->root = $get['root'];
-        $this->path = $this->root . Filemanager::cleanPath( $get['path'] );
+        if($get['path'][0] !==  "/") {
+            $this->path = $this->root . '/' . Filemanager::cleanPath( $get['path'] );
+        } else {
+            $this->path = Filemanager::cleanPath( $get['path'] );
+        }
         // Search
         if(!empty($post['search_string'])){ $this->search_string = $post['search_string']; }
         // Create

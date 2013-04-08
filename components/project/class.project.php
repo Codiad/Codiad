@@ -104,22 +104,36 @@ class Project {
 
     public function Create(){
         $this->path = $this->SanitizePath();
-        $pass = $this->checkDuplicate();
-        if($pass){
-            $this->projects[] = array("name"=>$this->name,"path"=>$this->path);
-            saveJSON('projects.php',$this->projects);
-            mkdir(WORKSPACE . "/" . $this->path);
-            
-            // Pull from Git Repo?
-            if($this->gitrepo){
-                $this->command_exec = "cd " . WORKSPACE . "/" . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
-                $this->ExecuteCMD();
+        if($this->ValidateAbsPath()) {
+            $pass = $this->checkDuplicate();
+            if($pass){
+                $this->projects[] = array("name"=>$this->name,"path"=>$this->path);
+                saveJSON('projects.php',$this->projects);
+                if($this->path[0] !== '/') {
+                    mkdir(WORKSPACE . '/' . $this->path);
+                } else {
+                    if(!file_exists($this->path)) {
+                        mkdir($this->path);
+                    }
+                }
+                
+                // Pull from Git Repo?
+                if($this->gitrepo){
+                    if($this->path[0] !== '/') {
+                        $this->command_exec = "cd " . WORKSPACE . '/' . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
+                    } else {
+                        $this->command_exec = "cd " . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
+                    }
+                    $this->ExecuteCMD();
+                }
+                
+                echo formatJSEND("success",array("name"=>$this->name,"path"=>$this->path));
+            }else{
+                echo formatJSEND("error","A Project With the Same Name or Path Exists");
             }
-            
-            echo formatJSEND("success",array("name"=>$this->name,"path"=>$this->path));
-        }else{
-            echo formatJSEND("error","A Project With the Same Name or Path Exists");
-        }
+         } else {
+            echo formatJSEND("error","Not a valid Absolute Path");
+         }
     }
 
     //////////////////////////////////////////////////////////////////
@@ -129,7 +143,7 @@ class Project {
     public function Delete(){
         $revised_array = array();
         foreach($this->projects as $project=>$data){
-            if($data['path']!=str_replace("/","",$this->path)){
+            if($data['path']!=$this->path){
                 $revised_array[] = array("name"=>$data['name'],"path"=>$data['path']);
             }
         }
@@ -153,13 +167,25 @@ class Project {
         }
         return $pass;
     }
+    
+    //////////////////////////////////////////////////////////////////
+    // Validate Path
+    //////////////////////////////////////////////////////////////////
+
+    public function ValidateAbsPath(){
+        $pass = true;
+        if($this->path[0] !== '/' && strpos($get['path'], "/") !== 0) {
+            $pass = false;
+        }
+        return $pass;
+    }
 
     //////////////////////////////////////////////////////////////////
     // Sanitize Path
     //////////////////////////////////////////////////////////////////
 
     public function SanitizePath(){
-        $sanitized = str_replace(" ","_",$this->name);
+        $sanitized = str_replace(" ","_",$this->path);
 
         // prevent Poison Null Byte injections
         $sanitized = str_replace(chr(0), '', $sanitized );
@@ -168,7 +194,7 @@ class Project {
         while (strpos($sanitized , '../') !== false)
             $sanitized = str_replace( '../', '', $sanitized );
 
-        return preg_replace('/[^\w-]/', '', $sanitized);
+        return preg_replace('/[^\w-\/]/', '', $sanitized);
     }
     
     //////////////////////////////////////////////////////////////////

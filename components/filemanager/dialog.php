@@ -54,7 +54,7 @@ switch($_GET['action']){
     ?>
     <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>"> 
     <label>Are you sure you wish to delete the following:</label>
-    <pre><?php echo($_GET['path']); ?></pre>
+    <pre><?php if($_GET['path'][0] != '/') { echo '/'; }; echo($_GET['path']); ?></pre>
     <button class="btn-left">Delete</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Cancel</button>
     <?php
     break;
@@ -77,7 +77,7 @@ switch($_GET['action']){
     ?>
     <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">    
     <label>Would you like to overwrite or duplicate the following:</label>
-    <pre><?php echo($_GET['path']); ?></pre>
+    <pre><?php if($_GET['path'][0] != '/') { echo '/'; }; echo($_GET['path']); ?></pre>
     <select name="or_action">
         <option value="0">Overwrite Original</option>
         <option value="1">Create Duplicate</option>

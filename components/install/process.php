@@ -53,15 +53,21 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     
     $username = cleanUsername($_POST['username']);
     $password = encryptPassword($_POST['password']);
-    $project_name = $_POST['project'];
+    $project_name = $_POST['project_name'];
+    $project_path = $_POST['project_path'];
     $timezone = $_POST['timezone'];
     
     //////////////////////////////////////////////////////////////////
     // Create Projects files
     //////////////////////////////////////////////////////////////////
     
-    $project_path = str_replace(" ","_",preg_replace('/[^\w-]/', '', $project_name));
-    mkdir($workspace . "/" . $project_path);
+    if($project_path[0] !== '/') {
+        mkdir($workspace . "/" . $project_path);
+    } else {
+        if(!file_exists($project_path)) {
+            mkdir($project_path);
+        }
+    }
     $project_data = array("name"=>$project_name,"path"=>$project_path);
     saveJSON($projects,$project_data);
     

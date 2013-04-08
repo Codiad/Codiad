@@ -68,7 +68,9 @@ if(!$workspace || !$data || !$config){
     <hr>
     
     <label>New Project Name</label>
-    <input type="text" name="project">
+    <input type="text" name="project_name">
+    <label>New Project Folder or Absolute Path</label>
+    <input type="text" name="project_path">
     
     <hr>
     
@@ -197,9 +199,17 @@ if(!$workspace || !$data || !$config){
                 password_match = false;
             }
             
+            // Check Path
+            check_path = true;
+            if($('input[name="project_path"]').val().indexOf("/") != 0){
+                check_path = false;
+            }
+            
+            if(!check_path){ alert('Not a valid Absolute Path'); }
+            
             if(!password_match){ alert('The passwords entered do not match'); }
             
-            if(!empty_fields && password_match){
+            if(!empty_fields && password_match && check_path){
                 $.post('components/install/process.php',$('#install').serialize(),function(data){
                     if(data=='success'){
                         window.location.reload();

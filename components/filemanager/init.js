@@ -120,6 +120,9 @@
                     .hide();
                 break;
             }
+            if($('#file-manager a[data-type="root"]').attr('data-path').indexOf('/') == 0) {
+                $('#context-menu .no-external').hide();
+            }
             // Show menu
             $('#context-menu')
                 .css({
