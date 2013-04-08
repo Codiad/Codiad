@@ -265,6 +265,11 @@ foreach ($allFiles as $fname){
                 ////////////////////////////////////////////////////////////
 
                 foreach($right_bar as $item_rb=>$data){
+		    $comp = $data['component'];
+
+		    if ($comp && !array_search($comp, $components)) {
+			continue;
+		    }
 
                     if($data['title']=='break'){
                         echo("<hr>");
