@@ -54,7 +54,8 @@ class Filemanager {
         if(!empty($get['options'])){ $this->foptions = $get['options']; }
         $this->root = $get['root'];
         if($get['path'][0] !==  "/") {
-            $this->path = $this->root . '/' . Filemanager::cleanPath( $get['path'] );
+            $this->root .= '/';
+            $this->path = $this->root . Filemanager::cleanPath( $get['path'] );
         } else {
             $this->path = Filemanager::cleanPath( $get['path'] );
         }
