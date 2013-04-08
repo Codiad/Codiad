@@ -107,15 +107,17 @@ class Project {
         if($this->ValidateAbsPath()) {
             $pass = $this->checkDuplicate();
             if($pass){
-                $this->projects[] = array("name"=>$this->name,"path"=>$this->path);
-                saveJSON('projects.php',$this->projects);
                 if($this->path[0] !== '/') {
                     mkdir(WORKSPACE . '/' . $this->path);
                 } else {
                     if(!file_exists($this->path)) {
-                        mkdir($this->path.'/', 0755, true);
+                        if(!mkdir($this->path.'/', 0755, true)) {
+                            die(formatJSEND("error","Unable to create Absolute Path"));
+                        }
                     }
                 }
+                $this->projects[] = array("name"=>$this->name,"path"=>$this->path);
+                saveJSON('projects.php',$this->projects);
                 
                 // Pull from Git Repo?
                 if($this->gitrepo){
