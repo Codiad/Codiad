@@ -22,12 +22,14 @@
     {
         "title": "Terminal",
         "icon": "icon-monitor",
-        "onclick": "codiad.terminal.open();"
+        "onclick": "codiad.terminal.open();",
+	"component": "terminal"
     },
     {
         "title": "break",
         "icon": null,
-        "onclick": null
+        "onclick": null,
+	"component": "terminal"
     },
     {
         "title": "Projects",
