@@ -2,7 +2,7 @@
 
     codiad.workerManager = {
         taskQueue: [],
-        worker: null,
+        //worker: null,
         addTask: function(taskConfig, callback, context){
             var _this = this;
             if(_this.worker !== null) {
