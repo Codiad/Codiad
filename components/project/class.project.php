@@ -113,7 +113,7 @@ class Project {
                     mkdir(WORKSPACE . '/' . $this->path);
                 } else {
                     if(!file_exists($this->path)) {
-                        mkdir($this->path);
+                        mkdir($this->path.'/', 0755, true);
                     }
                 }
                 

@@ -69,7 +69,7 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
         mkdir($workspace . "/" . $project_path);
     } else {
         if(!file_exists($project_path)) {
-            mkdir($project_path);
+            mkdir($project_path.'/', 0755, true);
         }
     }
     $project_data = array("name"=>$project_name,"path"=>$project_path);
