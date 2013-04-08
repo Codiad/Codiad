@@ -40,6 +40,23 @@
     //////////////////////////////////////////////////////////////////
     // SESSIONS
     //////////////////////////////////////////////////////////////////
+    if(isset($cookie_lifetime) && $cookie_path != "") {
+        ini_set("session.cookie_lifetime", $cookie_lifetime);
+    } else {
+        ini_set("session.cookie_lifetime", "0");
+    }
+    
+    if(isset($cookie_path) && $cookie_path != "") {
+        ini_set("session.cookie_path", $cookie_path);
+    } else {
+        if(isset($rel) && $rel != "") {
+           ini_set("session.cookie_path", $rel); 
+        }
+        else
+        {
+           ini_set("session.cookie_path", "/");  
+        }
+    }
 
     session_start();
     
