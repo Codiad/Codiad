@@ -632,7 +632,7 @@
                             }
                             val['file'] = val['file'].replace('//','/');
                             // Add result
-                            results += '<div><a onclick="codiad.filemanager.openFile(\'' + val['file'] + '\');setTimeout( function() { codiad.active.gotoLine(' + val['line'] + '); }, 500);codiad.modal.unload();">Line ' + val['line'] + ': ' + val['file'] + '</a></div>';
+                            results += '<div><a onclick="codiad.filemanager.openFile(\'' + val['result'] + '\');setTimeout( function() { codiad.active.gotoLine(' + val['line'] + '); }, 500);codiad.modal.unload();">Line ' + val['line'] + ': ' + val['file'] + '</a></div>';
                         });
                         $('#filemanager-search-results')
                             .slideDown()
