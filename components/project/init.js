@@ -159,7 +159,6 @@
                 e.preventDefault();
                 var projectPath = $('#modal-content form input[name="project_path"]')
                     .val();
-                    alert(projectPath);
                 $.get(_this.controller + '?action=delete&project_path=' + projectPath, function(data) {
                     deleteResponse = codiad.jsend.parse(data);
                     if (deleteResponse != 'error') {

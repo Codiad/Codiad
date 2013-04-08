@@ -174,7 +174,7 @@ class Project {
 
     public function ValidateAbsPath(){
         $pass = true;
-        if($this->path[0] !== '/' && strpos($get['path'], "/") !== 0) {
+        if($this->path[0] !== '/' && strpos($this->path, "/") !== false) {
             $pass = false;
         }
         return $pass;
@@ -193,6 +193,10 @@ class Project {
         // prevent go out of the workspace
         while (strpos($sanitized , '../') !== false)
             $sanitized = str_replace( '../', '', $sanitized );
+            
+        if(substr($sanitized, -1) == '/') {
+            $sanitized = substr($sanitized,0, strlen($sanitized)-1);
+        }    
 
         return preg_replace('/[^\w-\/]/', '', $sanitized);
     }

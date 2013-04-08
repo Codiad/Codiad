@@ -61,6 +61,10 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     // Create Projects files
     //////////////////////////////////////////////////////////////////
     
+    if(substr($project_path, -1) == '/') {
+        $project_path = substr($project_path,0, strlen($project_path)-1);
+    }    
+    
     if($project_path[0] !== '/') {
         mkdir($workspace . "/" . $project_path);
     } else {
