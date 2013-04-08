@@ -18,8 +18,12 @@ foreach ($allFiles as $fname){
 	if($fname == '.' || $fname == '..' ){
 		continue;
 	}
-	if(is_dir(COMPONENTS.'/'.$fname)){
-		$components[] = $fname;
+	
+	if(is_dir(COMPONENTS.'/'.$fname)) {
+	    if (file_exists(COMPONENTS . "/" .  $fname . "/comp_disable")) {
+		continue;
+	    }
+	    $components[] = $fname;
 	}
 }
 
