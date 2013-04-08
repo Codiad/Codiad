@@ -16,7 +16,7 @@
         $(document)
             .keydown(function(e) {
             if (!args) args = [];
-            if (e.keyCode == key && e.ctrlKey) {
+            if (e.keyCode == key && (e.ctrlKey || e.metaKey)) {
                 callback.apply(this, args);
                 return false;
             }
