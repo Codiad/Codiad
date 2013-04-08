@@ -76,7 +76,7 @@
     {
         "title": "break",
         "icon": null,
-        "onclick": null
+        "onclick": null,
 	"component": "update"
     },
     {
