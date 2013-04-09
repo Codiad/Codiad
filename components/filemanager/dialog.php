@@ -93,21 +93,7 @@ switch($_GET['action']){
     ?>
     <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">    
     <label>Search Files:</label>
-    <table>
-        <tr>
-            <td width="75%">
-                   <input type="text" name="search_string" autofocus="autofocus">
-            </td>
-            <td>
-                <select name="search_type">
-                    <option value="0">Current Project</option>
-                    <?php if(checkAccess()) { ?>
-                    <option value="1">All Projects</option>
-                    <? } ?>
-                </select>
-            </td>
-        </tr>
-    </table>
+    <input type="text" name="search_string" autofocus="autofocus">
     <pre id="filemanager-search-results"></pre>
     <div id="filemanager-search-processing"></div>
     <button class="btn-left">Search</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Cancel</button>

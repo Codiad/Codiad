@@ -619,9 +619,7 @@
                 e.preventDefault();
                 searchString = $('#modal-content form input[name="search_string"]')
                     .val();
-                searchType = $('#modal-content form select[name="search_type"]')
-                    .val();
-                $.post(_this.controller + '?action=search&path=' + path + '&type=' + searchType, {
+                $.post(_this.controller + '?action=search&path=' + path, {
                     search_string: searchString
                 }, function(data) {
                     searchResponse = codiad.jsend.parse(data);
