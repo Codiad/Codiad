@@ -193,12 +193,16 @@
         //////////////////////////////////////////////////////////////////
 
         getCurrent: function() {
-            $.get(this.controller + '?action=current', function(data) {
-                currentResponse = codiad.jsend.parse(data);
-                if (currentResponse != 'error') {
-                    return currentResponse;
-                }
-            });
+            var _this = this;
+            var currentResponse = null;
+            $.ajax({
+                url: _this.controller + '?action=current',
+                async: false,
+                success: function(data) {
+                    currentResponse = codiad.jsend.parse(data);
+                } 
+             });
+            return currentResponse;
         }
     };
 })(this, jQuery);

@@ -53,6 +53,7 @@ class Filemanager {
         if(!empty($get['query'])){ $this->query = $get['query']; }
         if(!empty($get['options'])){ $this->foptions = $get['options']; }
         $this->root = $get['root'];
+        if($get['path'][0] != '/') { $get['path'] = '/'.$get['path']; }
         $this->path = $this->root . Filemanager::cleanPath( $get['path'] );
         // Search
         if(!empty($post['search_string'])){ $this->search_string = $post['search_string']; }
@@ -191,15 +192,12 @@ class Filemanager {
             $this->status = "error";
             $this->message = "Shell_exec() Command Not Enabled.";
         }else{
-            chdir(WORKSPACE);
-            if($this->path[0] == "/"){
-                $path = substr($this->path,1);
-            }else{
-                $path = $this->path;
+            if($_GET['type'] == 1) {
+                $this->path = WORKSPACE;
             }
             $input = str_replace('"' , '', $this->search_string);
             $input = preg_quote($input);
-            $output = shell_exec('grep -i -I -n -R "' . $input . '" /' . $path . '/* ');
+            $output = shell_exec('grep -i -I -n -R "' . $input . '" ' . $this->path . '* ');
             $output_arr = explode("\n", $output);
             $return = array();
             foreach($output_arr as $line){
@@ -207,7 +205,8 @@ class Filemanager {
                 $da = array();
                 if(count($data) > 2){
                     $da['line'] = $data[1];
-                    $da['file'] = str_replace(WORKSPACE,'',$data[0]);
+                    $da['file'] = str_replace($this->path,'',$data[0]);
+                    $da['result'] = str_replace($this->root, '', $data[0]);
                     $da['string'] = str_replace($data[0] . ":" . $data[1] . ':' , '', $line);
                     $return[] = $da;
                 }
