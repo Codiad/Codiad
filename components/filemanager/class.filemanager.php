@@ -192,6 +192,9 @@ class Filemanager {
             $this->status = "error";
             $this->message = "Shell_exec() Command Not Enabled.";
         }else{
+            if($_GET['type'] == 1) {
+                $this->path = WORKSPACE;
+            }
             $input = str_replace('"' , '', $this->search_string);
             $input = preg_quote($input);
             $output = shell_exec('grep -i -I -n -R "' . $input . '" ' . $this->path . '* ');
