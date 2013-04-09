@@ -202,8 +202,7 @@ class Filemanager {
                 $da = array();
                 if(count($data) > 2){
                     $da['line'] = $data[1];
-                    $da['file'] = str_replace($this->path,'',$data[0]);
-                    $da['result'] = str_replace($this->root, '', $data[0]);
+                    $da['file'] = str_replace(WORKSPACE,'',$data[0]);
                     $da['string'] = str_replace($data[0] . ":" . $data[1] . ':' , '', $line);
                     $return[] = $da;
                 }
