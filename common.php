@@ -40,14 +40,16 @@
     //////////////////////////////////////////////////////////////////
     // SESSIONS
     //////////////////////////////////////////////////////////////////
-    if(isset($cookie_lifetime) && $cookie_lifetime != "") {
+    if(isset($cookie_lifetime) && $cookie_lifetime != "") {s
         ini_set("session.cookie_lifetime", $cookie_lifetime);
     }
     
     if(isset($cookie_path) && $cookie_path != "") {
         ini_set("session.cookie_path", $cookie_path);
     } else {
-        ini_set("session.cookie_path", "/");  
+        if(isset($rel) && $rel != '') {
+            ini_set("session.cookie_path", str_replace($_SERVER['DOCUMENT_ROOT'], '', $rel));
+        }
     }
 
     session_start();
