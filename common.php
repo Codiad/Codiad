@@ -40,7 +40,7 @@
     //////////////////////////////////////////////////////////////////
     // SESSIONS
     //////////////////////////////////////////////////////////////////
-    if(isset($cookie_lifetime) && $cookie_path != "") {
+    if(isset($cookie_lifetime) && $cookie_lifetime != "") {
         ini_set("session.cookie_lifetime", $cookie_lifetime);
     } else {
         ini_set("session.cookie_lifetime", "0");
