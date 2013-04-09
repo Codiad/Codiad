@@ -42,8 +42,6 @@
     //////////////////////////////////////////////////////////////////
     if(isset($cookie_lifetime) && $cookie_lifetime != "") {
         ini_set("session.cookie_lifetime", $cookie_lifetime);
-    } else {
-        ini_set("session.cookie_lifetime", "0");
     }
     
     if(isset($cookie_path) && $cookie_path != "") {
