@@ -47,13 +47,7 @@
     if(isset($cookie_path) && $cookie_path != "") {
         ini_set("session.cookie_path", $cookie_path);
     } else {
-        if(isset($rel) && $rel != "") {
-           ini_set("session.cookie_path", $rel); 
-        }
-        else
-        {
-           ini_set("session.cookie_path", "/");  
-        }
+        ini_set("session.cookie_path", "/");  
     }
 
     session_start();
