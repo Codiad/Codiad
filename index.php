@@ -18,8 +18,12 @@ foreach ($allFiles as $fname){
 	if($fname == '.' || $fname == '..' ){
 		continue;
 	}
-	if(is_dir(COMPONENTS.'/'.$fname)){
-		$components[] = $fname;
+	
+	if(is_dir(COMPONENTS.'/'.$fname)) {
+	    if (file_exists(COMPONENTS . "/" .  $fname . "/comp_disable")) {
+		continue;
+	    }
+	    $components[] = $fname;
 	}
 }
 
@@ -261,6 +265,11 @@ foreach ($allFiles as $fname){
                 ////////////////////////////////////////////////////////////
 
                 foreach($right_bar as $item_rb=>$data){
+		    $comp = $data['component'];
+
+		    if ($comp && !array_search($comp, $components)) {
+			continue;
+		    }
 
                     if($data['title']=='break'){
                         echo("<hr>");
