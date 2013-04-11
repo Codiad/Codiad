@@ -110,6 +110,17 @@ class Project {
                 if($this->path[0] !== '/') {
                     mkdir(WORKSPACE . '/' . $this->path);
                 } else {
+                    if(defined('WHITEPATHS')) {
+                        $allowed = false;
+                        foreach (explode(",",WHITEPATHS) as $whitepath) {
+                            if(strpos($this->path, $whitepath) === 0) {
+                                $allowed = true;
+                            }
+                        }
+                        if(!$allowed) {
+                            die(formatJSEND("error","Absolute Path Only Allowed for ".WHITEPATHS));
+                        }
+                    }
                     if(!file_exists($this->path)) {
                         if(!mkdir($this->path.'/', 0755, true)) {
                             die(formatJSEND("error","Unable to create Absolute Path"));
