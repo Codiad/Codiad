@@ -104,7 +104,7 @@ switch($_GET['action']){
                 <select name="search_type">
                     <option value="0">Current Project</option>
                     <?php if(checkAccess()) { ?>
-                    <option value="1">All Projects</option>
+                    <option value="1">Workspace Projects</option>
                     <? } ?>
                 </select>
             </td>

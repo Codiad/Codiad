@@ -69,7 +69,7 @@ if(!$workspace || !$data || !$config){
     
     <label>New Project Name</label>
     <input type="text" name="project_name">
-    <label>New Project Folder or Absolute Path</label>
+    <label>New Workspace Folder or Absolute Path</label>
     <input type="text" name="project_path">
     
     <hr>

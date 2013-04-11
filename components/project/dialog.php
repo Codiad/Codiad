@@ -126,7 +126,7 @@
             <form>
             <label>Project Name</label>
             <input name="project_name" autofocus="autofocus" autocomplete="off">
-            <label>Project Folder or Absolute Path</label>
+            <label>Workspace Folder or Absolute Path</label>
             <input name="project_path" autofocus="off" autocomplete="off">
             
             <!-- Clone From GitHub -->
