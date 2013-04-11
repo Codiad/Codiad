@@ -332,11 +332,15 @@
                     }
                 });
             } else {
-                if ($.inArray(ext, this.noBrowser) < 0) {
-                    this.download(path);
-                } else {
-                    this.openInModal(path);
-                }
+                if(!codiad.project.isAbsPath(path)) {
+                    if ($.inArray(ext, this.noBrowser) < 0) {
+                        this.download(path);
+                    } else {
+                        this.openInModal(path);
+                    }
+                 } else {
+                    codiad.message.error('Unable to open file in Browser');
+                 }
             }
         },
 

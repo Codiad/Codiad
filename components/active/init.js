@@ -896,7 +896,7 @@
             var index = path.lastIndexOf('/');
             return {
                 fileName: path.substring(index + 1),
-                directory: path.substring(0, index + 1)
+                directory: (path.indexOf('/') == 0)? path.substring(1, index + 1):path.substring(0, index + 1)
             }
         },
         
