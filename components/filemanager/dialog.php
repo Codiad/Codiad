@@ -92,13 +92,15 @@ switch($_GET['action']){
     case 'search':
     ?>
     <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">    
-    <label>Search Files:</label>
-    <table>
+    <table class="file-search-table">
         <tr>
-            <td width="75%">
-                   <input type="text" name="search_string" autofocus="autofocus">
+            <td width="65%">
+               <label>Search Files:</label>
+               <input type="text" name="search_string" autofocus="autofocus">
             </td>
+            <td width="5%">&nbsp;&nbsp;</td>
             <td>
+                <label>In:</label>
                 <select name="search_type">
                     <option value="0">Current Project</option>
                     <?php if(checkAccess()) { ?>
