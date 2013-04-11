@@ -114,6 +114,10 @@ class Project {
                         if(!mkdir($this->path.'/', 0755, true)) {
                             die(formatJSEND("error","Unable to create Absolute Path"));
                         }
+                    } else {
+                        if(!is_writable($this->path) || !is_readable($this->path)) {
+                            die(formatJSEND("error","No Read/Write Permission"));
+                        }
                     }
                 }
                 $this->projects[] = array("name"=>$this->name,"path"=>$this->path);

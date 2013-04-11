@@ -73,6 +73,10 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
             if(!mkdir($project_path.'/', 0755, true)) {
                 die("Unable to create Absolute Path");
             }
+        } else {
+            if(!is_writable($project_path) || !is_readable($project_path)) {
+                die("No Read/Write Permission");
+            }
         }
     }
     $project_data = array("name"=>$project_name,"path"=>$project_path);
