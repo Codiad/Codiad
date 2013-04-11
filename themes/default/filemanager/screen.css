@@ -201,6 +201,16 @@
     margin: 10px 0;
     color: #fff;
 }
+
+
+/* SEARCH */
+
+.file-search-table tr td {
+    border: none;
+    padding: 0;
+}
+
+
 /* ICONS */
 
 #file-manager a {
