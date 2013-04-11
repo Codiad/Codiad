@@ -6,7 +6,9 @@
 *  [root]/license.txt for more. This information must remain intact.
 */
 
-class Active {
+include('../common/class.common.php');
+
+class Active extends Common {
 
     //////////////////////////////////////////////////////////////////
     // PROPERTIES
@@ -42,7 +44,7 @@ class Active {
         if($this->actives){
             foreach($this->actives as $active=>$data){
               if(is_array($data) && isset($data['username']) && $data['username']==$this->username){
-                if(isAbsPath($data['path'])) {
+                if($this->isAbsPath($data['path'])) {
                     $root = "";
                 } else {
                     $root = $root.'/';
@@ -61,18 +63,6 @@ class Active {
             saveJSON('active.php',$this->actives);
         }
         echo formatJSEND("success",$active_list);
-    }
-    
-    //////////////////////////////////////////////////////////////////
-    // Check If Path is absolute
-    //////////////////////////////////////////////////////////////////
-        
-    function isAbsPath( $path ) {
-        if ( preg_match('/^[A-Za-z]:\\/', $path) || $path[0] === '\\' || $path[0] === '/') {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     //////////////////////////////////////////////////////////////////

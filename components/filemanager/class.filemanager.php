@@ -7,8 +7,9 @@
 */
 
 require_once('../../lib/diff_match_patch.php');
+include('../common/class.common.php');
 
-class Filemanager {
+class Filemanager extends Common {
 
     //////////////////////////////////////////////////////////////////
     // PROPERTIES
@@ -53,7 +54,7 @@ class Filemanager {
         if(!empty($get['query'])){ $this->query = $get['query']; }
         if(!empty($get['options'])){ $this->foptions = $get['options']; }
         $this->root = $get['root'];
-        if(Filemanager::isAbsPath($get['path'])) {
+        if($this->isAbsPath($get['path'])) {
             $this->path = Filemanager::cleanPath( $get['path'] );
         } else {
             $this->root .= '/';
@@ -79,18 +80,6 @@ class Filemanager {
         if(!empty($get['destination'])){
             $get['destination'] = Filemanager::cleanPath( $get['destination'] );
             $this->destination = $this->root . $get['destination'];
-        }
-    }
-    
-    //////////////////////////////////////////////////////////////////
-    // Check If Path is absolute
-    //////////////////////////////////////////////////////////////////
-        
-    public static function isAbsPath( $path ) {
-        if ( preg_match('/^[A-Za-z]:\\/', $path) || $path[0] === '\\' || $path[0] === '/' ) {
-            return true;
-        } else {
-            return false;
         }
     }
 

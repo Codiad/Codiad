@@ -6,7 +6,9 @@
 *  [root]/license.txt for more. This information must remain intact.
 */
 
-class Project {
+include('../common/class.common.php');
+
+class Project extends Common {
 
     //////////////////////////////////////////////////////////////////
     // PROPERTIES
@@ -38,18 +40,6 @@ class Project {
         }
     }
     
-    //////////////////////////////////////////////////////////////////
-    // Check If Path is absolute
-    //////////////////////////////////////////////////////////////////
-        
-    function isAbsPath( $path ) {
-        if ( preg_match('/^[A-Za-z]:\\/', $path) || $path[0] === '\\' || $path[0] === '/') {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     //////////////////////////////////////////////////////////////////
     // Get First (Default, none selected)
     //////////////////////////////////////////////////////////////////
@@ -117,12 +107,12 @@ class Project {
     public function Create(){
         if($this->name != '' && $this->path != '') {
             $this->path = $this->cleanPath();
-            if(!isAbsPath($this->path)) {
+            if(!$this->isAbsPath($this->path)) {
                 $this->path = $this->SanitizePath();
             }
             $pass = $this->checkDuplicate();
             if($pass){
-                if(!isAbsPath($this->path)) {
+                if(!$this->isAbsPath($this->path)) {
                     mkdir(WORKSPACE . '/' . $this->path);
                 } else {
                     if(defined('WHITEPATHS')) {
@@ -151,7 +141,7 @@ class Project {
                 
                 // Pull from Git Repo?
                 if($this->gitrepo){
-                    if(!isAbsPath($this->path)) {
+                    if(!$this->isAbsPath($this->path)) {
                         $this->command_exec = "cd " . WORKSPACE . '/' . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
                     } else {
                         $this->command_exec = "cd " . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
@@ -194,20 +184,6 @@ class Project {
         $pass = true;
         foreach($this->projects as $project=>$data){
             if($data['name']==$this->name || $data['path']==$this->path){
-                $pass = false;
-            }
-        }
-        return $pass;
-    }
-    
-    //////////////////////////////////////////////////////////////////
-    // Validate Path
-    //////////////////////////////////////////////////////////////////
-
-    public function ValidateAbsPath(){
-        $pass = true;
-        if(!isAbsPath($this->path)) {
-            if(strpos($this->path, "\\") !== false || strpos($this->path, "/") !== false) {
                 $pass = false;
             }
         }
