@@ -203,7 +203,6 @@
                 } 
              });
             return currentResponse;
-
         }
     };
 })(this, jQuery);

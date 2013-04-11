@@ -622,7 +622,9 @@
                 e.preventDefault();
                 searchString = $('#modal-content form input[name="search_string"]')
                     .val();
-                $.post(_this.controller + '?action=search&path=' + path, {
+                searchType = $('#modal-content form select[name="search_type"]')
+                    .val();
+                $.post(_this.controller + '?action=search&path=' + path + '&type=' + searchType, {
                     search_string: searchString
                 }, function(data) {
                     searchResponse = codiad.jsend.parse(data);
@@ -635,7 +637,7 @@
                             }
                             val['file'] = val['file'].replace('//','/');
                             // Add result
-                            results += '<div><a onclick="codiad.filemanager.openFile(\'' + val['file'] + '\');setTimeout( function() { codiad.active.gotoLine(' + val['line'] + '); }, 500);codiad.modal.unload();">Line ' + val['line'] + ': ' + val['file'] + '</a></div>';
+                            results += '<div><a onclick="codiad.filemanager.openFile(\'' + val['result'] + '\');setTimeout( function() { codiad.active.gotoLine(' + val['line'] + '); }, 500);codiad.modal.unload();">Line ' + val['line'] + ': ' + val['file'] + '</a></div>';
                         });
                         $('#filemanager-search-results')
                             .slideDown()
