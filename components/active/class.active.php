@@ -42,10 +42,10 @@ class Active {
         if($this->actives){
             foreach($this->actives as $active=>$data){
               if(is_array($data) && isset($data['username']) && $data['username']==$this->username){
-                if($data['path'][0] !== '/') {
-                    $root = $root.'/';
-                } else {
+                if(isAbsPath($data['path'])) {
                     $root = "";
+                } else {
+                    $root = $root.'/';
                 }
                 if (file_exists($root.$data['path'])) {
                     $focused = isset($data['focused']) ? $data['focused'] : false;
@@ -61,6 +61,18 @@ class Active {
             saveJSON('active.php',$this->actives);
         }
         echo formatJSEND("success",$active_list);
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Check If Path is absolute
+    //////////////////////////////////////////////////////////////////
+        
+    function isAbsPath( $path ) {
+        if ( preg_match('/^[A-Za-z]:\\/', $path) || $path[0] === '\\' || $path[0] === '/') {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     //////////////////////////////////////////////////////////////////

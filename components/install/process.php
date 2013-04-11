@@ -40,6 +40,14 @@
     function cleanUsername($username){
         return preg_replace('#[^A-Za-z0-9'.preg_quote('-_@. ').']#','', $username);
     }
+       
+    function isAbsPath( $path ) {
+        if ( preg_match('/^[A-Za-z]:\\/', $path) || $path[0] === '\\' || $path[0] === '/') {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 //////////////////////////////////////////////////////////////////////
 // Verify no overwrites
@@ -66,7 +74,7 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
         $project_path = substr($project_path,0, strlen($project_path)-1);
     }    
     
-    if($project_path[0] !== '/') {
+    if(!isAbsPath($project_path)) {
         mkdir($workspace . "/" . $project_path);
     } else {
         if(!file_exists($project_path)) {

@@ -53,11 +53,11 @@ class Filemanager {
         if(!empty($get['query'])){ $this->query = $get['query']; }
         if(!empty($get['options'])){ $this->foptions = $get['options']; }
         $this->root = $get['root'];
-        if($get['path'][0] !==  "/") {
+        if(Filemanager::isAbsPath($get['path'])) {
+            $this->path = Filemanager::cleanPath( $get['path'] );
+        } else {
             $this->root .= '/';
             $this->path = $this->root . Filemanager::cleanPath( $get['path'] );
-        } else {
-            $this->path = Filemanager::cleanPath( $get['path'] );
         }
         // Search
         if(!empty($post['search_string'])){ $this->search_string = $post['search_string']; }
@@ -79,6 +79,18 @@ class Filemanager {
         if(!empty($get['destination'])){
             $get['destination'] = Filemanager::cleanPath( $get['destination'] );
             $this->destination = $this->root . $get['destination'];
+        }
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Check If Path is absolute
+    //////////////////////////////////////////////////////////////////
+        
+    public static function isAbsPath( $path ) {
+        if ( preg_match('/^[A-Za-z]:\\/', $path) || $path[0] === '\\' || $path[0] === '/' ) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -201,7 +213,7 @@ class Filemanager {
             }
             $input = str_replace('"' , '', $this->search_string);
             $input = preg_quote($input);
-            $output = shell_exec('grep -i -I -n -R "' . $input . '" ' . $this->path . '* ');
+            $output = shell_exec('grep -i -I -n -R "' . $input . '" ' . $this->path . '/* ');
             $output_arr = explode("\n", $output);
             $return = array();
             foreach($output_arr as $line){

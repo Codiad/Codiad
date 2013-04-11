@@ -202,7 +202,9 @@ if(!$workspace || !$data || !$config){
             // Check Path
             check_path = true;
             projectPath = $('input[name="project_path"]').val();
-            if(projectPath.indexOf("/") != 0){
+            if ( /^[A-Za-z]:\\/.test(projectPath) || projectPath.indexOf("\\") == 0 || projectPath.indexOf("/") == 0 ) {
+                check_path = true;
+            } else {
                 check_path = false;
             }
             
