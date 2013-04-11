@@ -79,7 +79,11 @@ class Filemanager extends Common {
         // Duplicate
         if(!empty($get['destination'])){
             $get['destination'] = Filemanager::cleanPath( $get['destination'] );
-            $this->destination = $this->root . $get['destination'];
+            if($this->isAbsPath($get['path'])) {
+                $this->destination = $get['destination'];
+            } else {
+                $this->destination = $this->root . $get['destination'];
+            }
         }
     }
 
