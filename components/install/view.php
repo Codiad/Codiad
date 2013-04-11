@@ -201,11 +201,16 @@ if(!$workspace || !$data || !$config){
             
             // Check Path
             check_path = true;
-            if($('input[name="project_path"]').val().indexOf("/") != 0){
+            projectPath = $('input[name="project_path"]').val();
+            if(projectPath.indexOf("/") != 0){
                 check_path = false;
             }
             
             if(!check_path){ alert('Not a valid Absolute Path'); }
+            
+            if(projectPath.indexOf('/') == 0) {
+                check_path = confirm('Do you really want to create project with absolute path "' + projectPath + '"?');
+            }
             
             if(!password_match){ alert('The passwords entered do not match'); }
             

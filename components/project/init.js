@@ -124,6 +124,7 @@
 
         create: function(close) {
             var _this = this;
+            create = true;
             codiad.modal.load(500, this.dialog + '?action=create&close=' + close);
             $('#modal-content form')
                 .live('submit', function(e) {
@@ -136,14 +137,19 @@
                     .val(),
                     gitBranch = $('#modal-content form input[name="git_branch"]')
                     .val();
-                $.get(_this.controller + '?action=create&project_name=' + projectName + '&project_path=' + projectPath + '&git_repo=' + gitRepo + '&git_branch=' + gitBranch, function(data) {
-                    createResponse = codiad.jsend.parse(data);
-                    if (createResponse != 'error') {
-                        _this.open(createResponse.path);
-                        codiad.modal.unload();
-                        _this.loadSide();
+                    if(projectPath.indexOf('/') == 0) {
+                        create = confirm('Do you really want to create project with absolute path "' + projectPath + '"?');
                     }
-                });
+                if(create) {    
+                    $.get(_this.controller + '?action=create&project_name=' + projectName + '&project_path=' + projectPath + '&git_repo=' + gitRepo + '&git_branch=' + gitBranch, function(data) {
+                        createResponse = codiad.jsend.parse(data);
+                        if (createResponse != 'error') {
+                            _this.open(createResponse.path);
+                            codiad.modal.unload();
+                            _this.loadSide();
+                        }
+                    });
+                }
             });
         },
         
