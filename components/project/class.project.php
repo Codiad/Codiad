@@ -115,52 +115,56 @@ class Project {
     //////////////////////////////////////////////////////////////////
 
     public function Create(){
-        $this->path = $this->cleanPath();
-        if(!isAbsPath($this->path)) {
-            $this->path = $this->SanitizePath();
-        }
-        $pass = $this->checkDuplicate();
-        if($pass){
+        if($this->name != '' && $this->path != '') {
+            $this->path = $this->cleanPath();
             if(!isAbsPath($this->path)) {
-                mkdir(WORKSPACE . '/' . $this->path);
-            } else {
-                if(defined('WHITEPATHS')) {
-                    $allowed = false;
-                    foreach (explode(",",WHITEPATHS) as $whitepath) {
-                        if(strpos($this->path, $whitepath) === 0) {
-                            $allowed = true;
+                $this->path = $this->SanitizePath();
+            }
+            $pass = $this->checkDuplicate();
+            if($pass){
+                if(!isAbsPath($this->path)) {
+                    mkdir(WORKSPACE . '/' . $this->path);
+                } else {
+                    if(defined('WHITEPATHS')) {
+                        $allowed = false;
+                        foreach (explode(",",WHITEPATHS) as $whitepath) {
+                            if(strpos($this->path, $whitepath) === 0) {
+                                $allowed = true;
+                            }
+                        }
+                        if(!$allowed) {
+                            die(formatJSEND("error","Absolute Path Only Allowed for ".WHITEPATHS));
                         }
                     }
-                    if(!$allowed) {
-                        die(formatJSEND("error","Absolute Path Only Allowed for ".WHITEPATHS));
+                    if(!file_exists($this->path)) {
+                        if(!mkdir($this->path.'/', 0755, true)) {
+                            die(formatJSEND("error","Unable to create Absolute Path"));
+                        }
+                    } else {
+                        if(!is_writable($this->path) || !is_readable($this->path)) {
+                            die(formatJSEND("error","No Read/Write Permission"));
+                        }
                     }
                 }
-                if(!file_exists($this->path)) {
-                    if(!mkdir($this->path.'/', 0755, true)) {
-                        die(formatJSEND("error","Unable to create Absolute Path"));
+                $this->projects[] = array("name"=>$this->name,"path"=>$this->path);
+                saveJSON('projects.php',$this->projects);
+                
+                // Pull from Git Repo?
+                if($this->gitrepo){
+                    if(!isAbsPath($this->path)) {
+                        $this->command_exec = "cd " . WORKSPACE . '/' . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
+                    } else {
+                        $this->command_exec = "cd " . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
                     }
-                } else {
-                    if(!is_writable($this->path) || !is_readable($this->path)) {
-                        die(formatJSEND("error","No Read/Write Permission"));
-                    }
+                    $this->ExecuteCMD();
                 }
+                
+                echo formatJSEND("success",array("name"=>$this->name,"path"=>$this->path));
+            }else{
+                echo formatJSEND("error","A Project With the Same Name or Path Exists");
             }
-            $this->projects[] = array("name"=>$this->name,"path"=>$this->path);
-            saveJSON('projects.php',$this->projects);
-            
-            // Pull from Git Repo?
-            if($this->gitrepo){
-                if(!isAbsPath($this->path)) {
-                    $this->command_exec = "cd " . WORKSPACE . '/' . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
-                } else {
-                    $this->command_exec = "cd " . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
-                }
-                $this->ExecuteCMD();
-            }
-            
-            echo formatJSEND("success",array("name"=>$this->name,"path"=>$this->path));
-        }else{
-            echo formatJSEND("error","A Project With the Same Name or Path Exists");
+        } else {
+             echo formatJSEND("error","Project Name/Folder is empty");
         }
     }
 
