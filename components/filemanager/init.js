@@ -120,6 +120,11 @@
                     .hide();
                 break;
             }
+            if(codiad.project.isAbsPath($('#file-manager a[data-type="root"]').attr('data-path'))) {
+                $('#context-menu .no-external').hide();
+            } else {
+                $('#context-menu .no-external').show();
+            }
             // Show menu
             $('#context-menu')
                 .css({

@@ -6,7 +6,9 @@
 *  [root]/license.txt for more. This information must remain intact.
 */
 
-class Active {
+include('../common/class.common.php');
+
+class Active extends Common {
 
     //////////////////////////////////////////////////////////////////
     // PROPERTIES
@@ -38,10 +40,16 @@ class Active {
     public function ListActive(){
         $active_list = array();
         $tainted = FALSE;
+        $root = WORKSPACE;
         if($this->actives){
             foreach($this->actives as $active=>$data){
               if(is_array($data) && isset($data['username']) && $data['username']==$this->username){
-                if (file_exists(dirname(__FILE__)."/../../workspace".$data['path'])) {
+                if($this->isAbsPath($data['path'])) {
+                    $root = "";
+                } else {
+                    $root = $root.'/';
+                }
+                if (file_exists($root.$data['path'])) {
                     $focused = isset($data['focused']) ? $data['focused'] : false;
                     $active_list[] = array('path'=>$data['path'], 'focused'=>$focused);
                 } else {

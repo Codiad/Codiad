@@ -54,6 +54,7 @@
     if($_GET['action']=='create'){
         if(checkAccess()) {
             $Project->name = $_GET['project_name'];
+            $Project->path = $_GET['project_path'];
             // Git Clone?
             if(!empty($_GET['git_repo'])){
                 $Project->gitrepo = $_GET['git_repo'];

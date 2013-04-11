@@ -899,22 +899,22 @@
                 directory: path.substring(0, index + 1)
             }
         },
-
+        
         createListThumb: function(path) {
-            return $('<li data-path="' + path + '"><a title="'+path+'"><span></span><div>' + path.substring(1) + '</div></a></li>');
+            return $('<li data-path="' + path + '"><a title="'+path+'"><span></span><div>' + path + '</div></a></li>');
         },
 
         createTabThumb: function(path) {
             split = this.splitDirectoryAndFileName(path);
             return $('<li class="tab-item" data-path="' + path + '"><a class="label" title="' + path + '">' 
-                    + split.directory.substring(1) + '<span class="file-name">' + split.fileName + '</span>' 
+                    + split.directory + '<span class="file-name">' + split.fileName + '</span>' 
                     + '</a><a class="close">x</a></li>');
         },
 
         createMenuItemThumb: function(path) {
             split = this.splitDirectoryAndFileName(path);
             return $('<li data-path="' + path + '"><a title="' + path + '"><span class="label"></span><div class="label">' 
-                    + split.directory.substring(1) + '<span class="file-name">' + split.fileName + '</span>'
+                    + split.directory + '<span class="file-name">' + split.fileName + '</span>'
                     + '</div></a></li>');
         },
 

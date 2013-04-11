@@ -40,6 +40,26 @@
     function cleanUsername($username){
         return preg_replace('#[^A-Za-z0-9'.preg_quote('-_@. ').']#','', $username);
     }
+       
+    function isAbsPath( $path ) {
+        if ( preg_match('/^[A-Za-z]:\\/', $path) || $path[0] === '\\' || $path[0] === '/') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function cleanPath( $path ){
+
+        // prevent Poison Null Byte injections
+        $path = str_replace(chr(0), '', $path );
+
+        // prevent go out of the workspace
+        while (strpos($path , '../') !== false)
+            $path = str_replace( '../', '', $path );
+
+        return $path;
+    }
 
 //////////////////////////////////////////////////////////////////////
 // Verify no overwrites
@@ -53,15 +73,33 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     
     $username = cleanUsername($_POST['username']);
     $password = encryptPassword($_POST['password']);
-    $project_name = $_POST['project'];
+    $project_name = $_POST['project_name'];
+    $project_path = $_POST['project_path'];
     $timezone = $_POST['timezone'];
     
     //////////////////////////////////////////////////////////////////
     // Create Projects files
     //////////////////////////////////////////////////////////////////
     
-    $project_path = str_replace(" ","_",preg_replace('/[^\w-]/', '', $project_name));
-    mkdir($workspace . "/" . $project_path);
+    $project_path = cleanPath($project_path);   
+    
+    if(!isAbsPath($project_path)) {
+        $project_path = str_replace(" ","_",preg_replace('/[^\w-]/', '', $project_path));   
+        mkdir($workspace . "/" . $project_path);
+    } else {
+        if(substr($project_path, -1) == '/') {
+            $project_path = substr($project_path,0, strlen($project_path)-1);
+        }  
+        if(!file_exists($project_path)) {
+            if(!mkdir($project_path.'/', 0755, true)) {
+                die("Unable to create Absolute Path");
+            }
+        } else {
+            if(!is_writable($project_path) || !is_readable($project_path)) {
+                die("No Read/Write Permission");
+            }
+        }
+    }
     $project_data = array("name"=>$project_name,"path"=>$project_path);
     saveJSON($projects,$project_data);
     
@@ -110,6 +148,12 @@ define("WSURL",$_SERVER["HTTP_HOST"] . $rel . "/workspace");
 //////////////////////////////////////////////////////////////////
 
 define("THEME", "default");
+
+//////////////////////////////////////////////////////////////////
+// ABSOLUTE PATH
+//////////////////////////////////////////////////////////////////
+
+define("WHITEPATHS", $_SERVER["DOCUMENT_ROOT"].",/home");
 
 //////////////////////////////////////////////////////////////////
 // SESSIONS

@@ -26,13 +26,13 @@
     {
         "title": "Break",
         "icon": null,
-        "applies-to" : "directory-only",
+        "applies-to" : "directory-only no-external",
         "onclick": null
     },
     {
         "title": "Upload Files",
         "icon": "icon-upload",
-        "applies-to" : "directory-only",
+        "applies-to" : "directory-only no-external",
         "onclick": "codiad.filemanager.uploadToNode($('#context-menu').attr('data-path'));"
     },
     {
@@ -80,13 +80,13 @@
     {
         "title": "Break",
         "icon": null,
-        "applies-to" : "both",
+        "applies-to" : "both no-external",
         "onclick": null
     },
     {
         "title": "Download",
         "icon": "icon-download",
-        "applies-to" : "both",
+        "applies-to" : "both no-external",
         "onclick": "codiad.filemanager.download($('#context-menu').attr('data-path'));"
     },
     {
