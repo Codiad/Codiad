@@ -49,6 +49,18 @@
         }
     }
 
+    function cleanPath( $path ){
+
+        // prevent Poison Null Byte injections
+        $path = str_replace(chr(0), '', $path );
+
+        // prevent go out of the workspace
+        while (strpos($path , '../') !== false)
+            $path = str_replace( '../', '', $path );
+
+        return $path;
+    }
+
 //////////////////////////////////////////////////////////////////////
 // Verify no overwrites
 //////////////////////////////////////////////////////////////////////
@@ -69,14 +81,15 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     // Create Projects files
     //////////////////////////////////////////////////////////////////
     
-    $project_path = str_replace(" ","_",preg_replace('/[^\w-\/]/', '', $project_path)); 
-    if(substr($project_path, -1) == '/') {
-        $project_path = substr($project_path,0, strlen($project_path)-1);
-    }    
+    $project_path = cleanPath($project_path);   
     
     if(!isAbsPath($project_path)) {
+        $project_path = str_replace(" ","_",preg_replace('/[^\w-]/', '', $project_path));   
         mkdir($workspace . "/" . $project_path);
     } else {
+        if(substr($project_path, -1) == '/') {
+            $project_path = substr($project_path,0, strlen($project_path)-1);
+        }  
         if(!file_exists($project_path)) {
             if(!mkdir($project_path.'/', 0755, true)) {
                 die("Unable to create Absolute Path");

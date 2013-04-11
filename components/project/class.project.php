@@ -37,6 +37,18 @@ class Project {
             $this->assigned = getJSON($_SESSION['user'] . '_acl.php');
         }
     }
+    
+    //////////////////////////////////////////////////////////////////
+    // Check If Path is absolute
+    //////////////////////////////////////////////////////////////////
+        
+    function isAbsPath( $path ) {
+        if ( preg_match('/^[A-Za-z]:\\/', $path) || $path[0] === '\\' || $path[0] === '/') {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     //////////////////////////////////////////////////////////////////
     // Get First (Default, none selected)
@@ -103,54 +115,53 @@ class Project {
     //////////////////////////////////////////////////////////////////
 
     public function Create(){
-        $this->path = $this->SanitizePath();
-        if($this->ValidateAbsPath()) {
-            $pass = $this->checkDuplicate();
-            if($pass){
-                if($this->path[0] !== '/') {
-                    mkdir(WORKSPACE . '/' . $this->path);
+        $this->path = $this->cleanPath();
+        if(!isAbsPath($this->path)) {
+            $this->path = $this->SanitizePath();
+        }
+        $pass = $this->checkDuplicate();
+        if($pass){
+            if(!isAbsPath($this->path)) {
+                mkdir(WORKSPACE . '/' . $this->path);
+            } else {
+                if(defined('WHITEPATHS')) {
+                    $allowed = false;
+                    foreach (explode(",",WHITEPATHS) as $whitepath) {
+                        if(strpos($this->path, $whitepath) === 0) {
+                            $allowed = true;
+                        }
+                    }
+                    if(!$allowed) {
+                        die(formatJSEND("error","Absolute Path Only Allowed for ".WHITEPATHS));
+                    }
+                }
+                if(!file_exists($this->path)) {
+                    if(!mkdir($this->path.'/', 0755, true)) {
+                        die(formatJSEND("error","Unable to create Absolute Path"));
+                    }
                 } else {
-                    if(defined('WHITEPATHS')) {
-                        $allowed = false;
-                        foreach (explode(",",WHITEPATHS) as $whitepath) {
-                            if(strpos($this->path, $whitepath) === 0) {
-                                $allowed = true;
-                            }
-                        }
-                        if(!$allowed) {
-                            die(formatJSEND("error","Absolute Path Only Allowed for ".WHITEPATHS));
-                        }
-                    }
-                    if(!file_exists($this->path)) {
-                        if(!mkdir($this->path.'/', 0755, true)) {
-                            die(formatJSEND("error","Unable to create Absolute Path"));
-                        }
-                    } else {
-                        if(!is_writable($this->path) || !is_readable($this->path)) {
-                            die(formatJSEND("error","No Read/Write Permission"));
-                        }
+                    if(!is_writable($this->path) || !is_readable($this->path)) {
+                        die(formatJSEND("error","No Read/Write Permission"));
                     }
                 }
-                $this->projects[] = array("name"=>$this->name,"path"=>$this->path);
-                saveJSON('projects.php',$this->projects);
-                
-                // Pull from Git Repo?
-                if($this->gitrepo){
-                    if($this->path[0] !== '/') {
-                        $this->command_exec = "cd " . WORKSPACE . '/' . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
-                    } else {
-                        $this->command_exec = "cd " . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
-                    }
-                    $this->ExecuteCMD();
-                }
-                
-                echo formatJSEND("success",array("name"=>$this->name,"path"=>$this->path));
-            }else{
-                echo formatJSEND("error","A Project With the Same Name or Path Exists");
             }
-         } else {
-            echo formatJSEND("error","Not a valid Absolute Path");
-         }
+            $this->projects[] = array("name"=>$this->name,"path"=>$this->path);
+            saveJSON('projects.php',$this->projects);
+            
+            // Pull from Git Repo?
+            if($this->gitrepo){
+                if(!isAbsPath($this->path)) {
+                    $this->command_exec = "cd " . WORKSPACE . '/' . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
+                } else {
+                    $this->command_exec = "cd " . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
+                }
+                $this->ExecuteCMD();
+            }
+            
+            echo formatJSEND("success",array("name"=>$this->name,"path"=>$this->path));
+        }else{
+            echo formatJSEND("error","A Project With the Same Name or Path Exists");
+        }
     }
 
     //////////////////////////////////////////////////////////////////
@@ -191,8 +202,10 @@ class Project {
 
     public function ValidateAbsPath(){
         $pass = true;
-        if($this->path[0] !== '/' && strpos($this->path, "/") !== false) {
-            $pass = false;
+        if(!isAbsPath($this->path)) {
+            if(strpos($this->path, "\\") !== false || strpos($this->path, "/") !== false) {
+                $pass = false;
+            }
         }
         return $pass;
     }
@@ -203,19 +216,23 @@ class Project {
 
     public function SanitizePath(){
         $sanitized = str_replace(" ","_",$this->path);
+        return preg_replace('/[^\w-]/', '', $sanitized);
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Clean Path
+    //////////////////////////////////////////////////////////////////
+    
+    function cleanPath(){
 
         // prevent Poison Null Byte injections
-        $sanitized = str_replace(chr(0), '', $sanitized );
+        $path = str_replace(chr(0), '', $this->path );
 
         // prevent go out of the workspace
-        while (strpos($sanitized , '../') !== false)
-            $sanitized = str_replace( '../', '', $sanitized );
-            
-        if(substr($sanitized, -1) == '/') {
-            $sanitized = substr($sanitized,0, strlen($sanitized)-1);
-        }    
+        while (strpos($path , '../') !== false)
+            $path = str_replace( '../', '', $path );
 
-        return preg_replace('/[^\w-\/]/', '', $sanitized);
+        return $path;
     }
     
     //////////////////////////////////////////////////////////////////
