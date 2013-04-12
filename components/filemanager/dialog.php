@@ -105,7 +105,7 @@ switch($_GET['action']){
                     <option value="0">Current Project</option>
                     <?php if(checkAccess()) { ?>
                     <option value="1">Workspace Projects</option>
-                    <? } ?>
+                    <?php } ?>
                 </select>
             </td>
         </tr>
@@ -120,5 +120,3 @@ switch($_GET['action']){
 
 ?>
 </form>
-    
-    
