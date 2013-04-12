@@ -418,6 +418,8 @@
             i.setHighlightActiveLine(this.settings.highlightLine);
             i.setDisplayIndentGuides(this.settings.indentGuides);
             i.getSession().setUseWrapMode(this.settings.wrapMode);
+            i.getSession().setTabSize(tabsize);
+            i.getSession().setUseSoftTabs(false);
 
             this.changeListener(i);
             this.cursorTracking(i);
