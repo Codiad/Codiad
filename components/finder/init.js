@@ -63,7 +63,11 @@
             var tree = {}, fpathArr, i, j, fragment, curLevel, type;
             for (i = 0; i < data.length; i++){
                 curLevel = tree;
-                fpathArr = data[i].path.split('/');
+                if(codiad.project.isAbsPath(data[i].path)) {
+                    fpathArr = data[i].path.replace(this._rootPath, this._rootName).split('/');
+                } else {
+                    fpathArr = data[i].path.split('/');
+                }
                 for (j = 0; j < fpathArr.length; j++){
                     fragment = fpathArr[j];
                     if (fragment === "") continue;
@@ -170,6 +174,7 @@
             //console.info("Saving tree state : ");
             this._htmlStash = $('#file-manager').html();
             this._rootPath = $('#project-root').attr('data-path');
+            this._rootName = $('#project-root').html();
             $("#finder-wrapper").show();
             $("#sb-left-title h2").hide();
             var _this = this;

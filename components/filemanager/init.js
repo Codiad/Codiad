@@ -120,6 +120,11 @@
                     .hide();
                 break;
             }
+            if(codiad.project.isAbsPath($('#file-manager a[data-type="root"]').attr('data-path'))) {
+                $('#context-menu .no-external').hide();
+            } else {
+                $('#context-menu .no-external').show();
+            }
             // Show menu
             $('#context-menu')
                 .css({
@@ -327,11 +332,15 @@
                     }
                 });
             } else {
-                if ($.inArray(ext, this.noBrowser) < 0) {
-                    this.download(path);
-                } else {
-                    this.openInModal(path);
-                }
+                if(!codiad.project.isAbsPath(path)) {
+                    if ($.inArray(ext, this.noBrowser) < 0) {
+                        this.download(path);
+                    } else {
+                        this.openInModal(path);
+                    }
+                 } else {
+                    codiad.message.error('Unable to open file in Browser');
+                 }
             }
         },
 
