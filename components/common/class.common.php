@@ -30,11 +30,7 @@ class Common {
     //////////////////////////////////////////////////////////////////
         
     public static function isAbsPath( $path ) {
-        if ( preg_match('/^[A-Za-z]:\\/', $path) || $path[0] === '\\' || $path[0] === '/') {
-            return true;
-        } else {
-            return false;
-        }
+        return ($path[0] === '/')?true:false;
     }
         
 }

@@ -199,7 +199,7 @@
         //////////////////////////////////////////////////////////////////
         
         isAbsPath: function(path) {
-            if ( /^[A-Za-z]:\\/.test(path) || path.indexOf("\\") == 0 || path.indexOf("/") == 0 ) {
+            if ( path.indexOf("/") == 0 ) {
                 return true;
             } else {
                 return false;

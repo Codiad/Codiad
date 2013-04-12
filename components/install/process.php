@@ -42,11 +42,7 @@
     }
        
     function isAbsPath( $path ) {
-        if ( preg_match('/^[A-Za-z]:\\/', $path) || $path[0] === '\\' || $path[0] === '/') {
-            return true;
-        } else {
-            return false;
-        }
+        return ($path[0] === '/')?true:false;
     }
 
     function cleanPath( $path ){
@@ -74,7 +70,11 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     $username = cleanUsername($_POST['username']);
     $password = encryptPassword($_POST['password']);
     $project_name = $_POST['project_name'];
-    $project_path = $_POST['project_path'];
+    if(isset($_POST['project_path'])) {
+        $project_path = $_POST['project_path'];
+    } else {
+        $project_path = $project_name;
+    }
     $timezone = $_POST['timezone'];
     
     //////////////////////////////////////////////////////////////////
@@ -87,6 +87,7 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
         $project_path = str_replace(" ","_",preg_replace('/[^\w-]/', '', $project_path));   
         mkdir($workspace . "/" . $project_path);
     } else {
+        $project_path = cleanPath($project_path); 
         if(substr($project_path, -1) == '/') {
             $project_path = substr($project_path,0, strlen($project_path)-1);
         }  
