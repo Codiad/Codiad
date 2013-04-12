@@ -7,8 +7,9 @@
 */
 
 require_once('../../lib/diff_match_patch.php');
+include('../common/class.common.php');
 
-class Filemanager {
+class Filemanager extends Common {
 
     //////////////////////////////////////////////////////////////////
     // PROPERTIES
@@ -53,8 +54,12 @@ class Filemanager {
         if(!empty($get['query'])){ $this->query = $get['query']; }
         if(!empty($get['options'])){ $this->foptions = $get['options']; }
         $this->root = $get['root'];
-        if($get['path'][0] != '/') { $get['path'] = '/'.$get['path']; }
-        $this->path = $this->root . Filemanager::cleanPath( $get['path'] );
+        if($this->isAbsPath($get['path'])) {
+            $this->path = Filemanager::cleanPath( $get['path'] );
+        } else {
+            $this->root .= '/';
+            $this->path = $this->root . Filemanager::cleanPath( $get['path'] );
+        }
         // Search
         if(!empty($post['search_string'])){ $this->search_string = $post['search_string']; }
         // Create
@@ -74,7 +79,11 @@ class Filemanager {
         // Duplicate
         if(!empty($get['destination'])){
             $get['destination'] = Filemanager::cleanPath( $get['destination'] );
-            $this->destination = $this->root . $get['destination'];
+            if($this->isAbsPath($get['path'])) {
+                $this->destination = $get['destination'];
+            } else {
+                $this->destination = $this->root . $get['destination'];
+            }
         }
     }
 
@@ -197,7 +206,7 @@ class Filemanager {
             }
             $input = str_replace('"' , '', $this->search_string);
             $input = preg_quote($input);
-            $output = shell_exec('grep -i -I -n -R "' . $input . '" ' . $this->path . '* ');
+            $output = shell_exec('grep -i -I -n -R "' . $input . '" ' . $this->path . '/* ');
             $output_arr = explode("\n", $output);
             $return = array();
             foreach($output_arr as $line){
