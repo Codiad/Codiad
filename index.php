@@ -65,7 +65,8 @@ foreach ($allFiles as $fname){
         return function(word) {
             return (word in lang) ? lang[word] : word;
         }
-    })(<?php echo json_encode($lang); ?>)
+    })(<?php echo json_encode($lang); ?>);
+    var tabsize = <?php echo tabsize; ?>;
     </script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script>!window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.7.2.min.js"%3E%3C/script%3E'));</script>
