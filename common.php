@@ -19,11 +19,11 @@
     }
     
     if(!defined('BASE_PATH')) {
-        define('BASE_PATH', dirname(__FILE__));
+        define('BASE_PATH', rtrim(str_replace("common.php", "", $_SERVER['SCRIPT_FILENAME']),"/"));
     }
     
     if(!defined('COMPONENTS')) {
-        define('COMPONENTS', dirname(__FILE__) . '/components');
+        define('COMPONENTS', BASE_PATH . '/components');
     }
     
     // Ensure theme vars are present (upgrade with legacy config.php)
@@ -44,13 +44,8 @@
         ini_set("session.cookie_lifetime", $cookie_lifetime);
     }
     
-    if(isset($cookie_path) && $cookie_path != "") {
-        ini_set("session.cookie_path", $cookie_path);
-    } else {
-        if(isset($rel) && $rel != '') {
-            ini_set("session.cookie_path", str_replace($_SERVER['DOCUMENT_ROOT'], '', $rel));
-        }
-    }
+    //Set a Session Name
+    session_name(md5(BASE_PATH));
 
     session_start();
     
