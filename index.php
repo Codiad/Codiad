@@ -24,6 +24,8 @@ foreach ($allFiles as $fname){
 }
 if(!defined("tabsize"))
     define("tabsize", 4);
+if(!defined("softtabs"))
+    define("softtabs", false);
 
 ?>
 <!doctype html>
@@ -69,6 +71,7 @@ if(!defined("tabsize"))
         }
     })(<?php echo json_encode($lang); ?>);
     var tabsize = <?php echo tabsize; ?>;
+    var softtabs = <?php echo softtabs ? "true" : "false"; ?>;
     </script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script>!window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.7.2.min.js"%3E%3C/script%3E'));</script>
