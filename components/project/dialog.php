@@ -163,6 +163,20 @@
             <?php
             break;
             
+        //////////////////////////////////////////////////////////////////
+        // Rename
+        //////////////////////////////////////////////////////////////////
+        case 'rename':
+        ?>
+        <form>
+        <input type="hidden" name="project_path" value="<?php echo($_GET['path']); ?>">
+        <label><span class="icon-pencil"></span>Rename Project</label>    
+        <input type="text" name="project_name" autofocus="autofocus" autocomplete="off" value="<?php echo($_GET['project_name']); ?>">  
+        <button class="btn-left">Rename</button>&nbsp;<button class="btn-right" onclick="codiad.modal.unload(); return false;">Cancel</button>
+        <form>
+        <?php
+        break;       
+            
         //////////////////////////////////////////////////////////////////////
         // Delete Project
         //////////////////////////////////////////////////////////////////////

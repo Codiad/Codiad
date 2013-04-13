@@ -66,6 +66,12 @@
         "onclick": "codiad.filemanager.renameNode($('#context-menu').attr('data-path'));"
     },
     {
+        "title": "Rename Project",
+        "icon": "icon-pencil",
+        "applies-to" : "root-only",
+        "onclick": "codiad.project.rename($('#context-menu').attr('data-path'));"
+    },   
+    {
         "title": "Break",
         "icon": null,
         "applies-to" : "non-root",

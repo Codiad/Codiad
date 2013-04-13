@@ -157,6 +157,24 @@ class Project extends Common {
              echo formatJSEND("error","Project Name/Folder is empty");
         }
     }
+    
+    //////////////////////////////////////////////////////////////////
+    // Rename
+    //////////////////////////////////////////////////////////////////
+
+    public function Rename(){
+        $revised_array = array();
+        foreach($this->projects as $project=>$data){
+            if($data['path']!=$this->path){
+                $revised_array[] = array("name"=>$data['name'],"path"=>$data['path']);
+            }
+        }
+        $revised_array[] = $this->projects[] = array("name"=>$_GET['project_name'],"path"=>$this->path);
+        // Save array back to JSON
+        saveJSON('projects.php',$revised_array);
+        // Response
+        echo formatJSEND("success",null);
+    }
 
     //////////////////////////////////////////////////////////////////
     // Delete Project
