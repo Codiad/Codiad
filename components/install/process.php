@@ -12,6 +12,9 @@
 
     $path = $_POST['path'];
     
+    $fslash = str_replace('\\', '/', $path);
+    $rel = str_replace($_SERVER['DOCUMENT_ROOT'], '', $fslash);
+    
     $workspace = $path . "/workspace";
     $users = $path . "/data/users.php";
     $projects = $path . "/data/projects.php";
@@ -118,10 +121,10 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     
     saveJSON($active,'');
     
+    
     //////////////////////////////////////////////////////////////////
     // Create Config
     //////////////////////////////////////////////////////////////////
-    
     
     
     $config_data = '<?php
@@ -136,8 +139,8 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
 // PATH
 //////////////////////////////////////////////////////////////////
 
-$rel = "' . $path . '";
-define("BASE_PATH",$rel);
+$rel = "' . $rel . '";
+define("BASE_PATH",$_SERVER["DOCUMENT_ROOT"] . $rel);
 define("COMPONENTS",BASE_PATH . "/components");
 define("THEMES",BASE_PATH . "/themes");
 define("DATA",BASE_PATH . "/data");
@@ -160,7 +163,7 @@ define("WHITEPATHS", $_SERVER["DOCUMENT_ROOT"].",/home");
 // SESSIONS
 //////////////////////////////////////////////////////////////////
 
-ini_set("session.cookie_lifetime","0");
+$cookie_lifetime = "0";
 
 //////////////////////////////////////////////////////////////////
 // TIMEZONE
