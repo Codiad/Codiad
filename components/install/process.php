@@ -173,6 +173,7 @@ date_default_timezone_set("' . $timezone . '");
 //////////////////////////////////////////////////////////////////
 
 define("tabsize", 4);
+define("softtabs", false);
 
 ?>';
 
