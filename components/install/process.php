@@ -168,6 +168,12 @@ ini_set("session.cookie_lifetime","0");
 
 date_default_timezone_set("' . $timezone . '");
 
+//////////////////////////////////////////////////////////////////
+// TAB SIZE
+//////////////////////////////////////////////////////////////////
+
+define("tabsize", 4);
+
 ?>';
 
     saveFile($config,$config_data);
