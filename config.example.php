@@ -47,5 +47,6 @@ date_default_timezone_set("America/Chicago");
 //////////////////////////////////////////////////////////////////
 
 define("tabsize", 4);
+define("softtabs", false);
 
 ?>
