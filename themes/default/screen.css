@@ -45,6 +45,17 @@ html, body {
     overflow: hidden;
 }
 
+div {
+    scrollbar-base-color:#1a1a1a;
+    scrollbar-3d-light-color:#1a1a1a;
+    scrollbar-arrow-color:#303030;
+    scrollbar-darkshadow-color:#303030;
+    scrollbar-face-color:#1a1a1a;
+    scrollbar-highlight-color:#303030;
+    scrollbar-shadow-color:#303030;
+    scrollbar-track-color:#303030;
+}
+
 /* GLOBALS */
 
 a,a:link,a:visited {
