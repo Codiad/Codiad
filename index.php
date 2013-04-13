@@ -22,6 +22,8 @@ foreach ($allFiles as $fname){
 		$components[] = $fname;
 	}
 }
+if(!defined("tabsize"))
+    define("tabsize", 4);
 
 ?>
 <!doctype html>
