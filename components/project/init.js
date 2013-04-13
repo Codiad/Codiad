@@ -154,6 +154,32 @@
         },
         
         //////////////////////////////////////////////////////////////////
+        // Rename Project
+        //////////////////////////////////////////////////////////////////
+
+        rename: function(path) {
+            var _this = this;
+            codiad.modal.load(500, this.dialog + '?action=rename&path=' + escape(path));
+            $('#modal-content form')
+                .live('submit', function(e) {
+                e.preventDefault();
+                var projectPath = $('#modal-content form input[name="project_path"]')
+                    .val();
+                var projectName = $('#modal-content form input[name="project_name"]')
+                    .val();    
+                $.get(_this.controller + '?action=rename&project_path=' + projectPath + '&project_name=' + projectName, function(data) {
+                   renameResponse = codiad.jsend.parse(data);
+                    if (renameResponse != 'error') {
+                        codiad.message.success(i18n('Project renamed'));
+                        _this.loadSide();
+                        $('#file-manager a[data-type="root"]').html(projectName);
+                        codiad.modal.unload();
+                    }
+                });
+            });
+        },
+        
+        //////////////////////////////////////////////////////////////////
         // Delete Project
         //////////////////////////////////////////////////////////////////
 

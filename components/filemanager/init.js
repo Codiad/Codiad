@@ -104,17 +104,17 @@
             case 'directory':
                 $('#context-menu .directory-only, #context-menu .non-root')
                     .show();
-                $('#context-menu .file-only')
+                $('#context-menu .file-only, #context-menu .root-only')
                     .hide();
                 break;
             case 'file':
-                $('#context-menu .directory-only')
+                $('#context-menu .directory-only, #context-menu .root-only')
                     .hide();
                 $('#context-menu .file-only,#context-menu .non-root')
                     .show();
                 break;
             case 'root':
-                $('#context-menu .directory-only')
+                $('#context-menu .directory-only, #context-menu .root-only')
                     .show();
                 $('#context-menu .non-root, #context-menu .file-only')
                     .hide();
