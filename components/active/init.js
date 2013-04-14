@@ -458,11 +458,13 @@
             var content = session.getValue();
             var path = session.path;
             var handleSuccess = function(mtime){
-    	var session = codiad.active.sessions[path];
-                session.untainted = newContent;
-                session.serverMTime = mtime;
-                if (session.listThumb) session.listThumb.removeClass('changed');
-                if (session.tabThumb) session.tabThumb.removeClass('changed');
+                var session = codiad.active.sessions[path];
+                if(typeof session != 'undefined') {
+                    session.untainted = newContent;
+                    session.serverMTime = mtime;
+                    if (session.listThumb) session.listThumb.removeClass('changed');
+                    if (session.tabThumb) session.tabThumb.removeClass('changed');
+                }
                 _this.removeDraft(path);
             }
             // Replicate the current content so as to avoid
