@@ -224,6 +224,9 @@ foreach ($allFiles as $fname){
                 <div id="tab-dropdown">
                     <a id="tab-dropdown-button" class="icon-down-open"></a>
                 </div>
+                <div id="tab-close">
+                    <a id="tab-close-button" class="icon-cancel-circled"></a>
+                </div>
                 <ul id="dropdown-list-active-files"></ul>
                 <div class="bar"></div>
             </div>

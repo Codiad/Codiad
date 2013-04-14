@@ -510,6 +510,53 @@
                 this.close(path);
             }
         },
+        
+        removeAll: function() {
+            var _this = this;
+            var changed = false;
+            
+            var opentabs = new Array();
+            for(var session in _this.sessions) {
+               opentabs[session] = session;
+               if (_this.sessions[session].listThumb.hasClass('changed')) {
+                    changed = true;
+               }
+            }
+            
+            if(changed) {
+                alert('Unsaved Files found. Please save them first.');
+            } else {
+                for(var tab in opentabs) {
+                    var session = this.sessions[tab]; 
+                    /* Animate only if the tabThumb if a tab, not a dropdown item. */
+                    if(session.tabThumb.hasClass('tab-item')) {
+                        session.tabThumb.css({'z-index': 1});
+                        session.tabThumb.animate({
+                            top: $('#editor-top-bar').height() + 'px'
+                        }, 300, function() {
+                            session.tabThumb.remove();
+                            _this.updateTabDropdownVisibility();
+                        });
+                    } else {
+                        session.tabThumb.remove();
+                        _this.updateTabDropdownVisibility();
+                    }
+
+                    session.listThumb.remove();
+
+                    /* Remove closed path from history */
+                    var history = [];
+                    $.each(this.history, function(index) {
+                        if(this != tab) history.push(this);
+                    })
+                    this.history = history;
+                    delete this.sessions[tab];
+                    this.removeDraft(tab);
+                }
+                codiad.editor.exterminate();
+                $.get(this.controller + '?action=removeall');
+            }
+        },
 
         close: function(path) {
             /* Notify listeners. */
@@ -740,12 +787,18 @@
             
             var menu = $('#dropdown-list-active-files');
             var button = $('#tab-dropdown-button');
+            var closebutton = $('#tab-close-button');
             
             menu.appendTo($('body'));
 
             button.click(function(e) {
                 e.stopPropagation();
                 _this.toggleTabDropdownMenu();
+            });
+                        
+            closebutton.click(function(e) {
+                e.stopPropagation();
+                _this.removeAll();
             });
         },
         
@@ -862,7 +915,8 @@
 
             var tabListWidth = $("#tab-list-active-files").width();
             var dropdownWidth = $('#tab-dropdown').width();
-            var room = window.innerWidth - lsbarWidth - rsbarWidth - dropdownWidth - width - 30;
+            var closeWidth = $('#tab-close').width();
+            var room = window.innerWidth - lsbarWidth - rsbarWidth - dropdownWidth - closeWidth - width - 30;
             return (room < 0);
         },
 
@@ -885,6 +939,11 @@
                 $('#tab-dropdown').hide();
                 // Be sure to hide the menu if it is opened.
                 $('#dropdown-list-active-files').hide();
+            }
+            if ($('#tab-list-active-files li').length > 1) {
+                $('#tab-close').show();
+            } else {
+                $('#tab-close').hide();
             }
         },
 
