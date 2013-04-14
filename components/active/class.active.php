@@ -131,6 +131,20 @@ class Active extends Common {
     }
     
     //////////////////////////////////////////////////////////////////
+    // Remove All Files
+    //////////////////////////////////////////////////////////////////
+
+    public function RemoveAll(){
+        foreach($this->actives as $active=>$data){
+            if(is_array($data) && isset($data['username']) && $this->username==$data['username']){
+                unset($this->actives[$active]);
+            }
+        }
+        saveJSON('active.php',$this->actives);
+        echo formatJSEND("success");
+    }
+    
+    //////////////////////////////////////////////////////////////////
     // Mark File As Focused 
     //  All other files will be marked as non-focused.
     //////////////////////////////////////////////////////////////////
