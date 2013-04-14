@@ -524,7 +524,7 @@
             }
             
             if(changed) {
-                alert('Unsaved Files found. Please save them first.');
+                alert(i18n('You have unsaved files.'));
             } else {
                 for(var tab in opentabs) {
                     var session = this.sessions[tab]; 
