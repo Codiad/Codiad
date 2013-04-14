@@ -528,32 +528,24 @@
             } else {
                 for(var tab in opentabs) {
                     var session = this.sessions[tab]; 
-                    /* Animate only if the tabThumb if a tab, not a dropdown item. */
-                    if(session.tabThumb.hasClass('tab-item')) {
-                        session.tabThumb.css({'z-index': 1});
-                        session.tabThumb.animate({
-                            top: $('#editor-top-bar').height() + 'px'
-                        }, 300, function() {
-                            session.tabThumb.remove();
-                            _this.updateTabDropdownVisibility();
-                        });
-                    } else {
-                        session.tabThumb.remove();
-                        _this.updateTabDropdownVisibility();
-                    }
+
+                    session.tabThumb.remove();
+                    _this.updateTabDropdownVisibility();
 
                     session.listThumb.remove();
 
                     /* Remove closed path from history */
                     var history = [];
                     $.each(this.history, function(index) {
-                        if(this != tab) history.push(this);
+                        if(this != path) history.push(this);
                     })
-                    this.history = history;
+                    this.history = history
+                    
                     delete this.sessions[tab];
                     this.removeDraft(tab);
                 }
                 codiad.editor.exterminate();
+                $('#list-active-files').html('');
                 $.get(this.controller + '?action=removeall');
             }
         },
