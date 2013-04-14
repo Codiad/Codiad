@@ -524,30 +524,36 @@
             }
             
             if(changed) {
-                alert(i18n('You have unsaved files.'));
-            } else {
-                for(var tab in opentabs) {
-                    var session = this.sessions[tab]; 
-
-                    session.tabThumb.remove();
-                    _this.updateTabDropdownVisibility();
-
-                    session.listThumb.remove();
-
-                    /* Remove closed path from history */
-                    var history = [];
-                    $.each(this.history, function(index) {
-                        if(this != path) history.push(this);
-                    })
-                    this.history = history
-                    
-                    delete this.sessions[tab];
-                    this.removeDraft(tab);
+                if(confirm('Do you want to save all unsaved files?')) {
+                    for(var tab in opentabs) {
+                        if (_this.sessions[tab].listThumb.hasClass('changed')) {
+                            codiad.active.save(tab);
+                        }
+                    }
                 }
-                codiad.editor.exterminate();
-                $('#list-active-files').html('');
-                $.get(this.controller + '?action=removeall');
+            } 
+            
+            for(var tab in opentabs) {
+                var session = this.sessions[tab]; 
+
+                session.tabThumb.remove();
+                _this.updateTabDropdownVisibility();
+
+                session.listThumb.remove();
+
+                /* Remove closed path from history */
+                var history = [];
+                $.each(this.history, function(index) {
+                    if(this != path) history.push(this);
+                })
+                this.history = history
+                
+                delete this.sessions[tab];
+                this.removeDraft(tab);
             }
+            codiad.editor.exterminate();
+            $('#list-active-files').html('');
+            $.get(this.controller + '?action=removeall');
         },
 
         close: function(path) {
