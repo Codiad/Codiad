@@ -555,7 +555,7 @@
                 /* Remove closed path from history */
                 var history = [];
                 $.each(this.history, function(index) {
-                    if(this != path) history.push(this);
+                    if(this != tab) history.push(this);
                 })
                 this.history = history
                 
