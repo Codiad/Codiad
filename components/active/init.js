@@ -524,7 +524,7 @@
             }
             
             if(changed) {
-                if(confirm('Do you want to save all unsaved files?')) {
+                if(confirm('Found unsaved Files. Do you want to save them?')) {
                     for(var tab in opentabs) {
                         if (_this.sessions[tab].listThumb.hasClass('changed')) {
                             codiad.active.save(tab);
