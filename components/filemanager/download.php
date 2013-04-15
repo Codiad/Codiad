@@ -11,9 +11,9 @@
     //////////////////////////////////////////////////////////////////
     // Verify Session or Key
     //////////////////////////////////////////////////////////////////
-    
+
     checkSession();
-    
+
     //////////////////////////////////////////////////////////////////
     // Check $_GET for incorrect chars or '..' for workspace ecape
     //////////////////////////////////////////////////////////////////
@@ -23,9 +23,9 @@
     		|| preg_match('#^[\\\/]?$#i', trim($_GET['path'])) // download all Projects
     		|| preg_match('#[\:*?\"<>\|]#i', $_GET['path']) //illegal chars in filenames
     		|| strpos('..', $_GET['path']) !== false ){ // change directory up to escape Workspace
-    	exit('<script>parent.message.error("Wrong data send")</script>');
+    	exit('<script>parent.codiad.message.error("Wrong data send")</script>');
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Run Download
     //////////////////////////////////////////////////////////////////
@@ -36,36 +36,36 @@
         //$filename = array_pop($filename) . "-" . date('Y.m.d') . ".tar.gz";
         $filename = array_pop($filename) . "-" . date('Y.m.d');
         $targetPath = DATA . '/';
-        $dir = WORKSPACE . $_GET['path'];
+        $dir = WORKSPACE . '/' . $_GET['path'];
         if(!is_dir($dir)){
-        	exit('<script>parent.message.error("Directory not found.")</script>');
+        	exit('<script>parent.codiad.message.error("Directory not found.")</script>');
         }
-        	
+
         //////////////////////////////////////////////////////////////////
         // Check system() command and a non windows OS
         //////////////////////////////////////////////////////////////////
         if(isAvailable('system') && stripos(PHP_OS, 'win') === false){
-	        # Execute the tar command and save file
-        	$filename .= '.tag.gz';
-        	
-        	system("tar -pczf ".$targetPath.$filename." ".$dir);
-	        $download_file = $targetPath.$filename;
+          # Execute the tar command and save file
+          $filename .= '.tar.gz';
+
+          system("tar -pczf ".$targetPath.$filename." ".$dir);
+          $download_file = $targetPath.$filename;
         }elseif(extension_loaded('zip')){ //Check if zip-Extension is availiable
-        	//build zipfile
-        	require_once 'class.dirzip.php';
-        	
-        	$filename .= '.zip';
-        	$download_file = $targetPath.$filename;
-        	DirZip::zipDir($dir, $targetPath .$filename);
+          //build zipfile
+          require_once 'class.dirzip.php';
+
+          $filename .= '.zip';
+          $download_file = $targetPath.$filename;
+          DirZip::zipDir($dir, $targetPath .$filename);
         }else{
-        	exit('<script>parent.message.error("Could not pack the folder, zip-extension missing")</script>');
+          exit('<script>parent.codiad.message.error("Could not pack the folder, zip-extension missing")</script>');
         }
     }else{
         $filename = explode("/",$_GET['path']);
         $filename = array_pop($filename);
         $download_file = WORKSPACE . $_GET['path'];
     }
-    
+
     header('Content-Description: File Transfer');
     header('Content-Type: application/octet-stream');
     header('Content-Disposition: attachment; filename='.basename($filename));
