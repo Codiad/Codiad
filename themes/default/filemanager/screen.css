@@ -230,6 +230,9 @@
 }
 
 /* EXTENSIONS */
+#file-manager .ext-log {
+    background-image: url(images/file.png);
+}
 #file-manager .ext-htaccess {
     background-image: url(images/config.png);
 }
