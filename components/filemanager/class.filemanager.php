@@ -237,8 +237,18 @@ class Filemanager extends Common {
 
     public function open(){
         if(is_file($this->path)){
+            $output = file_get_contents($this->path);
+            
+            if(!mb_check_encoding($output, 'UTF-8')) {
+                if(mb_check_encoding($output, 'ISO-8859-1')) {
+                    $output = utf8_encode($output);
+                } else {
+                    $output = mb_convert_encoding($content, 'UTF-8');
+                }
+            }
+        
             $this->status = "success";
-            $this->data = '"content":' . json_encode(utf8_encode(file_get_contents($this->path)));
+            $this->data = '"content":' . json_encode($output);
             $mtime = filemtime($this->path);
             $this->data .= ', "mtime":'.$mtime;
         }else{
