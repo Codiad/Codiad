@@ -322,7 +322,7 @@
             }
             var node = $('#file-manager a[data-path="' + path + '"]');
             var ext = this.getExtension(path);
-            if ($.inArray(ext, this.noOpen) < 0) {
+            if ($.inArray(ext.toLowerCase(), this.noOpen) < 0) {
                 node.addClass('loading');
                 $.get(this.controller + '?action=open&path=' + path, function(data) {
                     var openResponse = codiad.jsend.parse(data);
@@ -333,7 +333,7 @@
                 });
             } else {
                 if(!codiad.project.isAbsPath(path)) {
-                    if ($.inArray(ext, this.noBrowser) < 0) {
+                    if ($.inArray(ext.toLowerCase(), this.noBrowser) < 0) {
                         this.download(path);
                     } else {
                         this.openInModal(path);
@@ -359,7 +359,7 @@
         openInModal: function(path) {
             codiad.modal.load(250, this.dialog, {
                         action: 'preview',
-                        path: 'workspace' + path
+                        path: 'workspace/' + path
                     });
         },
         saveModifications: function(path, data, callbacks){
