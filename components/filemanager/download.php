@@ -63,7 +63,7 @@
     }else{
         $filename = explode("/",$_GET['path']);
         $filename = array_pop($filename);
-        $download_file = WORKSPACE . $_GET['path'];
+        $download_file = WORKSPACE . '/' . $_GET['path'];
     }
 
     header('Content-Description: File Transfer');
