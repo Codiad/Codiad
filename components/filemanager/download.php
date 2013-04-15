@@ -23,7 +23,7 @@
     		|| preg_match('#^[\\\/]?$#i', trim($_GET['path'])) // download all Projects
     		|| preg_match('#[\:*?\"<>\|]#i', $_GET['path']) //illegal chars in filenames
     		|| strpos('..', $_GET['path']) !== false ){ // change directory up to escape Workspace
-    	exit('<script>parent.message.error("Wrong data send")</script>');
+    	exit('<script>parent.codiad.message.error("Wrong data send")</script>');
     }
     
     //////////////////////////////////////////////////////////////////
@@ -36,9 +36,9 @@
         //$filename = array_pop($filename) . "-" . date('Y.m.d') . ".tar.gz";
         $filename = array_pop($filename) . "-" . date('Y.m.d');
         $targetPath = DATA . '/';
-        $dir = WORKSPACE . $_GET['path'];
+        $dir = WORKSPACE . '/' . $_GET['path'];
         if(!is_dir($dir)){
-        	exit('<script>parent.message.error("Directory not found.")</script>');
+        	exit('<script>parent.codiad.message.error("Directory not found.")</script>');
         }
         	
         //////////////////////////////////////////////////////////////////
@@ -58,7 +58,7 @@
         	$download_file = $targetPath.$filename;
         	DirZip::zipDir($dir, $targetPath .$filename);
         }else{
-        	exit('<script>parent.message.error("Could not pack the folder, zip-extension missing")</script>');
+        	exit('<script>parent.codiad.message.error("Could not pack the folder, zip-extension missing")</script>');
         }
     }else{
         $filename = explode("/",$_GET['path']);
