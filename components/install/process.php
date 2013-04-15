@@ -171,6 +171,13 @@ $cookie_lifetime = "0";
 
 date_default_timezone_set("' . $timezone . '");
 
+//////////////////////////////////////////////////////////////////
+// TAB SIZE
+//////////////////////////////////////////////////////////////////
+
+define("tabsize", 4);
+define("softtabs", false);
+
 ?>';
 
     saveFile($config,$config_data);
