@@ -190,7 +190,9 @@
                         function (data) {
                             // console.log('complete unregistering');
                             // console.log(data);
-                            codiad.jsend.parse(data);
+                            if(data !== '') {
+                                codiad.jsend.parse(data);
+                            }
                         });
 
                 this.currentFilename = null;
