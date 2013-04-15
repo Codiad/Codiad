@@ -5,6 +5,11 @@
         "onclick": "codiad.active.save();"
     },
     {
+        "title": "Save All",
+        "icon": "icon-install",
+        "onclick": "codiad.active.saveAll();"
+    },
+    {
         "title": "break",
         "icon": null,
         "onclick": null

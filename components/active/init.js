@@ -458,11 +458,13 @@
             var content = session.getValue();
             var path = session.path;
             var handleSuccess = function(mtime){
-    	var session = codiad.active.sessions[path];
-                session.untainted = newContent;
-                session.serverMTime = mtime;
-                if (session.listThumb) session.listThumb.removeClass('changed');
-                if (session.tabThumb) session.tabThumb.removeClass('changed');
+                var session = codiad.active.sessions[path];
+                if(typeof session != 'undefined') {
+                    session.untainted = newContent;
+                    session.serverMTime = mtime;
+                    if (session.listThumb) session.listThumb.removeClass('changed');
+                    if (session.tabThumb) session.tabThumb.removeClass('changed');
+                }
                 _this.removeDraft(path);
             }
             // Replicate the current content so as to avoid
@@ -493,6 +495,19 @@
                 });
             }
         },
+        
+        //////////////////////////////////////////////////////////////////
+        // Save all files
+        //////////////////////////////////////////////////////////////////
+        
+        saveAll: function() {
+            var _this = this;
+            for(var session in _this.sessions) {
+                if (_this.sessions[session].listThumb.hasClass('changed')) {
+                    codiad.active.save(session);
+                }
+            }
+        },
 
         //////////////////////////////////////////////////////////////////
         // Remove file
@@ -509,6 +524,47 @@
             if (closeFile) {
                 this.close(path);
             }
+        },
+        
+        removeAll: function() {
+            var _this = this;
+            var changed = false;
+            
+            var opentabs = new Array();
+            for(var session in _this.sessions) {
+               opentabs[session] = session;
+               if (_this.sessions[session].listThumb.hasClass('changed')) {
+                    changed = true;
+               }
+            }
+            
+            if(changed) {
+                if(confirm('Found unsaved Files. Do you want to save them?')) {
+                    _this.saveAll();
+                }
+            } 
+            
+            for(var tab in opentabs) {
+                var session = this.sessions[tab]; 
+
+                session.tabThumb.remove();
+                _this.updateTabDropdownVisibility();
+
+                session.listThumb.remove();
+
+                /* Remove closed path from history */
+                var history = [];
+                $.each(this.history, function(index) {
+                    if(this != tab) history.push(this);
+                })
+                this.history = history
+                
+                delete this.sessions[tab];
+                this.removeDraft(tab);
+            }
+            codiad.editor.exterminate();
+            $('#list-active-files').html('');
+            $.get(this.controller + '?action=removeall');
         },
 
         close: function(path) {
@@ -740,12 +796,18 @@
             
             var menu = $('#dropdown-list-active-files');
             var button = $('#tab-dropdown-button');
+            var closebutton = $('#tab-close-button');
             
             menu.appendTo($('body'));
 
             button.click(function(e) {
                 e.stopPropagation();
                 _this.toggleTabDropdownMenu();
+            });
+                        
+            closebutton.click(function(e) {
+                e.stopPropagation();
+                _this.removeAll();
             });
         },
         
@@ -862,7 +924,8 @@
 
             var tabListWidth = $("#tab-list-active-files").width();
             var dropdownWidth = $('#tab-dropdown').width();
-            var room = window.innerWidth - lsbarWidth - rsbarWidth - dropdownWidth - width - 30;
+            var closeWidth = $('#tab-close').width();
+            var room = window.innerWidth - lsbarWidth - rsbarWidth - dropdownWidth - closeWidth - width - 30;
             return (room < 0);
         },
 
@@ -885,6 +948,11 @@
                 $('#tab-dropdown').hide();
                 // Be sure to hide the menu if it is opened.
                 $('#dropdown-list-active-files').hide();
+            }
+            if ($('#tab-list-active-files li').length > 1) {
+                $('#tab-close').show();
+            } else {
+                $('#tab-close').hide();
             }
         },
 
