@@ -19,7 +19,7 @@
     }
     
     if(!defined('BASE_PATH')) {
-        define('BASE_PATH', rtrim(str_replace("common.php", "", $_SERVER['SCRIPT_FILENAME']),"/"));
+        define('BASE_PATH', rtrim(str_replace("index.php", "", $_SERVER['SCRIPT_FILENAME']),"/"));
     }
     
     if(!defined('COMPONENTS')) {
