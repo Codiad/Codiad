@@ -78,7 +78,7 @@
             echo formatJSEND('success');
         } else {
             // Should only be enabled when testing
-            //echo formatJSEND('success', 'Not registered as collaborator for ' . $_POST['filename']);
+            echo formatJSEND('success', 'Not registered as collaborator for ' . $_POST['filename']);
         }
         break;
 
