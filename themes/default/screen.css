@@ -416,6 +416,10 @@ table [class^="icon-"], [class*=" icon-"] {
 .options-menu li:hover a {
     color: white;
 }
+.options-menu td {
+    padding:0;
+    margin: 0;
+}
 .splitter {
     background-color: black;
     z-index: 9999;
