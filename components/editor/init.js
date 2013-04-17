@@ -56,7 +56,6 @@
         'lucene',
         'makefile',
         'mushcode',
-        'mushcode_high_rules',
         'pascal',
         'rdoc',
         'rhtml',
