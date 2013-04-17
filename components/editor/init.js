@@ -57,6 +57,7 @@
         'makefile',
         'mushcode',
         'pascal',
+        'perl',
         'rdoc',
         'rhtml',
         'sass',
@@ -489,7 +490,7 @@
             var _thisMenu = $('#changemode-menu');
             var modeColumns = new Array();
             var modeOptions = new Array();
-            var maxOptionsColumn = 20;
+            var maxOptionsColumn = 15;
             var firstOption = 0;
 
             this.initMenuHandler($('#current-mode'),_thisMenu);
