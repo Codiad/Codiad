@@ -90,7 +90,19 @@ class Update {
     //////////////////////////////////////////////////////////////////
     
     public function Check() {
-        $app = getJSON('version.php');
+        if(file_exists(BASE_PATH."/.git/FETCH_HEAD")) {
+            $data = file(BASE_PATH."/.git/FETCH_HEAD");
+            foreach($data as $line) {
+                $branch = explode("	", $line);
+                if(strpos($branch[2], "master") !== false) {
+                    break;
+                }
+            }
+            $app[0]['version'] = $branch[0];
+            $app[0]['name'] = "";
+        } else {
+            $app = getJSON('version.php');
+        }
         
         if($this->remote != '') {
             $remote = json_decode(file_get_contents($this->remote),true);
