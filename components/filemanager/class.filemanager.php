@@ -174,7 +174,7 @@ class Filemanager extends Common {
                 $ftype = 'directory';
               }
               if (strlen($fname) != 0){
-                $fname = $this->rel_path . substr($fname, 1);
+                $fname = $this->rel_path . substr($fname, 2);
                 $f = array('path' => $fname, 'type' => $ftype );
                 array_push( $output_arr, $f);
               }
