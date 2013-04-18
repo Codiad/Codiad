@@ -25,7 +25,7 @@ if(!file_exists($conf) && !is_writable($path)) {
     $config = is_writable($conf);
 }
 
-if(ini_get('register_globals') === TRUE) {
+if(ini_get('register_globals') == 1) {
     $register = true;
 } else {
     $register = false;
