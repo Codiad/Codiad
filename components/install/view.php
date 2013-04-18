@@ -25,17 +25,28 @@ if(!file_exists($conf) && !is_writable($path)) {
     $config = is_writable($conf);
 }
 
+if(ini_get('register_globals') === TRUE) {
+    $register = true;
+} else {
+    $register = false;
+}
 
-if(!$workspace || !$data || !$config){
+
+if(!$workspace || !$data || !$config || $register){
     ?>
     <h1>Installation Error</h1>
     <p>Please make sure the following exist and are writeable:</p>
     <div class="install_issues">
-        <?php if(!$config) { echo '<p>[SYSTEM]/config.php</p>'; } ?>
-        <?php if(!$workspace) { echo '<p>[SYSTEM]/workspace</p>'; } ?>
-        <?php if(!$data) { echo '<p>[SYSTEM]/data</p>'; } ?>    
+        <p>[SYSTEM]/config.php - <?php if($config) { echo '<font style="color:green">PASSED</font>'; } else { echo '<font style="color:red">ERROR</font>'; } ?></p>
+        <p>[SYSTEM]/workspace - <?php if($workspace) { echo '<font style="color:green">PASSED</font>'; } else { echo '<font style="color:red">ERROR</font>'; } ?></p>
+        <p>[SYSTEM]/data - <?php if($data) { echo '<font style="color:green">PASSED</font>'; } else { echo '<font style="color:red">ERROR</font>'; } ?></p> 
     </div>
-
+    <?php if($register) { ?>
+    <p>Please make sure these environmental variables are setted:</p>
+    <div class="install_issues">
+        <?php if($register) { echo '<p>register_globals: Off</p>'; } ?>
+    </div>
+    <?php } ?>
     <button onclick="window.location.reload();">Re-Test</button>
     
     <?php
