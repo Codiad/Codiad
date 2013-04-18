@@ -42,7 +42,7 @@ if(!$workspace || !$data || !$config || $register){
         <p>[SYSTEM]/data - <?php if($data) { echo '<font style="color:green">PASSED</font>'; } else { echo '<font style="color:red">ERROR</font>'; } ?></p> 
     </div>
     <?php if($register) { ?>
-    <p>Please make sure these environmental variables are setted:</p>
+    <p>Please make sure these environmental variables are set:</p>
     <div class="install_issues">
         <?php if($register) { echo '<p>register_globals: Off</p>'; } ?>
     </div>
