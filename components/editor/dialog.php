@@ -64,6 +64,7 @@ switch($_GET['action']){
         <td>
         
         <select class="setting" data-setting="theme">
+            <option value="chaos">Chaos</option>
             <option value="clouds">Clouds</option>
             <option value="clouds_midnight">Clouds - Midnight</option>
             <option value="cobalt">Cobalt</option>
@@ -80,6 +81,7 @@ switch($_GET['action']){
             <option value="pastel_on_dark">Pastel On Dark</option>
             <option value="solarized_dark">Solarized Dark</option>
             <option value="solarized_light">Solarized Light</option>
+            <option value="terminal">Terminal</option>
             <option value="textmate">Textmate</option>
             <option value="tomorrow">Tomorrow</option>
             <option value="tomorrow_night">Tomorrow Night</option>
