@@ -17,7 +17,7 @@
     
 ?>
 <style>#terminal { border: 1px solid #2b2b2b; }</style>
-<iframe id="terminal" width="100%" height="400" src="components/terminal/emulator/index.php?id=kd9kdi8nundj"></iframe>
+<iframe id="terminal" width="100%" height="400" src="plugins/terminal/emulator/index.php?id=kd9kdi8nundj"></iframe>
 <button onclick="codiad.modal.unload(); return false;">Close Terminal</button>
 <script>
     $(function(){ 

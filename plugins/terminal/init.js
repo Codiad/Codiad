@@ -11,7 +11,7 @@
             .outerWidth() - 500,
 
         open: function() {
-            codiad.modal.load(this.termWidth, 'components/terminal/dialog.php');
+            codiad.modal.load(this.termWidth, 'plugins/terminal/dialog.php');
             codiad.modal.hideOverlay();
         }
         

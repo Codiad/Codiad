@@ -15,12 +15,30 @@ $components = array();
 //read all directories from components
 $allFiles = scandir(COMPONENTS);
 foreach ($allFiles as $fname){
-	if($fname == '.' || $fname == '..' ){
-		continue;
-	}
-	if(is_dir(COMPONENTS.'/'.$fname)){
-		$components[] = $fname;
-	}
+    if($fname == '.' || $fname == '..' ){
+        continue;
+    }
+    if(is_dir(COMPONENTS.'/'.$fname)){
+        $components[] = $fname;
+    }
+}
+
+// Plugins
+$plugins = array();
+if(!file_exists(DATA . '/plugins.php')) {
+    //read all directories from plugins
+    $allFiles = scandir(PLUGINS);
+    foreach ($allFiles as $fname){
+        if($fname == '.' || $fname == '..' ){
+            continue;
+        }
+        if(is_dir(PLUGINS.'/'.$fname)){
+            $plugins[] = $fname;
+        }
+    }
+    saveJSON('plugins.php',$plugins);
+} else {
+    $plugins = getJSON('plugins.php');
 }
 
 ?>
@@ -51,6 +69,21 @@ foreach ($allFiles as $fname){
             } else {
                 if(file_exists(COMPONENTS . "/" . $component . "/screen.css")){
                     echo('<link rel="stylesheet" href="components/'.$component.'/screen.css">');
+                }
+            }
+        }
+    }
+    
+    // Load Plugin CSS Files    
+    foreach($plugins as $plugin){
+        if(file_exists(THEMES . "/". THEME . "/" . $plugin . "/screen.css")){
+            echo('<link rel="stylesheet" href="themes/'.THEME.'/'.$plugin.'/screen.css">');
+        } else {
+            if(file_exists("themes/default/" . $plugin . "/screen.css")){
+                echo('<link rel="stylesheet" href="themes/default/'.$plugin.'/screen.css">');
+            } else {
+                if(file_exists(PLUGINS . "/" . $plugin . "/screen.css")){
+                    echo('<link rel="stylesheet" href="components/'.$plugin.'/screen.css">');
                 }
             }
         }
@@ -180,7 +213,7 @@ foreach ($allFiles as $fname){
 
                             if($data['title']=='Break'){
                                 echo('<hr class="'.$data['applies-to'].'">');
-                            }else{
+                            } else{
                                 echo('<a class="'.$data['applies-to'].'" onclick="'.$data['onclick'].'"><span class="'.$data['icon'].'"></span>'.$data['title'].'</a>');
                             }
 
@@ -267,7 +300,17 @@ foreach ($allFiles as $fname){
 
                     if($data['title']=='break'){
                         echo("<hr>");
-                    }else{
+                    } else if ($data['title']=='plugins'){
+                                foreach ($plugins as $plugin){
+                                     if(file_exists(PLUGINS . "/" . $plugin . "/plugin.json")) {
+                                        $pdata = file_get_contents(PLUGINS . "/" . $plugin . "/plugin.json");
+                                        $pdata = json_decode($pdata,true);
+                                        if(true) {
+                                            echo('<a onclick="'.$pdata[0]['rightbar_action'].'"><span class="'.$pdata[0]['rightbar_icon'].'"></span>'.$pdata[0]['rightbar_title'].'</a>');
+                                        }
+                                     }
+                                }
+                    } else{
                         echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].' bigger-icon"></span>'.get_i18n($data['title']).'</a>');
                     }
 
@@ -302,6 +345,12 @@ foreach ($allFiles as $fname){
         foreach($components as $component){
             if(file_exists(COMPONENTS . "/" . $component . "/init.js")){
                 echo('<script src="components/'.$component.'/init.js"></script>"');
+            }
+        }
+        
+        foreach($plugins as $plugin){
+            if(file_exists(PLUGINS . "/" . $plugin . "/init.js")){
+                echo('<script src="plugins/'.$plugin.'/init.js"></script>"');
             }
         }
 

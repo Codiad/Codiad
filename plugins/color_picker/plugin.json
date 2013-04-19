@@ -1,0 +1,7 @@
+[ { "author" : "Fluidbyte",
+    "version": "",
+    "name" : "Color Tool",
+    "rightbar_action" : "codiad.colorPicker.open();",
+    "rightbar_icon" : "icon-palette",
+    "rightbar_title" : "Color Tool"
+  } ]

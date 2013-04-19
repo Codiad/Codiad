@@ -13,6 +13,7 @@
 $rel = "/";
 define("BASE_PATH",$_SERVER["DOCUMENT_ROOT"] . $rel);
 define("COMPONENTS",BASE_PATH . "/components");
+define("PLUGINS",BASE_PATH . "/plugins");
 define("THEMES",BASE_PATH . "/themes");
 define("DATA",BASE_PATH . "/data");
 define("WORKSPACE",BASE_PATH . "/workspace");

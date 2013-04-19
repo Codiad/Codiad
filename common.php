@@ -26,6 +26,10 @@
         define('COMPONENTS', BASE_PATH . '/components');
     }
     
+    if(!defined('PLUGINS')) {
+        define('PLUGINS', BASE_PATH . '/plugins');
+    }
+    
     // Ensure theme vars are present (upgrade with legacy config.php)
     if(!defined('THEMES')){
     	define("THEMES", BASE_PATH . "/themes");
