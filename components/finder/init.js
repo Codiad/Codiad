@@ -80,7 +80,11 @@
                         if (type === 'file'){
                             curLevel[fragment].path = data[i].path;
                         } else {
-                            curLevel[fragment].path = fpathArr.slice(0, j+1).join('/');
+                            if(codiad.project.isAbsPath(data[i].path)) {
+                                curLevel[fragment].path = fpathArr.slice(0, j+1).join('/').replace(this._rootName, this._rootPath);
+                            } else {
+                                curLevel[fragment].path = fpathArr.slice(0, j+1).join('/');
+                            }
                         }
                     }
                     curLevel = curLevel[fragment].children;
