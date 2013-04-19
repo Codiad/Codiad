@@ -301,15 +301,17 @@ if(!file_exists(DATA . '/plugins.php')) {
                     if($data['title']=='break'){
                         echo("<hr>");
                     } else if ($data['title']=='plugins'){
-                                foreach ($plugins as $plugin){
-                                     if(file_exists(PLUGINS . "/" . $plugin . "/plugin.json")) {
-                                        $pdata = file_get_contents(PLUGINS . "/" . $plugin . "/plugin.json");
-                                        $pdata = json_decode($pdata,true);
-                                        if(true) {
-                                            echo('<a onclick="'.$pdata[0]['rightbar_action'].'"><span class="'.$pdata[0]['rightbar_icon'].'"></span>'.$pdata[0]['rightbar_title'].'</a>');
-                                        }
-                                     }
+                        echo("<hr>");
+                        foreach ($plugins as $plugin){
+                             if(file_exists(PLUGINS . "/" . $plugin . "/plugin.json")) {
+                                $pdata = file_get_contents(PLUGINS . "/" . $plugin . "/plugin.json");
+                                $pdata = json_decode($pdata,true);
+                                if(true) {
+                                    echo('<a onclick="'.$pdata[0]['rightbar_action'].'"><span class="'.$pdata[0]['rightbar_icon'].'"></span>'.$pdata[0]['rightbar_title'].'</a>');
                                 }
+                             }
+                             echo("<hr>");
+                        }
                     } else{
                         echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].' bigger-icon"></span>'.get_i18n($data['title']).'</a>');
                     }
