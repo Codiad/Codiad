@@ -97,6 +97,7 @@
             $('#file-manager').html(domTree);
             $('#file-manager>ul>li:first-child>a').attr({
                 id: 'project-root',
+                'data-type': 'root',
                 'data-path': this._rootPath
             });
         },
