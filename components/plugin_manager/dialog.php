@@ -74,7 +74,7 @@
             ?>
             </table>
             </div>
-            <button onclick="codiad.modal.unload();return false;">Close</button>
+            <button onclick="window.location.reload();return false;">Reload Codiad</button><button onclick="codiad.modal.unload();return false;">Close</button>
             <?php
             
             break;
