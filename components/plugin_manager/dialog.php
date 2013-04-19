@@ -30,7 +30,7 @@
                     <th>Plugin Name</th>
                     <th>Version</th>
                     <th>Author</th>
-                    <?php if(checkAccess()){ ?><th width="5">Active</th><?php } ?>
+                    <th width="5">Active</th>
                 </tr>
             <?php
             
@@ -51,6 +51,16 @@
                             <td><?php echo $data[0]['author']; ?></td>
                             <?php
                                 if(checkAccess()){
+                                    if(in_array($fname, $plugin)) {
+                                    ?>
+                                    <td><a onclick="codiad.plugin_manager.deactivate('<?php echo($fname); ?>');" class="icon-check icon"></a></td>
+                                    <?php 
+                                    } else {
+                                    ?>
+                                     <td><a onclick="codiad.plugin_manager.activate('<?php echo($fname); ?>');" class="icon-block icon"></a></td>   
+                                    <?php                                    
+                                    }
+                                } else {
                                     ?>
                                     <td><div class="<?php if(in_array($fname, $plugin)) { echo 'icon-check'; } else { echo 'icon-block'; } ?> icon"></div></td>
                                     <?php

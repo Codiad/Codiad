@@ -17,7 +17,26 @@
     checkSession();
 
     $Plugin_manager = new Plugin_manager();
+    
+    //////////////////////////////////////////////////////////////////
+    // Deactivate Plugin
+    //////////////////////////////////////////////////////////////////
 
+    if($_GET['action']=='deactivate'){
+        if(checkAccess()) {
+            $Plugin_manager->Deactivate($_GET['name']);
+        }
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Activate Plugin
+    //////////////////////////////////////////////////////////////////
+
+    if($_GET['action']=='activate'){
+        if(checkAccess()) {
+            $Plugin_manager->Activate($_GET['name']);
+        }
+    }
    
 
 ?>

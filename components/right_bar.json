@@ -70,7 +70,7 @@
         "onclick": null
     },
         {
-        "title": "Check For Update",
+        "title": "Update Check",
         "icon": "icon-share",
         "onclick": "codiad.update.check();"
     },
