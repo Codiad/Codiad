@@ -83,7 +83,7 @@ if(!file_exists(DATA . '/plugins.php')) {
                 echo('<link rel="stylesheet" href="themes/default/'.$plugin.'/screen.css">');
             } else {
                 if(file_exists(PLUGINS . "/" . $plugin . "/screen.css")){
-                    echo('<link rel="stylesheet" href="components/'.$plugin.'/screen.css">');
+                    echo('<link rel="stylesheet" href="plugins/'.$plugin.'/screen.css">');
                 }
             }
         }
