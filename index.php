@@ -306,7 +306,7 @@ if(!file_exists(DATA . '/plugins.php')) {
                              if(file_exists(PLUGINS . "/" . $plugin . "/plugin.json")) {
                                 $pdata = file_get_contents(PLUGINS . "/" . $plugin . "/plugin.json");
                                 $pdata = json_decode($pdata,true);
-                                if(true) {
+                                if(isset($pdata[0]['rightbar_action']) && isset($pdata[0]['rightbar_icon']) && isset($pdata[0]['rightbar_title'])) {
                                     echo('<a onclick="'.$pdata[0]['rightbar_action'].'"><span class="'.$pdata[0]['rightbar_icon'].'"></span>'.$pdata[0]['rightbar_title'].'</a>');
                                 }
                              }
