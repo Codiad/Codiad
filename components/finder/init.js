@@ -95,8 +95,10 @@
             var tree = this._makeHierarchy(data);
             var domTree = this._makeDomTree(tree);
             $('#file-manager').html(domTree);
+            $('#file-manager>ul>li:first-child>span').remove();
             $('#file-manager>ul>li:first-child>a').attr({
                 id: 'project-root',
+                'data-type': 'root',
                 'data-path': this._rootPath
             });
         },
