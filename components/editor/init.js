@@ -41,7 +41,33 @@
         'python',
         'ruby',
         'jade',
-        'text'
+        'text',
+        'abap',
+        'curly',
+        'dart',
+        'django',
+        'dot',
+        'ftl',
+        'haml',
+        'lisp',
+        'livescript',
+        'logiql',
+        'lsl',
+        'lucene',
+        'makefile',
+        'mushcode',
+        'pascal',
+        'perl',
+        'rdoc',
+        'rhtml',
+        'sass',
+        'scheme',
+        'stylus',
+        'textile',
+        'tmsnippet',
+        'toml',
+        'vbscript',
+        'velocity'
     );
 
     function SplitContainer(root, children, splitType) {
@@ -462,16 +488,39 @@
         createModeMenu: function(){
             var _this = this;
             var _thisMenu = $('#changemode-menu');
-            var modeOptions = '';
+            var modeColumns = new Array();
+            var modeOptions = new Array();
+            var maxOptionsColumn = 15;
+            var firstOption = 0;
 
             this.initMenuHandler($('#current-mode'),_thisMenu);
 
             availableTextModes.sort();
             $.each(availableTextModes, function(i){
-                modeOptions += '<li><a>'+availableTextModes[i]+'</a></li>';
+                modeOptions.push('<li><a>'+availableTextModes[i]+'</a></li>');     
             });
-
-            _thisMenu.html(modeOptions);
+                       
+            var html = '<table><tr>';
+            while(true) {
+                html += '<td><ul>';
+                if ((modeOptions.length-firstOption) < maxOptionsColumn) {
+                    max = modeOptions.length;
+                } else {
+                    max = firstOption + maxOptionsColumn;
+                }
+                var currentcolumn = modeOptions.slice(firstOption, max);
+                for (var option in currentcolumn) {
+                    html += currentcolumn[option];
+                }
+                html += '</ul></td>';
+                firstOption = firstOption +  maxOptionsColumn;
+                if(firstOption >= modeOptions.length) {
+                    break;
+                }
+            }
+            
+            html += '</tr></table>';
+            _thisMenu.html(html);
 
             $('#changemode-menu a').click(function(e){
                 e.stopPropagation();
