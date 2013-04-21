@@ -16,14 +16,14 @@
 
         init: function() {
 
-            $.loadScript("components/color_picker/color_parser.js");
-            $.loadScript("components/color_picker/jquery.colorpicker.js");
+            $.loadScript("plugins/color_picker/color_parser.js");
+            $.loadScript("plugins/color_picker/jquery.colorpicker.js");
 
         },
 
         open: function() {
 
-            codiad.modal.load(400, 'components/color_picker/dialog.php');
+            codiad.modal.load(400, 'plugins/color_picker/dialog.php');
 
         },
 

@@ -14,6 +14,15 @@
             }
         }
         if(file_exists($path.'config.php')){ require_once($path.'config.php'); }
+    } else if(strpos($_SERVER['SCRIPT_FILENAME'], "plugins")) {
+        foreach(explode("/", substr($_SERVER['SCRIPT_FILENAME'],strpos($_SERVER['SCRIPT_FILENAME'], "plugins") + 8)) as $part) {
+            if(!isset($path)){
+            	$path = '../';
+            }else{
+            	$path .= '../';
+            }
+        }
+        if(file_exists($path.'config.php')){ require_once($path.'config.php'); }
     } else {
         if(file_exists('config.php')){ require_once('config.php'); }
     }
@@ -24,6 +33,10 @@
     
     if(!defined('COMPONENTS')) {
         define('COMPONENTS', BASE_PATH . '/components');
+    }
+    
+    if(!defined('PLUGINS')) {
+        define('PLUGINS', BASE_PATH . '/plugins');
     }
     
     // Ensure theme vars are present (upgrade with legacy config.php)
