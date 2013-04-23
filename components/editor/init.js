@@ -67,7 +67,8 @@
         'tmsnippet',
         'toml',
         'vbscript',
-        'velocity'
+        'velocity',
+        'diff'
     );
 
     function SplitContainer(root, children, splitType) {
