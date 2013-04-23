@@ -10,27 +10,7 @@
         "onclick": "codiad.active.saveAll();"
     },
     {
-        "title": "break",
-        "icon": null,
-        "onclick": null
-    },
-    {
-        "title": "Color Tool",
-        "icon": "icon-palette",
-        "onclick": "codiad.colorPicker.open();"
-    },
-    {
-        "title": "break",
-        "icon": null,
-        "onclick": null
-    },
-    {
-        "title": "Terminal",
-        "icon": "icon-monitor",
-        "onclick": "codiad.terminal.open();"
-    },
-    {
-        "title": "break",
+        "title": "plugins",
         "icon": null,
         "onclick": null
     },
@@ -60,6 +40,16 @@
         "onclick": "codiad.modal.load(400, 'components/editor/dialog.php?action=settings');codiad.modal.hideOverlay();"
     },
     {
+        "title": "Plugins",
+        "icon": "icon-tag",
+        "onclick": "codiad.plugin_manager.list();"
+    },
+    {
+        "title": "break",
+        "icon": null,
+        "onclick": null
+    },
+    {
         "title": "Password",
         "icon": "icon-flashlight",
         "onclick": "codiad.user.password();"
@@ -70,7 +60,7 @@
         "onclick": null
     },
         {
-        "title": "Check For Update",
+        "title": "Update Check",
         "icon": "icon-share",
         "onclick": "codiad.update.check();"
     },
