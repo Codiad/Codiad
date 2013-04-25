@@ -41,34 +41,7 @@
         'python',
         'ruby',
         'jade',
-        'text',
-        'abap',
-        'curly',
-        'dart',
-        'django',
-        'dot',
-        'ftl',
-        'haml',
-        'lisp',
-        'livescript',
-        'logiql',
-        'lsl',
-        'lucene',
-        'makefile',
-        'mushcode',
-        'pascal',
-        'perl',
-        'rdoc',
-        'rhtml',
-        'sass',
-        'scheme',
-        'stylus',
-        'textile',
-        'tmsnippet',
-        'toml',
-        'vbscript',
-        'velocity',
-        'diff'
+        'text'
     );
 
     function SplitContainer(root, children, splitType) {
@@ -491,7 +464,7 @@
             var _thisMenu = $('#changemode-menu');
             var modeColumns = new Array();
             var modeOptions = new Array();
-            var maxOptionsColumn = 15;
+            var maxOptionsColumn = 20;
             var firstOption = 0;
 
             this.initMenuHandler($('#current-mode'),_thisMenu);
