@@ -9,7 +9,7 @@
      "contextmenu" : [{
         "action" : "codiad.filemanager.openInBrowser('/'+$('#context-menu').attr('data-path'));",
         "icon" : "icon-network",
-        "applies-to" : "directory-only",
+        "applies-to" : "directory-only no-external",
         "title" : "Open Request"
         }]
   } ]
