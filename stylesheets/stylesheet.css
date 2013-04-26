@@ -382,6 +382,23 @@ footer a:hover {
 
 #modal-overlay { display: none; position: fixed; width: 100%; height: 100%; top: 0; left: 0; background: #fff; opacity: 0.8; z-index: 99998; }
 
+/* TABLES */
+
+    .datatable { border-collapse: separate; width: 100%; margin: 15px 0; border-spacing: 0; box-shadow: 0 5px 8px 0 rgba(0, 0, 0, .1); }
+    .datatable th, .datatable td { padding: 8px 10px 6px 10px; border: 1px solid #ccc; background: #fafafa; font-size: 13px;  }
+    .datatable th { text-align: left; font-weight: bold;
+        background-image: -webkit-gradient(linear,left bottom, left top, color-stop(0.25, rgb(224,224,224)), color-stop(0.75, rgb(240,240,240)));
+        background-image: -moz-linear-gradient(center bottom, rgb(224,224,224) 25%, rgb(240,240,240) 75%);
+    }
+    .datatable tr td { text-align: left; }
+    .datatable tr.empty-set td { text-align: center; font-style: italic; color: #999; padding: 25px 0; }  
+    .datatable td.icon a { line-height: 100%; padding: 0; }
+    .datatable td.icon a:hover { color: #333; }  
+    .datatable tr:first-child th:first-child { border-top-left-radius:8px; }   
+    .datatable tr:first-child th:last-child { border-top-right-radius:8px; }
+    
+    .datatable td .splitter { padding: 0 10px; color: #ccc; }
+
 
 .video-container {
     position: relative;
