@@ -4,6 +4,7 @@
 config.php
 data/
 workspace/
+plugins/
 .project
 .buildpath
 .settings/
