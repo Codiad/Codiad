@@ -60,6 +60,7 @@
 
         open: function(path) {
             var _this = this;
+            codiad.finder.contractFinder();
             $.get(this.controller + '?action=open&path=' + path, function(data) {
                 var projectInfo = codiad.jsend.parse(data);
                 if (projectInfo != 'error') {
