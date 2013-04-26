@@ -1,0 +1,17 @@
+/* Scroll Container */
+.scrollingArea { 
+    width: 800px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Diff Table */
+.diff td {
+  vertical-align : top;
+  white-space    : pre;
+  white-space    : pre-wrap;
+  font-family    : monospace;
+}
+.diff th {
+    background-color: #3b3b3b;
+}
