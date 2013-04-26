@@ -218,6 +218,21 @@ if(!file_exists(DATA . '/plugins.php')) {
                             }
 
                         }
+                        
+                        foreach ($plugins as $plugin){
+                             if(file_exists(PLUGINS . "/" . $plugin . "/plugin.json")) {
+                                $pdata = file_get_contents(PLUGINS . "/" . $plugin . "/plugin.json");
+                                $pdata = json_decode($pdata,true);
+                                if(isset($pdata[0]['contextmenu'])) {
+                                    foreach($pdata[0]['contextmenu'] as $contextmenu) {
+                                        if(isset($contextmenu['applies-to']) && isset($contextmenu['action']) && isset($contextmenu['icon']) && isset($contextmenu['title'])) {
+                                            echo('<hr class="'.$contextmenu['applies-to'].'">');
+                                            echo('<a class="'.$contextmenu['applies-to'].'" onclick="'.$contextmenu['action'].'"><span class="'.$contextmenu['icon'].'"></span>'.$contextmenu['title'].'</a>');
+                                        }
+                                    }
+                                }
+                             }
+                        }
 
                 ?>
 
@@ -312,9 +327,9 @@ if(!file_exists(DATA . '/plugins.php')) {
                                             echo('<a onclick="'.$rightbar['action'].'"><span class="'.$rightbar['icon'].'"></span>'.$rightbar['title'].'</a>');
                                         }
                                     }
+                                    echo("<hr>");
                                 }
                              }
-                             echo("<hr>");
                         }
                     } else{
                         echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].' bigger-icon"></span>'.get_i18n($data['title']).'</a>');
