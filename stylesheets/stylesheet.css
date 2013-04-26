@@ -83,14 +83,14 @@ header {
   padding-bottom: 25px;
 }
 
-header #logo { float: left; margin: 10px 20px 0 0; }
+header #logo { float: left; margin: 5px 20px 0 0; }
 
 header h1 {
   font-family: 'Ubuntu', 'Helvetica Neue', Helvetica, Arial, serif; font-weight: 900;
   letter-spacing: -1px;
-  font-size: 45px;
+  font-size: 43px;
   color: #303030;
-  line-height: 1.2;
+  line-height: 1.1em;
 }
 
 header h2 {
@@ -169,8 +169,13 @@ a.button span {
   height: 23px;
 }
 
+p em { font-size: 12px; color: #666; }
+
 #download-zip span {
   background: transparent url(../images/zip-icon.png) 12px 50% no-repeat;
+}
+#plugins span {
+  background: transparent url(../images/plugin-icon.png) 12px 50% no-repeat;
 }
 #download-tar-gz span {
   background: transparent url(../images/tar-gz-icon.png) 12px 50% no-repeat;
