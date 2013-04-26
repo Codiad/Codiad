@@ -398,6 +398,10 @@ footer a:hover {
     .datatable tr:first-child th:last-child { border-top-right-radius:8px; }
     
     .datatable td .splitter { padding: 0 10px; color: #ccc; }
+    
+    .datatable td a { color: #828282; text-decoration: none; }
+    .datatable td a:hover { color: #333; text-decoration: none; }
+    
 
 
 .video-container {
