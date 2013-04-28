@@ -20,6 +20,7 @@
     $projects = $path . "/data/projects.php";
     $active = $path . "/data/active.php";
     $config = $path . "/config.php";
+    $config_example = $path. "/config.example.php";
 
 //////////////////////////////////////////////////////////////////////
 // Functions
@@ -127,7 +128,7 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     //////////////////////////////////////////////////////////////////
     
     
-    $config_data = file_get_contents($config);
+    $config_data = file_get_contents($config_example);
     $config_data = str_replace("%path%", $rel, $config_data);
     $config_data = str_replace("%timezone%", $timezone, $config_data);
 
