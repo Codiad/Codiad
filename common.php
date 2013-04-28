@@ -39,6 +39,10 @@
         define('PLUGINS', BASE_PATH . '/plugins');
     }
     
+	if(!defined('DATA')) {
+        define('DATA', BASE_PATH . '/data');
+    }
+    
     // Ensure theme vars are present (upgrade with legacy config.php)
     if(!defined('THEMES')){
     	define("THEMES", BASE_PATH . "/themes");
