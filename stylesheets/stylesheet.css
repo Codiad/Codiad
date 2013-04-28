@@ -89,9 +89,13 @@ header h1 {
   font-family: 'Ubuntu', 'Helvetica Neue', Helvetica, Arial, serif; font-weight: 900;
   letter-spacing: -1px;
   font-size: 43px;
+  height: 45px;
   color: #303030;
-  line-height: 1.1em;
+  line-height: 43px;
+  padding: 3px 0 0 0;
 }
+
+header .version { font-size: 13px; color: #aaa; padding: 0 0 0 10px; letter-spacing: 0; }
 
 header h2 {
   letter-spacing: -1px;

@@ -6,3 +6,11 @@ function openModal(){
 function closeModal(){
   $('#modal,#modal-overlay').fadeOut(300);
 }
+
+$(function(){
+   
+   $.getJSON('https://api.github.com/repos/Codiad/Codiad/tags', function(data){
+      $('.version').text(data[0].name); 
+   });
+    
+});
