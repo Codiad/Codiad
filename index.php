@@ -22,25 +22,27 @@ foreach ($allFiles as $fname){
         $components[] = $fname;
     }
 }
-
-// Plugins
-$plugins = array();
-if(!file_exists(DATA . '/plugins.php')) {
-    //read all directories from plugins
-    $allFiles = scandir(PLUGINS);
-    foreach ($allFiles as $fname){
-        if($fname == '.' || $fname == '..' ){
-            continue;
-        }
-        if(is_dir(PLUGINS.'/'.$fname)){
-            $plugins[] = $fname;
-        }
-    }
-    saveJSON('plugins.php',$plugins);
+if(defined('DATA')){
+	// Plugins
+	$plugins = array();
+	if(!file_exists(DATA . '/plugins.php')) {
+	    //read all directories from plugins
+	    $allFiles = scandir(PLUGINS);
+	    foreach ($allFiles as $fname){
+	        if($fname == '.' || $fname == '..' ){
+	            continue;
+	        }
+	        if(is_dir(PLUGINS.'/'.$fname)){
+	            $plugins[] = $fname;
+	        }
+	    }
+	    saveJSON('plugins.php',$plugins);
+	} else {
+	    $plugins = getJSON('plugins.php');
+	}
 } else {
-    $plugins = getJSON('plugins.php');
+	$plugins = array();
 }
-
 ?>
 <!doctype html>
 
@@ -73,20 +75,21 @@ if(!file_exists(DATA . '/plugins.php')) {
             }
         }
     }
-    
+    if(!empty($plugs)){
     // Load Plugin CSS Files    
-    foreach($plugins as $plugin){
-        if(file_exists(THEMES . "/". THEME . "/" . $plugin . "/screen.css")){
-            echo('<link rel="stylesheet" href="themes/'.THEME.'/'.$plugin.'/screen.css">');
-        } else {
-            if(file_exists("themes/default/" . $plugin . "/screen.css")){
-                echo('<link rel="stylesheet" href="themes/default/'.$plugin.'/screen.css">');
-            } else {
-                if(file_exists(PLUGINS . "/" . $plugin . "/screen.css")){
-                    echo('<link rel="stylesheet" href="plugins/'.$plugin.'/screen.css">');
-                }
-            }
-        }
+	    foreach($plugins as $plugin){
+	        if(file_exists(THEMES . "/". THEME . "/" . $plugin . "/screen.css")){
+	            echo('<link rel="stylesheet" href="themes/'.THEME.'/'.$plugin.'/screen.css">');
+	        } else {
+	            if(file_exists("themes/default/" . $plugin . "/screen.css")){
+	                echo('<link rel="stylesheet" href="themes/default/'.$plugin.'/screen.css">');
+	            } else {
+	                if(file_exists(PLUGINS . "/" . $plugin . "/screen.css")){
+	                    echo('<link rel="stylesheet" href="plugins/'.$plugin.'/screen.css">');
+	                }
+	            }
+	        }
+	    }
     }
     ?>
     <link rel="icon"       href="favicon.ico" type="image/x-icon" />
