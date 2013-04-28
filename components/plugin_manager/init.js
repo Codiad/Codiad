@@ -30,6 +30,20 @@
                 .die('submit'); // Prevent form bubbling
             codiad.modal.load(500, this.dialog + '?action=list');
         },
+        
+        //////////////////////////////////////////////////////////////////
+        // Checks for plugin updates
+        //////////////////////////////////////////////////////////////////
+
+        update: function() {
+            $('#modal-content form')
+                .die('submit'); // Prevent form bubbling
+            codiad.modal.load(500, this.dialog + '?action=update');
+        },
+        
+        openInBrowser: function(path) {
+            window.open(path, '_newtab');
+        },
 
         //////////////////////////////////////////////////////////////////
         // Activate Plugin
