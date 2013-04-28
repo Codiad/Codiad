@@ -7,7 +7,7 @@
 *  [root]/license.txt for more. This information must remain intact.
 */
 
-$path = rtrim(str_replace("index.php", "", $_SERVER['SCRIPT_FILENAME']),"/");
+$path = realpath(rtrim(str_replace("index.php", "", $_SERVER['SCRIPT_FILENAME']),"/"));
 
 $workspace = is_writable( $path . "/workspace");
 $data = is_writable($path . "/data");
