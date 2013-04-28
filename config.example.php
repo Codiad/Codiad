@@ -10,7 +10,7 @@
 // PATH
 //////////////////////////////////////////////////////////////////
 
-$rel = "/";
+$rel = "%path%";
 define("BASE_PATH",$_SERVER["DOCUMENT_ROOT"] . $rel);
 define("COMPONENTS",BASE_PATH . "/components");
 define("PLUGINS",BASE_PATH . "/plugins");
@@ -44,6 +44,6 @@ $cookie_lifetime = "0";
 // TIMEZONE
 //////////////////////////////////////////////////////////////////
 
-date_default_timezone_set("America/Chicago");
+date_default_timezone_set("%timezone%");
 
 ?>
