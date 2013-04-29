@@ -39,7 +39,7 @@
 	},
 	"extra": {
 		"installer-paths": {
-			"apps/{$name}": ["codiad/codiad/package"]
+			"apps/{$name}": ["codiad/codiad"]
 		}
 	}
 }
