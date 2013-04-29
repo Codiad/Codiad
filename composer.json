@@ -3,9 +3,9 @@
 	"version": "1.0.1",
 	"description": "Codiad is a web-based IDE framework with a small footprint and minimal requirements. The system is still early in development, and while it has been proven extremely stable please be sure have a backup system if you use it in any production work.",
 	"authors": [
-		{
-			"name": "Kent Safranski",
-			"email": "kent@fluidbyte.net"
+	{
+		"name": "Kent Safranski",
+		"email": "kent@fluidbyte.net"
     	},
     	{
     		"name": "Tim Holum"
