@@ -705,6 +705,10 @@ table [class^="icon-"], [class*=" icon-"] {
     background-color: #333;
 }
 
+#lock-right-sidebar:hover {
+    color: #fff;
+}
+
 #sb-right hr {
     height: 0;
     border: none;
