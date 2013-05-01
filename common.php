@@ -101,12 +101,22 @@
         //////////////////////////////////////////////////////////////////
         // Localization
         //////////////////////////////////////////////////////////////////
+        
+        public static function loadi18n() {
+            global $lang;
+            if (isset($_SESSION['lang'])) {
+                include BASE_PATH."/languages/{$_SESSION['lang']}.php";
+            } else {  
+                include BASE_PATH."/languages/en.php";
+            }
+        }
                 
         public static function i18n($key) {
             echo Common::get_i18n($key);
         }
         
         public static function get_i18n($key) {
+            Common::loadi18n();
             global $lang;
             $key = ucwords(strtolower($key)); //Test, test TeSt and tESt are exacly the same
             return isset($lang[$key]) ? $lang[$key] : $key;
@@ -243,13 +253,7 @@
     //////////////////////////////////////////////////////////////////
     // Localization
     //////////////////////////////////////////////////////////////////
-    
-    if (isset($_SESSION['lang'])) {
-        include BASE_PATH."/languages/{$_SESSION['lang']}.php";
-    } else {  
-        include BASE_PATH."/languages/en.php";
-    }
-    
+        
     function i18n($key) {
         echo Common::i18n($key);
     }
