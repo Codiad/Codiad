@@ -40,6 +40,7 @@
                             $path .= '../';
                         }
                     }
+                    break;
                 }
             }
             
@@ -61,7 +62,6 @@
                 define('DATA', BASE_PATH . '/data');
             }
             
-            // Ensure theme vars are present (upgrade with legacy config.php)
             if(!defined('THEMES')){
                 define("THEMES", BASE_PATH . "/themes");
             }
@@ -131,7 +131,7 @@
         //////////////////////////////////////////////////////////////////
 
         public static function getJSON($file,$namespace=""){
-            $path = BASE_PATH . "/data/";
+            $path = DATA . "/";
             if($namespace != ""){
                 $path = $path . $namespace . "/";
                 $path = preg_replace('#/+#','/',$path);
@@ -148,7 +148,7 @@
         //////////////////////////////////////////////////////////////////
 
         public static function saveJSON($file,$data,$namespace=""){
-            $path = BASE_PATH . "/data/";
+            $path = DATA . "/";
             if($namespace != ""){
                 $path = $path . $namespace . "/";
                 $path = preg_replace('#/+#','/',$path);
@@ -197,7 +197,7 @@
         //////////////////////////////////////////////////////////////////
 
         public static function checkAccess() {
-            return !file_exists(BASE_PATH . "/data/" . $_SESSION['user'] . '_acl.php');
+            return !file_exists(DATA . "/" . $_SESSION['user'] . '_acl.php');
         }
         
         //////////////////////////////////////////////////////////////////
