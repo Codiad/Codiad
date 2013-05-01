@@ -8,7 +8,8 @@
 
     codiad.sidebars = {
 
-        userLock: true,
+        leftLock: true,
+        rightLock: false,
         modalLock: false,
 
         isLeftSidebarOpen: true,
@@ -20,17 +21,36 @@
 
             $('#lock-left-sidebar')
                 .on('click', function() {
-                if (_this.userLock) {
+                if (_this.leftLock) {
 
-                    _this.userLock = false;
+                    _this.leftLock = false;
                     $('#lock-left-sidebar')
                         .removeClass('icon-lock')
                         .addClass('icon-switch');
 
                 } else {
 
-                    _this.userLock = true;
+                    _this.leftLock = true;
                     $('#lock-left-sidebar')
+                        .removeClass('icon-switch')
+                        .addClass('icon-lock');
+
+                }
+            });
+            
+            $('#lock-right-sidebar')
+                .on('click', function() {
+                if (_this.rightLock) {
+
+                    _this.rightLock = false;
+                    $('#lock-right-sidebar')
+                        .removeClass('icon-lock')
+                        .addClass('icon-switch');
+
+                } else {
+
+                    _this.rightLock = true;
+                    $('#lock-right-sidebar')
                         .removeClass('icon-switch')
                         .addClass('icon-lock');
 
@@ -66,7 +86,7 @@
                         .width();
                     $(this)
                         .data("timeout_r", setTimeout($.proxy(function() {
-                        if (!codiad.sidebars.userLock && !codiad.sidebars.modalLock) { // Check locks
+                        if (!codiad.sidebars.leftLock && !codiad.sidebars.modalLock) { // Check locks
                             $(this)
                                 .animate({
                                 'left': (-sbarWidth + 10) + "px"
@@ -127,16 +147,18 @@
                 }, function() {
                     $(this)
                         .data("timeout_r", setTimeout($.proxy(function() {
-                        $(this)
-                            .animate({
-                                'right': '-190px'
-                            }, 300, 'easeOutQuart');
-                        $('#editor-region')
-                            .animate({
-                                'margin-right': '10px'
-                            }, 300, 'easeOutQuart', function(){
-                                _this.isRigthSidebarOpen = false;
-                            });
+                        if (!codiad.sidebars.rightLock) {
+                            $(this)
+                                .animate({
+                                    'right': '-190px'
+                                }, 300, 'easeOutQuart');
+                            $('#editor-region')
+                                .animate({
+                                    'margin-right': '10px'
+                                }, 300, 'easeOutQuart', function(){
+                                    _this.isRigthSidebarOpen = false;
+                                });
+                        }
                     }, this), 500));
                 });
 
