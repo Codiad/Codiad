@@ -4,68 +4,8 @@
     *  as-is and without warranty under the MIT License. See
     *  [root]/license.txt for more. This information must remain intact.
     */
-    
-    if(strpos($_SERVER['SCRIPT_FILENAME'], "components")) {
-        foreach(explode("/", substr($_SERVER['SCRIPT_FILENAME'],strpos($_SERVER['SCRIPT_FILENAME'], "components") + 11)) as $part) {
-            if(!isset($path)){
-            	$path = '../';
-            }else{
-            	$path .= '../';
-            }
-        }
-        if(file_exists($path.'config.php')){ require_once($path.'config.php'); }
-    } else if(strpos($_SERVER['SCRIPT_FILENAME'], "plugins")) {
-        foreach(explode("/", substr($_SERVER['SCRIPT_FILENAME'],strpos($_SERVER['SCRIPT_FILENAME'], "plugins") + 8)) as $part) {
-            if(!isset($path)){
-            	$path = '../';
-            }else{
-            	$path .= '../';
-            }
-        }
-        if(file_exists($path.'config.php')){ require_once($path.'config.php'); }
-    } else {
-        if(file_exists('config.php')){ require_once('config.php'); }
-    }  
-       
-    if(!defined('BASE_PATH')) {
-        define('BASE_PATH', rtrim(str_replace("index.php", "", $_SERVER['SCRIPT_FILENAME']),"/"));
-    }
-    
-    if(!defined('COMPONENTS')) {
-        define('COMPONENTS', BASE_PATH . '/components');
-    }
-    
-    if(!defined('PLUGINS')) {
-        define('PLUGINS', BASE_PATH . '/plugins');
-    }
-    
-	if(!defined('DATA')) {
-        define('DATA', BASE_PATH . '/data');
-    }
-    
-    // Ensure theme vars are present (upgrade with legacy config.php)
-    if(!defined('THEMES')){
-    	define("THEMES", BASE_PATH . "/themes");
-    }
-    
-    if(!defined('THEME')){
-    	define("THEME", "default");
-    }
-    
-    //////////////////////////////////////////////////////////////////
-    // SESSIONS
-    //////////////////////////////////////////////////////////////////
-    if(isset($cookie_lifetime) && $cookie_lifetime != "") {
-        ini_set("session.cookie_lifetime", $cookie_lifetime);
-    }
-    
-    //Set a Session Name
-    session_name(md5(BASE_PATH));
-
-    session_start();
-           
-    /* The stack of debug messages. */
-    $debugMessageStack = array();
+     
+    Common::startSession();
                
     //////////////////////////////////////////////////////////////////
     // Common Class
@@ -77,7 +17,7 @@
         // PROPERTIES
         //////////////////////////////////////////////////////////////////
         
-        public $debugMessageStack = array();
+        public static $debugMessageStack = array();
         
         //////////////////////////////////////////////////////////////////
         // METHODS
@@ -89,9 +29,64 @@
         // Construct
         //////////////////////////////////////////////////////////////////
 
-        public function __construct(){
+        public static function construct(){
+            $path = '';
+            foreach (array("components","plugins") as $folder) {
+                if(strpos($_SERVER['SCRIPT_FILENAME'], $folder)) {
+                    foreach(explode("/", substr($_SERVER['SCRIPT_FILENAME'],strpos($_SERVER['SCRIPT_FILENAME'], $folder) + strlen($folder)+1)) as $part) {
+                        if(!isset($path)){
+                            $path = '../';
+                        }else{
+                            $path .= '../';
+                        }
+                    }
+                }
+            }
+            
+            if(file_exists($path.'config.php')){ require_once($path.'config.php'); }
+        
+            if(!defined('BASE_PATH')) {
+                define('BASE_PATH', rtrim(str_replace("index.php", "", $_SERVER['SCRIPT_FILENAME']),"/"));
+            }
+            
+            if(!defined('COMPONENTS')) {
+                define('COMPONENTS', BASE_PATH . '/components');
+            }
+            
+            if(!defined('PLUGINS')) {
+                define('PLUGINS', BASE_PATH . '/plugins');
+            }
+            
+            if(!defined('DATA')) {
+                define('DATA', BASE_PATH . '/data');
+            }
+            
+            // Ensure theme vars are present (upgrade with legacy config.php)
+            if(!defined('THEMES')){
+                define("THEMES", BASE_PATH . "/themes");
+            }
+            
+            if(!defined('THEME')){
+                define("THEME", "default");
+            }
         }
         
+        //////////////////////////////////////////////////////////////////
+        // SESSIONS
+        //////////////////////////////////////////////////////////////////
+        
+        public static function startSession() {
+            Common::construct();
+            if(isset($cookie_lifetime) && $cookie_lifetime != "") {
+                ini_set("session.cookie_lifetime", $cookie_lifetime);
+            }
+            
+            //Set a Session Name
+            session_name(md5(BASE_PATH));
+
+            session_start();
+        }
+            
         //////////////////////////////////////////////////////////////////
         // Log debug message
         // Messages will be displayed in the console when the response is 
@@ -99,8 +94,7 @@
         //////////////////////////////////////////////////////////////////
         
         public static function debug($message) {
-            global $debugMessageStack;
-            $debugMessageStack[] = $message;
+            Common::$debugMessageStack[] = $message;
         }
         
         //////////////////////////////////////////////////////////////////
@@ -108,7 +102,7 @@
         //////////////////////////////////////////////////////////////////
                 
         public static function i18n($key) {
-            echo get_i18n($key);
+            echo Common::get_i18n($key);
         }
         
         public static function get_i18n($key) {
@@ -174,11 +168,10 @@
         public static function formatJSEND($status,$data=false){
 
             /// Debug /////////////////////////////////////////////////
-            global $debugMessageStack;
             $debug = "";
-            if(count($debugMessageStack) > 0) {
+            if(count(Common::$debugMessageStack) > 0) {
                 $debug .= ',"debug":';
-                $debug .= json_encode($debugMessageStack);
+                $debug .= json_encode(Common::$debugMessageStack);
             }
 
             // Success ///////////////////////////////////////////////
@@ -231,6 +224,10 @@
         }
             
     }
+    
+    //////////////////////////////////////////////////////////////////
+    // Wrapper for old method names
+    //////////////////////////////////////////////////////////////////
     
     //////////////////////////////////////////////////////////////////
     // Log debug message
