@@ -30,7 +30,7 @@
         //////////////////////////////////////////////////////////////////
 
         public static function construct(){
-            $path = '';
+            global $cookie_lifetime;
             foreach (array("components","plugins") as $folder) {
                 if(strpos($_SERVER['SCRIPT_FILENAME'], $folder)) {
                     foreach(explode("/", substr($_SERVER['SCRIPT_FILENAME'],strpos($_SERVER['SCRIPT_FILENAME'], $folder) + strlen($folder)+1)) as $part) {
@@ -77,6 +77,7 @@
         
         public static function startSession() {
             Common::construct();
+            global $cookie_lifetime;
             if(isset($cookie_lifetime) && $cookie_lifetime != "") {
                 ini_set("session.cookie_lifetime", $cookie_lifetime);
             }
