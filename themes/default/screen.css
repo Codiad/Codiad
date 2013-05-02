@@ -619,6 +619,25 @@ table [class^="icon-"], [class*=" icon-"] {
     display: block;
     margin: 10px;
 }
+#sb-right-title{
+    position: absolute;
+    z-index: 9998;
+    top: 0;
+    left: 12px;
+    right: 0;
+    height: 33px;
+    background-color: #303030;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.898) inset;
+}
+#sb-right-title .icon {
+    display: block;
+    font-size: 15px;
+    color: #666;
+    z-index: 99999;
+    cursor: pointer;
+    margin: 10px;
+    float: left;
+}
 #finder-label{
     cursor: pointer;
 }
@@ -666,6 +685,7 @@ table [class^="icon-"], [class*=" icon-"] {
     float: left;
     height: 100%;
     padding: 15px;
+    padding-top: 40px;
     overflow: auto;
 }
 
@@ -683,6 +703,10 @@ table [class^="icon-"], [class*=" icon-"] {
 
 #sb-right a:hover {
     background-color: #333;
+}
+
+#lock-right-sidebar:hover {
+    color: #fff;
 }
 
 #sb-right hr {
