@@ -69,6 +69,13 @@
             if(!defined('THEME')){
                 define("THEME", "default");
             }
+            
+            global $lang;
+            if (isset($_SESSION['lang'])) {
+                include BASE_PATH."/languages/{$_SESSION['lang']}.php";
+            } else {  
+                include BASE_PATH."/languages/en.php";
+            }
         }
         
         //////////////////////////////////////////////////////////////////
@@ -101,22 +108,12 @@
         //////////////////////////////////////////////////////////////////
         // Localization
         //////////////////////////////////////////////////////////////////
-        
-        public static function loadi18n() {
-            global $lang;
-            if (isset($_SESSION['lang'])) {
-                include BASE_PATH."/languages/{$_SESSION['lang']}.php";
-            } else {  
-                include BASE_PATH."/languages/en.php";
-            }
-        }
                 
         public static function i18n($key) {
             echo Common::get_i18n($key);
         }
         
         public static function get_i18n($key) {
-            Common::loadi18n();
             global $lang;
             $key = ucwords(strtolower($key)); //Test, test TeSt and tESt are exacly the same
             return isset($lang[$key]) ? $lang[$key] : $key;
@@ -240,73 +237,13 @@
     // Wrapper for old method names
     //////////////////////////////////////////////////////////////////
     
-    //////////////////////////////////////////////////////////////////
-    // Log debug message
-    // Messages will be displayed in the console when the response is 
-    // made with the formatJSEND function.
-    //////////////////////////////////////////////////////////////////
-    
-    function debug($message) {
-        Common::debug($message);
-    }
-    
-    //////////////////////////////////////////////////////////////////
-    // Localization
-    //////////////////////////////////////////////////////////////////
-        
-    function i18n($key) {
-        echo Common::i18n($key);
-    }
-    
-    function get_i18n($key) {
-        return Common::get_i18n($key);
-    }
-    
-    //////////////////////////////////////////////////////////////////
-    // Check Session / Key
-    //////////////////////////////////////////////////////////////////
-
-    function checkSession(){
-        Common::checkSession();
-    }
-
-    //////////////////////////////////////////////////////////////////
-    // Get JSON
-    //////////////////////////////////////////////////////////////////
-
-    function getJSON($file,$namespace=""){
-        return Common::getJSON($file,$namespace);
-    }
-
-    //////////////////////////////////////////////////////////////////
-    // Save JSON
-    //////////////////////////////////////////////////////////////////
-
-    function saveJSON($file,$data,$namespace=""){
-        Common::saveJSON($file,$data,$namespace);
-    }
-
-    //////////////////////////////////////////////////////////////////
-    // Format JSEND Response
-    //////////////////////////////////////////////////////////////////
-
-    function formatJSEND($status,$data=false){
-        return Common::formatJSEND($status,$data);
-    }
-    
-    //////////////////////////////////////////////////////////////////
-    // Check Function Availability
-    //////////////////////////////////////////////////////////////////
-
-    function checkAccess() {
-        return Common::checkAccess();
-    }
-    
-    //////////////////////////////////////////////////////////////////
-    // Check Function Availability
-    //////////////////////////////////////////////////////////////////
-
-    function isAvailable($func) {
-        return Common::isAvailable($func);
-    }
+    function debug($message) { Common::debug($message); }   
+    function i18n($key) { echo Common::i18n($key); }
+    function get_i18n($key) { return Common::get_i18n($key); }
+    function checkSession(){ Common::checkSession(); }
+    function getJSON($file,$namespace=""){ return Common::getJSON($file,$namespace); }
+    function saveJSON($file,$data,$namespace=""){ Common::saveJSON($file,$data,$namespace); }
+    function formatJSEND($status,$data=false){ return Common::formatJSEND($status,$data); }
+    function checkAccess() { return Common::checkAccess(); }
+    function isAvailable($func) { return Common::isAvailable($func); }
 ?>
