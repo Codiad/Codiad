@@ -133,9 +133,13 @@
                         if (timeout_r) {
                             clearTimeout(timeout_r);
                         }
+                        var sbarWidth = $("#sb-right")
+                            .width();
                         $('#editor-region')
                             .animate({
-                                'margin-right': '200px'
+                                'margin-right': sbarWidth+'px',
+                                'width': ($('#editor-region')
+                                            .outerWidth() - sbarWidth + 10) + 'px'
                             }, 300, 'easeOutQuart', function(){
                                 _this.isRigthSidebarOpen = true;
                             });
@@ -152,9 +156,13 @@
                                 .animate({
                                     'right': '-190px'
                                 }, 300, 'easeOutQuart');
+                            var sbarWidth = $("#sb-left")
+                                .width();
                             $('#editor-region')
                                 .animate({
-                                    'margin-right': '10px'
+                                    'margin-right': '10px',
+                                    'width': ($('body')
+                                            .outerWidth() - sbarWidth - 10) + 'px'
                                 }, 300, 'easeOutQuart', function(){
                                     _this.isRigthSidebarOpen = false;
                                 });
