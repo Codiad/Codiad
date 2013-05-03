@@ -31,6 +31,7 @@
 
         public static function construct(){
             global $cookie_lifetime;
+            $path = '';
             foreach (array("components","plugins") as $folder) {
                 if(strpos($_SERVER['SCRIPT_FILENAME'], $folder)) {
                     foreach(explode("/", substr($_SERVER['SCRIPT_FILENAME'],strpos($_SERVER['SCRIPT_FILENAME'], $folder) + strlen($folder)+1)) as $part) {
@@ -164,7 +165,7 @@
             }
             
             $data = "<?php/*|" . json_encode($data) . "|*/?>";
-            $write = fopen($path . $file, 'w') or die("can't open file");
+            $write = fopen($path . $file, 'w') or die("can't open file ".$path.$file);
             fwrite($write, $data);
             fclose($write);
         }

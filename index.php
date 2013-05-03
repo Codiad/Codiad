@@ -36,7 +36,6 @@ if(!file_exists(DATA . '/plugins.php')) {
             $plugins[] = $fname;
         }
     }
-    saveJSON('plugins.php',$plugins);
 } else {
     $plugins = getJSON('plugins.php');
 }
