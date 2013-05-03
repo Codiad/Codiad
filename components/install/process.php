@@ -14,11 +14,16 @@
     
     $fslash = str_replace('\\', '/', $path);
     $rel = str_replace($_SERVER['DOCUMENT_ROOT'], '', $fslash);
+    if(substr($rel,-1) == '/') {
+        $rel = substr($rel, 0, -1); 
+    }
     
     $workspace = $path . "/workspace";
     $users = $path . "/data/users.php";
     $projects = $path . "/data/projects.php";
     $active = $path . "/data/active.php";
+    $pluginpath = $path . "/plugins";
+    $plugins = $path . "/data/plugins.php";
     $config = $path . "/config.php";
 
 //////////////////////////////////////////////////////////////////////
@@ -121,7 +126,24 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     
     saveJSON($active,'');
     
+    //////////////////////////////////////////////////////////////////
+    // Create Plugin file
+    //////////////////////////////////////////////////////////////////
     
+    //read all directories from plugins
+    $pluginlist = array();
+    $allFiles = scandir($pluginpath);
+    foreach ($allFiles as $fname){
+        if($fname == '.' || $fname == '..' ){
+            continue;
+        }
+        if(is_dir($pluginpath.'/'.$fname)){
+            $pluginlist[] = $fname;
+        }
+    }
+
+    saveJSON($plugins,$pluginlist);
+        
     //////////////////////////////////////////////////////////////////
     // Create Config
     //////////////////////////////////////////////////////////////////
