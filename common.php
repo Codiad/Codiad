@@ -31,6 +31,7 @@
 
         public static function construct(){
             global $cookie_lifetime;
+            $path = '';
             foreach (array("components","plugins") as $folder) {
                 if(strpos($_SERVER['SCRIPT_FILENAME'], $folder)) {
                     foreach(explode("/", substr($_SERVER['SCRIPT_FILENAME'],strpos($_SERVER['SCRIPT_FILENAME'], $folder) + strlen($folder)+1)) as $part) {
