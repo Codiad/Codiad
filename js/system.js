@@ -71,7 +71,7 @@
 
             var marginL, reduction;
             if ($("#sb-left")
-                .css('left') !== 0 && !codiad.sidebars.userLock) {
+                .css('left') !== 0 && !codiad.sidebars.leftLock) {
                 marginL = handleWidth;
                 reduction = 2 * handleWidth;
             } else {
