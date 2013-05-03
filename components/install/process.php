@@ -15,7 +15,7 @@
     $fslash = str_replace('\\', '/', $path);
     $rel = str_replace($_SERVER['DOCUMENT_ROOT'], '', $fslash);
     if(substr($rel,-1) == '/') {
-        $rel = substr($rel, 0, strlen($rel) -1);
+        $rel = substr($rel, 0, -1); 
     }
     
     $workspace = $path . "/workspace";
