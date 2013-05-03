@@ -91,6 +91,9 @@
                         .width(),
                         sbarWidthR = $("#sb-right")
                         .width();
+                        if (!codiad.sidebars.rightLock) {
+                            sbarWidthR = 10;
+                        }
                     $(this)
                         .data("timeout_r", setTimeout($.proxy(function() {
                         if (!codiad.sidebars.leftLock && !codiad.sidebars.modalLock) { // Check locks
