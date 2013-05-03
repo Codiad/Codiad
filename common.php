@@ -164,7 +164,7 @@
             }
             
             $data = "<?php/*|" . json_encode($data) . "|*/?>";
-            $write = fopen($path . $file, 'w') or die("can't open file");
+            $write = fopen($path . $file, 'w') or die("can't open file ".$path.$file);
             fwrite($write, $data);
             fclose($write);
         }
