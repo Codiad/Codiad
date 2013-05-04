@@ -57,5 +57,65 @@ class Plugin_manager extends Common {
         // Response
         echo formatJSEND("success",null);
     }
+    
+    //////////////////////////////////////////////////////////////////
+    // Update Plugin
+    //////////////////////////////////////////////////////////////////
 
+    public function Update($name){
+        if(file_exists(PLUGINS.'/'.$name.'/plugin.json')) {
+            $data = json_decode(file_get_contents(PLUGINS.'/'.$name.'/plugin.json'),true);
+            if(substr($data[0]['url'],-4) == '.git') {
+                $data[0]['url'] = substr($data[0]['url'],0,-4);
+            }
+            $data[0]['url'] .= '/archive/master.zip';
+            file_put_contents(PLUGINS.'/'.$name.'.zip', fopen($data[0]['url'], 'r'));
+            
+            $zip = new ZipArchive;
+            $res = $zip->open(PLUGINS.'/'.$name.'.zip');
+            // open downloaded archive
+            if ($res === TRUE) {
+              // extract archive
+              if($zip->extractTo(PLUGINS) === true) {
+                if(substr($name, -6) != "master") {
+                    $this->cpy(PLUGINS.'/'.$name.'-master', PLUGINS.'/'.$name, array(".",".."));
+                } 
+                
+                $zip->close();
+              } else {
+                echo formatJSEND("error","Unable to open ".$name.".zip");
+              }
+            } else {
+                echo formatJSEND("error","ZIP Extension not found");
+            }
+            
+            unlink(PLUGINS.'/'.$name.'.zip');
+            // Response
+            echo formatJSEND("success",null);
+        } else {
+            echo formatJSEND("error","Unable to find plugin ".$name);
+        }
+    }
+    
+    function cpy($source, $dest, $ign){
+        if(is_dir($source)) {
+            $dir_handle=opendir($source);
+            while($file=readdir($dir_handle)){
+                if(!in_array($file, $ign)){
+                    if(is_dir($source."/".$file)){
+                        mkdir($dest."/".$file);
+                        cpy($source."/".$file, $dest."/".$file, $ign);
+                    } else {
+                        copy($source."/".$file, $dest."/".$file);
+                        unlink($source."/".$file);
+                    }
+                }
+            }
+            closedir($dir_handle);
+            rmdir($source);
+        } else {
+            copy($source, $dest);
+            unlink($source);
+        }
+    }
 }

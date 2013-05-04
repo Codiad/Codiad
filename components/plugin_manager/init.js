@@ -35,14 +35,30 @@
         // Checks for plugin updates
         //////////////////////////////////////////////////////////////////
 
-        update: function() {
+        check: function() {
             $('#modal-content form')
                 .die('submit'); // Prevent form bubbling
-            codiad.modal.load(500, this.dialog + '?action=update');
+            codiad.modal.load(500, this.dialog + '?action=check');
         },
         
         openInBrowser: function(path) {
             window.open(path, '_newtab');
+        },
+        
+        //////////////////////////////////////////////////////////////////
+        // Update Plugin
+        //////////////////////////////////////////////////////////////////
+
+        update: function(name) {
+            var _this = this;
+            $('#modal-content').html('<div id="modal-loading"></div><div align="center">Downloading ' + name + '...</div><br>');
+            $.get(_this.controller + '?action=update&name=' + name, function(data) {
+                var response = codiad.jsend.parse(data);
+                if (response == 'error') {
+                    codiad.message.error(response.message);
+                }
+                _this.check();
+            });
         },
 
         //////////////////////////////////////////////////////////////////
@@ -52,8 +68,8 @@
         activate: function(name) {
             var _this = this;
             $.get(this.controller + '?action=activate&name=' + name, function(data) {
-                var projectInfo = codiad.jsend.parse(data);
-                if (projectInfo != 'error') {
+                var response = codiad.jsend.parse(data);
+                if (response != 'error') {
                     _this.list();
                 }
             });
@@ -66,8 +82,8 @@
         deactivate: function(name) {
             var _this = this;
             $.get(this.controller + '?action=deactivate&name=' + name, function(data) {
-                var projectInfo = codiad.jsend.parse(data);
-                if (projectInfo != 'error') {
+                var response = codiad.jsend.parse(data);
+                if (response != 'error') {
                     _this.list();
                 }
             });

@@ -37,6 +37,15 @@
             $Plugin_manager->Activate($_GET['name']);
         }
     }
-   
+    
+    //////////////////////////////////////////////////////////////////
+    // Update Plugin
+    //////////////////////////////////////////////////////////////////
+
+    if($_GET['action']=='update'){
+        if(checkAccess()) {
+            $Plugin_manager->Update($_GET['name']);
+        }
+    }
 
 ?>

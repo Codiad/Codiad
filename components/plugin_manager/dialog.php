@@ -87,7 +87,7 @@
             ?>
             </table>
             </div>
-            <button class="btn-left" onclick="window.location.reload();return false;">Reload Codiad</button><button class="btn-mid" onclick="codiad.plugin_manager.update();return false;">Update Check</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
+            <button class="btn-left" onclick="window.location.reload();return false;">Reload Codiad</button><button class="btn-mid" onclick="codiad.plugin_manager.check();return false;">Update Check</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
             <?php
             
             break;
@@ -96,7 +96,7 @@
         // Update Projects
         //////////////////////////////////////////////////////////////
         
-        case 'update':
+        case 'check':
             ?>
             <label>Plugin Update Check</label>
             <div id="plugin-list">
@@ -105,7 +105,7 @@
                     <th>Plugin Name</th>
                     <th>Your Version</th>
                     <th>Latest Version</th>
-                    <th>Open</th>
+                    <th>Update</th>
                 </tr>
             <?php
             
@@ -140,7 +140,7 @@
                                     <?php
                                     if($remote[0]['version'] != $data[0]['version']) {
                                         ?>
-                                            <td><a class="icon-download icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $data[0]['url']; ?>');return false;"></a></td>
+                                            <td><table style="text-align:center;border-spacing:0;border-collapse:collapse;"><tr><td style="border: 0;padding: 0;"><a class="icon-download icon" onclick="codiad.plugin_manager.update('<?php echo $fname; ?>');return false;"></a></td><td style="border: 0;padding: 0;"><a class="icon-github icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $data[0]['url']; ?>');return false;"></a></td></tr></table></td>
                                         <?php
                                     } else {
                                         ?>
@@ -163,7 +163,7 @@
             ?>
             </table>
             </div>
-            <button class="btn" onclick="codiad.modal.unload();return false;">Close</button>
+            <button class="btn-left" onclick="codiad.plugin_manager.check();return false;">Rescan</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
             <?php
             
             break;
