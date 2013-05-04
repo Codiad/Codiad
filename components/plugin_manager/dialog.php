@@ -34,7 +34,7 @@
                     <th>Plugin Name</th>
                     <th>Description</th>
                     <th>Author</th>
-                    <th>Install</th>
+                    <th>Download</th>
                 </tr>
             <?php
             if($market != '') {
@@ -58,26 +58,36 @@
                     </tr>
                     <?php
                     foreach($pluginlist as $plugin) {
+                        if(substr($plugin['url'],-4) == '.git') {
+                            $plugin['url'] = substr($plugin['url'],0,-4);
+                        }
+                    
                         ?>
                         <tr>
                             <td><?php echo $plugin['name']; ?></td>
-                            <td><?php echo $plugin['description']; ?></td>
+                            <td width="400px"><?php echo $plugin['description']; ?></td>
                             <td><?php echo $plugin['author']; ?></td>
                             <?php
-                                if(checkAccess()){
-                                    if(is_writeable(PLUGINS) && extension_loaded('zip')) {
+                                if(file_exists(PLUGINS.substr($plugin['url'],strrpos($plugin['url'],'/'))) || file_exists(PLUGINS.substr($plugin['url'],strrpos($plugin['url'],'/').'-master'))) {
                                     ?>
-                                     <td><table style="text-align:center;border-spacing:0;border-collapse:collapse;"><tr><td style="border: 0;padding: 0;"><a class="icon-download icon" onclick="codiad.plugin_manager.install('<?php echo $plugin['name']; ?>','<?php echo $plugin['url']; ?>');return false;"></a></td><td style="border: 0;padding: 0;"><a class="icon-github icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $data[0]['url']; ?>');return false;"></a></td></tr></table></td>   
-                                    <?php       
-                                    } else {
-                                    ?>
-                                    <td><a class="icon-download icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $plugin['url']; ?>');return false;"></a></td>
+                                    <td><div class="icon-check icon"></div></td>
                                     <?php
-                                    }                             
                                 } else {
-                                    ?>
-                                    <td><div class="icon-block icon"></div></td>
-                                    <?php
+                                    if(checkAccess()){
+                                        if(is_writeable(PLUGINS) && extension_loaded('zip')) {
+                                        ?>
+                                         <td><table style="text-align:center;border-spacing:0;border-collapse:collapse;"><tr><td style="border: 0;padding: 0;"><a class="icon-download icon" onclick="codiad.plugin_manager.install('<?php echo $plugin['name']; ?>','<?php echo $plugin['url']; ?>');return false;"></a></td><td style="border: 0;padding: 0;"><a class="icon-github icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $data[0]['url']; ?>');return false;"></a></td></tr></table></td>   
+                                        <?php       
+                                        } else {
+                                        ?>
+                                        <td><a class="icon-download icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $plugin['url']; ?>');return false;"></a></td>
+                                        <?php
+                                        }                             
+                                    } else {
+                                        ?>
+                                        <td><div class="icon-block icon"></div></td>
+                                        <?php
+                                    }
                                 }
                             ?>
                         </tr>
@@ -93,7 +103,7 @@
             ?>
             </table>
             </div>
-            <button class="btn-left" onclick="codiad.plugin_manager.list();return false;">Installed Plugins</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
+            <button class="btn-left" onclick="codiad.plugin_manager.list();return false;">Installed Plugins</button><button class="btn-mid" onclick="codiad.plugin_manager.check();return false;">Update Check</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
             <?php
             
             break;
@@ -186,7 +196,7 @@
                     <th>Plugin Name</th>
                     <th>Your Version</th>
                     <th>Latest Version</th>
-                    <th>Update</th>
+                    <th>Download</th>
                 </tr>
             <?php
             
@@ -231,7 +241,7 @@
                                         }
                                     } else {
                                         ?>
-                                            <td></td>
+                                            <td><font style="color:green">Latest</font></td>
                                         <?php
                                     }
                                 } else {
@@ -250,7 +260,7 @@
             ?>
             </table>
             </div>
-            <button class="btn-left" onclick="codiad.plugin_manager.check();return false;">Rescan</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
+            <button class="btn-left" onclick="codiad.plugin_manager.check();return false;">Rescan</button><button class="btn-mid" onclick="codiad.plugin_manager.list();return false;">Installed Plugins</button><button class="btn-mid" onclick="codiad.plugin_manager.market();return false;">Plugin Market</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
             <?php
             
             break;
