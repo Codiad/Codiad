@@ -15,7 +15,7 @@ class Plugin_manager extends Common {
     //////////////////////////////////////////////////////////////////
 
     public $plugins     = '';
-    public $market      = '';
+    public $market      = 'http://codiad.com/plugins.json';
 
     //////////////////////////////////////////////////////////////////
     // METHODS
