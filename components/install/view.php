@@ -10,6 +10,7 @@
 $path = rtrim(str_replace("index.php", "", $_SERVER['SCRIPT_FILENAME']),"/");
 
 $workspace = is_writable( $path . "/workspace");
+$data = is_writable($path . "/data");
 $plugins = is_writable($path . "/plugins");
 $workspace = is_writable( $path . "/workspace");
 
