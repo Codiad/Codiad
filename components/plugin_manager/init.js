@@ -20,6 +20,16 @@
         init: function() {
            
         },
+        
+        //////////////////////////////////////////////////////////////////
+        // Open the plugin manager market
+        //////////////////////////////////////////////////////////////////
+        
+        market: function() {
+            $('#modal-content form')
+                .die('submit'); // Prevent form bubbling
+            codiad.modal.load(500, this.dialog + '?action=market');
+        },
 
         //////////////////////////////////////////////////////////////////
         // Open the plugin manager dialog

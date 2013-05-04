@@ -16,9 +16,59 @@
     checkSession();
 
     switch($_GET['action']){
+    
+        //////////////////////////////////////////////////////////////
+        // Plugin Market
+        //////////////////////////////////////////////////////////////
+        
+        case 'market':
+        
+            require_once('class.plugin_manager.php');
+            $pm = new Plugin_manager();
+        
+            ?>
+            <label>Plugin Market</label>
+            <div id="plugin-list">
+            <table width="100%">
+                <tr>
+                    <th>Plugin Name</th>
+                    <th>Description</th>
+                    <th>Author</th>
+                    <th width="5">Install</th>
+                </tr>
+            <?php
+            
+            foreach($pm->Market() as $plugin) {
+                ?>
+                <tr>
+                    <td><?php echo $plugin['name']; ?></td>
+                    <td><?php echo $plugin['description']; ?></td>
+                    <td><?php echo $plugin['author']; ?></td>
+                    <?php
+                        if(checkAccess()){
+                            ?>
+                             <td><table style="text-align:center;border-spacing:0;border-collapse:collapse;"><tr><td style="border: 0;padding: 0;"><a class="icon-download icon" onclick="codiad.plugin_manager.install('<?php echo $plugin['name']; ?>','<?php echo $plugin['url']; ?>');return false;"></a></td><td style="border: 0;padding: 0;"><a class="icon-github icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $data[0]['url']; ?>');return false;"></a></td></tr></table></td>   
+                            <?php                                    
+                        } else {
+                            ?>
+                            <td><div class="icon-block icon"></div></td>
+                            <?php
+                        }
+                    ?>
+                </tr>
+                <?php
+            }
+            
+            ?>
+            </table>
+            </div>
+            <button class="btn-left" onclick="codiad.plugin_manager.list();return false;">Installed Plugins</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
+            <?php
+            
+            break;
         
         //////////////////////////////////////////////////////////////
-        // List Projects
+        // List Plugins
         //////////////////////////////////////////////////////////////
         
         case 'list':
@@ -87,13 +137,13 @@
             ?>
             </table>
             </div>
-            <button class="btn-left" onclick="window.location.reload();return false;">Reload Codiad</button><button class="btn-mid" onclick="codiad.plugin_manager.check();return false;">Update Check</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
+            <button class="btn-left" onclick="window.location.reload();return false;">Reload Codiad</button><button class="btn-mid" onclick="codiad.plugin_manager.market();return false;">Plugin Market</button><button class="btn-mid" onclick="codiad.plugin_manager.check();return false;">Update Check</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
             <?php
             
             break;
             
         //////////////////////////////////////////////////////////////
-        // Update Projects
+        // Update Plugins
         //////////////////////////////////////////////////////////////
         
         case 'check':
