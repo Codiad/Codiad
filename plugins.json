@@ -1,7 +1,7 @@
 [ { "author" : "daeks",
     "name" : "PullTester",
     "description" : "Util to view and pull requests from Codiad core",
-    "category" : "dev",
+    "category" : "Development",
     "url" : "https://github.com/daeks/Codiad-PullTester"
   },
   { "author" : "Fluidbyte",
@@ -32,7 +32,7 @@
   { "author" : "Fluidbyte",
     "name" : "PluginTemplate",
     "description" : "Boilerplate for developing Codiad Plugins",
-    "category" : "dev",
+    "category" : "Development",
     "url" : "https://github.com/Fluidbyte/Codiad-Plugin-Template"
   }
 ]
