@@ -38,25 +38,45 @@
                 </tr>
             <?php
             if($market != '') {
+                $marketlist = array();
                 foreach($market as $plugin) {
+                    if($plugin['category'] == '') {
+                        $plugin['category'] = 'Common';
+                    }
+                    if(!array_key_exists($plugin['category'], $marketlist)) {
+                        $marketlist[$plugin['category']] = array();
+                    } 
+                    array_push($marketlist[$plugin['category']], $plugin);
+                }
+                
+                ksort($marketlist);
+                
+                foreach($marketlist as $category=>$pluginlist) {
                     ?>
                     <tr>
-                        <td><?php echo $plugin['name']; ?></td>
-                        <td><?php echo $plugin['description']; ?></td>
-                        <td><?php echo $plugin['author']; ?></td>
-                        <?php
-                            if(checkAccess()){
-                                ?>
-                                 <td><table style="text-align:center;border-spacing:0;border-collapse:collapse;"><tr><td style="border: 0;padding: 0;"><a class="icon-download icon" onclick="codiad.plugin_manager.install('<?php echo $plugin['name']; ?>','<?php echo $plugin['url']; ?>');return false;"></a></td><td style="border: 0;padding: 0;"><a class="icon-github icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $data[0]['url']; ?>');return false;"></a></td></tr></table></td>   
-                                <?php                                    
-                            } else {
-                                ?>
-                                <td><div class="icon-block icon"></div></td>
-                                <?php
-                            }
-                        ?>
+                    <th colspan="4"><?php echo $category;?></th>
                     </tr>
                     <?php
+                    foreach($pluginlist as $plugin) {
+                        ?>
+                        <tr>
+                            <td><?php echo $plugin['name']; ?></td>
+                            <td><?php echo $plugin['description']; ?></td>
+                            <td><?php echo $plugin['author']; ?></td>
+                            <?php
+                                if(checkAccess()){
+                                    ?>
+                                     <td><table style="text-align:center;border-spacing:0;border-collapse:collapse;"><tr><td style="border: 0;padding: 0;"><a class="icon-download icon" onclick="codiad.plugin_manager.install('<?php echo $plugin['name']; ?>','<?php echo $plugin['url']; ?>');return false;"></a></td><td style="border: 0;padding: 0;"><a class="icon-github icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $data[0]['url']; ?>');return false;"></a></td></tr></table></td>   
+                                    <?php                                    
+                                } else {
+                                    ?>
+                                    <td><div class="icon-block icon"></div></td>
+                                    <?php
+                                }
+                            ?>
+                        </tr>
+                        <?php
+                    }
                 }
             } else {
                 ?>
