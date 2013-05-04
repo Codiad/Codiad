@@ -34,7 +34,7 @@
                     <th>Plugin Name</th>
                     <th>Description</th>
                     <th>Author</th>
-                    <th width="5">Install</th>
+                    <th>Install</th>
                 </tr>
             <?php
             if($market != '') {
