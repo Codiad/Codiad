@@ -59,6 +59,36 @@ class Plugin_manager extends Common {
     }
     
     //////////////////////////////////////////////////////////////////
+    // Install Plugin
+    //////////////////////////////////////////////////////////////////
+
+    public function Install($name, $repo){
+        if(substr($repo,-4) == '.git') {
+            $repo = substr($repo,0,-4);
+        }
+        $repo .= '/archive/master.zip';
+        file_put_contents(PLUGINS.'/'.$name.'.zip', fopen($repo, 'r'));
+        
+        $zip = new ZipArchive;
+        $res = $zip->open(PLUGINS.'/'.$name.'.zip');
+        // open downloaded archive
+        if ($res === TRUE) {
+          // extract archive
+          if($zip->extractTo(PLUGINS) === true) {
+            $zip->close();
+          } else {
+            die(formatJSEND("error","Unable to open ".$name.".zip"));
+          }
+        } else {
+            die(formatJSEND("error","ZIP Extension not found"));
+        }
+        
+        unlink(PLUGINS.'/'.$name.'.zip');
+        // Response
+        echo formatJSEND("success",null);
+    }
+    
+    //////////////////////////////////////////////////////////////////
     // Update Plugin
     //////////////////////////////////////////////////////////////////
 
@@ -83,10 +113,10 @@ class Plugin_manager extends Common {
                 
                 $zip->close();
               } else {
-                echo formatJSEND("error","Unable to open ".$name.".zip");
+                die(formatJSEND("error","Unable to open ".$name.".zip"));
               }
             } else {
-                echo formatJSEND("error","ZIP Extension not found");
+                die(formatJSEND("error","ZIP Extension not found"));
             }
             
             unlink(PLUGINS.'/'.$name.'.zip');

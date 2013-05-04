@@ -46,6 +46,22 @@
         },
         
         //////////////////////////////////////////////////////////////////
+        // Install Plugin
+        //////////////////////////////////////////////////////////////////
+
+        install: function(name, repo) {
+            var _this = this;
+            $('#modal-content').html('<div id="modal-loading"></div><div align="center">Downloading ' + name + '...</div><br>');
+            $.get(_this.controller + '?action=install&name=' + name + '&repo=' + repo, function(data) {
+                var response = codiad.jsend.parse(data);
+                if (response == 'error') {
+                    codiad.message.error(response.message);
+                }
+                _this.list();
+            });
+        },
+        
+        //////////////////////////////////////////////////////////////////
         // Update Plugin
         //////////////////////////////////////////////////////////////////
 
