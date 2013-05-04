@@ -25,7 +25,7 @@
         
             require_once('class.plugin_manager.php');
             $pm = new Plugin_manager();
-        
+            $market = $pm->Market();
             ?>
             <label>Plugin Market</label>
             <div id="plugin-list">
@@ -37,25 +37,30 @@
                     <th width="5">Install</th>
                 </tr>
             <?php
-            
-            foreach($pm->Market() as $plugin) {
-                ?>
-                <tr>
-                    <td><?php echo $plugin['name']; ?></td>
-                    <td><?php echo $plugin['description']; ?></td>
-                    <td><?php echo $plugin['author']; ?></td>
-                    <?php
-                        if(checkAccess()){
-                            ?>
-                             <td><table style="text-align:center;border-spacing:0;border-collapse:collapse;"><tr><td style="border: 0;padding: 0;"><a class="icon-download icon" onclick="codiad.plugin_manager.install('<?php echo $plugin['name']; ?>','<?php echo $plugin['url']; ?>');return false;"></a></td><td style="border: 0;padding: 0;"><a class="icon-github icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $data[0]['url']; ?>');return false;"></a></td></tr></table></td>   
-                            <?php                                    
-                        } else {
-                            ?>
-                            <td><div class="icon-block icon"></div></td>
-                            <?php
-                        }
+            if($market != '') {
+                foreach($market as $plugin) {
                     ?>
-                </tr>
+                    <tr>
+                        <td><?php echo $plugin['name']; ?></td>
+                        <td><?php echo $plugin['description']; ?></td>
+                        <td><?php echo $plugin['author']; ?></td>
+                        <?php
+                            if(checkAccess()){
+                                ?>
+                                 <td><table style="text-align:center;border-spacing:0;border-collapse:collapse;"><tr><td style="border: 0;padding: 0;"><a class="icon-download icon" onclick="codiad.plugin_manager.install('<?php echo $plugin['name']; ?>','<?php echo $plugin['url']; ?>');return false;"></a></td><td style="border: 0;padding: 0;"><a class="icon-github icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $data[0]['url']; ?>');return false;"></a></td></tr></table></td>   
+                                <?php                                    
+                            } else {
+                                ?>
+                                <td><div class="icon-block icon"></div></td>
+                                <?php
+                            }
+                        ?>
+                    </tr>
+                    <?php
+                }
+            } else {
+                ?>
+                <tr><td colspan="4">Plugin Market currently unavailable.</td></tr>
                 <?php
             }
             
