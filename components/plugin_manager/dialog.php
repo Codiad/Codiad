@@ -65,9 +65,15 @@
                             <td><?php echo $plugin['author']; ?></td>
                             <?php
                                 if(checkAccess()){
+                                    if(is_writeable(PLUGINS)) {
                                     ?>
                                      <td><table style="text-align:center;border-spacing:0;border-collapse:collapse;"><tr><td style="border: 0;padding: 0;"><a class="icon-download icon" onclick="codiad.plugin_manager.install('<?php echo $plugin['name']; ?>','<?php echo $plugin['url']; ?>');return false;"></a></td><td style="border: 0;padding: 0;"><a class="icon-github icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $data[0]['url']; ?>');return false;"></a></td></tr></table></td>   
-                                    <?php                                    
+                                    <?php       
+                                    } else {
+                                    ?>
+                                    <td><a class="icon-download icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $plugin['url']; ?>');return false;"></a></td>
+                                    <?php
+                                    }                             
                                 } else {
                                     ?>
                                     <td><div class="icon-block icon"></div></td>
@@ -214,9 +220,15 @@
                                     <td><?php if($remote[0]['version'] != '') { echo($remote[0]['version']); } else { echo 'n/a'; } ?></td>
                                     <?php
                                     if($remote[0]['version'] != $data[0]['version']) {
+                                        if(is_writeable(PLUGINS)) {
                                         ?>
                                             <td><table style="text-align:center;border-spacing:0;border-collapse:collapse;"><tr><td style="border: 0;padding: 0;"><a class="icon-download icon" onclick="codiad.plugin_manager.update('<?php echo $fname; ?>');return false;"></a></td><td style="border: 0;padding: 0;"><a class="icon-github icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $data[0]['url']; ?>');return false;"></a></td></tr></table></td>
                                         <?php
+                                        } else {
+                                        ?>
+                                        <td><a class="icon-download icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $data[0]['url']; ?>');return false;"></a></td>
+                                        <?php
+                                        }
                                     } else {
                                         ?>
                                             <td></td>
