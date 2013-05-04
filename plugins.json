@@ -1,0 +1,38 @@
+[ { "author" : "daeks",
+    "name" : "PullTester",
+    "description" : "Util to view and pull requests from Codiad core",
+    "category" : "Development",
+    "url" : "https://github.com/daeks/Codiad-PullTester"
+  },
+  { "author" : "Fluidbyte",
+    "name" : "ColorPicker",
+    "description" : "Simple HEX and RGB color utility",
+    "url" : "https://github.com/Fluidbyte/Codiad-ColorPicker"
+  },
+  { "author" : "Fluidbyte",
+    "name" : "Terminal",
+    "description" : "Allows execution of terminal command through Codiad",
+    "url" : "https://github.com/Fluidbyte/Codiad-Terminal"
+  },
+  { "author" : "daeks",
+    "name" : "DiffViewer",
+    "description" : "Allows user to compare 2 files and to see all changes made in it",
+    "url" : "https://github.com/daeks/Codiad-DiffViewer"
+  },
+  { "author" : "daeks",
+    "name" : "AutoUpdate",
+    "description" : "Hooks into the Codiad updater to allow for automatic update",
+    "url" : "https://github.com/daeks/Codiad-AutoUpdate"
+  },
+  { "author" : "daeks",
+    "name" : "GitAdmin",
+    "description" : "Allows for pulling repos into your current project",
+    "url" : "https://github.com/daeks/Codiad-GitAdmin"
+  },
+  { "author" : "Fluidbyte",
+    "name" : "PluginTemplate",
+    "description" : "Boilerplate for developing Codiad Plugins",
+    "category" : "Development",
+    "url" : "https://github.com/Fluidbyte/Codiad-Plugin-Template"
+  }
+]
