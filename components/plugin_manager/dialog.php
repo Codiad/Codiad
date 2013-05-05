@@ -128,6 +128,7 @@
             // Get projects JSON data
             $plugins = getJSON('plugins.php');
             $availableplugins = array();
+            $plugincount = 0;
             foreach (scandir(PLUGINS) as $fname){
                 if($fname == '.' || $fname == '..' ){
                     continue;
@@ -161,8 +162,19 @@
                             ?>
                         </tr>
                         <?php
+                        $plugincount++;
                     }
                 }
+            }
+            
+            if($plugincount == 0) {
+            ?>
+            <tr><td colspan="4">No Plugins installed. Check Plugin Market.</td></tr>
+            <?php
+            } else {
+            ?>
+            <tr><td colspan="4" align="right"><?php echo $plugincount; ?> Plugins installed.</td></tr>
+            <?php
             }
             
             // clean old plugins from json file
@@ -202,6 +214,7 @@
             
             // Get projects JSON data
             $plugins = getJSON('plugins.php');
+            $plugincount = 0;
             foreach (scandir(PLUGINS) as $fname){
                 if($fname == '.' || $fname == '..' ){
                     continue;
@@ -253,10 +266,16 @@
                             ?>
                         </tr>
                         <?php
+                        $plugincount++;
                     }
                 }
             }
             
+            if($plugincount == 0) {
+            ?>
+            <tr><td colspan="4">No Plugins installed. Check Plugin Market.</td></tr>
+            <?php
+            }             
             ?>
             </table>
             </div>

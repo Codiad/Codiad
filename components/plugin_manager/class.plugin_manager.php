@@ -76,25 +76,27 @@ class Plugin_manager extends Common {
             $repo = substr($repo,0,-4);
         }
         $repo .= '/archive/master.zip';
-        file_put_contents(PLUGINS.'/'.$name.'.zip', fopen($repo, 'r'));
-        
-        $zip = new ZipArchive;
-        $res = $zip->open(PLUGINS.'/'.$name.'.zip');
-        // open downloaded archive
-        if ($res === TRUE) {
-          // extract archive
-          if($zip->extractTo(PLUGINS) === true) {
-            $zip->close();
-          } else {
-            die(formatJSEND("error","Unable to open ".$name.".zip"));
-          }
+        if(file_put_contents(PLUGINS.'/'.$name.'.zip', fopen($repo, 'r'))) {
+            $zip = new ZipArchive;
+            $res = $zip->open(PLUGINS.'/'.$name.'.zip');
+            // open downloaded archive
+            if ($res === TRUE) {
+              // extract archive
+              if($zip->extractTo(PLUGINS.'/') === true) {
+                $zip->close();
+              } else {
+                die(formatJSEND("error","Unable to open ".$name.".zip"));
+              }
+            } else {
+                die(formatJSEND("error","ZIP Extension not found"));
+            }
+            
+            //unlink(PLUGINS.'/'.$name.'.zip');
+            // Response
+            echo formatJSEND("success",null);
         } else {
-            die(formatJSEND("error","ZIP Extension not found"));
+            die(formatJSEND("error","Unable to download ".$repo));
         }
-        
-        unlink(PLUGINS.'/'.$name.'.zip');
-        // Response
-        echo formatJSEND("success",null);
     }
     
     //////////////////////////////////////////////////////////////////
@@ -108,29 +110,31 @@ class Plugin_manager extends Common {
                 $data[0]['url'] = substr($data[0]['url'],0,-4);
             }
             $data[0]['url'] .= '/archive/master.zip';
-            file_put_contents(PLUGINS.'/'.$name.'.zip', fopen($data[0]['url'], 'r'));
-            
-            $zip = new ZipArchive;
-            $res = $zip->open(PLUGINS.'/'.$name.'.zip');
-            // open downloaded archive
-            if ($res === TRUE) {
-              // extract archive
-              if($zip->extractTo(PLUGINS) === true) {
-                if(substr($name, -6) != "master") {
-                    $this->cpy(PLUGINS.'/'.$name.'-master', PLUGINS.'/'.$name, array(".",".."));
-                } 
+            if(file_put_contents(PLUGINS.'/'.$name.'.zip', fopen($data[0]['url'], 'r'))) {
+                $zip = new ZipArchive;
+                $res = $zip->open(PLUGINS.'/'.$name.'.zip');
+                // open downloaded archive
+                if ($res === TRUE) {
+                  // extract archive
+                  if($zip->extractTo(PLUGINS) === true) {
+                    if(substr($name, -6) != "master") {
+                        $this->cpy(PLUGINS.'/'.$name.'-master', PLUGINS.'/'.$name, array(".",".."));
+                    } 
+                    
+                    $zip->close();
+                  } else {
+                    die(formatJSEND("error","Unable to open ".$name.".zip"));
+                  }
+                } else {
+                    die(formatJSEND("error","ZIP Extension not found"));
+                }
                 
-                $zip->close();
-              } else {
-                die(formatJSEND("error","Unable to open ".$name.".zip"));
-              }
+                unlink(PLUGINS.'/'.$name.'.zip');
+                // Response
+                echo formatJSEND("success",null);
             } else {
-                die(formatJSEND("error","ZIP Extension not found"));
+                die(formatJSEND("error","Unable to download ".$repo));
             }
-            
-            unlink(PLUGINS.'/'.$name.'.zip');
-            // Response
-            echo formatJSEND("success",null);
         } else {
             echo formatJSEND("error","Unable to find plugin ".$name);
         }
