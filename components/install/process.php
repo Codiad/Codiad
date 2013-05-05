@@ -37,7 +37,7 @@
     }
      
     function saveJSON($file,$data){
-        $data = "<?php/*|[" . json_encode($data) . "]|*/?>";
+        $data = "<?php/*|" . json_encode($data) . "|*/?>";
         saveFile($file,$data);
     }
     
@@ -110,7 +110,7 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
         }
     }
     $project_data = array("name"=>$project_name,"path"=>$project_path);
-    saveJSON($projects,$project_data);
+    saveJSON($projects,array($project_data));
     
     
     //////////////////////////////////////////////////////////////////
@@ -118,13 +118,13 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     //////////////////////////////////////////////////////////////////
     
     $user_data = array("username"=>$username,"password"=>$password,"project"=>$project_path);
-    saveJSON($users,$user_data);
+    saveJSON($users,array($user_data));
     
     //////////////////////////////////////////////////////////////////
     // Create Active file
     //////////////////////////////////////////////////////////////////
     
-    saveJSON($active,'');
+    saveJSON($active,array(''));
     
     //////////////////////////////////////////////////////////////////
     // Create Plugin file
