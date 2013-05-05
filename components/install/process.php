@@ -13,7 +13,7 @@
     $path = $_POST['path'];
     
     $fslash = str_replace('\\', '/', $path);
-    $rel = str_replace($_SERVER['DOCUMENT_ROOT'], '', $fslash);
+    $rel = str_replace(rtrim($_SERVER['DOCUMENT_ROOT'], "/"), '', $fslash);
     if(substr($rel,-1) == '/') {
         $rel = substr($rel, 0, -1); 
     }
