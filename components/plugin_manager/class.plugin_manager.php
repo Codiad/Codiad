@@ -82,7 +82,7 @@ class Plugin_manager extends Common {
             // open downloaded archive
             if ($res === TRUE) {
               // extract archive
-              if($zip->extractTo(PLUGINS.'/') === true) {
+              if($zip->extractTo(PLUGINS) === true) {
                 $zip->close();
               } else {
                 die(formatJSEND("error","Unable to open ".$name.".zip"));
