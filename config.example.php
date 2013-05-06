@@ -10,14 +10,13 @@
 // PATH
 //////////////////////////////////////////////////////////////////
 
-$rel = "";
-define("BASE_PATH",$_SERVER["DOCUMENT_ROOT"] . $rel);
+define("BASE_PATH", "/path/to/codiad");
 define("COMPONENTS",BASE_PATH . "/components");
 define("PLUGINS",BASE_PATH . "/plugins");
 define("THEMES",BASE_PATH . "/themes");
 define("DATA",BASE_PATH . "/data");
 define("WORKSPACE",BASE_PATH . "/workspace");
-define("WSURL",$_SERVER["HTTP_HOST"] . $rel . "/workspace");
+define("WSURL",$_SERVER["HTTP_HOST"] . "/workspace");
 
 //////////////////////////////////////////////////////////////////
 // THEME
@@ -29,13 +28,13 @@ define("THEME", "default");
 // ABSOLUTE PATH
 //////////////////////////////////////////////////////////////////
 
-define("WHITEPATHS", $_SERVER["DOCUMENT_ROOT"].",/home");
+define("WHITEPATHS", BASE_PATH . ",/home");
 
 //////////////////////////////////////////////////////////////////
 // SESSIONS
 //
 // $cookie_lifetime          Default 0        e.g. 7200
-// $cookie_path              Default /        e.g. /codiad 
+// $cookie_path              Default /        e.g. /codiad
 //////////////////////////////////////////////////////////////////
 
 $cookie_lifetime = "0";
