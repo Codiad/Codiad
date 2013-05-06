@@ -91,7 +91,7 @@ class Plugin_manager extends Common {
                 die(formatJSEND("error","ZIP Extension not found"));
             }
             
-            //unlink(PLUGINS.'/'.$name.'.zip');
+            unlink(PLUGINS.'/'.$name.'.zip');
             // Response
             echo formatJSEND("success",null);
         } else {

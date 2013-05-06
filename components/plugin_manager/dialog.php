@@ -68,7 +68,7 @@
                             <td width="400px"><?php echo $plugin['description']; ?></td>
                             <td><?php echo $plugin['author']; ?></td>
                             <?php
-                                if(file_exists(PLUGINS.substr($plugin['url'],strrpos($plugin['url'],'/'))) || file_exists(PLUGINS.substr($plugin['url'],strrpos($plugin['url'],'/').'-master'))) {
+                                if(file_exists(PLUGINS.substr($plugin['url'],strrpos($plugin['url'],'/'))) || file_exists(PLUGINS.substr($plugin['url'],strrpos($plugin['url'],'/')).'-master')) {
                                     ?>
                                     <td><div class="icon-check icon"></div></td>
                                     <?php
