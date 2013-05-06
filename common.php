@@ -31,16 +31,10 @@
 
         public static function construct(){
             global $cookie_lifetime;
-            $path = '';
+            $path = str_replace("index.php", "", $_SERVER['SCRIPT_FILENAME']);
             foreach (array("components","plugins") as $folder) {
                 if(strpos($_SERVER['SCRIPT_FILENAME'], $folder)) {
-                    foreach(explode("/", substr($_SERVER['SCRIPT_FILENAME'],strpos($_SERVER['SCRIPT_FILENAME'], $folder) + strlen($folder)+1)) as $part) {
-                        if(!isset($path)){
-                            $path = '../';
-                        }else{
-                            $path .= '../';
-                        }
-                    }
+                    $path = substr($_SERVER['SCRIPT_FILENAME'],0, strpos($_SERVER['SCRIPT_FILENAME'], $folder));
                     break;
                 }
             }
