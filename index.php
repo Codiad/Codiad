@@ -113,7 +113,7 @@ if(!file_exists(DATA . '/plugins.php')) {
     <script src="js/modal.js"></script>
     <script src="js/message.js"></script>
     <script src="js/jsend.js"></script>
-    <script src="js/demo.js"></script>
+    <script src="js/instance.js"></script>
     <div id="message"></div>
     <?php
 
