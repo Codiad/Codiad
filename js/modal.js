@@ -46,7 +46,7 @@
             $('#modal-content')
                 .html('');
             codiad.sidebars.modalLock = false;
-            if (!codiad.sidebars.userLock) { // Slide sidebar back
+            if (!codiad.sidebars.leftLock) { // Slide sidebar back
                 $('#sb-left')
                     .animate({
                         'left': '-290px'

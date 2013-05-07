@@ -36,7 +36,6 @@ if(!file_exists(DATA . '/plugins.php')) {
             $plugins[] = $fname;
         }
     }
-    saveJSON('plugins.php',$plugins);
 } else {
     $plugins = getJSON('plugins.php');
 }
@@ -302,6 +301,9 @@ if(!file_exists(DATA . '/plugins.php')) {
         <div id="sb-right" class="sidebar">
 
             <div class="sidebar-handle"><span><a class="icon-menu"></a></span></div>
+            <div id="sb-right-title">
+                <span id="lock-right-sidebar" class="icon-switch icon"></span>
+            </div>
 
             <div class="sb-right-content">
 

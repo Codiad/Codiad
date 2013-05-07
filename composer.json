@@ -1,0 +1,52 @@
+{
+  "name": "codiad/codiad",
+  "type": "application",
+  "description": "Web Based IDE",
+  "keywords": ["ide","development","environment","editor"],
+  "homepage": "http://www.codiad.com",
+  "license": "MIT",
+  "description": "Codiad is a web-based IDE framework with a small footprint and minimal requirements. The system is still early in development, and while it has been proven extremely stable please be sure have a backup system if you use it in any production work.",
+  "authors": [
+    {
+      "name": "Kent Safranski @fluidbyte",
+      "email": "kent@fluidbyte.net"
+    },
+    {
+      "name": "@tholum"
+    },
+    {
+      "name": "@lorefnon"
+    },
+    {
+      "name": "@tablatronix"
+    },
+    {
+      "name": "@Flolagale"
+    },
+    {
+      "name": "@Verdier"
+    },
+    {
+      "name": "Danny Morabito @newsocialifecom",
+      "email": "codiad@newsocialife.com"
+    },
+    {
+      "name": "@daeks"
+    },
+    {
+      "name": "@holblin"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require":
+  {
+    "php": ">=5.2.0"
+  },
+  "extra":
+  {
+    "installer-paths":
+    {
+      "apps/{$name}": ["codiad/codiad"]
+    }
+  }
+}
