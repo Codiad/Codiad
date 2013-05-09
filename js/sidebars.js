@@ -65,13 +65,18 @@
                     if (timeout_r) {
                         clearTimeout(timeout_r);
                     }
-                    var sbarWidth = $("#sb-left")
+                    var sbarWidthL = $("#sb-left")
+                        .width(),
+                        sbarWidthR = $("#sb-right")
                         .width();
+                    if (!codiad.sidebars.rightLock) {
+                        sbarWidthR = 10;
+                    }
                     $('#editor-region')
                         .animate({
-                        'margin-left': sbarWidth + 'px',
+                        'margin-left': sbarWidthL + 'px',
                         'width': ($('body')
-                            .outerWidth() - sbarWidth - 10) + 'px'
+                            .outerWidth() - sbarWidthL - sbarWidthR) + 'px'
                         }, 300, 'easeOutQuart', function(){
                             _this.isLeftSidebarOpen = true;
                             $(this).trigger('h-resize-init');
@@ -82,20 +87,25 @@
                         'left': '0px'
                     }, 300, 'easeOutQuart');
                 }, function() {
-                    var sbarWidth = $("#sb-left")
+                    var sbarWidthL = $("#sb-left")
+                        .width(),
+                        sbarWidthR = $("#sb-right")
                         .width();
+                        if (!codiad.sidebars.rightLock) {
+                            sbarWidthR = 10;
+                        }
                     $(this)
                         .data("timeout_r", setTimeout($.proxy(function() {
                         if (!codiad.sidebars.leftLock && !codiad.sidebars.modalLock) { // Check locks
                             $(this)
                                 .animate({
-                                'left': (-sbarWidth + 10) + "px"
+                                'left': (-sbarWidthL + 10) + "px"
                             }, 300, 'easeOutQuart');
                             $('#editor-region')
                                 .animate({
                                     'margin-left': '10px',
                                     'width': ($('body')
-                                        .outerWidth() - 20) + 'px'
+                                        .outerWidth() - sbarWidthR - 10) + 'px'
                                 }, 300, 'easeOutQuart', function(){
                                     _this.isLeftSidebarOpen = false;
                                     $(this).trigger('h-resize-init');
@@ -133,9 +143,18 @@
                         if (timeout_r) {
                             clearTimeout(timeout_r);
                         }
+                        var sbarWidthR = $("#sb-right")
+                            .width(),
+                            sbarWidthL = $("#sb-left")
+                            .width();
+                        if (!codiad.sidebars.leftLock) {
+                            sbarWidthL = 10;
+                        }   
                         $('#editor-region')
                             .animate({
-                                'margin-right': '200px'
+                                'margin-right': sbarWidthR+'px',
+                                'width': ($('body')
+                                        .outerWidth() - sbarWidthL - sbarWidthR) + 'px'
                             }, 300, 'easeOutQuart', function(){
                                 _this.isRigthSidebarOpen = true;
                             });
@@ -152,9 +171,18 @@
                                 .animate({
                                     'right': '-190px'
                                 }, 300, 'easeOutQuart');
+                            var sbarWidthL = $("#sb-left")
+                                .width(),
+                                sbarWidthR = $("#sb-right")
+                                .width();
+                            if (!codiad.sidebars.leftLock) {
+                                sbarWidthL = 10;
+                            }     
                             $('#editor-region')
                                 .animate({
-                                    'margin-right': '10px'
+                                    'margin-right': '10px',
+                                    'width': ($('body')
+                                            .outerWidth() - sbarWidthL - 10) + 'px'
                                 }, 300, 'easeOutQuart', function(){
                                     _this.isRigthSidebarOpen = false;
                                 });
