@@ -124,7 +124,7 @@
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='project'){
-    	if(!isset($GET['project'])){
+    	if(!isset($_GET['project'])){
     		die(formatJSEND("error","Missing project"));
     	}
     	
