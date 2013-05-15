@@ -230,9 +230,6 @@
 }
 
 /* EXTENSIONS */
-#file-manager .ext-log {
-    background-image: url(images/file.png);
-}
 #file-manager .ext-htaccess {
     background-image: url(images/config.png);
 }
@@ -324,7 +321,7 @@
     background-image: url(images/code.png);
 }
 #file-manager .ext-log {
-    background-image: url(images/txt.png);
+    background-image: url(images/text-plain.png);
 }
 #file-manager .ext-m4p {
     background-image: url(images/music.png);
