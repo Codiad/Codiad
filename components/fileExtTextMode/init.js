@@ -133,17 +133,19 @@ var debug;
 		
 		showStatus : function(resp) {
 			resp = $.parseJSON(resp);
-			switch (resp.status) {
-			case 'success':
-				codiad.message.success(resp.msg);
-				break;
-			case 'error':
-				codiad.message.error(resp.msg);
-				break;
-			case 'notice':
-				codiad.message.notice(resp.msg);
-				break;
-			};
+			if(resp.status != undefined && resp.status != '' && resp.msg != undefined && resp.message != ''){
+				switch (resp.status) {
+				case 'success':
+					codiad.message.success(resp.msg);
+					break;
+				case 'error':
+					codiad.message.error(resp.msg);
+					break;
+				case 'notice':
+					codiad.message.notice(resp.msg);
+					break;
+				};	
+			}
 		},
 		
 		initEditorFileExtensionTextModes : function(){

@@ -14,6 +14,6 @@ if(!is_array($ext)){
 	$ext = $defaultExtensions;
 }
 
-echo json_encode(array('status' => 'success', 'msg' => 'Extensions send', 'extensions' => $ext));
+echo json_encode(array('status' => 'success', 'extensions' => $ext));
 
 ?>
