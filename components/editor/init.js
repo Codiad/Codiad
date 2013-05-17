@@ -337,6 +337,8 @@
 
         rootContainer: null,
 
+        fileExtensionTextMode: {},
+        
         init: function(){
             this.createSplitMenu();
             this.createModeMenu();
@@ -747,58 +749,57 @@
 
         /////////////////////////////////////////////////////////////////
         //
-        // Select file mode by extension
+        // Select file mode by extension case insensitive
         //
         // Parameters:
-        //   e - {String} File extension
+        // e - {String} File extension
         //
         /////////////////////////////////////////////////////////////////
 
         selectMode: function(e) {
-            switch (e) {
-            case 'html':
-            case 'htm':
-            case 'tpl':
-                return 'html';
-            case 'js':
-                return 'javascript';
-            case 'css':
-                return 'css';
-            case 'scss':
-            case 'sass':
-                return 'scss';
-            case 'less':
-                return 'less';
-            case 'php':
-            case 'php5':
-            case 'phtml':
-                return 'php';
-            case 'json':
-                return 'json';
-            case 'xml':
-                return 'xml';
-            case 'sql':
-                return 'sql';
-            case 'md':
-                return 'markdown';
-            case 'c':
-            case 'cpp':
-            case 'h':
-            case 'hpp':
-                return 'c_cpp';
-            case 'py':
-                return 'python';
-            case 'rb':
-                return 'ruby';
-            case 'jade':
-                return 'jade';
-            case 'coffee':
-                return 'coffee';
-            default:
+            if(typeof(e) != 'string'){
+                return 'text';
+            }
+            e = e.toLowerCase();
+            
+            if(e in this.fileExtensionTextMode){
+                return this.fileExtensionTextMode[e];
+            }else{
                 return 'text';
             }
         },
 
+        /////////////////////////////////////////////////////////////////
+        //
+        // Add an text mode for an extension
+        //
+        // Parameters:
+        // extension - {String} File Extension
+        // mode - {String} TextMode for this extension
+        //
+        /////////////////////////////////////////////////////////////////
+        
+        addFileExtensionTextMode: function(extension, mode){
+            if(typeof(extension) != 'string' || typeof(mode) != 'string'){
+                if (console){
+                    console.warn('wrong usage of addFileExtensionTextMode, both parameters need to be string');
+                }
+                return;
+            }
+            mode = mode.toLowerCase();
+            this.fileExtensionTextMode[extension] = mode;
+        },
+        
+        /////////////////////////////////////////////////////////////////
+        //
+        // clear all extension-text mode joins
+        //
+        /////////////////////////////////////////////////////////////////
+        
+        clearFileExtensionTextMode: function(){
+            this.fileExtensionTextMode = {};
+        },
+        
         /////////////////////////////////////////////////////////////////
         //
         // Set the editor mode
