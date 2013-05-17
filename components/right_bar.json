@@ -40,11 +40,6 @@
         "onclick": "codiad.modal.load(400, 'components/editor/dialog.php?action=settings');codiad.modal.hideOverlay();"
     },
     {
-        "title": "File extensions",
-        "icon": "icon-tools",
-        "onclick": "codiad.fileExtTextMode.open();"
-    },
-    {
         "title": "Plugins",
         "icon": "icon-tag",
         "onclick": "codiad.plugin_manager.list();"

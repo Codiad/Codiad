@@ -1,6 +1,6 @@
-var debug;
 (function(global, $) {
-
+	var self = null;
+	
 	$(function() {
 		codiad.fileExtTextMode.init();
 	});
@@ -9,98 +9,27 @@ var debug;
 
 		pluginDir:'components/fileExtTextMode/',
 		
-		availableTextModes :[
-		        'abap',
-		        'asciidoc',
-		        'c9search',
-		        'c_cpp',
-		        'clojure',
-		        'coffee',
-		        'coldfusion',
-		        'csharp',
-		        'css',
-		        'curly',
-		        'dart',
-		        'diff',
-		        'django',
-		        'dot',
-		        'ftl',
-		        'glsl',
-		        'golang',
-		        'groovy',
-		        'haml',
-		        'haxe',
-		        'html',
-		        'jade',
-		        'java',
-		        'javascript',
-		        'json',
-		        'jsp',
-		        'jsx',
-		        'latex',
-		        'less',
-		        'liquid',
-		        'lisp',
-		        'livescript',
-		        'logiql',
-		        'lsl',
-		        'lua',
-		        'luapage',
-		        'lucene',
-		        'makefile',
-		        'markdown',
-		        'mushcode',
-		        'objectivec',
-		        'ocaml',
-		        'pascal',
-		        'perl',
-		        'pgsql',
-		        'php',
-		        'powershell',
-		        'python',
-		        'r',
-		        'rdoc',
-		        'rhtml',
-		        'ruby',
-		        'sass',
-		        'scad',
-		        'scala',
-		        'scheme',
-		        'scss',
-		        'sh',
-		        'sql',
-		        'stylus',
-		        'svg',
-		        'tcl',
-		        'tex',
-		        'text',
-		        'textile',
-		        'tmsnippet',
-		        'toml',
-		        'typescript',
-		        'vbscript',
-		        'velocity',
-		        'xml',
-		        'xquery',
-		        'yaml'
-		    ],
+		availableTextModes : [],
 		
 		init : function() {
+			self = this;
 			this.initEditorFileExtensionTextModes();
 		},
 
 		formWidth : 300,
 
 		open : function() {
+			codiad.modal.unload();
 			codiad.modal.load(this.formWidth,
-					this.pluginDir+'fileExtTextModeForm.php');
+					this.pluginDir+'dialog.php');
 			codiad.modal.hideOverlay();
 		},
-		
+		//send the isert extesions and textmodes to the server.
 		sendForm : function(){
 			var $div = $('#FileExtTextModeDiv');
 			var extensions = $div.find('.FileExtension');
-			var formData = {'extension[]' : [], 'textMode[]' : []};
+			//data to send
+			var formData = {'extension[]' : [], 'textMode[]' : [], 'action' : 'FileExtTextModeForm'};
 			for(var i = 0; i <  extensions.size(); ++i){
 				formData['extension[]'].push(extensions[i].value);
 			}
@@ -110,27 +39,30 @@ var debug;
 				formData['textMode[]'].push(textMode[i].value);
 			}
 			
-			$.post(this.pluginDir+'process.php', formData, codiad.fileExtTextMode.setEditorFileExtensionTextModes);
+			$.post(this.pluginDir+'controller.php', formData, codiad.fileExtTextMode.setEditorFileExtensionTextModes);
 			
 			codiad.modal.unload();
 		},
 		
+		//Add a new insert line to the form
 		addFieldToForm : function(){
-			var $div = $('#FileExtTextModeDiv');
+			var $table = $('#FileExtTextModeTable');
+			var $tbody = $('#FileExtTextModeTableTbody');
 			
-			var code = '<input class="FileExtension" style="width: 100px; display: inline;" type="text" name="extension[]" value="" /> &nbsp;&nbsp;';
-			code += '<select style="width: 100px; display: inline;" name="textMode[]" class="textMode">';
+			var code = '<tr><td><input class="FileExtension" type="text" name="extension[]" value="" /></td>';
+			code += '<td><select style="width: 100px; display: inline;" name="textMode[]" class="textMode">';
 			for(var i = 0; i < this.availableTextModes.length; ++i){
 				code += '<option>'+ this.availableTextModes[i] +'</option>';
 			}
-			code += '</select><br/>';
-	
-			$div.append(code);
+			code += '</select></td></tr>';
+			
+			$tbody.append(code);
 			
 			//scroll as far down as possible
-			$div.scrollTop(1000000);
+			$table.scrollTop(1000000);
 		},
 		
+		//function for showing the status and msg from a http-request
 		showStatus : function(resp) {
 			resp = $.parseJSON(resp);
 			if(resp.status != undefined && resp.status != '' && resp.msg != undefined && resp.message != ''){
@@ -149,9 +81,10 @@ var debug;
 		},
 		
 		initEditorFileExtensionTextModes : function(){
-			$.get(this.pluginDir+'getFileExtTextModes.php', {}, this.setEditorFileExtensionTextModes);
+			$.post(this.pluginDir+'controller.php', {'action' : 'GetFileExtTextModes'}, this.setEditorFileExtensionTextModes);
 		},
 		
+		//initial method to get the stored joins
 		setEditorFileExtensionTextModes : function(data){
 			resp = $.parseJSON(data);
 			if(resp.status != 'error' && resp.extensions != undefined){
@@ -160,10 +93,11 @@ var debug;
 				for(i in resp.extensions){
 					codiad.editor.addFileExtensionTextMode(i, resp.extensions[i]);
 				}
+				
+				self.availableTextModes = resp.textModes;
 			}
-			codiad.fileExtTextMode.showStatus(data);
+			self.showStatus(data);
 		}
-		
 
 	};
 })(this, jQuery);

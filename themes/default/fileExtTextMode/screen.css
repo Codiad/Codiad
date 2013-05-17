@@ -1,0 +1,30 @@
+/*Copyright @ccvca 2013*/
+
+#FileExtTextModeDiv{
+	height: 300px;
+	width: 100%;
+}
+
+#FileExtTextModeDiv table{
+	overflow-y: scroll;
+	display: block;
+	height: 280px;
+}
+
+#FileExtTextModeDiv thead td{
+	vertical-align: middle;
+}
+
+#FileExtTextModeDiv input{
+	/*padding: 0px;
+	margin: 0px;*/
+	display: inline;
+}
+
+#FileExtTextModeDiv input.FileExtension{
+	width: 80px;
+}
+
+#FileExtTextModeDiv input.textMode{
+	width: 120px;
+}
