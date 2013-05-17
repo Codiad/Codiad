@@ -7,7 +7,7 @@ var debug;
 
 	global.codiad.fileExtTextMode = {
 
-		pluginDir:'components/FileExtTextMode/',
+		pluginDir:'components/fileExtTextMode/',
 		
 		availableTextModes :[
 		        'abap',

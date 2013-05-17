@@ -1,6 +1,6 @@
 <?php
 
-define('PATH_TO_FILE_EXT_TEXT_MODE', 'components/FileExtTextMode/' );
+define('PATH_TO_FILE_EXT_TEXT_MODE', 'components/fileExtTextMode/' );
 
 $defaultExtensions = array(
 		'html' => 'html',
