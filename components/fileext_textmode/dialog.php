@@ -68,8 +68,8 @@ echo '<table id="FileExtTextModeTable">';
 	echo '</tbody>';
 echo '</table>';
 echo '</div>';
-echo '<button class="btn-left" onClick="codiad.fileExtTextMode.addFieldToForm()">Add New Extension</button>';
-echo '<button class="btn-mid" onClick="codiad.fileExtTextMode.sendForm();">Save Scheme</button>';
+echo '<button class="btn-left" onClick="codiad.fileext_textmode.addFieldToForm()">Add New Extension</button>';
+echo '<button class="btn-mid" onClick="codiad.fileext_textmode.sendForm();">Save Scheme</button>';
 echo '<button class="btn-right" onClick="codiad.modal.unload();">'.Common::get_i18n('Close').'</button>';
 
 //echo '</form>'."\n";
