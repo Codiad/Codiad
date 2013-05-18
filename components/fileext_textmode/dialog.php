@@ -1,8 +1,16 @@
 <?php
-require_once 'class.fileExtensionTextMode.php';
+
+/*
+ *  (c) Codiad & ccvca (https://github.com/ccvca)
+* @author ccvca (https://github.com/ccvca)
+* This Code is released under the same licence as Codiad (https://github.com/Codiad/Codiad)
+* See [root]/license.txt for more. This information must remain intact.
+*/
+
+require_once 'class.fileextension_textmode.php';
 
 //check Session
-$fileExTM = new CFileExtensionTextMode();
+$fileExTM = new fileextension_textmode();
 
 //return a select-field with all availiable text modes, the one in the param is selected
 function getTextModeSelect($extension){
@@ -31,7 +39,7 @@ function getTextModeSelect($extension){
 
 $ext = false;
 //ignore warnings
-$ext = @Common::getJSON('fileExtensions.php');
+$ext = @Common::getJSON(fileextension_textmode::storeFilename);
 
 if(!is_array($ext)){
 	//default extensions
@@ -60,9 +68,9 @@ echo '<table id="FileExtTextModeTable">';
 	echo '</tbody>';
 echo '</table>';
 echo '</div>';
-echo '<button class="btn-left" onClick="codiad.fileExtTextMode.addFieldToForm()">add field... </button>';
-echo '<button class="btn-right" onClick="codiad.fileExtTextMode.sendForm();"> Edit extensions </button><br/>';
-echo '<button onClick="codiad.modal.unload();">'.Common::get_i18n('Close').'</button>';
+echo '<button class="btn-left" onClick="codiad.fileExtTextMode.addFieldToForm()">Add New Extension</button>';
+echo '<button class="btn-mid" onClick="codiad.fileExtTextMode.sendForm();">Save Scheme</button>';
+echo '<button class="btn-right" onClick="codiad.modal.unload();">'.Common::get_i18n('Close').'</button>';
 
 //echo '</form>'."\n";
 ?>

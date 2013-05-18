@@ -1,9 +1,16 @@
 <?php
+
+/*
+ *  (c) Codiad & ccvca (https://github.com/ccvca)
+ * @author ccvca (https://github.com/ccvca)
+ * This Code is released under the same licence as Codiad (https://github.com/Codiad/Codiad)
+ * See [root]/license.txt for more. This information must remain intact.
+ */
+
 require_once '../../common.php';
 
 
-
-class CFileExtensionTextMode{
+class fileextension_textmode{
 
 	private $defaultExtensions = array(
 			'html' => 'html',
@@ -107,6 +114,8 @@ class CFileExtensionTextMode{
 			'yaml'
 	);
 
+	const storeFilename = 'extensions.php';
+	
 	public function __construct(){
 		Common::checkSession();
 	}
@@ -167,7 +176,7 @@ class CFileExtensionTextMode{
 		}
 
 
-		Common::saveJSON('fileExtensions.php', $exMap);
+		Common::saveJSON(fileextension_textmode::storeFilename, $exMap);
 		if($warning != ''){
 			return json_encode(array('status' => 'warning', 'msg' => $warning, 'extensions' => $exMap ));
 		}else{
@@ -197,7 +206,7 @@ class CFileExtensionTextMode{
 	private function prcessGetFileExtTextModes(){
 		$ext = false;
 		//ignore warnings
-		$ext = @Common::getJSON('fileExtensions.php');
+		$ext = @Common::getJSON(fileextension_textmode::storeFilename);
 
 		if(!is_array($ext)){
 			//default extensions

@@ -1,3 +1,10 @@
+/*
+ *  (c) Codiad & ccvca (https://github.com/ccvca)
+ * @author ccvca (https://github.com/ccvca)
+ * This Code is released under the same licence as Codiad (https://github.com/Codiad/Codiad)
+ * See [root]/license.txt for more. This information must remain intact.
+ */
+
 (function(global, $) {
 	var self = null;
 	
@@ -5,9 +12,10 @@
 		codiad.fileExtTextMode.init();
 	});
 
-	global.codiad.fileExtTextMode = {
+	global.codiad.fileext_textmode = {
 
-		pluginDir:'components/fileExtTextMode/',
+		dialog: 'components/fileext_textmode/dialog.php',
+		controller: 'components/fileext_textmode/controller.php',
 		
 		availableTextModes : [],
 		
@@ -21,7 +29,7 @@
 		open : function() {
 			codiad.modal.unload();
 			codiad.modal.load(this.formWidth,
-					this.pluginDir+'dialog.php');
+					this.dialog);
 			codiad.modal.hideOverlay();
 		},
 		//send the isert extesions and textmodes to the server.
@@ -39,7 +47,7 @@
 				formData['textMode[]'].push(textMode[i].value);
 			}
 			
-			$.post(this.pluginDir+'controller.php', formData, codiad.fileExtTextMode.setEditorFileExtensionTextModes);
+			$.post(this.controller, formData, codiad.fileExtTextMode.setEditorFileExtensionTextModes);
 			
 			codiad.modal.unload();
 		},
@@ -81,7 +89,7 @@
 		},
 		
 		initEditorFileExtensionTextModes : function(){
-			$.post(this.pluginDir+'controller.php', {'action' : 'GetFileExtTextModes'}, this.setEditorFileExtensionTextModes);
+			$.post(this.controller, {'action' : 'GetFileExtTextModes'}, this.setEditorFileExtensionTextModes);
 		},
 		
 		//initial method to get the stored joins
@@ -94,7 +102,12 @@
 					codiad.editor.addFileExtensionTextMode(i, resp.extensions[i]);
 				}
 				
-				self.availableTextModes = resp.textModes;
+				if(resp.textModes != undefined && resp.textModes != []){
+					self.availableTextModes = resp.textModes;
+				}
+				
+				/* Notify listeners. */
+	            amplify.publish('fileext_textmode.loadedExtensions');
 			}
 			self.showStatus(data);
 		}

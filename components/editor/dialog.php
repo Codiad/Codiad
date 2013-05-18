@@ -181,7 +181,7 @@ switch($_GET['action']){
         
     </tr>
     </table>
-    <button class="btn-left" onclick="codiad.fileExtTextMode.open();" >Edit file extension</button>
+    <button class="btn-left" onclick="codiad.fileext_textmode.open();" >Edit File Extension</button>
     <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Close"); ?></button>
     
     <?php
