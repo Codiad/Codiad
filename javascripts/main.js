@@ -13,11 +13,21 @@ $(function(){
       $('.version').text(data[0].name); 
    });
    
-   setTimeout(function(){
-       if(!localStorage.getItem('banner')) {
-           $('#demo_drop-in').animate({'margin-top':'-70px'},1000);
-           localStorage.setItem('banner', 'true');
-       }
-   },2000);
+   
+   if(!localStorage.getItem('banner')) {
+       setTimeout(function(){
+               $('#demo_drop-in').animate({'margin-top':'-70px'},1000);
+               localStorage.setItem('banner', 'true');
+       },2000);
+   } else {
+       $('#demo_drop-in').hover(function(){
+           hovint = setTimeout(function(){
+               $('#demo_drop-in').animate({'margin-top':'-70px'},500);
+           },250);
+       },function(){
+           clearTimeout(hovint);
+           $(this).animate({'margin-top':'-170px'},500);
+       });
+   }
     
 });
