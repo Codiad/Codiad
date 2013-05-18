@@ -29,6 +29,11 @@
     "description" : "Allows for pulling repos into your current project",
     "url" : "https://github.com/daeks/Codiad-GitAdmin"
   },
+  { "author" : "Andr3as",
+    "name" : "SurroundWith",
+    "description" : "Adds Surround (Eclipse) ability to add/wrap common functions",
+    "url" : "https://github.com/Andr3as/Codiad-SurroundWith"
+  },
   { "author" : "Fluidbyte",
     "name" : "PluginTemplate",
     "description" : "Boilerplate for developing Codiad Plugins",

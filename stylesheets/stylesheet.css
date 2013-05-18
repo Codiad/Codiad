@@ -401,7 +401,7 @@ footer a:hover {
 /* TABLES */
 
     .datatable { border-collapse: separate; width: 100%; margin: 15px 0; border-spacing: 0; box-shadow: 0 5px 8px 0 rgba(0, 0, 0, .1); }
-    .datatable th, .datatable td { padding: 8px 10px 6px 10px; border: 1px solid #ccc; background: #fafafa; font-size: 13px;  }
+    .datatable th, .datatable td { padding: 12px 10px 10px 10px; border: 1px solid #ccc; background: #fafafa; font-size: 13px;  }
     .datatable th { text-align: left; font-weight: bold;
         background-image: -webkit-gradient(linear,left bottom, left top, color-stop(0.25, rgb(224,224,224)), color-stop(0.75, rgb(240,240,240)));
         background-image: -moz-linear-gradient(center bottom, rgb(224,224,224) 25%, rgb(240,240,240) 75%);
@@ -412,6 +412,8 @@ footer a:hover {
     .datatable td.icon a:hover { color: #333; }  
     .datatable tr:first-child th:first-child { border-top-left-radius:8px; }   
     .datatable tr:first-child th:last-child { border-top-right-radius:8px; }
+    
+    .datatable td.center { text-align: center; }
     
     .datatable td .splitter { padding: 0 10px; color: #ccc; }
     
