@@ -9,7 +9,7 @@
 	var self = null;
 	
 	$(function() {
-		codiad.fileExtTextMode.init();
+		codiad.fileext_textmode.init();
 	});
 
 	global.codiad.fileext_textmode = {
