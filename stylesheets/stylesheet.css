@@ -83,7 +83,18 @@ header {
   padding-bottom: 25px;
 }
 
-header #logo { float: left; margin: 5px 20px 0 0; }
+header #logo { 
+    display: block;
+    float: left;
+    padding: 4px 3px 3px 4px;
+    background: #000;
+    margin: 5px 20px 0 0;
+    -webkit-box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, .5);
+    box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, .5);
+    -webkit-border-radius: 3px;
+    border-radius: 8px;
+    line-height: 100%;
+}
 
 header h1 {
   font-family: 'Ubuntu', 'Helvetica Neue', Helvetica, Arial, serif; font-weight: 900;
