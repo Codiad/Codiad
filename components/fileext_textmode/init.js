@@ -47,7 +47,7 @@
 				formData['textMode[]'].push(textMode[i].value);
 			}
 			
-			$.post(this.controller, formData, codiad.fileExtTextMode.setEditorFileExtensionTextModes);
+			$.post(this.controller, formData, self.setEditorFileExtensionTextModes);
 			
 			codiad.modal.unload();
 		},
