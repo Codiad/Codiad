@@ -119,6 +119,39 @@ header h2 {
   max-width: 100%;
 }
 
+#demo_drop-in {
+    margin-top: -250px;
+    display: block;
+    width: 100%;
+    height: 250px;
+    background: #1a1a1a;
+    color: #5e5e5e;
+    border-bottom: 3px solid #fff;
+    text-align: right;
+    -webkit-box-shadow: inset 0px -5px 15px 0px rgba(0, 0, 0, 1);
+    box-shadow: inset 0px -10px 20px 0px rgba(0, 0, 0, 1);
+    background: url(../images/demo_sneak_bg.png) 0 70px no-repeat #1a1a1a;
+    overflow: hidden;
+    transition: color .5s ease-in;
+    -moz-transition: color .5s ease-in;    /* FF3.7+ */
+    -o-transition: color .5s ease-in;      /* Opera 10.5 */
+    -webkit-transition: color .5s ease-in; /* Saf3.2+, Chrome */
+}
+
+#demo_drop-in:hover {
+    text-decoration: none;
+    color: #fff;
+}
+
+#demo_drop-in span {
+    display: block;
+    font-weight: normal;
+    margin: 215px 20px 0 20px;    
+    font-size: 18px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8);
+}
+
+
 #downloads {
   margin-bottom: 40px;
 }
