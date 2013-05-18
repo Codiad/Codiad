@@ -111,7 +111,7 @@ header h2 {
 }
 
 .inner {
-  width: 620px;
+  width: 700px;
   margin: 0 auto;
 }
 
@@ -131,15 +131,15 @@ a.button {
   border-left: solid 1px #b7b7b7;
   border-right: solid 1px #b7b7b7;
   border-bottom: solid 1px #b3b3b3;
-  color: #303030;
+  color: #404040;
   line-height: 25px;
   font-weight: bold;
   font-size: 14px;
   padding: 12px 8px 12px 8px;
   display: block;
   float: left;
-  width: 179px;
-  margin-right: 14px;  
+  width: 140px;
+  margin-right: 15px;  
   background: #fdfdfd; /* Old browsers */
   background: -moz-linear-gradient(top,  #fdfdfd 0%, #f2f2f2 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fdfdfd), color-stop(100%,#f2f2f2)); /* Chrome,Safari4+ */
@@ -153,10 +153,12 @@ a.button {
   box-shadow: 0px 1px 5px #e8e8e8;
 }
 a.button:hover {
-  border-top: solid 1px #b7b7b7;
-  border-left: solid 1px #b3b3b3;
-  border-right: solid 1px #b3b3b3;
-  border-bottom: solid 1px #b3b3b3;
+  color: #333;
+  text-decoration: none;
+  border-top: solid 1px #828282;
+  border-left: solid 1px #696969;
+  border-right: solid 1px #696969;
+  border-bottom: solid 1px #696969;
   background: #fafafa; /* Old browsers */
   background: -moz-linear-gradient(top,  #fdfdfd 0%, #f6f6f6 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fdfdfd), color-stop(100%,#f6f6f6)); /* Chrome,Safari4+ */
@@ -173,19 +175,24 @@ a.button span {
   height: 23px;
 }
 
+a.button:hover span { text-decoration: none; }
+
 p em { font-size: 12px; color: #666; }
 
 #download-zip span {
-  background: transparent url(../images/zip-icon.png) 12px 50% no-repeat;
+  background: transparent url(../images/download-icon.png) 12px 50% no-repeat;
+}
+#open-demo span {
+  background: transparent url(../images/demo-icon.png) 12px 50% no-repeat;
 }
 #plugins span {
-  background: transparent url(../images/plugin-icon.png) 12px 50% no-repeat;
+  background: transparent url(../images/plugins-icon.png) 12px 50% no-repeat;
 }
 #download-tar-gz span {
   background: transparent url(../images/tar-gz-icon.png) 12px 50% no-repeat;
 }
 #view-on-github span {
-  background: transparent url(../images/octocat-icon.png) 12px 50% no-repeat;
+  background: transparent url(../images/github-icon.png) 12px 50% no-repeat;
 }
 #view-on-github {
   margin-right: 0;
