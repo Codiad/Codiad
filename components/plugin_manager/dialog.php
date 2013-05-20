@@ -122,6 +122,9 @@
                     <th>Version</th>
                     <th>Author</th>
                     <th width="5">Active</th>
+                    <?php if(is_writeable(PLUGINS)) { ?>
+                    <th width="5">Delete</th>
+                    <?php } ?>
                 </tr>
             <?php
             
@@ -154,10 +157,18 @@
                                      <td><a onclick="codiad.plugin_manager.activate('<?php echo($fname); ?>');" class="icon-block icon"></a></td>   
                                     <?php                                    
                                     }
+                                    if(is_writeable(PLUGINS)) {
+                                        ?>
+                                        <td><a onclick="codiad.plugin_manager.remove('<?php echo($fname); ?>');" class="icon-cancel-circled icon"></a></td>
+                                        <?php
+                                    }
                                 } else {
                                     ?>
                                     <td><div class="<?php if(in_array($fname, $plugins)) { echo 'icon-check'; } else { echo 'icon-block'; } ?> icon"></div></td>
+                                    <?php if(is_writeable(PLUGINS)) { ?>
+                                    <td></td>
                                     <?php
+                                    }
                                 }
                             ?>
                         </tr>
@@ -167,13 +178,18 @@
                 }
             }
             
+            $colspan = 4;            
+            if(is_writeable(PLUGINS)) {
+                $colspan = 5;
+            }
+            
             if($plugincount == 0) {
             ?>
-            <tr><td colspan="4">No Plugins installed. Check Plugin Market.</td></tr>
+            <tr><td colspan="<?php echo $colspan;?>">No Plugins installed. Check Plugin Market.</td></tr>
             <?php
             } else {
             ?>
-            <tr><td colspan="4" align="right"><?php echo $plugincount; ?> Plugins installed.</td></tr>
+            <tr><td colspan="<?php echo $colspan;?>" align="right"><?php echo $plugincount; ?> Plugins installed.</td></tr>
             <?php
             }
             

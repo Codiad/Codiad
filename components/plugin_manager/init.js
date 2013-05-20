@@ -72,6 +72,21 @@
         },
         
         //////////////////////////////////////////////////////////////////
+        // Remove Plugin
+        //////////////////////////////////////////////////////////////////
+
+        remove: function(name) {
+            var _this = this;
+            $.get(_this.controller + '?action=remove&name=' + name, function(data) {
+                var response = codiad.jsend.parse(data);
+                if (response == 'error') {
+                    codiad.message.error(response.message);
+                }
+                _this.list();
+            });
+        },
+        
+        //////////////////////////////////////////////////////////////////
         // Update Plugin
         //////////////////////////////////////////////////////////////////
 
