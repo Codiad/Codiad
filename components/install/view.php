@@ -20,6 +20,7 @@ if(!file_exists($conf) && !is_writable($path)) {
     $config = file_put_contents($conf, file_get_contents($path . "/config.example.php"));
     if($config !== false) {
         $config = true;
+        unlink($conf);
     }
 } elseif(file_exists($conf)) {
     $config = is_writable($conf);
