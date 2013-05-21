@@ -12,6 +12,9 @@ require_once '../../common.php';
 
 class fileextension_textmode{
 
+	//////////////////////////////////////////////////////////////////
+	//default assotiations
+	//////////////////////////////////////////////////////////////////
 	private $defaultExtensions = array(
 			'html' => 'html',
 			'htm' => 'html',
@@ -38,6 +41,9 @@ class fileextension_textmode{
 			'jade' => 'jade',
 			'coffee' => 'coffee');
 
+	//////////////////////////////////////////////////////////////////
+	//availiable text modes
+	//////////////////////////////////////////////////////////////////
 	private $availiableTextModes = array(
 			'abap',
 			'asciidoc',
@@ -116,6 +122,9 @@ class fileextension_textmode{
 
 	const storeFilename = 'extensions.php';
 	
+	//////////////////////////////////////////////////////////////////
+	//check the session if the user is allowed to do anything here
+	//////////////////////////////////////////////////////////////////
 	public function __construct(){
 		Common::checkSession();
 	}
@@ -128,17 +137,25 @@ class fileextension_textmode{
 		return $this->defaultExtensions;
 	}
 
-	private function validateExtension($extension){
+	//////////////////////////////////////////////////////////////////
+	//checks if the sended extensions are valid to prevent any injections
+	//////////////////////////////////////////////////////////////////
+	public function validateExtension($extension){
 		return preg_match('#^[a-z0-9\_]+$#i', $extension);
 	}
 
-	private function validTextMode($mode){
+	//////////////////////////////////////////////////////////////////
+	//checks if the sended extensions are valid to prevent any injections and usage of removed text modes
+	//////////////////////////////////////////////////////////////////
+	public function validTextMode($mode){
 		return in_array($mode, $this->availiableTextModes);
 	}
 
+	//////////////////////////////////////////////////////////////////
+	//process the form with the assotiation
+	//////////////////////////////////////////////////////////////////
 	private function processFileExtTextModeForm(){
 		//Store Fileextensions and Textmodes in File:
-
 		if(!isset($_POST['extension']) || !is_array($_POST['extension'])
 				|| !isset($_POST['textMode']) || !is_array($_POST['textMode'])){
 			return json_encode(array('status' => 'error', 'msg' => 'incorrect data send'));
@@ -148,18 +165,21 @@ class fileextension_textmode{
 
 		$warning = '';
 
+		//Iterate over the sended extensions
 		foreach ($_POST['extension'] as $key => $extension){
+			//ignore empty extensions, so that they are going to removed
 			if(trim($extension) == '' ){
 				continue;
 			}
 
+			//get the sended data and check it
 			if(!isset($_POST["textMode"][$key])){
 				return json_encode(array('status' => 'error', 'msg' => 'incorrect data send.'));
 			}
 
 			$extension = strtolower(trim($extension));
 			$textMode =  strtolower(trim($_POST["textMode"][$key]));
-
+			
 			if(!$this->validateExtension($extension)){
 				return json_encode(array('status' => 'error', 'msg' => 'incorrect extension:'.htmlentities($extension)));
 			}
@@ -168,6 +188,7 @@ class fileextension_textmode{
 				return json_encode(array('status' => 'error', 'msg' => 'incorrect text mode:'.htmlentities($textMode)));
 			}
 
+			//data was correct and could be insert 
 			if(isset($exMap[$extension])){
 				$warning =  htmlentities($extension).' is already set.<br/>';
 			}else{
@@ -175,7 +196,7 @@ class fileextension_textmode{
 			}
 		}
 
-
+		//store the assotiations
 		Common::saveJSON(fileextension_textmode::storeFilename, $exMap);
 		if($warning != ''){
 			return json_encode(array('status' => 'warning', 'msg' => $warning, 'extensions' => $exMap ));
@@ -185,12 +206,15 @@ class fileextension_textmode{
 
 	}
 
+	//////////////////////////////////////////////////////////////////
+	//process all the possible forms
+	//////////////////////////////////////////////////////////////////
 	public function processForms(){
-		if(!isset($_POST['action'])){
+		if(!isset($_GET['action'])){
 			return json_encode(array('status' => 'error', 'msg' => 'incorrect data send.'));
 		}
 
-		switch($_POST['action']){
+		switch($_GET['action']){
 			case 'FileExtTextModeForm':
 				return $this->processFileExtTextModeForm();
 				break;
@@ -203,6 +227,9 @@ class fileextension_textmode{
 		}
 	}
 
+	//////////////////////////////////////////////////////////////////
+	//Send the default extensions
+	//////////////////////////////////////////////////////////////////
 	private function prcessGetFileExtTextModes(){
 		$ext = false;
 		//ignore warnings
@@ -212,8 +239,41 @@ class fileextension_textmode{
 			//default extensions
 			$ext = $this->defaultExtensions;
 		}
-
-		return json_encode(array('status' => 'success', 'extensions' => $ext, 'textModes' => $this->availiableTextModes));
+		
+		//the availiable extensions, which aren't removed
+		$availEx = array();
+		foreach($ext as $ex => $mode){
+			if(in_array($ex, $this->availiableTextModes)){
+				$availEx[$ex] = $mode;
+			}
+		}
+		return json_encode(array('status' => 'success', 'extensions' => $availEx, 'textModes' => $this->availiableTextModes));
+	}
+	
+	//////////////////////////////////////////////////////////////////
+	//return a select-field with all availiable text modes, the one in the parameter is selected
+	//////////////////////////////////////////////////////////////////
+	public function getTextModeSelect($extension){
+		$extension = trim(strtolower($extension));
+		$find = false;
+		$ret = '<select name="textMode[]" class="textMode">'."\n";
+		foreach($this->getAvailiableTextModes() as $textmode){
+			$ret .= '	<option';
+			if($textmode == $extension){
+				$ret .= ' selected="selected"';
+				$find = true;
+			}
+			$ret .='>'.$textmode.'</option>'."\n";
+		}
+		
+		//unknown extension, print it in the end
+		if(!$find && $extension != ''){
+			$ret .= '	<option selected="selected">'.$textmode.'</option>'."\n";
+		}
+	
+		$ret .= '</select>'."\n";
+	
+		return $ret;
 	}
 }
 

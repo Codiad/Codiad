@@ -9,22 +9,21 @@
 	overflow-y: scroll;
 	display: block;
 	height: 280px;
+	margin-top: 5px;
 }
 
-#FileExtTextModeDiv thead td{
+#FileExtTextModeDiv thead th{
 	vertical-align: middle;
 }
 
 #FileExtTextModeDiv input{
-	/*padding: 0px;
-	margin: 0px;*/
 	display: inline;
 }
 
 #FileExtTextModeDiv input.FileExtension{
-	width: 80px;
+	/*width: 80px;*/
 }
 
 #FileExtTextModeDiv input.textMode{
-	width: 120px;
+	/*width: 120px;*/
 }
