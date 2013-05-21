@@ -24,15 +24,20 @@
     "description" : "Hooks into the Codiad updater to allow for automatic update",
     "url" : "https://github.com/daeks/Codiad-AutoUpdate"
   },
-  { "author" : "daeks",
-    "name" : "GitAdmin",
-    "description" : "Allows for pulling repos into your current project",
-    "url" : "https://github.com/daeks/Codiad-GitAdmin"
-  },
   { "author" : "Andr3as",
     "name" : "SurroundWith",
     "description" : "Adds Surround (Eclipse) ability to add/wrap common functions",
     "url" : "https://github.com/Andr3as/Codiad-SurroundWith"
+  },
+  { "author" : "Fluidbyte",
+    "name" : "DocHub",
+    "description" : "Access DocHub resources directly from within Codiad",
+    "url" : "https://github.com/Fluidbyte/Codiad-DocHub"
+  },
+  { "author" : "daeks",
+    "name" : "GitAdmin",
+    "description" : "Allows for pulling repos into your current project",
+    "url" : "https://github.com/daeks/Codiad-GitAdmin"
   },
   { "author" : "Fluidbyte",
     "name" : "PluginTemplate",
