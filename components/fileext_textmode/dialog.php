@@ -20,6 +20,9 @@ switch($_GET['action']){
 	//The form for edit the assotiations
 	//////////////////////////////////////////////////////////////////
 	case 'fileextension_textmode_form':
+		if(!Common::checkAccess()){
+			die('You are not allowed to edit the file extensions.');
+		}
 		//////////////////////////////////////////////////////////////////
 		//Reading the current extensions
 		//////////////////////////////////////////////////////////////////
@@ -47,6 +50,9 @@ switch($_GET['action']){
 						<th>Text mode</th></tr>
 				</thead>
 				<tbody id="FileExtTextModeTableTbody">
+					<tr>
+						<td class="firstLine" colspan="2">&nbsp;</td>
+					</tr>
 				<?php
 				foreach($ext as $ex => $mode){
 					//////////////////////////////////////////////////////////////////

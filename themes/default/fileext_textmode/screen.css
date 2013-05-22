@@ -14,6 +14,25 @@
 
 #FileExtTextModeDiv thead th{
 	vertical-align: middle;
+	width: 160px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+#FileExtTextModeDiv thead{
+	position: fixed;
+	height: 30px;
+}
+
+#FileExtTextModeDiv tbody td.firstLine{
+	height: 30px;
+}
+
+
+#FileExtTextModeDiv tbody td{
+	width: 160px;
+	padding-left: 8px;
+	padding-right: 8px;
 }
 
 #FileExtTextModeDiv input{

@@ -155,6 +155,9 @@ class fileextension_textmode{
 	//process the form with the assotiation
 	//////////////////////////////////////////////////////////////////
 	private function processFileExtTextModeForm(){
+		if(!Common::checkAccess()){
+			return array('status' =>'error', 'msg' =>'You are not allowed to edit the file extensions.');
+		}
 		//Store Fileextensions and Textmodes in File:
 		if(!isset($_POST['extension']) || !is_array($_POST['extension'])
 				|| !isset($_POST['textMode']) || !is_array($_POST['textMode'])){
