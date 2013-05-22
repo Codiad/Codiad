@@ -13,7 +13,7 @@ require_once '../../common.php';
 class fileextension_textmode{
 
 	//////////////////////////////////////////////////////////////////
-	//default assotiations
+	//default associations
 	//////////////////////////////////////////////////////////////////
 	private $defaultExtensions = array(
 			'html' => 'html',
@@ -152,7 +152,7 @@ class fileextension_textmode{
 	}
 
 	//////////////////////////////////////////////////////////////////
-	//process the form with the assotiation
+	//process the form with the associations
 	//////////////////////////////////////////////////////////////////
 	private function processFileExtTextModeForm(){
 		if(!Common::checkAccess()){
@@ -199,7 +199,7 @@ class fileextension_textmode{
 			}
 		}
 
-		//store the assotiations
+		//store the associations
 		Common::saveJSON(fileextension_textmode::storeFilename, $exMap);
 		if($warning != ''){
 			return json_encode(array('status' => 'warning', 'msg' => $warning, 'extensions' => $exMap ));

@@ -18,7 +18,7 @@
 		controller: 'components/fileext_textmode/controller.php',
 		
 		//////////////////////////////////////////////////////////////////
-		//do a post request for the first assotiation of fileextensions and textmodes
+		//do a post request for the first associations of fileextensions and textmodes
         //////////////////////////////////////////////////////////////////
 		availableTextModes : [],
 		
@@ -28,14 +28,14 @@
 		},
 		
         //////////////////////////////////////////////////////////////////
-		//do a post request for the first assotiation of fileextensions and textmodes
+		//do a post request for the first associations of fileextensions and textmodes
         //////////////////////////////////////////////////////////////////
 		initEditorFileExtensionTextModes : function(){
 			$.get(this.controller, {'action' : 'GetFileExtTextModes'}, this.setEditorFileExtensionTextModes);
 		},
 		
         //////////////////////////////////////////////////////////////////
-		//initial method to get the stored assotiations
+		//initial method to get the stored associations
         //////////////////////////////////////////////////////////////////
 		setEditorFileExtensionTextModes : function(data){
 			resp = $.parseJSON(data);
@@ -96,7 +96,7 @@
 			var $tbody = $('#FileExtTextModeTableTbody');
 			
 			var code = '<tr><td><input class="FileExtension" type="text" name="extension[]" value="" /></td>';
-			code += '<td><select style="width: 100px; display: inline;" name="textMode[]" class="textMode">';
+			code += '<td><select name="textMode[]" class="textMode">';
 			for(var i = 0; i < this.availableTextModes.length; ++i){
 				code += '<option>'+ this.availableTextModes[i] +'</option>';
 			}

@@ -71,6 +71,7 @@ switch($_GET['action']){
 				</tbody>
 			</table>
 		</div>
+		<br>
 		<button class="btn-left" onClick="codiad.fileext_textmode.addFieldToForm()">Add New Extension</button><button class="btn-mid" onClick="codiad.fileext_textmode.sendForm();">Save Scheme</button><button class="btn-right" onClick="codiad.modal.unload();"><?php echo Common::get_i18n('Close')?></button>
 <?php
 		break;
