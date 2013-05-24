@@ -169,7 +169,11 @@ class Plugin_manager extends Common {
                     // extract archive
                     if($zip->extractTo(PLUGINS.'/_tmp') === true) {
                       $zip->close();
-                      cpy(PLUGINS.'/_tmp/'.$name, PLUGINS.'/'.$name, $ign);
+                      $srcname = $name;                    
+                      if(substr($srcname, -6) != "master") {
+                        $srcname = $srcname.'-master';
+                      }
+                      cpy(PLUGINS.'/_tmp/'.$srcname, PLUGINS.'/'.$name, $ign);
                     } else {
                       die(formatJSEND("error","Unable to open ".$name.".zip"));
                     }
