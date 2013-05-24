@@ -40,7 +40,7 @@
             if($market != '') {
                 $marketlist = array();
                 foreach($market as $plugin) {
-                    if($plugin['category'] == '') {
+                    if(!isset($plugin['category']) || $plugin['category'] == '') {
                         $plugin['category'] = 'Common';
                     }
                     if(!array_key_exists($plugin['category'], $marketlist)) {
