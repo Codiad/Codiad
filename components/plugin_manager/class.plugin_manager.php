@@ -110,7 +110,7 @@ class Plugin_manager extends Common {
             @array_map('rrmdir',glob($path.'/*'))==@rmdir($path);
         }
         
-        rrmdir(PLUGINS.'/'.$name);
+        $rrmdir(PLUGINS.'/'.$name);
         $this->Deactivate($name);
     }
         
@@ -119,61 +119,75 @@ class Plugin_manager extends Common {
     //////////////////////////////////////////////////////////////////
 
     public function Update($name){
+        function rrmdir($path){
+            return is_file($path)?
+            @unlink($path):
+            @array_map('rrmdir',glob($path.'/*'))==@rmdir($path);
+        }
+        
+        function cpy($source, $dest, $ign){
+            if(is_dir($source)) {
+                $dir_handle=opendir($source);
+                while($file=readdir($dir_handle)){
+                    if(!in_array($file, $ign)){
+                        if(is_dir($source."/".$file)){
+                            if(!file_exists($dest."/".$file)) {
+                              mkdir($dest."/".$file);
+                            }
+                            cpy($source."/".$file, $dest."/".$file, $ign);
+                        } else {
+                            copy($source."/".$file, $dest."/".$file);
+                        }
+                    }
+                }
+                closedir($dir_handle);
+            } else {
+                copy($source, $dest);
+            }
+        }
+    
         if(file_exists(PLUGINS.'/'.$name.'/plugin.json')) {
             $data = json_decode(file_get_contents(PLUGINS.'/'.$name.'/plugin.json'),true);
             if(substr($data[0]['url'],-4) == '.git') {
                 $data[0]['url'] = substr($data[0]['url'],0,-4);
             }
             $data[0]['url'] .= '/archive/master.zip';
-            if(file_put_contents(PLUGINS.'/'.$name.'.zip', fopen($data[0]['url'], 'r'))) {
-                $zip = new ZipArchive;
-                $res = $zip->open(PLUGINS.'/'.$name.'.zip');
-                // open downloaded archive
-                if ($res === TRUE) {
-                  // extract archive
-                  if($zip->extractTo(PLUGINS) === true) {
-                    if(substr($name, -6) != "master") {
-                        $this->cpy(PLUGINS.'/'.$name.'-master', PLUGINS.'/'.$name, array(".",".."));
-                    } 
-                    
-                    $zip->close();
+            
+            $ign = array(".","..");
+            if(isset($data[0]['exclude'])) {
+              foreach(explode(",",$data[0]['exclude']) as $exclude) {
+                array_push($ign, $exclude);
+              }
+            }
+            
+            if(file_exists(PLUGINS.'/_tmp') || mkdir(PLUGINS.'/_tmp')) {
+              if(file_put_contents(PLUGINS.'/_tmp/'.$name.'.zip', fopen($data[0]['url'], 'r'))) {
+                  $zip = new ZipArchive;
+                  $res = $zip->open(PLUGINS.'/_tmp/'.$name.'.zip');
+                  // open downloaded archive
+                  if ($res === TRUE) {
+                    // extract archive
+                    if($zip->extractTo(PLUGINS.'/_tmp') === true) {
+                      $zip->close();
+                      cpy(PLUGINS.'/_tmp/'.$name, PLUGINS.'/'.$name, $ign);
+                    } else {
+                      die(formatJSEND("error","Unable to open ".$name.".zip"));
+                    }
                   } else {
-                    die(formatJSEND("error","Unable to open ".$name.".zip"));
+                      die(formatJSEND("error","ZIP Extension not found"));
                   }
-                } else {
-                    die(formatJSEND("error","ZIP Extension not found"));
-                }
-                
-                unlink(PLUGINS.'/'.$name.'.zip');
-                // Response
-                echo formatJSEND("success",null);
+                  
+                  rrmdir(PLUGINS.'/_tmp');
+                  // Response
+                  echo formatJSEND("success",null);
+              } else {
+                  die(formatJSEND("error","Unable to download ".$repo));
+              }
             } else {
-                die(formatJSEND("error","Unable to download ".$repo));
+              die(formatJSEND("error","Unable to create temp dir "));
             }
         } else {
             echo formatJSEND("error","Unable to find plugin ".$name);
-        }
-    }
-    
-    function cpy($source, $dest, $ign){
-        if(is_dir($source)) {
-            $dir_handle=opendir($source);
-            while($file=readdir($dir_handle)){
-                if(!in_array($file, $ign)){
-                    if(is_dir($source."/".$file)){
-                        mkdir($dest."/".$file);
-                        cpy($source."/".$file, $dest."/".$file, $ign);
-                    } else {
-                        copy($source."/".$file, $dest."/".$file);
-                        unlink($source."/".$file);
-                    }
-                }
-            }
-            closedir($dir_handle);
-            rmdir($source);
-        } else {
-            copy($source, $dest);
-            unlink($source);
         }
     }
 }
