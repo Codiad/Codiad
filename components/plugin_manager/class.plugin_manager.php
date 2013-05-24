@@ -160,20 +160,20 @@ class Plugin_manager extends Common {
               }
             }
             
-            if(file_exists(PLUGINS.'/_tmp') || mkdir(PLUGINS.'/_tmp')) {
-              if(file_put_contents(PLUGINS.'/_tmp/'.$name.'.zip', fopen($data[0]['url'], 'r'))) {
+            if(file_exists(PLUGINS.'/_'.session_id()) || mkdir(PLUGINS.'/_'.session_id())) {
+              if(file_put_contents(PLUGINS.'/_'.session_id().'/'.$name.'.zip', fopen($data[0]['url'], 'r'))) {
                   $zip = new ZipArchive;
-                  $res = $zip->open(PLUGINS.'/_tmp/'.$name.'.zip');
+                  $res = $zip->open(PLUGINS.'/_'.session_id().'/'.$name.'.zip');
                   // open downloaded archive
                   if ($res === TRUE) {
                     // extract archive
-                    if($zip->extractTo(PLUGINS.'/_tmp') === true) {
+                    if($zip->extractTo(PLUGINS.'/_'.session_id().'') === true) {
                       $zip->close();
                       $srcname = $name;                    
                       if(substr($srcname, -6) != "master") {
                         $srcname = $srcname.'-master';
                       }
-                      cpy(PLUGINS.'/_tmp/'.$srcname, PLUGINS.'/'.$name, $ign);
+                      cpy(PLUGINS.'/_'.session_id().'/'.$srcname, PLUGINS.'/'.$name, $ign);
                     } else {
                       die(formatJSEND("error","Unable to open ".$name.".zip"));
                     }
@@ -181,7 +181,7 @@ class Plugin_manager extends Common {
                       die(formatJSEND("error","ZIP Extension not found"));
                   }
                   
-                  rrmdir(PLUGINS.'/_tmp');
+                  rrmdir(PLUGINS.'/_'.session_id());
                   // Response
                   echo formatJSEND("success",null);
               } else {
