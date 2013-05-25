@@ -1,0 +1,48 @@
+/*Copyright @ccvca 2013*/
+
+#FileExtTextModeDiv{
+	height: 300px;
+	width: 100%;
+}
+
+#FileExtTextModeDiv table{
+	overflow-y: scroll;
+	display: block;
+	height: 280px;
+	margin-top: 5px;
+}
+
+#FileExtTextModeDiv thead th{
+	vertical-align: middle;
+	width: 160px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+#FileExtTextModeDiv thead{
+	position: fixed;
+	height: 30px;
+}
+
+#FileExtTextModeDiv tbody td.firstLine{
+	height: 30px;
+}
+
+
+#FileExtTextModeDiv tbody td{
+	width: 160px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+#FileExtTextModeDiv input{
+	display: inline;
+}
+
+#FileExtTextModeDiv input.FileExtension{
+	/*width: 80px;*/
+}
+
+#FileExtTextModeDiv input.textMode{
+	/*width: 120px;*/
+}
