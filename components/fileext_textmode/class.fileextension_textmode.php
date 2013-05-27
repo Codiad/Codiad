@@ -246,7 +246,7 @@ class fileextension_textmode{
 		//the availiable extensions, which aren't removed
 		$availEx = array();
 		foreach($ext as $ex => $mode){
-			if(in_array($ex, $this->availiableTextModes)){
+			if(in_array($mode, $this->availiableTextModes)){
 				$availEx[$ex] = $mode;
 			}
 		}
