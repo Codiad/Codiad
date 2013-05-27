@@ -3,20 +3,36 @@
 #FileExtTextModeDiv{
 	height: 300px;
 	width: 100%;
+    border-bottom: 1px solid #454445;
 }
 
 #FileExtTextModeDiv table{
 	overflow-y: scroll;
 	display: block;
 	height: 280px;
-	margin-top: 5px;
+	margin-top: 0px;
 }
 
 #FileExtTextModeDiv thead th{
 	vertical-align: middle;
-	width: 160px;
+	width: 186px;
 	padding-left: 8px;
 	padding-right: 8px;
+}
+
+#FileExtTextModeDiv thead:after {
+    content: "";
+    width: 98%;
+    height: 1px;
+    margin-top: -1px;
+    margin-left: 0;
+    display: block;
+    position: absolute;
+    left: 1%;
+    z-index: -1;
+    -webkit-box-shadow: 0px 0px 8px 2px #000000;
+       -moz-box-shadow: 0px 0px 8px 2px #000000;
+            box-shadow: 0px 0px 8px 2px #000000;
 }
 
 #FileExtTextModeDiv thead{
@@ -30,9 +46,11 @@
 
 
 #FileExtTextModeDiv tbody td{
-	width: 160px;
+	width: 50%;
+    padding: 0;
 	padding-left: 8px;
 	padding-right: 8px;
+    line-height: 100%;
 }
 
 #FileExtTextModeDiv input{

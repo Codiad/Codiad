@@ -56,13 +56,13 @@
 			self.showStatus(data);
 		},
 		
-		formWidth : 300,
+		formWidth : 400,
 
         //////////////////////////////////////////////////////////////////
         // Open the component dialog
         //////////////////////////////////////////////////////////////////
 		open : function() {
-			codiad.modal.unload();
+			//codiad.modal.unload();
 			codiad.modal.load(this.formWidth,
 					this.dialog+"?action=fileextension_textmode_form");
 			codiad.modal.hideOverlay();

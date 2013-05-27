@@ -43,11 +43,11 @@ switch($_GET['action']){
 		?>
 		<div id="FileExtTextModeDiv">
 			<label>Edit file extensions</label>
-			<table id="FileExtTextModeTable">
+			<table id="FileExtTextModeTable" width="100%">
 				<thead>
 					<tr>
-						<th>File extension</th>
-						<th>Text mode</th></tr>
+						<th width="50%">Extension</th>
+						<th width="50%">Mode</th></tr>
 				</thead>
 				<tbody id="FileExtTextModeTableTbody">
 					<tr>
@@ -72,7 +72,7 @@ switch($_GET['action']){
 			</table>
 		</div>
 		<br>
-		<button class="btn-left" onClick="codiad.fileext_textmode.addFieldToForm()">Add New Extension</button><button class="btn-mid" onClick="codiad.fileext_textmode.sendForm();">Save Scheme</button><button class="btn-right" onClick="codiad.modal.unload();"><?php echo Common::get_i18n('Close')?></button>
+		<button class="btn-left" onClick="codiad.fileext_textmode.addFieldToForm()">New Extension</button><button class="btn-mid" onClick="codiad.fileext_textmode.sendForm();">Save Scheme</button><button class="btn-right" onClick="codiad.modal.load(400, 'components/editor/dialog.php?action=settings');"><?php echo Common::get_i18n('Close')?></button>
 <?php
 		break;
 }
