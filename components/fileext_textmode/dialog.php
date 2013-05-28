@@ -41,18 +41,18 @@ switch($_GET['action']){
 			die(json_encode(array('status' => 'error', 'msg' => 'Internal PHP error.') ));
 		}
 		?>
+        <label>Edit file extensions</label>
+        <table id="FileExtModeHeader">
+            <thead>
+				<tr>
+					<th width="48%">Extension</th>
+					<th width="52%">Mode</th>
+                </tr>
+			</thead>
+        </table>
 		<div id="FileExtTextModeDiv">
-			<label>Edit file extensions</label>
 			<table id="FileExtTextModeTable" width="100%">
-				<thead>
-					<tr>
-						<th width="50%">Extension</th>
-						<th width="50%">Mode</th></tr>
-				</thead>
 				<tbody id="FileExtTextModeTableTbody">
-					<tr>
-						<td class="firstLine" colspan="2">&nbsp;</td>
-					</tr>
 				<?php
 				foreach($ext as $ex => $mode){
 					//////////////////////////////////////////////////////////////////
