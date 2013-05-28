@@ -45,8 +45,8 @@ switch($_GET['action']){
         <table id="FileExtModeHeader">
             <thead>
 				<tr>
-					<th width="48%">Extension</th>
-					<th width="52%">Mode</th>
+					<th width="184">Extension</th>
+					<th>Mode</th>
                 </tr>
 			</thead>
         </table>
