@@ -26,13 +26,13 @@
     {
         "title": "Break",
         "icon": null,
-        "applies-to" : "directory-only no-external",
+        "applies-to" : "directory-only",
         "onclick": null
     },
     {
         "title": "Upload Files",
         "icon": "icon-upload",
-        "applies-to" : "directory-only no-external",
+        "applies-to" : "directory-only",
         "onclick": "codiad.filemanager.uploadToNode($('#context-menu').attr('data-path'));"
     },
     {
