@@ -169,12 +169,30 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td><?php i18n("Right Sidebar Trigger"); ?></td>
+        <td><?php i18n("Tab Size"); ?></td>
         <td>
         
-        <select class="setting" data-setting="right-sidebar-trigger">
-            <option value="false"><?php i18n("Hover"); ?></option>
-            <option value="true"><?php i18n("Click"); ?></option>
+        <select class="setting" data-setting="tab-size">
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+        </select>
+        
+        </td>
+        
+    </tr>
+    <tr>
+    
+        <td><?php i18n("Soft Tabs"); ?></td>
+        <td>
+        
+        <select class="setting" data-setting="soft-tabs">
+            <option value="false">No</option>
+            <option value="true">Yes</option>
         </select>
         
         </td>
@@ -218,12 +236,18 @@ var editor_settings = {
                 case 'print-margin':
                     $(this).children('option[value="'+codiad.editor.settings.printMargin+'"]').prop('selected',true);
                     break;
-                case 'wrap-mode':
+                    case 'wrap-mode':
                     $(this).children('option[value="'+codiad.editor.settings.wrapMode+'"]').prop('selected',true);
                     break;
                 case 'right-sidebar-trigger':
                     $(this).children('option[value="'+codiad.editor.settings.rightSidebarTrigger+'"]').prop('selected',true);
                     break;
+                case "soft-tabs": 
+                    $(this).children('option[value="'+codiad.editor.settings.softTabs+'"]').prop('selected',true);
+               	break;
+               	case "tab-size": 
+               		$(this).children('option[value="'+codiad.editor.settings.tabSize+'"]').prop('selected',true);
+               	break;
             }
         });
     },
@@ -263,6 +287,13 @@ var editor_settings = {
                         var bool_val = (val == "true");
                         codiad.editor.setRightSidebarTrigger(bool_val);
                         break;
+                    case "soft-tabs":
+                        var bool_val = (val == "true");
+                        codiad.editor.setSoftTabs(bool_val);
+                    break;
+                    case "tab-size":
+                        codiad.editor.setTabSize(val);
+                    break;
                 }
             }
         });
