@@ -184,8 +184,6 @@ switch($_GET['action']){
         
         </td>
         
-        softTabs
-        
     </tr>
     <tr>
     
@@ -198,8 +196,6 @@ switch($_GET['action']){
         </select>
         
         </td>
-        
-        softTabs
         
     </tr>
     </table>
