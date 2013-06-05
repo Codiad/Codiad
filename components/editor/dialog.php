@@ -184,6 +184,8 @@ switch($_GET['action']){
         
         </td>
         
+        softTabs
+        
     </tr>
     <tr>
     
@@ -196,6 +198,8 @@ switch($_GET['action']){
         </select>
         
         </td>
+        
+        softTabs
         
     </tr>
     </table>
@@ -289,10 +293,10 @@ var editor_settings = {
                         break;
                     case "soft-tabs":
                         var bool_val = (val == "true");
-                        codiad.editor.settings.softTabs = bool_val;
+                        codiad.editor.setSoftTabs(bool_val);
                     break;
                     case "tab-size":
-                        codiad.editor.settings.tabSize = val;
+                        codiad.editor.setTabSize(val);
                     break;
                 }
             }
