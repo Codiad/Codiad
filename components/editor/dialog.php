@@ -169,15 +169,37 @@ switch($_GET['action']){
     </tr>
     <tr>
     
-        <td><?php i18n("Right Sidebar Trigger"); ?></td>
+        <td><?php i18n("Tab Size"); ?></td>
         <td>
         
-        <select class="setting" data-setting="right-sidebar-trigger">
-            <option value="false"><?php i18n("Hover"); ?></option>
-            <option value="true"><?php i18n("Click"); ?></option>
+        <select class="setting" data-setting="tab-size">
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
         </select>
         
         </td>
+        
+        softTabs
+        
+    </tr>
+    <tr>
+    
+        <td><?php i18n("Soft Tabs"); ?></td>
+        <td>
+        
+        <select class="setting" data-setting="soft-tabs">
+            <option value="false">No</option>
+            <option value="true">Yes</option>
+        </select>
+        
+        </td>
+        
+        softTabs
         
     </tr>
     </table>
