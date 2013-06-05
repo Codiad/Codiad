@@ -240,12 +240,18 @@ var editor_settings = {
                 case 'print-margin':
                     $(this).children('option[value="'+codiad.editor.settings.printMargin+'"]').prop('selected',true);
                     break;
-                case 'wrap-mode':
+                    case 'wrap-mode':
                     $(this).children('option[value="'+codiad.editor.settings.wrapMode+'"]').prop('selected',true);
                     break;
                 case 'right-sidebar-trigger':
                     $(this).children('option[value="'+codiad.editor.settings.rightSidebarTrigger+'"]').prop('selected',true);
                     break;
+                case "soft-tabs": 
+                    $(this).children('option[value="'+codiad.editor.settings.softTabs+'"]').prop('selected',true);
+               	break;
+               	case "tab-size": 
+               		$(this).children('option[value="'+codiad.editor.settings.tabSize+'"]').prop('selected',true);
+               	break;
             }
         });
     },
@@ -285,6 +291,13 @@ var editor_settings = {
                         var bool_val = (val == "true");
                         codiad.editor.setRightSidebarTrigger(bool_val);
                         break;
+                    case "soft-tabs":
+                        var bool_val = (val == "true");
+                        codiad.editor.settings.softTabs = bool_val;
+                    break;
+                    case "tab-size":
+                        codiad.editor.settings.tabSize = val;
+                    break;
                 }
             }
         });
