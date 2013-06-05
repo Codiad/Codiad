@@ -332,7 +332,9 @@
             printMargin: false,
             highlightLine: true,
             indentGuides: true,
-            wrapMode: false
+            wrapMode: false,
+            softTabs: false,
+            tabSize: 4
         },
 
         rootContainer: null,
@@ -376,14 +378,14 @@
 
             var _this = this;
 
-            $.each(['theme', 'fontSize'], function(idx, key) {
+            $.each(['theme', 'fontSize', "tabSize"], function(idx, key) {
                 var localValue = localStorage.getItem('codiad.editor.' + key);
                 if (localValue !== null) {
                     _this.settings[key] = localValue;
                 }
             });
 
-            $.each(['printMargin', 'highlightLine', 'indentGuides', 'wrapMode', 'rightSidebarTrigger'],
+            $.each(['printMargin', 'highlightLine', 'indentGuides', 'wrapMode', 'rightSidebarTrigger', "softTabs"],
                    function(idx, key) {
                        var localValue =
                            localStorage.getItem('codiad.editor.' + key);
