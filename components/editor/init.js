@@ -336,7 +336,7 @@
             softTabs: false,
             tabSize: 4
         },
-
+   
         rootContainer: null,
 
         fileExtensionTextMode: {},
@@ -479,8 +479,8 @@
             i.setHighlightActiveLine(this.settings.highlightLine);
             i.setDisplayIndentGuides(this.settings.indentGuides);
             i.getSession().setUseWrapMode(this.settings.wrapMode);
-            i.getSession().setTabSize(this.settings.tabSize);
-            i.getSession().setUseSoftTabs(this.settings.softTabs);
+            this.setTabSize(this.settings.tabSize);
+            this.setSoftTabs(this.settings.softTabs);
 
             this.changeListener(i);
             this.cursorTracking(i);
@@ -1038,6 +1038,53 @@
             this.settings.rightSidebarTrigger = t;
             // LocalStorage
             localStorage.setItem('codiad.editor.rightSidebarTrigger', t);
+        },
+        
+        
+        //////////////////////////////////////////////////////////////////
+        //
+        // set Tab Size
+        //
+        // Parameters:
+        //   s - size
+        //   i - {Editor}  (If omitted, Defaults to all editors)
+        //
+        //////////////////////////////////////////////////////////////////
+
+        setTabSize: function(s, i) {
+            if (i) {
+                i.getSession().setTabSize(s);
+            } else {
+                this.forEach(function(i) {
+                    i.getSession().setTabSize(s);
+                });
+            }
+            // LocalStorage
+            localStorage.setItem('codiad.editor.tabSize', s);
+            
+        },
+        
+        //////////////////////////////////////////////////////////////////
+        //
+        // Enable or disable Soft Tabs
+        //
+        // Parameters:
+        //   t - true / false
+        //   i - {Editor}  (If omitted, Defaults to all editors)
+        //
+        //////////////////////////////////////////////////////////////////
+
+        setSoftTabs: function(t, i) {
+            if (i) {
+                i.getSession().setUseSoftTabs(t);
+            } else {
+                this.forEach(function(i) {
+                    i.getSession().setUseSoftTabs(t);
+                });
+            }
+            // LocalStorage
+            localStorage.setItem('codiad.editor.softTabs', t);
+            
         },
         
         //////////////////////////////////////////////////////////////////
