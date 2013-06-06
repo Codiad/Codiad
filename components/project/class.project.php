@@ -39,7 +39,7 @@ class Project extends Common {
             $this->assigned = getJSON($_SESSION['user'] . '_acl.php');
         }
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Get First (Default, none selected)
     //////////////////////////////////////////////////////////////////
@@ -139,7 +139,7 @@ class Project extends Common {
                     }
                     $this->projects[] = array("name"=>$this->name,"path"=>$this->path);
                     saveJSON('projects.php',$this->projects);
-                    
+
                     // Pull from Git Repo?
                     if($this->gitrepo){
                         if(!$this->isAbsPath($this->path)) {
@@ -149,7 +149,7 @@ class Project extends Common {
                         }
                         $this->ExecuteCMD();
                     }
-                    
+
                     echo formatJSEND("success",array("name"=>$this->name,"path"=>$this->path));
                 }else{
                     echo formatJSEND("error","A Project With the Same Name or Path Exists");
@@ -161,7 +161,7 @@ class Project extends Common {
              echo formatJSEND("error","Project Name/Folder is empty");
         }
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Rename
     //////////////////////////////////////////////////////////////////
@@ -218,13 +218,13 @@ class Project extends Common {
 
     public function SanitizePath(){
         $sanitized = str_replace(" ","_",$this->path);
-        return preg_replace('/[^\w-]/', '', $sanitized);
+        return preg_replace('/[^\w-\.]/', '', $sanitized);
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Clean Path
     //////////////////////////////////////////////////////////////////
-    
+
     function cleanPath(){
 
         // prevent Poison Null Byte injections
@@ -236,11 +236,11 @@ class Project extends Common {
 
         return $path;
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Execute Command
     //////////////////////////////////////////////////////////////////
-    
+
     public function ExecuteCMD(){
         if(function_exists('system')){
             ob_start();
