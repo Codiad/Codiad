@@ -88,7 +88,7 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     $project_path = cleanPath($project_path);
 
     if(!isAbsPath($project_path)) {
-        $project_path = str_replace(" ","_",preg_replace('/[^\w-]/', '', $project_path));
+        $project_path = str_replace(" ","_",preg_replace('/[^\w-\.]/', '', $project_path));
         mkdir($workspace . "/" . $project_path);
     } else {
         $project_path = cleanPath($project_path);
@@ -108,7 +108,7 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     $project_data = array("name"=>$project_name,"path"=>$project_path);
 
     saveJSON($projects,array($project_data));
-    
+
     //////////////////////////////////////////////////////////////////
     // Create Users file
     //////////////////////////////////////////////////////////////////
@@ -116,11 +116,11 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     $user_data = array("username"=>$username,"password"=>$password,"project"=>$project_path);
 
     saveJSON($users,array($user_data));
-    
+
     //////////////////////////////////////////////////////////////////
     // Create Active file
     //////////////////////////////////////////////////////////////////
-    
+
     saveJSON($active,array(''));
     //////////////////////////////////////////////////////////////////
     // Create Plugin file
