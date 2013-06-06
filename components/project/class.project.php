@@ -218,7 +218,7 @@ class Project extends Common {
 
     public function SanitizePath(){
         $sanitized = str_replace(" ","_",$this->path);
-        return preg_replace('/[^\w-.]/', '', $sanitized);
+        return preg_replace('/[^\w-\.]/', '', $sanitized);
     }
 
     //////////////////////////////////////////////////////////////////
