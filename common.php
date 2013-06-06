@@ -78,7 +78,6 @@
         //////////////////////////////////////////////////////////////////
         
         public static function startSession() {
-            Common::construct();
             global $cookie_lifetime;
             if(isset($cookie_lifetime) && $cookie_lifetime != "") {
                 ini_set("session.cookie_lifetime", $cookie_lifetime);
@@ -88,6 +87,8 @@
             session_name(md5(BASE_PATH));
 
             session_start();
+
+            Common::construct();
         }
             
         //////////////////////////////////////////////////////////////////
