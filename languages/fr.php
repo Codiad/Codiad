@@ -1,6 +1,10 @@
 <?php
 $lang = array(
    "Save"                                                => "Sauvegarder",
+   "Save All"                                            => "Tout Enregistrer",
+   "Tab Size"                                            => "Largeur des tabulation",
+   "Soft Tabs"                                           => "Tabulations souples",
+   "Update Check"                                        => "Vérifier màj",
    "Color Tool"                                          => "Sélection de couleur",
    "Terminal"                                            => "Terminal",
    "Projects"                                            => "Projets",
