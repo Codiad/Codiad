@@ -41,12 +41,12 @@ switch($_GET['action']){
 			die(json_encode(array('status' => 'error', 'msg' => 'Internal PHP error.') ));
 		}
 		?>
-        <label>Edit file extensions</label>
+        <label><?php i18n("Edit file extensions"); ?></label>
         <table id="FileExtModeHeader">
             <thead>
 				<tr>
-					<th width="184">Extension</th>
-					<th>Mode</th>
+					<th width="184"><?php i18n("Extension"); ?></th>
+					<th><?php i18n("Mode"); ?></th>
                 </tr>
 			</thead>
         </table>
@@ -72,7 +72,9 @@ switch($_GET['action']){
 			</table>
 		</div>
 		<br>
-		<button class="btn-left" onClick="codiad.fileext_textmode.addFieldToForm()">New Extension</button><button class="btn-mid" onClick="codiad.fileext_textmode.sendForm();">Save Scheme</button><button class="btn-right" onClick="codiad.modal.load(400, 'components/editor/dialog.php?action=settings');"><?php echo Common::get_i18n('Close')?></button>
+		<button class="btn-left" onClick="codiad.fileext_textmode.addFieldToForm()"><?php i18n("New Extension"); ?></button>
+		<button class="btn-mid" onClick="codiad.fileext_textmode.sendForm();"><?php i18n("Save Scheme"); ?></button>
+		<button class="btn-right" onClick="codiad.modal.load(400, 'components/editor/dialog.php?action=settings');"><?php echo Common::get_i18n('Close')?></button>
 <?php
 		break;
 }

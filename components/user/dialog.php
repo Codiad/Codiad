@@ -25,18 +25,18 @@
             $projects_assigned = false;
             if(!checkAccess()){ 
             ?>
-            <label>Restricted</label>
-            <pre>You can not edit the user list</pre>
-            <button onclick="codiad.modal.unload();return false;">Close</button>
+            <label><?php i18n("Restricted"); ?></label>
+            <pre><?php i18n("You can not edit the user list"); ?></pre>
+            <button onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
             <?php } else { ?>
-            <label>User List</label>
+            <label><?php i18n("User List"); ?></label>
             <div id="user-list">
             <table width="100%">
                 <tr>
-                    <th>Login</th>
-                    <th width="5">Password</th>
-                    <th width="5">Projects</th>
-                    <th width="5">Delete</th>
+                    <th><?php i18n("Login"); ?></th>
+                    <th width="5"><?php i18n("Password"); ?></th>
+                    <th width="5"><?php i18n("Projects"); ?></th>
+                    <th width="5"><?php i18n("Delete"); ?></th>
                 </tr>
             <?php
         
@@ -65,7 +65,8 @@
             ?>
             </table>
             </div>
-            <button class="btn-left" onclick="codiad.user.createNew();">New Account</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
+            <button class="btn-left" onclick="codiad.user.createNew();"><?php i18n("New Account"); ?></button>
+    		<button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
             <?php
             }
             
@@ -79,13 +80,14 @@
         
             ?>
             <form>
-            <label>Username</label>
+            <label><?php i18n("Username"); ?></label>
             <input type="text" name="username" autofocus="autofocus" autocomplete="off">
-            <label>Password</label>
+            <label><?php i18n("Password"); ?></label>
             <input type="password" name="password1">
-            <label>Confirm Password</label>
+            <label><?php i18n("Confirm Password"); ?></label>
             <input type="password" name="password2">
-            <button class="btn-left">Create Account</button><button class="btn-right" onclick="codiad.user.list();return false;">Cancel</button>
+            <button class="btn-left"><?php i18n("Create Account"); ?></button>
+			<button class="btn-right" onclick="codiad.user.list();return false;"><?php i18n("Cancel"); ?></button>
             <form>
             <?php
             break;
@@ -107,10 +109,10 @@
         ?>
             <form>
             <input type="hidden" name="username" value="<?php echo($_GET['username']); ?>">
-            <label>Project Access for <?php echo(ucfirst($_GET['username'])); ?></label>
+            <label><?php i18n("Project Access for "); ?><?php echo(ucfirst($_GET['username'])); ?></label>
             <select name="access_level" onchange="if($(this).val()=='0'){ $('#project-selector').slideUp(300); }else{ $('#project-selector').slideDown(300).css({'overflow-y':'scroll'}); }">
-                <option value="0" <?php if(!$projects_assigned){ echo('selected="selected"'); } ?>>Access ALL Projects</option>
-                <option value="1" <?php if($projects_assigned){ echo('selected="selected"'); } ?>>Only Selected Projects</option>
+                <option value="0" <?php if(!$projects_assigned){ echo('selected="selected"'); } ?>><?php i18n("Access ALL Projects"); ?></option>
+                <option value="1" <?php if($projects_assigned){ echo('selected="selected"'); } ?>><?php i18n("Only Selected Projects"); ?></option>
             </select>
             <div id="project-selector" <?php if(!$projects_assigned){ echo('style="display: none;"'); }  ?>>
                 <table>
@@ -124,7 +126,8 @@
                 ?>
                 </table>
             </div>
-            <button class="btn-left">Confirm</button><button class="btn-right" onclick="codiad.user.list();return false;">Close</button>
+            <button class="btn-left"><?php i18n("Confirm"); ?></button>
+			<button class="btn-right" onclick="codiad.user.list();return false;"><?php i18n("Close"); ?></button>
             <?php
             break;
         
@@ -137,9 +140,10 @@
         ?>
             <form>
             <input type="hidden" name="username" value="<?php echo($_GET['username']); ?>">
-            <label>Confirm User Deletion</label>
-            <pre>Account: <?php echo($_GET['username']); ?></pre>
-            <button class="btn-left">Confirm</button><button class="btn-right" onclick="codiad.user.list();return false;">Cancel</button>
+            <label><?php i18n("Confirm User Deletion"); ?></label>
+            <pre><?php i18n("Account:"); ?> <?php echo($_GET['username']); ?></pre>
+            <button class="btn-left"><?php i18n("Confirm"); ?></button>
+			<button class="btn-right" onclick="codiad.user.list();return false;"><?php i18n("Cancel"); ?></button>
             <?php
             break;
             
@@ -158,11 +162,12 @@
         ?>
             <form>
             <input type="hidden" name="username" value="<?php echo($username); ?>">
-            <label>New Password</label>
+            <label><?php i18n("New Password"); ?></label>
             <input type="password" name="password1" autofocus="autofocus">
-            <label>Confirm Password</label>
+            <label><?php i18n("Confirm Password"); ?></label>
             <input type="password" name="password2">
-            <button class="btn-left">Change <?php echo(ucfirst($username)); ?>&apos;s Password</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Cancel</button>
+            <button class="btn-left"><?php i18n("Change"); ?> <?php echo(ucfirst($username)); ?><?php i18n("&apos;s Password"); ?></button>
+			<button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Cancel"); ?></button>
             <?php
             break;
         
