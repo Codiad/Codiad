@@ -23,14 +23,14 @@
         
         case 'list':
             ?>
-            <label>Plugin List</label>
+            <label><?php i18n("Plugin List"); ?></label>
             <div id="plugin-list">
             <table width="100%">
                 <tr>
-                    <th>Plugin Name</th>
-                    <th>Version</th>
-                    <th>Author</th>
-                    <th width="5">Active</th>
+                    <th><?php i18n("Plugin Name"); ?></th>
+                    <th><?php i18n("Version"); ?></th>
+                    <th><?php i18n("Author"); ?></th>
+                    <th width="5"><?php i18n("Active"); ?></th>
                 </tr>
             <?php
             
@@ -87,7 +87,9 @@
             ?>
             </table>
             </div>
-            <button class="btn-left" onclick="window.location.reload();return false;">Reload Codiad</button><button class="btn-mid" onclick="codiad.plugin_manager.update();return false;">Update Check</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
+            <button class="btn-left" onclick="window.location.reload();return false;"><?php i18n("Reload Codiad"); ?></button>
+    		<button class="btn-mid" onclick="codiad.plugin_manager.update();return false;"><?php i18n("Update Check"); ?></button>
+			<button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
             <?php
             
             break;
@@ -98,14 +100,14 @@
         
         case 'update':
             ?>
-            <label>Plugin Update Check</label>
+            <label><?php i18n("Plugin Update Check"); ?></label>
             <div id="plugin-list">
             <table width="100%">
                 <tr>
-                    <th>Plugin Name</th>
-                    <th>Your Version</th>
-                    <th>Latest Version</th>
-                    <th>Open</th>
+                    <th><?php i18n("Plugin Name"); ?></th>
+                    <th><?php i18n("Your Version"); ?></th>
+                    <th><?php i18n("Latest Version"); ?></th>
+                    <th><?php i18n("Open"); ?></th>
                 </tr>
             <?php
             
@@ -163,7 +165,7 @@
             ?>
             </table>
             </div>
-            <button class="btn" onclick="codiad.modal.unload();return false;">Close</button>
+            <button class="btn" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
             <?php
             
             break;
