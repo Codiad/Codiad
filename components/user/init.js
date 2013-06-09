@@ -95,8 +95,8 @@
                 } 
                 
                 // Check no spaces in username
-                if (/\s/g.test(username)) {
-                    codiad.message.error('Username Cannot Contain Spaces');
+                if (!/^[a-z0-9]+$/i.test(username) || username.length===0) {
+                    codiad.message.error('Username Must Be Alphanumeric String');
                     pass = false;
                 }
                 
