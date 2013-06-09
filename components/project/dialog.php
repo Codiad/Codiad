@@ -68,14 +68,14 @@
             }
             
             ?>
-            <label>Project List</label>
+            <label><?php i18n("Project List"); ?></label>
             <div id="project-list">
             <table width="100%">
                 <tr>
-                    <th width="5">Open</th>
-                    <th>Project Name</th>
-                    <th>Path</th>
-                    <?php if(checkAccess()){ ?><th width="5">Delete</th><?php } ?>
+                    <th width="5"><?php i18n("Open"); ?></th>
+                    <th><?php i18n("Project Name"); ?></th>
+                    <th><?php i18n("Path"); ?></th>
+                    <?php if(checkAccess()){ ?><th width="5"><?php i18n("Delete"); ?></th><?php } ?>
                 </tr>
             <?php
             
@@ -111,7 +111,8 @@
             ?>
             </table>
             </div>
-            <?php if(checkAccess()){ ?><button class="btn-left" onclick="codiad.project.create();">New Project</button><?php } ?><button class="<?php if(checkAccess()){ echo('btn-right'); } ?>" onclick="codiad.modal.unload();return false;">Close</button>
+            <?php if(checkAccess()){ ?><button class="btn-left" onclick="codiad.project.create();"><?php i18n("New Project"); ?></button><?php } ?>
+    		<button class="<?php if(checkAccess()){ echo('btn-right'); } ?>" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
             <?php
             
             break;
@@ -124,10 +125,10 @@
         
             ?>
             <form>
-            <label>Project Name</label>
+            <label><?php i18n("Project Name"); ?></label>
             <input name="project_name" autofocus="autofocus" autocomplete="off">
             <?php if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') { ?>
-            <label>Folder Name or Absolute Path</label>
+            <label><?php i18n("Folder Name or Absolute Path"); ?></label>
             <input name="project_path" autofocus="off" autocomplete="off">
             <?php } else { ?>
             <input type="hidden" name="project_path">
@@ -138,17 +139,17 @@
             <table class="hide" id="git-clone">
                 <tr>
                     <td>
-                        <label>Git Repository</label>
+                        <label><?php i18n("Git Repository"); ?></label>
                         <input name="git_repo">
                     </td>
                     <td width="5%">&nbsp;</td>
                     <td width="25%">
-                        <label>Branch</label>
+                        <label><?php i18n("Branch"); ?></label>
                         <input name="git_branch" value="master">
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3" class="note">Note: This will only work if your Git repo DOES NOT require interactive authentication and your server has git installed.</td>
+                    <td colspan="3" class="note"><?php i18n("Note: This will only work if your Git repo DOES NOT require interactive authentication and your server has git installed."); ?></td>
                 </tr>
             </table>
             </div>
@@ -158,7 +159,9 @@
                     $action = 'codiad.modal.unload();';
                 } 
             ?>           
-            <button class="btn-left">Create Project</button><button onclick="$('#git-clone').slideDown(300); $(this).hide(); return false;" class="btn-mid">...From Git Repo</button><button class="btn-right" onclick="<?php echo $action;?>return false;">Cancel</button>
+            <button class="btn-left"><?php i18n("Create Project"); ?></button>
+			<button onclick="$('#git-clone').slideDown(300); $(this).hide(); return false;" class="btn-mid"><?php i18n("...From Git Repo"); ?></button>
+			<button class="btn-right" onclick="<?php echo $action;?>return false;"><?php i18n("Cancel"); ?></button>
             <form>
             <?php
             break;
@@ -170,9 +173,9 @@
         ?>
         <form>
         <input type="hidden" name="project_path" value="<?php echo($_GET['path']); ?>">
-        <label><span class="icon-pencil"></span>Rename Project</label>    
+        <label><span class="icon-pencil"></span><?php i18n("Rename Project"); ?></label>    
         <input type="text" name="project_name" autofocus="autofocus" autocomplete="off" value="<?php echo($_GET['project_name']); ?>">  
-        <button class="btn-left">Rename</button>&nbsp;<button class="btn-right" onclick="codiad.modal.unload(); return false;">Cancel</button>
+        <button class="btn-left"><?php i18n("Rename"); ?></button>&nbsp;<button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Cancel"); ?></button>
         <form>
         <?php
         break;       
@@ -186,13 +189,13 @@
         ?>
             <form>
             <input type="hidden" name="project_path" value="<?php echo($_GET['path']); ?>">
-            <label>Confirm Project Deletion</label>
-            <pre>Name: <?php echo($_GET['name']); ?>, Path: <?php echo($_GET['path']); ?></pre>
+            <label><?php i18n("Confirm Project Deletion"); ?></label>
+            <pre><?php i18n("Name:"); ?> <?php echo($_GET['name']); ?>, Path: <?php echo($_GET['path']); ?></pre>
             <table>
-            <tr><td width="5"><input type="checkbox" name="delete" id="delete" value="true"></td><td>Delete Project Files</td></tr>
-            <tr><td width="5"><input type="checkbox" name="follow" id="follow" value="true"></td><td>Follow Symbolic Links </td></tr>
+            <tr><td width="5"><input type="checkbox" name="delete" id="delete" value="true"></td><td><?php i18n("Delete Project Files"); ?></td></tr>
+            <tr><td width="5"><input type="checkbox" name="follow" id="follow" value="true"></td><td><?php i18n("Follow Symbolic Links "); ?></td></tr>
             </table>
-            <button class="btn-left">Confirm</button><button class="btn-right" onclick="codiad.project.list();return false;">Cancel</button>
+            <button class="btn-left"><?php i18n("Confirm"); ?></button><button class="btn-right" onclick="codiad.project.list();return false;"><?php i18n("Cancel"); ?></button>
             <?php
             break;
         
