@@ -191,8 +191,8 @@ switch($_GET['action']){
         <td>
         
         <select class="setting" data-setting="soft-tabs">
-            <option value="false">No</option>
-            <option value="true">Yes</option>
+            <option value="false"><?php i18n('No') ?></option>
+            <option value="true"><?php i18n('Yes') ?></option>
         </select>
         
         </td>
