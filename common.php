@@ -105,14 +105,17 @@
         // Localization
         //////////////////////////////////////////////////////////////////
                 
-        public static function i18n($key) {
-            echo Common::get_i18n($key);
+        public static function i18n($key, $args = array()) {
+            echo Common::get_i18n($key, $args);
         }
         
-        public static function get_i18n($key) {
+        public static function get_i18n($key, $args = array()) {
             global $lang;
             $key = ucwords(strtolower($key)); //Test, test TeSt and tESt are exacly the same
-            return isset($lang[$key]) ? $lang[$key] : $key;
+            $return = isset($lang[$key]) ? $lang[$key] : $key;
+            foreach($args as $k => $v)
+                $return = str_replace("%{$k}%", $v, $return);
+            return $return;
         }
         
         //////////////////////////////////////////////////////////////////
@@ -234,8 +237,8 @@
     //////////////////////////////////////////////////////////////////
     
     function debug($message) { Common::debug($message); }   
-    function i18n($key) { echo Common::i18n($key); }
-    function get_i18n($key) { return Common::get_i18n($key); }
+    function i18n($key, $args = array()) { echo Common::i18n($key, $args); }
+    function get_i18n($key, $args = array()) { return Common::get_i18n($key, $args); }
     function checkSession(){ Common::checkSession(); }
     function getJSON($file,$namespace=""){ return Common::getJSON($file,$namespace); }
     function saveJSON($file,$data,$namespace=""){ Common::saveJSON($file,$data,$namespace); }
