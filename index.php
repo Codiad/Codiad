@@ -182,17 +182,17 @@ if(!file_exists(DATA . '/plugins.php')) {
 
         <div id="sb-left" class="sidebar">
             <div id="sb-left-title">
-                <h2 id="finder-label"> Explore </h2>
+                <h2 id="finder-label"> <?php i18n("Explore"); ?> </h2>
                 <div id="finder-wrapper">
                    <a id="finder-options" class="icon icon-cog"></a>
                    <div id="finder-inner-wrapper">
                    <input type="text" id="finder"></input>
                    </div>
                    <ul id="finder-options-menu" class="options-menu">
-                      <li class="chosen"><a data-option="left_prefix">Prefix</a></li>
-                      <li><a data-option="substring">Substring</a></li>
-                      <li><a data-option="regexp">Regular expression</a></li>
-                      <li><a data-action="search">Search File Contents</a></li>
+                      <li class="chosen"><a data-option="left_prefix"><?php i18n("Prefix"); ?></a></li>
+                      <li><a data-option="substring"><?php i18n("Substring"); ?></a></li>
+                      <li><a data-option="regexp"><?php i18n("Regular expression"); ?></a></li>
+                      <li><a data-action="search"><?php i18n("Search File Contents"); ?></a></li>
                    </ul>
                 </div>
                 <a id="lock-left-sidebar" class="icon-lock icon"></a>
@@ -214,7 +214,7 @@ if(!file_exists(DATA . '/plugins.php')) {
                             if($data['title']=='Break'){
                                 echo('<hr class="'.$data['applies-to'].'">');
                             } else{
-                                echo('<a class="'.$data['applies-to'].'" onclick="'.$data['onclick'].'"><span class="'.$data['icon'].'"></span>'.$data['title'].'</a>');
+                                echo('<a class="'.$data['applies-to'].'" onclick="'.$data['onclick'].'"><span class="'.$data['icon'].'"></span>'.get_i18n($data['title']).'</a>');
                             }
 
                         }
@@ -248,10 +248,10 @@ if(!file_exists(DATA . '/plugins.php')) {
                 <div id="project-list" class="sb-project-list">
                 
                     <div class="project-list-title">
-                        <h2>Projects</h2>
-                        <a id="projects-collapse" class="icon-down-dir icon" alt="Collapse"></a>
+                        <h2><?php i18n("Projects"); ?></h2>
+                        <a id="projects-collapse" class="icon-down-dir icon" alt="<?php i18n("Collapse"); ?>"></a>
                         <?php if(checkAccess()) { ?>
-                        <a id="projects-create" class="icon-plus icon" alt="Create Project"></a>
+                        <a id="projects-create" class="icon-plus icon" alt="<?php i18n("Create Project"); ?>"></a>
                         <?php } ?>
                     </div>
                     
@@ -282,9 +282,9 @@ if(!file_exists(DATA . '/plugins.php')) {
             <div id="root-editor-wrapper"></div>
 
             <div id="editor-bottom-bar">
-                <a id="settings" class="ico-wrapper"><span class="icon-doc-text"></span>Settings</a>
+                <a id="settings" class="ico-wrapper"><span class="icon-doc-text"></span><?php i18n("Settings"); ?></a>
                 <div class="divider"></div>
-                <a id="split" class="ico-wrapper"><span class="icon-layout"></span>Split</a>
+                <a id="split" class="ico-wrapper"><span class="icon-layout"></span><?php i18n("Split"); ?></a>
                 <div class="divider"></div>
                 <a id="current-mode"><span class="icon-layout"></span></a>
                 <div class="divider"></div>
@@ -293,9 +293,9 @@ if(!file_exists(DATA . '/plugins.php')) {
             <div id="changemode-menu" class="options-menu">
             </div>
             <ul id="split-options-menu" class="options-menu">
-              <li id="split-horizontally"><a> Split Horizontally </a></li>
-              <li id="split-vertically"><a> Split Vertically </a></li>
-              <li id="merge-all"><a> Merge all </a></li>
+              <li id="split-horizontally"><a> <?php i18n("Split Horizontally"); ?> </a></li>
+              <li id="split-vertically"><a> <?php i18n("Split Vertically"); ?> </a></li>
+              <li id="merge-all"><a> <?php i18n("Merge all"); ?> </a></li>
             </ul>
         </div>
 
