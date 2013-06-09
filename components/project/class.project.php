@@ -110,7 +110,7 @@ class Project extends Common {
             if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' || !$this->isAbsPath($this->path)) {
                 $this->path = $this->SanitizePath();
             }
-            if($this->path != '') {
+            if($this->path != '' && $this->path != '..') {
                 $pass = $this->checkDuplicate();
                 if($pass){
                     if(!$this->isAbsPath($this->path)) {
@@ -233,6 +233,8 @@ class Project extends Common {
         // prevent go out of the workspace
         while (strpos($path , '../') !== false)
             $path = str_replace( '../', '', $path );
+        while(strpos($path, '/..') !== false)
+            $path = str_replace('/..', '', $path);
 
         return $path;
     }
