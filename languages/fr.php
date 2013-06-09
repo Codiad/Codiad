@@ -4,6 +4,7 @@ $lang = array(
    "Note: This will only work if your Git repo DOES NOT require interactive authentication and your server has git installed." => "Nota: Cela ne marchera seulement si votre dépôt Git NE REQUIERT PAS d'authentification interactive et que votre serveur a git d'installé.",
    "Would you like to overwrite or duplicate the following:" => "Voulez-vous écraser ou dupliquer : ",
    "Prefix"                                              => "Préfixe",
+   "Copy"                                                => "Copier",
    "Substring"                                           => "Chaîne",
    "Collapse"                                            => "Rassembler",
    "Regular Expression"                                  => "Expression régulière",
