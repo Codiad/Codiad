@@ -26,59 +26,59 @@ switch($_GET['action']){
     //////////////////////////////////////////////////////////////////
     case 'create':
     ?>
-    <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">   
+    <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">
     <input type="hidden" name="type" value="<?php echo($_GET['type']); ?>">
-    <label><span class="icon-pencil"></span><?php echo i18n((ucfirst($_GET['type']))); ?></label>    
-    <input type="text" name="object_name" autofocus="autofocus" autocomplete="off">  
+    <label><span class="icon-pencil"></span><?php echo i18n((ucfirst($_GET['type']))); ?></label>
+    <input type="text" name="object_name" autofocus="autofocus" autocomplete="off">
     <button class="btn-left"><?php i18n("Create"); ?></button>
     <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Cancel"); ?></button>
     <?php
     break;
-    
+
     //////////////////////////////////////////////////////////////////
     // Rename
     //////////////////////////////////////////////////////////////////
     case 'rename':
     ?>
     <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">
-    <input type="hidden" name="type" value="<?php echo($_GET['type']); ?>"> 
-    <label><span class="icon-pencil"></span> <?php i18n("Rename"); ?> <?php echo i18n((ucfirst($_GET['type']))); ?></label>    
-    <input type="text" name="object_name" autofocus="autofocus" autocomplete="off" value="<?php echo($_GET['short_name']); ?>">  
+    <input type="hidden" name="type" value="<?php echo($_GET['type']); ?>">
+    <label><span class="icon-pencil"></span> <?php i18n("Rename"); ?> <?php echo i18n((ucfirst($_GET['type']))); ?></label>
+    <input type="text" name="object_name" autofocus="autofocus" autocomplete="off" value="<?php echo($_GET['short_name']); ?>">
     <button class="btn-left"><?php i18n("Rename"); ?></button>
 	<button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Cancel"); ?></button>
     <?php
     break;
-    
+
     //////////////////////////////////////////////////////////////////
     // Delete
     //////////////////////////////////////////////////////////////////
     case 'delete':
     ?>
-    <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>"> 
+    <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">
     <label><?php i18n("Are you sure you wish to delete the following:"); ?></label>
     <pre><?php if(!FileManager::isAbsPath($_GET['path'])) { echo '/'; }; echo($_GET['path']); ?></pre>
     <button class="btn-left"><?php i18n("Delete"); ?></button>
 	<button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Cancel"); ?></button>
     <?php
     break;
-    
+
     //////////////////////////////////////////////////////////////////
     // Preview
     //////////////////////////////////////////////////////////////////
     case 'preview':
-    ?> 
+    ?>
     <label><?php i18n("Inline Preview"); ?></label>
     <div><br><br><img src="<?php echo($_GET['path']); ?>"><br><br></div>
     <button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
     <?php
     break;
-    
+
     //////////////////////////////////////////////////////////////////
     // Overwrite
     //////////////////////////////////////////////////////////////////
     case 'overwrite':
     ?>
-    <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">    
+    <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">
     <label><?php i18n("Would you like to overwrite or duplicate the following:"); ?></label>
     <pre><?php if(!FileManager::isAbsPath($_GET['path'])) { echo '/'; }; echo($_GET['path']); ?></pre>
     <select name="or_action">
@@ -89,13 +89,13 @@ switch($_GET['action']){
 	<button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Cancel"); ?></button>
     <?php
     break;
-    
+
     //////////////////////////////////////////////////////////////////
     // Search
     //////////////////////////////////////////////////////////////////
     case 'search':
     ?>
-    <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">    
+    <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">
     <table class="file-search-table">
         <tr>
             <td width="65%">
@@ -120,7 +120,7 @@ switch($_GET['action']){
 	<button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Cancel"); ?></button>
     <?php
     break;
-    
+
 }
 
 ?>
