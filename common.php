@@ -114,7 +114,7 @@
             $key = ucwords(strtolower($key)); //Test, test TeSt and tESt are exacly the same
             $return = isset($lang[$key]) ? $lang[$key] : $key;
             foreach($args as $k => $v)
-                $return = str_replace("%{$k}%", $v, $return);
+                $return = str_replace("%{".$k."}%", $v, $return);
             return $return;
         }
         
