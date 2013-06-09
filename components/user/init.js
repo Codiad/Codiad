@@ -80,15 +80,27 @@
             $('#modal-content form')
                 .live('submit', function(e) {
                 e.preventDefault();
+                var pass = true;
                 var username = $('#modal-content form input[name="username"]')
                     .val();
                 var password1 = $('#modal-content form input[name="password1"]')
                     .val();
                 var password2 = $('#modal-content form input[name="password2"]')
                     .val();
+                
+                // Check matching passwords
                 if (password1 != password2) {
                     codiad.message.error('Passwords Do Not Match');
-                } else {
+                    pass = false;
+                } 
+                
+                // Check no spaces in username
+                if (/\s/g.test(username)) {
+                    codiad.message.error('Username Cannot Contain Spaces');
+                    pass = false;
+                }
+                
+                if (pass) {
                     $.post(_this.controller + '?action=create', {'username' : username , 'password' : password1 }, function(data) {
                         var createResponse = codiad.jsend.parse(data);
                         if (createResponse != 'error') {
