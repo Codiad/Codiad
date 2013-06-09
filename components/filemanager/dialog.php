@@ -28,9 +28,10 @@ switch($_GET['action']){
     ?>
     <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">   
     <input type="hidden" name="type" value="<?php echo($_GET['type']); ?>">
-    <label><span class="icon-pencil"></span><?php echo(ucfirst($_GET['type'])); ?> Name</label>    
+    <label><span class="icon-pencil"></span><?php echo i18n((ucfirst($_GET['type']))); ?></label>    
     <input type="text" name="object_name" autofocus="autofocus" autocomplete="off">  
-    <button class="btn-left">Create</button><button class="btn-right" onclick="codiad.modal.unload(); return false;">Cancel</button>
+    <button class="btn-left"><?php i18n("Create"); ?></button>
+    <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Cancel"); ?></button>
     <?php
     break;
     
@@ -41,9 +42,10 @@ switch($_GET['action']){
     ?>
     <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">
     <input type="hidden" name="type" value="<?php echo($_GET['type']); ?>"> 
-    <label><span class="icon-pencil"></span>Rename <?php echo(ucfirst($_GET['type'])); ?></label>    
+    <label><span class="icon-pencil"></span> <?php i18n("Rename"); ?> <?php echo i18n((ucfirst($_GET['type']))); ?></label>    
     <input type="text" name="object_name" autofocus="autofocus" autocomplete="off" value="<?php echo($_GET['short_name']); ?>">  
-    <button class="btn-left">Rename</button><button class="btn-right" onclick="codiad.modal.unload(); return false;">Cancel</button>
+    <button class="btn-left"><?php i18n("Rename"); ?></button>
+	<button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Cancel"); ?></button>
     <?php
     break;
     
@@ -53,9 +55,10 @@ switch($_GET['action']){
     case 'delete':
     ?>
     <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>"> 
-    <label>Are you sure you wish to delete the following:</label>
+    <label><?php i18n("Are you sure you wish to delete the following:"); ?></label>
     <pre><?php if(!FileManager::isAbsPath($_GET['path'])) { echo '/'; }; echo($_GET['path']); ?></pre>
-    <button class="btn-left">Delete</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Cancel</button>
+    <button class="btn-left"><?php i18n("Delete"); ?></button>
+	<button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Cancel"); ?></button>
     <?php
     break;
     
@@ -64,9 +67,9 @@ switch($_GET['action']){
     //////////////////////////////////////////////////////////////////
     case 'preview':
     ?> 
-    <label>Inline Preview</label>
+    <label><?php i18n("Inline Preview"); ?></label>
     <div><br><br><img src="<?php echo($_GET['path']); ?>"><br><br></div>
-    <button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
+    <button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
     <?php
     break;
     
@@ -76,13 +79,14 @@ switch($_GET['action']){
     case 'overwrite':
     ?>
     <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">    
-    <label>Would you like to overwrite or duplicate the following:</label>
+    <label><?php i18n("Would you like to overwrite or duplicate the following:"); ?></label>
     <pre><?php if(!FileManager::isAbsPath($_GET['path'])) { echo '/'; }; echo($_GET['path']); ?></pre>
     <select name="or_action">
-        <option value="0">Overwrite Original</option>
-        <option value="1">Create Duplicate</option>
+        <option value="0"><?php i18n("Overwrite Original"); ?></option>
+        <option value="1"><?php i18n("Create Duplicate"); ?></option>
     </select>
-    <button class="btn-left">Continue</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Cancel</button>
+    <button class="btn-left"><?php i18n("Continue"); ?></button>
+	<button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Cancel"); ?></button>
     <?php
     break;
     
@@ -95,16 +99,16 @@ switch($_GET['action']){
     <table class="file-search-table">
         <tr>
             <td width="65%">
-               <label>Search Files:</label>
+               <label><?php i18n("Search Files:"); ?></label>
                <input type="text" name="search_string" autofocus="autofocus">
             </td>
             <td width="5%">&nbsp;&nbsp;</td>
             <td>
-                <label>In:</label>
+                <label><?php i18n("In:"); ?></label>
                 <select name="search_type">
-                    <option value="0">Current Project</option>
+                    <option value="0"><?php i18n("Current Project"); ?></option>
                     <?php if(checkAccess()) { ?>
-                    <option value="1">Workspace Projects</option>
+                    <option value="1"><?php i18n("Workspace Projects"); ?></option>
                     <?php } ?>
                 </select>
             </td>
@@ -112,7 +116,8 @@ switch($_GET['action']){
     </table>
     <pre id="filemanager-search-results"></pre>
     <div id="filemanager-search-processing"></div>
-    <button class="btn-left">Search</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Cancel</button>
+    <button class="btn-left"><?php i18n("Search"); ?></button>
+	<button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Cancel"); ?></button>
     <?php
     break;
     
