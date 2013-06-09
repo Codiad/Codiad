@@ -191,15 +191,16 @@ switch($_GET['action']){
         <td>
         
         <select class="setting" data-setting="soft-tabs">
-            <option value="false">No</option>
-            <option value="true">Yes</option>
+            <option value="false"><?php i18n("No"); ?></option>
+            <option value="true"><?php i18n("Yes"); ?></option>
         </select>
         
         </td>
         
     </tr>
     </table>
-    <button class="btn-left" onclick="codiad.fileext_textmode.open();" >Extensions</button><button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Close"); ?></button>
+    <button class="btn-left" onclick="codiad.fileext_textmode.open();" ><?php i18n("Extensions"); ?></button>
+    <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Close"); ?></button>
     
     <?php
     
