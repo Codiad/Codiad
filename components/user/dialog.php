@@ -2,28 +2,28 @@
 
     /*
     *  Copyright (c) Codiad & Kent Safranski (codiad.com), distributed
-    *  as-is and without warranty under the MIT License. See 
+    *  as-is and without warranty under the MIT License. See
     *  [root]/license.txt for more. This information must remain intact.
     */
 
     require_once('../../common.php');
-    
+
     //////////////////////////////////////////////////////////////////
     // Verify Session or Key
     //////////////////////////////////////////////////////////////////
-    
+
     checkSession();
 
     switch($_GET['action']){
-    
+
         //////////////////////////////////////////////////////////////
         // List Projects
         //////////////////////////////////////////////////////////////
-        
+
         case 'list':
-            
+
             $projects_assigned = false;
-            if(!checkAccess()){ 
+            if(!checkAccess()){
             ?>
             <label><?php i18n("Restricted"); ?></label>
             <pre><?php i18n("You can not edit the user list"); ?></pre>
@@ -39,10 +39,10 @@
                     <th width="5"><?php i18n("Delete"); ?></th>
                 </tr>
             <?php
-        
+
             // Get projects JSON data
             $users = getJSON('users.php');
-            foreach($users as $user=>$data){        
+            foreach($users as $user=>$data){
             ?>
             <tr>
                 <td><?php echo($data['username']); ?></td>
@@ -69,15 +69,15 @@
     		<button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
             <?php
             }
-            
+
             break;
-            
+
         //////////////////////////////////////////////////////////////////////
         // Create New User
         //////////////////////////////////////////////////////////////////////
-        
+
         case 'create':
-        
+
             ?>
             <form>
             <label><?php i18n("Username"); ?></label>
@@ -91,13 +91,13 @@
             <form>
             <?php
             break;
-        
+
         //////////////////////////////////////////////////////////////////////
         // Set Project Access
         //////////////////////////////////////////////////////////////////////
-        
+
         case 'projects':
-        
+
             // Get project list
             $projects = getJSON('projects.php');
             // Get control list (if exists)
@@ -105,7 +105,7 @@
             if(file_exists(BASE_PATH . "/data/" . $_GET['username'] . '_acl.php')){
                 $projects_assigned = getJSON($_GET['username'] . '_acl.php');
             }
-        
+
         ?>
             <form>
             <input type="hidden" name="username" value="<?php echo($_GET['username']); ?>">
@@ -130,13 +130,13 @@
 			<button class="btn-right" onclick="codiad.user.list();return false;"><?php i18n("Close"); ?></button>
             <?php
             break;
-        
+
         //////////////////////////////////////////////////////////////////////
         // Delete User
         //////////////////////////////////////////////////////////////////////
-        
+
         case 'delete':
-        
+
         ?>
             <form>
             <input type="hidden" name="username" value="<?php echo($_GET['username']); ?>">
@@ -146,19 +146,19 @@
 			<button class="btn-right" onclick="codiad.user.list();return false;"><?php i18n("Cancel"); ?></button>
             <?php
             break;
-            
+
         //////////////////////////////////////////////////////////////////////
         // Change Password
         //////////////////////////////////////////////////////////////////////
-        
+
         case 'password':
-            
+
             if($_GET['username']=='undefined'){
                 $username = $_SESSION['user'];
             }else{
                 $username = $_GET['username'];
             }
-        
+
         ?>
             <form>
             <input type="hidden" name="username" value="<?php echo($username); ?>">
@@ -166,11 +166,11 @@
             <input type="password" name="password1" autofocus="autofocus">
             <label><?php i18n("Confirm Password"); ?></label>
             <input type="password" name="password2">
-            <button class="btn-left"><?php i18n("Change"); ?> <?php echo(ucfirst($username)); ?><?php i18n("&apos;s Password"); ?></button>
+          <button class="btn-left"><?php i18n("Change %{username}%&apos;s Password", array("username" => ucfirst($username))) ?></button>
 			<button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Cancel"); ?></button>
             <?php
             break;
-        
+
     }
-    
+
 ?>
