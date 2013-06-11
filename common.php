@@ -4,21 +4,21 @@
     *  as-is and without warranty under the MIT License. See
     *  [root]/license.txt for more. This information must remain intact.
     */
-     
+
     Common::startSession();
-               
+
     //////////////////////////////////////////////////////////////////
     // Common Class
     //////////////////////////////////////////////////////////////////
-    
+
     class Common {
 
         //////////////////////////////////////////////////////////////////
         // PROPERTIES
         //////////////////////////////////////////////////////////////////
-        
+
         public static $debugMessageStack = array();
-        
+
         //////////////////////////////////////////////////////////////////
         // METHODS
         //////////////////////////////////////////////////////////////////
@@ -38,77 +38,77 @@
                     break;
                 }
             }
-            
+
             if(file_exists($path.'config.php')){ require_once($path.'config.php'); }
-        
+
             if(!defined('BASE_PATH')) {
                 define('BASE_PATH', rtrim(str_replace("index.php", "", $_SERVER['SCRIPT_FILENAME']),"/"));
             }
-            
+
             if(!defined('COMPONENTS')) {
                 define('COMPONENTS', BASE_PATH . '/components');
             }
-            
+
             if(!defined('PLUGINS')) {
                 define('PLUGINS', BASE_PATH . '/plugins');
             }
-            
+
             if(!defined('DATA')) {
                 define('DATA', BASE_PATH . '/data');
             }
-            
+
             if(!defined('THEMES')){
                 define("THEMES", BASE_PATH . "/themes");
             }
-            
+
             if(!defined('THEME')){
                 define("THEME", "default");
             }
-            
-            global $lang;
-            if (isset($_SESSION['lang'])) {
-                include BASE_PATH."/languages/{$_SESSION['lang']}.php";
-            } else {  
-                include BASE_PATH."/languages/en.php";
-            }
         }
-        
+
         //////////////////////////////////////////////////////////////////
         // SESSIONS
         //////////////////////////////////////////////////////////////////
-        
+
         public static function startSession() {
+            Common::construct();
+
             global $cookie_lifetime;
             if(isset($cookie_lifetime) && $cookie_lifetime != "") {
                 ini_set("session.cookie_lifetime", $cookie_lifetime);
             }
-            
+
             //Set a Session Name
             session_name(md5(BASE_PATH));
 
             session_start();
 
-            Common::construct();
+            global $lang;
+            if (isset($_SESSION['lang'])) {
+                include BASE_PATH."/languages/{$_SESSION['lang']}.php";
+            } else {
+                include BASE_PATH."/languages/en.php";
+            }
         }
-            
+
         //////////////////////////////////////////////////////////////////
         // Log debug message
-        // Messages will be displayed in the console when the response is 
+        // Messages will be displayed in the console when the response is
         // made with the formatJSEND function.
         //////////////////////////////////////////////////////////////////
-        
+
         public static function debug($message) {
             Common::$debugMessageStack[] = $message;
         }
-        
+
         //////////////////////////////////////////////////////////////////
         // Localization
         //////////////////////////////////////////////////////////////////
-                
+
         public static function i18n($key, $args = array()) {
             echo Common::get_i18n($key, $args);
         }
-        
+
         public static function get_i18n($key, $args = array()) {
             global $lang;
             $key = ucwords(strtolower($key)); //Test, test TeSt and tESt are exacly the same
@@ -117,7 +117,7 @@
                 $return = str_replace("%{".$k."}%", $v, $return);
             return $return;
         }
-        
+
         //////////////////////////////////////////////////////////////////
         // Check Session / Key
         //////////////////////////////////////////////////////////////////
@@ -143,7 +143,7 @@
                 $path = $path . $namespace . "/";
                 $path = preg_replace('#/+#','/',$path);
             }
-            
+
             $json = file_get_contents($path . $file);
             $json = str_replace("|*/?>","",str_replace("<?php/*|","",$json));
             $json = json_decode($json,true);
@@ -161,7 +161,7 @@
                 $path = preg_replace('#/+#','/',$path);
                 if(!is_dir($path)) mkdir($path);
             }
-            
+
             $data = "<?php/*|" . json_encode($data) . "|*/?>";
             $write = fopen($path . $file, 'w') or die("can't open file ".$path.$file);
             fwrite($write, $data);
@@ -198,7 +198,7 @@
             return $jsend;
 
         }
-        
+
         //////////////////////////////////////////////////////////////////
         // Check Function Availability
         //////////////////////////////////////////////////////////////////
@@ -206,7 +206,7 @@
         public static function checkAccess() {
             return !file_exists(DATA . "/" . $_SESSION['user'] . '_acl.php');
         }
-        
+
         //////////////////////////////////////////////////////////////////
         // Check Function Availability
         //////////////////////////////////////////////////////////////////
@@ -221,22 +221,22 @@
             }
             return true;
         }
-        
+
         //////////////////////////////////////////////////////////////////
         // Check If Path is absolute
         //////////////////////////////////////////////////////////////////
-            
+
         public static function isAbsPath( $path ) {
             return ($path[0] === '/')?true:false;
         }
-            
+
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Wrapper for old method names
     //////////////////////////////////////////////////////////////////
-    
-    function debug($message) { Common::debug($message); }   
+
+    function debug($message) { Common::debug($message); }
     function i18n($key, $args = array()) { echo Common::i18n($key, $args); }
     function get_i18n($key, $args = array()) { return Common::get_i18n($key, $args); }
     function checkSession(){ Common::checkSession(); }
