@@ -189,8 +189,6 @@ define("WORKSPACE", BASE_PATH . "/workspace");
 
 // URLS
 define("WSURL", BASE_URL . "/workspace");
-define("COMMITSURL", "https://api.github.com/repos/Codiad/Codiad/commits");
-define("MASTERZIPURL", "https://github.com/Codiad/Codiad/archive/master.zip");
 ';
 
     saveFile($config,$config_data);

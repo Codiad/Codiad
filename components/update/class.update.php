@@ -28,8 +28,8 @@ class Update {
 
     public function __construct(){
         ini_set("user_agent" , "Codiad");
-        $this->remote = COMMITSURL;
-        $this->archive = MASTERZIPURL;
+        $this->remote = "https://api.github.com/repos/Codiad/Codiad/commits";
+        $this->archive = "https://github.com/Codiad/Codiad/archive/master.zip";
     }
 
     //////////////////////////////////////////////////////////////////
