@@ -11,7 +11,7 @@ class Update {
     //////////////////////////////////////////////////////////////////
     // PROPERTIES
     //////////////////////////////////////////////////////////////////
-    
+
     public $remote = "";
     public $archive = "";
     public $commit = "";
@@ -28,14 +28,14 @@ class Update {
 
     public function __construct(){
         ini_set("user_agent" , "Codiad");
-        $this->remote = 'https://api.github.com/repos/Codiad/Codiad/commits';
-        $this->archive = 'https://github.com/Codiad/Codiad/archive/master.zip';
+        $this->remote = COMMITSURL;
+        $this->archive = MASTERZIPURL;
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Set Initial Version
     //////////////////////////////////////////////////////////////////
-    
+
     public function Init() {
         $version = array();
         if(!file_exists(DATA ."/version.php")) {
@@ -76,20 +76,20 @@ class Update {
             }
         }
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Clear Version
     //////////////////////////////////////////////////////////////////
-    
+
     public function Clear() {
         $version[] = array("version"=>"","time"=>time(),"name"=>$_SESSION['user']);
         saveJSON('version.php',$version);
-    }   
-    
+    }
+
     //////////////////////////////////////////////////////////////////
     // Check Version
     //////////////////////////////////////////////////////////////////
-    
+
     public function Check() {
         if(file_exists(BASE_PATH."/.git/FETCH_HEAD")) {
             $data = file(BASE_PATH."/.git/FETCH_HEAD");
@@ -104,14 +104,14 @@ class Update {
         } else {
             $app = getJSON('version.php');
         }
-        
+
         if($this->remote != '') {
             $remote = json_decode(file_get_contents($this->remote),true);
         }
-        
+
         $search = array("\r\n", "\n", "\r");
         $replace = array(" ", " ", " ");
-        
+
         $message = '';
         $merge = '';
         foreach($remote as $commit) {
@@ -125,12 +125,12 @@ class Update {
                 break;
             }
         }
-        
+
         if($message == '') {
             $message = $merge;
         }
-                
+
         return "[".formatJSEND("success",array("currentversion"=>$app[0]['version'],"remoteversion"=>$remote[0]["sha"],"message"=>$message,"archive"=>$this->archive,"name"=>$app[0]['name']))."]";
     }
-    
+
 }
