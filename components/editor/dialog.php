@@ -198,6 +198,20 @@ switch($_GET['action']){
         </td>
         
     </tr>
+    
+	<tr>
+	
+		<td><?php i18n("Right Sidebar Trigger"); ?></td>
+		<td>
+		
+		<select class="setting" data-setting="right-sidebar-trigger">
+			<option value="false"><?php i18n("Hover") ?></option>
+			<option value="true"><?php i18n("Click") ?></option>
+		</select>
+		
+	</tr>
+	
+	
     </table>
     <button class="btn-left" onclick="codiad.fileext_textmode.open();" ><?php i18n("Extensions"); ?></button>
     <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Close"); ?></button>
