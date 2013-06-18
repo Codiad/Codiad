@@ -332,9 +332,11 @@
             printMargin: false,
             highlightLine: true,
             indentGuides: true,
-            wrapMode: false
+            wrapMode: false,
+            softTabs: false,
+            tabSize: 4
         },
-
+   
         rootContainer: null,
 
         fileExtensionTextMode: {},
@@ -376,14 +378,14 @@
 
             var _this = this;
 
-            $.each(['theme', 'fontSize'], function(idx, key) {
+            $.each(['theme', 'fontSize', "tabSize"], function(idx, key) {
                 var localValue = localStorage.getItem('codiad.editor.' + key);
                 if (localValue !== null) {
                     _this.settings[key] = localValue;
                 }
             });
 
-            $.each(['printMargin', 'highlightLine', 'indentGuides', 'wrapMode', 'rightSidebarTrigger'],
+            $.each(['printMargin', 'highlightLine', 'indentGuides', 'wrapMode', 'rightSidebarTrigger', "softTabs"],
                    function(idx, key) {
                        var localValue =
                            localStorage.getItem('codiad.editor.' + key);
@@ -477,6 +479,8 @@
             i.setHighlightActiveLine(this.settings.highlightLine);
             i.setDisplayIndentGuides(this.settings.indentGuides);
             i.getSession().setUseWrapMode(this.settings.wrapMode);
+            this.setTabSize(this.settings.tabSize);
+            this.setSoftTabs(this.settings.softTabs);
 
             this.changeListener(i);
             this.cursorTracking(i);
@@ -1036,6 +1040,53 @@
             localStorage.setItem('codiad.editor.rightSidebarTrigger', t);
         },
         
+        
+        //////////////////////////////////////////////////////////////////
+        //
+        // set Tab Size
+        //
+        // Parameters:
+        //   s - size
+        //   i - {Editor}  (If omitted, Defaults to all editors)
+        //
+        //////////////////////////////////////////////////////////////////
+
+        setTabSize: function(s, i) {
+            if (i) {
+                i.getSession().setTabSize(s);
+            } else {
+                this.forEach(function(i) {
+                    i.getSession().setTabSize(s);
+                });
+            }
+            // LocalStorage
+            localStorage.setItem('codiad.editor.tabSize', s);
+            
+        },
+        
+        //////////////////////////////////////////////////////////////////
+        //
+        // Enable or disable Soft Tabs
+        //
+        // Parameters:
+        //   t - true / false
+        //   i - {Editor}  (If omitted, Defaults to all editors)
+        //
+        //////////////////////////////////////////////////////////////////
+
+        setSoftTabs: function(t, i) {
+            if (i) {
+                i.getSession().setUseSoftTabs(t);
+            } else {
+                this.forEach(function(i) {
+                    i.getSession().setUseSoftTabs(t);
+                });
+            }
+            // LocalStorage
+            localStorage.setItem('codiad.editor.softTabs', t);
+            
+        },
+        
         //////////////////////////////////////////////////////////////////
         //
         // Get content from editor
@@ -1313,7 +1364,7 @@
 
                 break;
             }
-        }
+        } 
 
     };
 

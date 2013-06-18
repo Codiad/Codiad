@@ -5,6 +5,7 @@ $languages = array(
     "it" => "italiano",
     "ru" => "русский",
     "de" => "deutsch",
-    "es" => "español"
+    "es" => "español",
+    "pt" => "português"
 );
 ?>

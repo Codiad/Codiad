@@ -115,16 +115,16 @@
         
         case 'list':
             ?>
-            <label>Plugin List</label>
+            <label><?php i18n("Plugin List"); ?></label>
             <div id="plugin-list">
             <table width="100%">
                 <tr>
-                    <th>Plugin Name</th>
-                    <th>Version</th>
-                    <th>Author</th>
-                    <th width="5">Active</th>
+                    <th><?php i18n("Plugin Name"); ?></th>
+                    <th><?php i18n("Version"); ?></th>
+                    <th><?php i18n("Author"); ?></th>
+                    <th width="5"><?php i18n("Active"); ?></th>
                     <?php if(is_writeable(PLUGINS)) { ?>
-                    <th width="5">Delete</th>
+                    <th width="5"><?php i18n("Delete"); ?></th>
                     <?php } ?>
                 </tr>
             <?php
@@ -207,7 +207,7 @@
             ?>
             </table>
             </div>
-            <button class="btn-left" onclick="window.location.reload();return false;">Reload Codiad</button><button class="btn-mid" onclick="codiad.plugin_manager.market();return false;">Plugin Market</button><button class="btn-mid" onclick="codiad.plugin_manager.check();return false;">Update Check</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
+            <button class="btn-left" onclick="window.location.reload();return false;"><?php i18n("Reload Codiad"); ?></button><button class="btn-mid" onclick="codiad.plugin_manager.market();return false;"><?php i18n("Plugin Market"); ?></button><button class="btn-mid" onclick="codiad.plugin_manager.check();return false;"><?php i18n("Update Check"); ?></button><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
             <?php
             
             break;
@@ -218,14 +218,14 @@
         
         case 'check':
             ?>
-            <label>Plugin Update Check</label>
+            <label><?php i18n("Plugin Update Check"); ?></label>
             <div id="plugin-list">
             <table width="100%">
                 <tr>
-                    <th>Plugin Name</th>
-                    <th>Your Version</th>
-                    <th>Latest Version</th>
-                    <th>Download</th>
+                    <th><?php i18n("Plugin Name"); ?></th>
+                    <th><?php i18n("Your Version"); ?></th>
+                    <th><?php i18n("Latest Version"); ?></th>
+                    <th><?php i18n("Download"); ?></th>
                 </tr>
             <?php
             
@@ -298,7 +298,7 @@
             ?>
             </table>
             </div>
-            <button class="btn-left" onclick="codiad.plugin_manager.check();return false;">Rescan</button><button class="btn-mid" onclick="codiad.plugin_manager.list();return false;">Installed Plugins</button><button class="btn-mid" onclick="codiad.plugin_manager.market();return false;">Plugin Market</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
+            <button class="btn-left" onclick="codiad.plugin_manager.check();return false;"><?php i18n("Rescan"); ?></button><button class="btn-mid" onclick="codiad.plugin_manager.list();return false;"><?php i18n("Installed Plugins"); ?></button><button class="btn-mid" onclick="codiad.plugin_manager.market();return false;"><?php i18n("Plugin Market"); ?></button><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
             <?php
             
             break;

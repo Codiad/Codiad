@@ -46,7 +46,7 @@
     }
 
     function isAbsPath( $path ) {
-        return ($path[0] === '/')?true:false;
+        return $path[0] === '/';
     }
 
     function cleanPath( $path ){
@@ -88,7 +88,7 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     $project_path = cleanPath($project_path);
 
     if(!isAbsPath($project_path)) {
-        $project_path = str_replace(" ","_",preg_replace('/[^\w-]/', '', $project_path));
+        $project_path = str_replace(" ","_",preg_replace('/[^\w-\.]/', '', $project_path));
         mkdir($workspace . "/" . $project_path);
     } else {
         $project_path = cleanPath($project_path);
@@ -108,7 +108,7 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     $project_data = array("name"=>$project_name,"path"=>$project_path);
 
     saveJSON($projects,array($project_data));
-    
+
     //////////////////////////////////////////////////////////////////
     // Create Users file
     //////////////////////////////////////////////////////////////////
@@ -116,11 +116,11 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     $user_data = array("username"=>$username,"password"=>$password,"project"=>$project_path);
 
     saveJSON($users,array($user_data));
-    
+
     //////////////////////////////////////////////////////////////////
     // Create Active file
     //////////////////////////////////////////////////////////////////
-    
+
     saveJSON($active,array(''));
     //////////////////////////////////////////////////////////////////
     // Create Plugin file
@@ -154,42 +154,42 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
 */
 
 //////////////////////////////////////////////////////////////////
-// PATH
+// CONFIG
 //////////////////////////////////////////////////////////////////
 
-define("BASE_PATH","' . $path . '");
-define("COMPONENTS",BASE_PATH . "/components");
-define("PLUGINS",BASE_PATH . "/plugins");
-define("THEMES",BASE_PATH . "/themes");
-define("DATA",BASE_PATH . "/data");
-define("WORKSPACE",BASE_PATH . "/workspace");
-define("WSURL",$_SERVER["HTTP_HOST"] . "' . $rel . '/workspace");
+// PATH TO CODIAD
+define("BASE_PATH", "' . $path . '");
 
-//////////////////////////////////////////////////////////////////
-// THEME
-//////////////////////////////////////////////////////////////////
+// BASE URL TO CODIAD (without trailing slash)
+define("BASE_URL", "' . $_SERVER["HTTP_HOST"] . $rel . '");
 
+// THEME : default, modern or clear (look at /themes)
 define("THEME", "default");
 
-//////////////////////////////////////////////////////////////////
 // ABSOLUTE PATH
-//////////////////////////////////////////////////////////////////
-
 define("WHITEPATHS", BASE_PATH . ",/home");
 
-//////////////////////////////////////////////////////////////////
-// SESSIONS
-//////////////////////////////////////////////////////////////////
-
+// SESSIONS (e.g. 7200)
 $cookie_lifetime = "0";
 
-//////////////////////////////////////////////////////////////////
 // TIMEZONE
+date_default_timezone_set("' . $_POST['timezone'] . '");
+
+
+//////////////////////////////////////////////////////////////////
+// ** DO NOT EDIT CONFIG BELOW **
 //////////////////////////////////////////////////////////////////
 
-date_default_timezone_set("' . $timezone . '");
+// PATHS
+define("COMPONENTS", BASE_PATH . "/components");
+define("PLUGINS", BASE_PATH . "/plugins");
+define("THEMES", BASE_PATH . "/themes");
+define("DATA", BASE_PATH . "/data");
+define("WORKSPACE", BASE_PATH . "/workspace");
 
-?>';
+// URLS
+define("WSURL", BASE_URL . "/workspace");
+';
 
     saveFile($config,$config_data);
 

@@ -22,7 +22,7 @@
                 });
             $('#modal-content')
                 .html('<div id="modal-loading"></div>');
-            $.get(url, data, function(data) {
+            this.load_process = $.get(url, data, function(data) {
                 $('#modal-content').html(data);
                 // Fix for Firefox autofocus goofiness
                 $('input[autofocus="autofocus"]')

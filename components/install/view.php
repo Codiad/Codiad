@@ -3,7 +3,7 @@
 
 /*
 *  Copyright (c) Codiad & Kent Safranski (codiad.com), distributed
-*  as-is and without warranty under the MIT License. See 
+*  as-is and without warranty under the MIT License. See
 *  [root]/license.txt for more. This information must remain intact.
 */
 
@@ -16,17 +16,7 @@ $workspace = is_writable( $path . "/workspace");
 
 $conf = $path . '/config.php';
 
-if(!file_exists($conf) && !is_writable($path)) {
-    $config = false;
-} elseif(!file_exists($conf)  && is_writable($path)) {
-    $config = file_put_contents($conf, file_get_contents($path . "/config.example.php"));
-    if($config !== false) {
-        $config = true;
-        unlink($conf);
-    }
-} elseif(file_exists($conf)) {
-    $config = is_writable($conf);
-}
+$config = is_writable(file_exists($conf) ? $conf : $path);
 
 if(ini_get('register_globals') == 1) {
     $register = true;
@@ -52,36 +42,36 @@ if(!$workspace || !$data || !$config || $register){
     </div>
     <?php } ?>
     <button onclick="window.location.reload();">Re-Test</button>
-    
+
     <?php
 }else{
     ?>
     <form id="install">
     <h1>Initial Setup</h1>
-    
+
     <input type="hidden" name="path" value="<?php echo($path); ?>">
-    
+
     <label>New Username</label>
     <input type="text" name="username" autofocus="autofocus">
-    
-    <div style="float:left; width: 48%; margin-right: 4%;"> 
-    
+
+    <div style="float:left; width: 48%; margin-right: 4%;">
+
         <label>Password</label>
         <input type="password" name="password">
-    
+
     </div>
-    
-    <div style="float:left; width: 48%;"> 
-    
+
+    <div style="float:left; width: 48%;">
+
         <label>Confirm Password</label>
         <input type="password" name="password_confirm">
-    
+
     </div>
-    
+
     <div style="clear:both;"></div>
-    
+
     <hr>
-    
+
     <label>New Project Name</label>
     <input type="text" name="project_name">
     <?php if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') { ?>
@@ -89,7 +79,7 @@ if(!$workspace || !$data || !$config || $register){
     <input type="text" name="project_path">
     <?php }  ?>
     <hr>
-    
+
     <label>Timezone</label>
     <select name="timezone">
         <option value="Pacific/Midway">(GMT-11:00) Midway Island, Samoa</option>
@@ -183,7 +173,7 @@ if(!$workspace || !$data || !$config || $register){
     	<option value="Pacific/Tongatapu">(GMT+13:00) Nuku'alofa</option>
     	<option value="Pacific/Kiritimati">(GMT+14:00) Kiritimati</option>
     </select>
-    
+
     <button>Install</button>
     </form>
     <?php
@@ -194,40 +184,40 @@ if(!$workspace || !$data || !$config || $register){
 <script>
 
     $(function(){
-    
+
         $('html, body').css('overflow', 'auto');
-    
+
         $('#install').on('submit',function(e){
             e.preventDefault();
-            
+
             // Check empty fields
-            
+
             empty_fields = false;
             $('input').each(function(){
                 if($(this).val()=='' && $(this).attr('name')!='path'){ empty_fields = true; }
             });
-            
+
             if(empty_fields){ alert('All fields must be filled out'); }
-            
+
             // Check password
             password_match = true;
             if($('input[name="password"]').val()!=$('input[name="password_confirm"]').val()){
                 password_match = false;
             }
-            
+
             // Check Path
             check_path = true;
             projectPath = '';
             if($('input[name="project_path"]').length) {
                 projectPath = $('input[name="project_path"]').val();
             }
-            
+
             if ( projectPath.indexOf("/") == 0 ) {
                 check_path = confirm('Do you really want to create project with absolute path "' + projectPath + '"?');
-            } 
-            
+            }
+
             if(!password_match){ alert('The passwords entered do not match'); }
-            
+
             if(!empty_fields && password_match && check_path){
                 $.post('components/install/process.php',$('#install').serialize(),function(data){
                     if(data=='success'){
@@ -237,7 +227,7 @@ if(!$workspace || !$data || !$config || $register){
                     }
                 });
             }
-            
+
         });
     });
 

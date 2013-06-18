@@ -14,7 +14,6 @@
 
     codiad.poller = {
 
-        controller: 'components/poller/controller.php',
         interval: 10000,
 
         init: function() {
@@ -34,20 +33,7 @@
 
         checkAuth: function() {
 
-            // Run controller to check session (also acts as keep-alive)
-            $.get(this.controller + '?action=check_auth', function(data) {
-
-                if (data) {
-                    parsed = codiad.jsend.parse(data);
-                    if (parsed == 'error') {
-                        // Session not set, reload
-                        codiad.user.logout();
-                    }
-                }
-
-            });
-
-            // Check user
+            // Run controller to check session (also acts as keep-alive) & Check user
             $.get(codiad.user.controller + '?action=verify', function(data) {
                 if (data == 'false') {
                     codiad.user.logout();

@@ -554,6 +554,9 @@ class Filemanager extends Common {
     //////////////////////////////////////////////////////////////////
 
     public static function cleanPath( $path ){
+    
+        // replace backslash with slash
+        $path = str_replace('\\', '/', $path );
 
         // prevent Poison Null Byte injections
         $path = str_replace(chr(0), '', $path );
