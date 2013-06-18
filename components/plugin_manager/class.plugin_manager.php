@@ -29,6 +29,7 @@ class Plugin_manager extends Common {
 
     public function __construct(){
         $this->plugins = getJSON('plugins.php');
+        $this->market = Common::getRemoteURL('PLUGINURL', $this->market);
     }
     
     //////////////////////////////////////////////////////////////////
