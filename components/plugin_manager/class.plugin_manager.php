@@ -111,7 +111,7 @@ class Plugin_manager extends Common {
             @array_map('rrmdir',glob($path.'/*'))==@rmdir($path);
         }
         
-        $rrmdir(PLUGINS.'/'.$name);
+        rrmdir(PLUGINS.'/'.$name);
         $this->Deactivate($name);
     }
         
