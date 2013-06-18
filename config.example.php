@@ -42,5 +42,7 @@ define("WORKSPACE", BASE_PATH . "/workspace");
 
 // URLS
 define("WSURL", BASE_URL . "/workspace");
+
+// Plugin Market
 define("PMURL", "http://codiad.com/plugins.json");
 
