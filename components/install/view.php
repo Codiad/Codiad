@@ -11,6 +11,8 @@ $path = rtrim(str_replace("index.php", "", $_SERVER['SCRIPT_FILENAME']),"/");
 
 $workspace = is_writable( $path . "/workspace");
 $data = is_writable($path . "/data");
+$plugins = is_writable($path . "/plugins");
+$workspace = is_writable( $path . "/workspace");
 
 $conf = $path . '/config.php';
 
@@ -30,7 +32,8 @@ if(!$workspace || !$data || !$config || $register){
     <div class="install_issues">
         <p>[SYSTEM]/config.php - <?php if($config) { echo '<font style="color:green">PASSED</font>'; } else { echo '<font style="color:red">ERROR</font>'; } ?></p>
         <p>[SYSTEM]/workspace - <?php if($workspace) { echo '<font style="color:green">PASSED</font>'; } else { echo '<font style="color:red">ERROR</font>'; } ?></p>
-        <p>[SYSTEM]/data - <?php if($data) { echo '<font style="color:green">PASSED</font>'; } else { echo '<font style="color:red">ERROR</font>'; } ?></p>
+        <p>[SYSTEM]/plugins - <?php if($plugins) { echo '<font style="color:green">PASSED</font>'; } else { echo '<font style="color:red">ERROR</font>'; } ?></p>
+        <p>[SYSTEM]/data - <?php if($data) { echo '<font style="color:green">PASSED</font>'; } else { echo '<font style="color:red">ERROR</font>'; } ?></p> 
     </div>
     <?php if($register) { ?>
     <p>Please make sure these environmental variables are set:</p>

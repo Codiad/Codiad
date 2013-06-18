@@ -1,7 +1,7 @@
 <?php
 
     /*
-    *  Copyright (c) Codiad & Kent Safranski (codiad.com), distributed
+    *  Copyright (c) Codiad & daeks (codiad.com), distributed
     *  as-is and without warranty under the MIT License. See
     *  [root]/license.txt for more. This information must remain intact.
     */
@@ -37,6 +37,35 @@
             $Plugin_manager->Activate($_GET['name']);
         }
     }
-   
+    
+    //////////////////////////////////////////////////////////////////
+    // Install Plugin
+    //////////////////////////////////////////////////////////////////
+
+    if($_GET['action']=='install'){
+        if(checkAccess()) {
+            $Plugin_manager->Install($_GET['name'], $_GET['repo']);
+        }
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Remove Plugin
+    //////////////////////////////////////////////////////////////////
+
+    if($_GET['action']=='remove'){
+        if(checkAccess()) {
+            $Plugin_manager->Remove($_GET['name']);
+        }
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Update Plugin
+    //////////////////////////////////////////////////////////////////
+
+    if($_GET['action']=='update'){
+        if(checkAccess()) {
+            $Plugin_manager->Update($_GET['name']);
+        }
+    }
 
 ?>
