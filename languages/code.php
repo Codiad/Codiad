@@ -4,6 +4,7 @@ $languages = array(
     "fr" => "français",
     "it" => "italiano",
     "ru" => "русский",
-    "de" => "deutsch"
+    "de" => "deutsch",
+    "es" => "español"
 );
 ?>

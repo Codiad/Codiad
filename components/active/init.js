@@ -919,7 +919,7 @@
 
             var rsbarWidth = $(".sidebar-handle").width();
             if (codiad.sidebars.isRightSidebarOpen) {
-                rsbarWidth = $("#sb-left").width();
+                rsbarWidth = $("#sb-right").width();
             }
 
             var tabListWidth = $("#tab-list-active-files").width();
