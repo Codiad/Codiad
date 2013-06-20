@@ -29,9 +29,9 @@ class Plugin_manager extends Common {
 
     public function __construct(){
         $this->plugins = getJSON('plugins.php');
-        $this->market = Common::getRemoteURL('PMURL', $this->market);
+        $this->market = Common::getConstant('PMURL', $this->market);
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Get Market list
     //////////////////////////////////////////////////////////////////
@@ -56,7 +56,7 @@ class Plugin_manager extends Common {
         // Response
         echo formatJSEND("success",null);
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Activate Plugin
     //////////////////////////////////////////////////////////////////
@@ -67,7 +67,7 @@ class Plugin_manager extends Common {
         // Response
         echo formatJSEND("success",null);
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Install Plugin
     //////////////////////////////////////////////////////////////////
@@ -91,7 +91,7 @@ class Plugin_manager extends Common {
             } else {
                 die(formatJSEND("error","ZIP Extension not found"));
             }
-            
+
             unlink(PLUGINS.'/'.$name.'.zip');
             // Response
             echo formatJSEND("success",null);
@@ -99,22 +99,22 @@ class Plugin_manager extends Common {
             die(formatJSEND("error","Unable to download ".$repo));
         }
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Remove Plugin
     //////////////////////////////////////////////////////////////////
-    
+
     public function Remove($name){
         function rrmdir($path){
             return is_file($path)?
             @unlink($path):
             @array_map('rrmdir',glob($path.'/*'))==@rmdir($path);
         }
-        
+
         rrmdir(PLUGINS.'/'.$name);
         $this->Deactivate($name);
     }
-        
+
     //////////////////////////////////////////////////////////////////
     // Update Plugin
     //////////////////////////////////////////////////////////////////
@@ -125,7 +125,7 @@ class Plugin_manager extends Common {
             @unlink($path):
             @array_map('rrmdir',glob($path.'/*'))==@rmdir($path);
         }
-        
+
         function cpy($source, $dest, $ign){
             if(is_dir($source)) {
                 $dir_handle=opendir($source);
@@ -146,21 +146,21 @@ class Plugin_manager extends Common {
                 copy($source, $dest);
             }
         }
-    
+
         if(file_exists(PLUGINS.'/'.$name.'/plugin.json')) {
             $data = json_decode(file_get_contents(PLUGINS.'/'.$name.'/plugin.json'),true);
             if(substr($data[0]['url'],-4) == '.git') {
                 $data[0]['url'] = substr($data[0]['url'],0,-4);
             }
             $data[0]['url'] .= '/archive/master.zip';
-            
+
             $ign = array(".","..");
             if(isset($data[0]['exclude'])) {
               foreach(explode(",",$data[0]['exclude']) as $exclude) {
                 array_push($ign, $exclude);
               }
             }
-            
+
             if(file_exists(PLUGINS.'/_'.session_id()) || mkdir(PLUGINS.'/_'.session_id())) {
               if(file_put_contents(PLUGINS.'/_'.session_id().'/'.$name.'.zip', fopen($data[0]['url'], 'r'))) {
                   $zip = new ZipArchive;
@@ -170,7 +170,7 @@ class Plugin_manager extends Common {
                     // extract archive
                     if($zip->extractTo(PLUGINS.'/_'.session_id().'') === true) {
                       $zip->close();
-                      $srcname = $name;                    
+                      $srcname = $name;
                       if(substr($srcname, -6) != "master") {
                         $srcname = $srcname.'-master';
                       }
@@ -181,7 +181,7 @@ class Plugin_manager extends Common {
                   } else {
                       die(formatJSEND("error","ZIP Extension not found"));
                   }
-                  
+
                   rrmdir(PLUGINS.'/_'.session_id());
                   // Response
                   echo formatJSEND("success",null);
