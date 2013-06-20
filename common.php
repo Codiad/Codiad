@@ -105,7 +105,7 @@
         // URLs
         //////////////////////////////////////////////////////////////////
 
-        public static function getConstant($key, $default) {
+        public static function getConstant($key, $default = null) {
           return defined($key) ? constant($key) : $default;
         }
 
