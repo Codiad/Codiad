@@ -82,8 +82,6 @@
             $('#editor-region')
                 .css({
                 'margin-left': marginL + 'px',
-                'width': ($('body')
-                    .outerWidth() - reduction) + 'px',
                 'height': ($('body')
                     .outerHeight()) + 'px'
             });
