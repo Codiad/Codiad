@@ -13,7 +13,7 @@
         modalLock: false,
 
         isLeftSidebarOpen: true,
-        isRigthSidebarOpen: false,
+        isRightSidebarOpen: false,
 
         init: function() {
 
@@ -128,7 +128,7 @@
                             .animate({
                                 'margin-right': sbarWidthR+'px'
                             }, 300, 'easeOutQuart', function(){
-                                _this.isRigthSidebarOpen = true;
+                                _this.isRightSidebarOpen = true;
                                 codiad.active.updateTabDropdownVisibility();
                             });
                         $('#tab-close')
@@ -163,7 +163,7 @@
                             .animate({
                                 'margin-right': sbarWidthR+'px'
                             }, 300, 'easeOutQuart', function(){
-                                _this.isRigthSidebarOpen = true;
+                                _this.isRightSidebarOpen = true;
                                 codiad.active.updateTabDropdownVisibility();
                             });
                         $('#tab-close')
@@ -198,7 +198,7 @@
                                 .animate({
                                     'margin-right': '10px'
                                 }, 300, 'easeOutQuart', function(){
-                                    _this.isRigthSidebarOpen = false;
+                                    _this.isRightSidebarOpen = false;
                                     codiad.active.updateTabDropdownVisibility();
                                 });
                             $('#tab-close')
