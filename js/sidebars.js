@@ -124,12 +124,22 @@
                         if (timeout_r) {
                             clearTimeout(timeout_r);
                         }
+                        var sbarWidthR = $("#sb-right")
+                            .width(),
+                            sbarWidthL = $("#sb-left")
+                            .width();
                         $('#editor-region')
                             .animate({
-                                'margin-right': '200px'
+                                'margin-right': sbarWidthR+'px',
+                                'width': ($('body')
+                                        .outerWidth() - sbarWidthL - sbarWidthR) + 'px'
                             }, 300, 'easeOutQuart', function(){
                                 _this.isRigthSidebarOpen = true;
                             });
+                        $('#tab-close')
+                            .animate({
+                                'margin-right': (sbarWidthR-10)+'px'
+                            }, 300, 'easeOutQuart');
                         $(this)
                             .animate({
                                 'right': '0px'
@@ -149,7 +159,7 @@
                             .width();
                         if (!codiad.sidebars.leftLock) {
                             sbarWidthL = 10;
-                        }   
+                        }
                         $('#editor-region')
                             .animate({
                                 'margin-right': sbarWidthR+'px',
@@ -158,6 +168,10 @@
                             }, 300, 'easeOutQuart', function(){
                                 _this.isRigthSidebarOpen = true;
                             });
+                        $('#tab-close')
+                            .animate({
+                                'margin-right': (sbarWidthR-10)+'px'
+                            }, 300, 'easeOutQuart');
                         $(this)
                             .animate({
                                 'right': '0px'
@@ -177,7 +191,7 @@
                                 .width();
                             if (!codiad.sidebars.leftLock) {
                                 sbarWidthL = 10;
-                            }     
+                            }
                             $('#editor-region')
                                 .animate({
                                     'margin-right': '10px',
@@ -186,6 +200,10 @@
                                 }, 300, 'easeOutQuart', function(){
                                     _this.isRigthSidebarOpen = false;
                                 });
+                            $('#tab-close')
+                                .animate({
+                                    'margin-right': 0+'px'
+                                }, 300, 'easeOutQuart');
                         }
                     }, this), 500));
                 });
