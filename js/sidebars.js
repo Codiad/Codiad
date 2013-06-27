@@ -129,6 +129,7 @@
                                 'margin-right': sbarWidthR+'px'
                             }, 300, 'easeOutQuart', function(){
                                 _this.isRigthSidebarOpen = true;
+                                codiad.active.updateTabDropdownVisibility();
                             });
                         $('#tab-close')
                             .animate({
@@ -163,6 +164,7 @@
                                 'margin-right': sbarWidthR+'px'
                             }, 300, 'easeOutQuart', function(){
                                 _this.isRigthSidebarOpen = true;
+                                codiad.active.updateTabDropdownVisibility();
                             });
                         $('#tab-close')
                             .animate({
@@ -197,6 +199,7 @@
                                     'margin-right': '10px'
                                 }, 300, 'easeOutQuart', function(){
                                     _this.isRigthSidebarOpen = false;
+                                    codiad.active.updateTabDropdownVisibility();
                                 });
                             $('#tab-close')
                                 .animate({
