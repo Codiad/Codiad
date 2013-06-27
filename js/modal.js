@@ -53,9 +53,7 @@
                     }, 300, 'easeOutQuart');
                 $('#editor-region')
                     .animate({
-                        'margin-left': '10px',
-                        'width': ($('body')
-                            .outerWidth() - 20) + 'px'
+                        'margin-left': '10px'
                 }, 300, 'easeOutQuart');
             }
         }

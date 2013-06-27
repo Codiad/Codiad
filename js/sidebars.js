@@ -13,7 +13,7 @@
         modalLock: false,
 
         isLeftSidebarOpen: true,
-        isRigthSidebarOpen: false,
+        isRightSidebarOpen: false,
 
         init: function() {
 
@@ -74,9 +74,7 @@
                     }
                     $('#editor-region')
                         .animate({
-                        'margin-left': sbarWidthL + 'px',
-                        'width': ($('body')
-                            .outerWidth() - sbarWidthL - sbarWidthR) + 'px'
+                        'margin-left': sbarWidthL + 'px'
                         }, 300, 'easeOutQuart', function(){
                             _this.isLeftSidebarOpen = true;
                             $(this).trigger('h-resize-init');
@@ -103,9 +101,7 @@
                             }, 300, 'easeOutQuart');
                             $('#editor-region')
                                 .animate({
-                                    'margin-left': '10px',
-                                    'width': ($('body')
-                                        .outerWidth() - sbarWidthR - 10) + 'px'
+                                    'margin-left': '10px'
                                 }, 300, 'easeOutQuart', function(){
                                     _this.isLeftSidebarOpen = false;
                                     $(this).trigger('h-resize-init');
@@ -124,12 +120,25 @@
                         if (timeout_r) {
                             clearTimeout(timeout_r);
                         }
+                        var sbarWidthR = $("#sb-right")
+                            .width(),
+                            sbarWidthL = $("#sb-left")
+                            .width();
                         $('#editor-region')
                             .animate({
-                                'margin-right': '200px'
+                                'margin-right': sbarWidthR+'px'
                             }, 300, 'easeOutQuart', function(){
-                                _this.isRigthSidebarOpen = true;
+                                _this.isRightSidebarOpen = true;
+                                codiad.active.updateTabDropdownVisibility();
                             });
+                        $('#tab-close')
+                            .animate({
+                                'margin-right': (sbarWidthR-10)+'px'
+                            }, 300, 'easeOutQuart');
+                        $('#tab-dropdown')
+                            .animate({
+                                'margin-right': (sbarWidthR-10)+'px'
+                            }, 300, 'easeOutQuart');
                         $(this)
                             .animate({
                                 'right': '0px'
@@ -149,15 +158,22 @@
                             .width();
                         if (!codiad.sidebars.leftLock) {
                             sbarWidthL = 10;
-                        }   
+                        }
                         $('#editor-region')
                             .animate({
-                                'margin-right': sbarWidthR+'px',
-                                'width': ($('body')
-                                        .outerWidth() - sbarWidthL - sbarWidthR) + 'px'
+                                'margin-right': sbarWidthR+'px'
                             }, 300, 'easeOutQuart', function(){
-                                _this.isRigthSidebarOpen = true;
+                                _this.isRightSidebarOpen = true;
+                                codiad.active.updateTabDropdownVisibility();
                             });
+                        $('#tab-close')
+                            .animate({
+                                'margin-right': (sbarWidthR-10)+'px'
+                            }, 300, 'easeOutQuart');
+                        $('#tab-dropdown')
+                            .animate({
+                                'margin-right': (sbarWidthR-10)+'px'
+                            }, 300, 'easeOutQuart');
                         $(this)
                             .animate({
                                 'right': '0px'
@@ -177,15 +193,22 @@
                                 .width();
                             if (!codiad.sidebars.leftLock) {
                                 sbarWidthL = 10;
-                            }     
+                            }
                             $('#editor-region')
                                 .animate({
-                                    'margin-right': '10px',
-                                    'width': ($('body')
-                                            .outerWidth() - sbarWidthL - 10) + 'px'
+                                    'margin-right': '10px'
                                 }, 300, 'easeOutQuart', function(){
-                                    _this.isRigthSidebarOpen = false;
+                                    _this.isRightSidebarOpen = false;
+                                    codiad.active.updateTabDropdownVisibility();
                                 });
+                            $('#tab-close')
+                                .animate({
+                                    'margin-right': 0+'px'
+                                }, 300, 'easeOutQuart');
+							$('#tab-dropdown')
+                                .animate({
+                                    'margin-right': 0+'px'
+                                }, 300, 'easeOutQuart');
                         }
                     }, this), 500));
                 });
