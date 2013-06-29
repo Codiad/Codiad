@@ -126,9 +126,11 @@
                 $('#context-menu .no-external').show();
             }
             // Show menu
-            var top = (e.pageY - 40);
+            var top = e.pageY;
             if (top > $(window).height() - $('#context-menu').height()) {
-                top -= $('#context-menu').height()-10;
+                top -= $('#context-menu').height()+30;
+            } else {
+                top -= 40;
             }
             $('#context-menu')
                 .css({
