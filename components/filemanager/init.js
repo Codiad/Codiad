@@ -126,14 +126,15 @@
                 $('#context-menu .no-external').show();
             }
             // Show menu
-            var top = Math.min(
-                    $(window).height() - $('#context-menu').height(),
-                    (e.pageY - 40));
+            var top = (e.pageY - 40);
+            if (top > $(window).height() - $('#context-menu').height()) {
+                top -= $('#context-menu').height()-10;
+            }
             $('#context-menu')
                 .css({
-                'top': top + 'px',
-                'left': (e.pageX - 30) + 'px'
-            })
+                    'top': top + 'px',
+                    'left': (e.pageX - 30) + 'px'
+                })
                 .fadeIn(200)
                 .attr('data-path', path)
                 .attr('data-type', type);
