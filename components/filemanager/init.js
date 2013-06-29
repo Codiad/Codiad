@@ -126,9 +126,12 @@
                 $('#context-menu .no-external').show();
             }
             // Show menu
+            var top = Math.min(
+                    $(window).height() - $('#context-menu').height(),
+                    (e.pageY - 40));
             $('#context-menu')
                 .css({
-                'top': (e.pageY - 40) + 'px',
+                'top': top + 'px',
                 'left': (e.pageX - 30) + 'px'
             })
                 .fadeIn(200)
