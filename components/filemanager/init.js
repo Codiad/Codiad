@@ -126,11 +126,17 @@
                 $('#context-menu .no-external').show();
             }
             // Show menu
+            var top = e.pageY;
+            if (top > $(window).height() - $('#context-menu').height()) {
+                top -= $('#context-menu').height()+30;
+            } else {
+                top -= 40;
+            }
             $('#context-menu')
                 .css({
-                'top': (e.pageY - 40) + 'px',
-                'left': (e.pageX - 30) + 'px'
-            })
+                    'top': top + 'px',
+                    'left': (e.pageX - 30) + 'px'
+                })
                 .fadeIn(200)
                 .attr('data-path', path)
                 .attr('data-type', type);
