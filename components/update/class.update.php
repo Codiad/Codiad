@@ -28,8 +28,7 @@ class Update {
 
     public function __construct(){
         ini_set("user_agent" , "Codiad");
-        $this->remote = "https://api.github.com/repos/Codiad/Codiad/tags";
-        //$this->remote = "http://update.codiad.com/?v={VER}&o={OS}&p={PHP}&i={IP}";
+        $this->remote = "http://update.codiad.com/?v={VER}&o={OS}&p={PHP}&i={IP}";
         $this->commits = "https://api.github.com/repos/Codiad/Codiad/commits";
         $this->archive = "https://github.com/Codiad/Codiad/archive/master.zip";
     }
@@ -161,7 +160,7 @@ class Update {
         $remoteurl = Common::getConstant('UPDATEURL', $this->remote);
         $remoteurl = str_replace("{OS}", PHP_OS, $remoteurl);
         $remoteurl = str_replace("{PHP}", phpversion(), $remoteurl);
-        $remoteurl = str_replace("{IP}", $_SERVER['REMOTE_ADDR'], $remoteurl);
+        $remoteurl = str_replace("{IP}", $_SERVER['SERVER_ADDR'], $remoteurl);
         $remoteurl = str_replace("{VER}", $localversion, $remoteurl);     
         
         return json_decode(file_get_contents($remoteurl),true);
