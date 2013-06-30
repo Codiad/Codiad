@@ -52,17 +52,19 @@ class Update {
             }
         } else {
             $local = $this->getLocalVersion();
-            if($local[0]['version'] == '' && $local[0]['name'] == $_SESSION['user']) {
-                $remote = json_decode(file_get_contents($this->remote.'/HEAD'),true);
-                $version[] = array("version"=>$remote["sha"],"time"=>time(),"name"=>$_SESSION['user']);
-                saveJSON('version.php',$version);
-            }
-            if($local[0]['name'] == "") {
-                $app = getJSON('version.php');
-                if($app[0]['version'] != $local[0]['version']) {
+            if(file_exists(BASE_PATH."/.git/HEAD")) {
+                $current = getJSON('version.php');
+                if($local[0]['version'] != $current[0]['version']) {
                     $version[] = array("version"=>$local[0]['version'],"time"=>time(),"name"=>"");
                     saveJSON('version.php',$version);
                 }
+            } else {
+              $local = $this->getLocalVersion();
+              if($local[0]['version'] == '' && $local[0]['name'] == $_SESSION['user']) {
+                  $remote = $this->getRemoteVersion();
+                  $version[] = array("version"=>$remote[0]["commit"]["sha"],"time"=>time(),"name"=>$_SESSION['user']);
+                  saveJSON('version.php',$version);
+              }
             }
         }
     }
