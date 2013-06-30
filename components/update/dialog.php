@@ -37,8 +37,8 @@
             <input type="hidden" name="remoteversion" value="<?php echo $vars[0]['data']['remoteversion']; ?>">
             <label><?php i18n("Update Check"); ?></label>
             <br><table>
-                <tr><td><?php i18n("Your Version"); ?></td><td><?php echo $vars[0]['data']['currentversion']; ?></td></tr>
-                <tr><td><?php i18n("Latest Version"); ?></td><td><?php echo $vars[0]['data']['remoteversion']; ?></td></tr>
+                <tr><td width="40%"><?php i18n("Your Version"); ?></td><td><?php echo $vars[0]['data']['currentversion']; ?></td></tr>
+                <tr><td width="40%"><?php i18n("Latest Version"); ?></td><td><?php echo $vars[0]['data']['remoteversion']; ?></td></tr>
             </table>
             <?php if($vars[0]['data']['currentversion'] != $vars[0]['data']['remoteversion']) { ?>
             <br><label><?php i18n("Changes on Codiad"); ?></label>
