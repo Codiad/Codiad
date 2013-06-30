@@ -159,10 +159,10 @@ class Update {
         
     public function getRemoteVersion($localversion = "") {
         $remoteurl = Common::getConstant('UPDATEURL', $this->remote);
-        $remoteurl = str_replace("{OS}", PHP_OS);
-        $remoteurl = str_replace("{PHP}", phpversion());
-        $remoteurl = str_replace("{IP}", $_SERVER['REMOTE_ADDR']);
-        $remoteurl = str_replace("{VER}", $localversion);     
+        $remoteurl = str_replace("{OS}", PHP_OS, $remoteurl);
+        $remoteurl = str_replace("{PHP}", phpversion(), $remoteurl);
+        $remoteurl = str_replace("{IP}", $_SERVER['REMOTE_ADDR'], $remoteurl);
+        $remoteurl = str_replace("{VER}", $localversion, $remoteurl);     
         
         return json_decode(file_get_contents($remoteurl),true);
     }
