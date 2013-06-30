@@ -42,7 +42,7 @@
             </table>
             <?php if($vars[0]['data']['currentversion'] != $vars[0]['data']['remoteversion']) { ?>
             <br><label><?php i18n("Changes on Codiad"); ?></label>
-            <pre style="overflow: auto; max-height: 200px; max-width: 450px;"><?php echo $vars[0]['data']['message']; ?></pre>
+            <pre style="overflow: auto; max-height: 200px; max-width: 510px;"><?php echo $vars[0]['data']['message']; ?></pre>
             <?php } else { ?>
             <br><br><b><label><?php i18n("Congratulation, your system is up to date."); ?></label></b>
             <?php if($vars[0]['data']['name'] != '') { ?>
