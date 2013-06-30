@@ -45,10 +45,10 @@
             <pre style="overflow: auto; max-height: 200px; max-width: 450px;"><?php echo $vars[0]['data']['message']; ?></pre>
             <?php } else { ?>
             <br><br><b><label><?php i18n("Congratulation, your system is up to date."); ?></label></b>
-            <?php if($vars[0]['data']['name'] != '') { ?>
+            <?php if($vars[0]['data']['name'] != '' && $vars[0]['data']['name'] != 'git') { ?>
             <em><?php i18n("Last update was done by "); ?><?php echo $vars[0]['data']['name']; ?>.</em>
             <?php } } ?>
-            <?php if($update->isNightly()) { ?>
+            <?php if($vars[0]['data']['nightly']) { ?>
             <br><em class="note">Note: Your installation is a nightly build. Codiad might be unstable.</em><br>
             <?php } ?>
             <br><?php
