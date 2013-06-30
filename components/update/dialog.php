@@ -48,6 +48,9 @@
             <?php if($vars[0]['data']['name'] != '') { ?>
             <em><?php i18n("Last update was done by "); ?><?php echo $vars[0]['data']['name']; ?>.</em>
             <?php } } ?>
+            <?php if($update->isNightly()) { ?>
+            <br><em class="note">Note: Your installation is a nightly build. Codiad might be unstable.</em><br>
+            <?php } ?>
             <br><?php
                 if($vars[0]['data']['currentversion'] != $vars[0]['data']['remoteversion']) {
                     echo '<button class="btn-left" onclick="codiad.update.download();return false;">Download Codiad</button>&nbsp;';

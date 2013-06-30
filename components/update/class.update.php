@@ -91,19 +91,7 @@ class Update {
     //////////////////////////////////////////////////////////////////
 
     public function Check() {
-        if(file_exists(BASE_PATH."/.git/FETCH_HEAD")) {
-            $data = file(BASE_PATH."/.git/FETCH_HEAD");
-            foreach($data as $line) {
-                $branch = explode("	", $line);
-                if(strpos($branch[2], "master") !== false) {
-                    break;
-                }
-            }
-            $app[0]['version'] = $branch[0];
-            $app[0]['name'] = "";
-        } else {
-            $app = getJSON('version.php');
-        }
+        $app = $this->getVersion();
 
         if($this->remote != '') {
             $remote = json_decode(file_get_contents($this->remote),true);
@@ -131,6 +119,34 @@ class Update {
         }
 
         return "[".formatJSEND("success",array("currentversion"=>$app[0]['version'],"remoteversion"=>$remote[0]["sha"],"message"=>$message,"archive"=>$this->archive,"name"=>$app[0]['name']))."]";
+    }
+        
+    //////////////////////////////////////////////////////////////////
+    // Helper Methods
+    //////////////////////////////////////////////////////////////////
+    
+    public function isNightly() {
+      $data = $this->getVersion();
+      if(strlen($data[0]['version']) >= 40) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    
+    public function getVersion() {
+      if(file_exists(BASE_PATH."/.git/HEAD")) {
+          $tmp = file_get_contents(BASE_PATH."/.git/HEAD");
+          if (strpos($tmp,"ref:") === false) {
+              $data[0]['version'] = trim($tmp);
+          } else {
+              $data[0]['version'] = trim(file_get_contents(BASE_PATH."/.git/".trim(str_replace('ref: ', '', $tmp))));
+          }
+          $data[0]['name'] = "";
+      } else {
+          $data = getJSON('version.php');
+      }
+      return $data;
     }
 
 }
