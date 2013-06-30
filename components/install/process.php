@@ -192,6 +192,12 @@ define("WSURL", BASE_URL . "/workspace");
 
 // Plugin Market
 define("PMURL", "http://codiad.com/plugins.json");
+
+// Update Check
+define("UPDATEURL", "http://update.codiad.com/?v={VER}&o={OS}&p={PHP}&i={IP}");
+define("ARCHIVEURL", "https://github.com/Codiad/Codiad/archive/master.zip");
+define("COMMITURL", "https://api.github.com/repos/Codiad/Codiad/commits");
+
 ';
 
     saveFile($config,$config_data);
