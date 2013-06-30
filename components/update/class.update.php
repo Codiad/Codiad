@@ -59,7 +59,6 @@ class Update {
                     saveJSON('version.php',$version);
                 }
             } else {
-              $local = $this->getLocalVersion();
               if($local[0]['version'] == '' && $local[0]['name'] == $_SESSION['user']) {
                   $remote = $this->getRemoteVersion();
                   $version[] = array("version"=>$remote[0]["commit"]["sha"],"time"=>time(),"name"=>$_SESSION['user']);
