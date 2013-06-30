@@ -57,7 +57,7 @@ class Update {
                 $version[] = array("version"=>$remote["sha"],"time"=>time(),"name"=>$_SESSION['user']);
                 saveJSON('version.php',$version);
             }
-            if($local[0]['name'] == "git") {
+            if($local[0]['name'] == "") {
                 $app = getJSON('version.php');
                 if($app[0]['version'] != $local[0]['version']) {
                     $version[] = array("version"=>$local[0]['version'],"time"=>time(),"name"=>"");
@@ -137,7 +137,7 @@ class Update {
             } else {
                 $data[0]['version'] = trim(file_get_contents(BASE_PATH."/.git/".trim(str_replace('ref: ', '', $tmp))));
             }
-            $data[0]['name'] = "git";
+            $data[0]['name'] = "";
         } else {
             $data = getJSON('version.php');
         }
