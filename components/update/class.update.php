@@ -44,24 +44,32 @@ class Update {
             $remote = $this->getRemoteVersion();
             if(file_exists(BASE_PATH."/.git/HEAD")) {
                 $local = $this->getLocalVersion();
-                $version[] = array("version"=>$local[0]['version'],"time"=>time(),"name"=>"");
+                $version[] = array("version"=>$local[0]['version'],"time"=>time(),"optout"=>"true","name"=>"");
                 saveJSON('version.php',$version);
             } else {
-                $version[] = array("version"=>$remote[0]["commit"]["sha"],"time"=>time(),"name"=>"");
+                $version[] = array("version"=>$remote[0]["commit"]["sha"],"time"=>time(),"optout"=>"true","name"=>"");
                 saveJSON('version.php',$version);
             }
         } else {
             $local = $this->getLocalVersion();
+            
+            if(!isset($local[0]['optout'])) {
+                $remote = $this->getRemoteVersion();
+                $current = getJSON('version.php');
+                $version[] = array("version"=>$current[0]['version'],"time"=>time(),"optout"=>"true","name"=>$current[0]['name']);
+                saveJSON('version.php',$version);
+            }            
+            
             if(file_exists(BASE_PATH."/.git/HEAD")) {
                 $current = getJSON('version.php');
                 if($local[0]['version'] != $current[0]['version']) {
-                    $version[] = array("version"=>$local[0]['version'],"time"=>time(),"name"=>"");
+                    $version[] = array("version"=>$local[0]['version'],"time"=>time(),"optout"=>"true","name"=>"");
                     saveJSON('version.php',$version);
                 }
             } else {
               if($local[0]['version'] == '' && $local[0]['name'] == $_SESSION['user']) {
                   $remote = $this->getRemoteVersion();
-                  $version[] = array("version"=>$remote[0]["commit"]["sha"],"time"=>time(),"name"=>$_SESSION['user']);
+                  $version[] = array("version"=>$remote[0]["commit"]["sha"],"time"=>time(),"optout"=>"true","name"=>$_SESSION['user']);
                   saveJSON('version.php',$version);
               }
             }
@@ -73,7 +81,7 @@ class Update {
     //////////////////////////////////////////////////////////////////
 
     public function Clear() {
-        $version[] = array("version"=>"","time"=>time(),"name"=>$_SESSION['user']);
+        $version[] = array("version"=>"","time"=>time(),"optout"=>"true","name"=>$_SESSION['user']);
         saveJSON('version.php',$version);
     }
 
