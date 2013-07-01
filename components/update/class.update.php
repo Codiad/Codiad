@@ -28,7 +28,7 @@ class Update {
 
     public function __construct(){
         ini_set("user_agent" , "Codiad");
-        $this->remote = "http://update.codiad.com/?v={VER}&o={OS}&p={PHP}";
+        $this->remote = "http://update.codiad.com/?v={VER}&o={OS}&p={PHP}&w={WEB}";
         $this->commits = "https://api.github.com/repos/Codiad/Codiad/commits";
         $this->archive = "https://github.com/Codiad/Codiad/archive/master.zip";
     }
@@ -54,14 +54,13 @@ class Update {
             
             if(!isset($local[0]['optout'])) {
                 $remote = $this->getRemoteVersion();
-                $current = getJSON('version.php');
-                $version[] = array("version"=>$current[0]['version'],"time"=>time(),"optout"=>"true","name"=>$current[0]['name']);
-                saveJSON('version.php',$version);
+                $this->OptOut();
             }            
             
             if(file_exists(BASE_PATH."/.git/HEAD")) {
                 $current = getJSON('version.php');
                 if($local[0]['version'] != $current[0]['version']) {
+                    $remote = $this->getRemoteVersion();
                     $version[] = array("version"=>$local[0]['version'],"time"=>time(),"optout"=>"true","name"=>"");
                     saveJSON('version.php',$version);
                 }
@@ -81,6 +80,16 @@ class Update {
 
     public function Clear() {
         $version[] = array("version"=>"","time"=>time(),"optout"=>"true","name"=>$_SESSION['user']);
+        saveJSON('version.php',$version);
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Clear Version
+    //////////////////////////////////////////////////////////////////
+
+    public function OptOut() {
+        $current = getJSON('version.php');
+        $version[] = array("version"=>$current[0]['version'],"time"=>$current[0]['time'],"optout"=>"true","name"=>$current[0]['name']);
         saveJSON('version.php',$version);
     }
 
@@ -160,7 +169,8 @@ class Update {
         $remoteurl = Common::getConstant('UPDATEURL', $this->remote);
         $remoteurl = str_replace("{OS}", PHP_OS, $remoteurl);
         $remoteurl = str_replace("{PHP}", phpversion(), $remoteurl);
-        $remoteurl = str_replace("{VER}", $localversion, $remoteurl);     
+        $remoteurl = str_replace("{VER}", $localversion, $remoteurl);
+        $remoteurl = str_replace("{WEB}", $_SERVER['SERVER_SOFTWARE'], $remoteurl);
         
         return json_decode(file_get_contents($remoteurl),true);
     }
