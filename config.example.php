@@ -44,7 +44,7 @@ define("WORKSPACE", BASE_PATH . "/workspace");
 define("WSURL", BASE_URL . "/workspace");
 
 // Plugin Market
-define("PMURL", "http://codiad.com/plugins.json");
+//define("PMURL", "http://codiad.com/plugins.json");
 
 // Update Check
 //define("UPDATEURL", "http://update.codiad.com/?v={VER}&o={OS}&p={PHP}&i={IP}");
