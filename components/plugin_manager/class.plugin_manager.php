@@ -28,6 +28,9 @@ class Plugin_manager extends Common {
     //////////////////////////////////////////////////////////////////
 
     public function __construct(){
+        if(!file_exists(DATA.'/plugins.php') {
+          saveJSON('plugins.php', array(''));
+        }  
         $this->plugins = getJSON('plugins.php');
         $this->market = Common::getConstant('PMURL', $this->market);
     }
