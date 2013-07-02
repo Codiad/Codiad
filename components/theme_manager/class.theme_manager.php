@@ -28,7 +28,7 @@ class Theme_manager extends Common {
     //////////////////////////////////////////////////////////////////
 
     public function __construct(){
-        if(!file_exists(DATA.'/themes.php') {
+        if(!file_exists(DATA.'/themes.php')) {
           saveJSON('themes.php', array(''));
         }  
         $this->themes = getJSON('themes.php');

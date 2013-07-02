@@ -162,7 +162,7 @@ if(isset($_SESSION['theme'])) {
                                 $data = file_get_contents("themes/" . $theme . "/theme.json");
                                 $data = json_decode($data,true);
                             ?>
-                            <option value="<?php echo $theme; ?>"><?php if($data[0]['name'] != '') { echo $data[0]['name']; } else { echo $theme; } ?></option>
+                            <option value="<?php echo $theme; ?>" <?php if($theme == THEME) { echo "selected"; } ?>><?php if($data[0]['name'] != '') { echo $data[0]['name']; } else { echo $theme; } ?></option>
                         <?php } endforeach; ?>
                     </select>
                     <label><span class="icon-language login-icon"></span> Language</label>

@@ -28,7 +28,7 @@ class Plugin_manager extends Common {
     //////////////////////////////////////////////////////////////////
 
     public function __construct(){
-        if(!file_exists(DATA.'/plugins.php') {
+        if(!file_exists(DATA.'/plugins.php')) {
           saveJSON('plugins.php', array(''));
         }  
         $this->plugins = getJSON('plugins.php');
