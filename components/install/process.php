@@ -209,7 +209,7 @@ define("WORKSPACE", BASE_PATH . "/workspace");
 define("WSURL", BASE_URL . "/workspace");
 
 // Plugin Market
-define("PMURL", "http://codiad.com/plugins.json");
+//define("PMURL", "http://codiad.com/plugins.json");
 
 // Theme Market
 //define("TMURL", "http://codiad.com/themes.json");

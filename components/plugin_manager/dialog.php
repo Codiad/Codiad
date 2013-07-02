@@ -27,14 +27,14 @@
             $pm = new Plugin_manager();
             $market = $pm->Market();
             ?>
-            <label>Plugin Market</label>
+            <label><?php i18n("Plugin Market"); ?></label>
             <div id="plugin-list">
             <table width="100%">
                 <tr>
-                    <th>Plugin Name</th>
-                    <th>Description</th>
-                    <th>Author</th>
-                    <th>Download</th>
+                    <th><?php i18n("Plugin Name"); ?></th>
+                    <th><?php i18n("Description"); ?></th>
+                    <th><?php i18n("Author"); ?></th>
+                    <th><?php i18n("Download"); ?></th>
                 </tr>
             <?php
             if($market != '') {
@@ -97,14 +97,14 @@
                 }
             } else {
                 ?>
-                <tr><td colspan="4">Plugin Market currently unavailable.</td></tr>
+                <tr><td colspan="4"><?php i18n("Plugin Market currently unavailable."); ?></td></tr>
                 <?php
             }
             
             ?>
             </table>
             </div>
-            <button class="btn-left" onclick="codiad.plugin_manager.list();return false;">Installed Plugins</button><button class="btn-mid" onclick="codiad.plugin_manager.check();return false;">Update Check</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
+            <button class="btn-left" onclick="codiad.plugin_manager.list();return false;"><?php i18n("Installed Plugins"); ?></button><button class="btn-mid" onclick="codiad.plugin_manager.check();return false;"><?php i18n("Update Check"); ?></button><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
             <?php
             
             break;
@@ -186,11 +186,11 @@
             
             if($plugincount == 0) {
             ?>
-            <tr><td colspan="<?php echo $colspan;?>">No Plugins installed. Check Plugin Market.</td></tr>
+            <tr><td colspan="<?php echo $colspan;?>"><?php i18n("No Plugins installed. Check Plugin Market."); ?></td></tr>
             <?php
             } else {
             ?>
-            <tr><td colspan="<?php echo $colspan;?>" align="right"><?php echo $plugincount; ?> Plugins installed.</td></tr>
+            <tr><td colspan="<?php echo $colspan;?>" align="right"><?php echo $plugincount; ?> <?php i18n("Plugins installed."); ?></td></tr>
             <?php
             }
             
@@ -273,7 +273,7 @@
                                         }
                                     } else {
                                         ?>
-                                            <td><font style="color:green">Latest</font></td>
+                                            <td><font style="color:green"><?php i18n("Latest"); ?></font></td>
                                         <?php
                                     }
                                 } else {
@@ -292,7 +292,7 @@
             
             if($plugincount == 0) {
             ?>
-            <tr><td colspan="4">No Plugins installed. Check Plugin Market.</td></tr>
+            <tr><td colspan="4"><?php i18n("No Plugins installed. Check Plugin Market."); ?></td></tr>
             <?php
             }             
             ?>

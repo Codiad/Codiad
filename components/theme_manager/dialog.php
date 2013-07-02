@@ -27,14 +27,14 @@
             $tm = new Theme_manager();
             $market = $tm->Market();
             ?>
-            <label>Theme Market</label>
+            <label><?php i18n("Theme Market"); ?></label>
             <div id="theme-list">
             <table width="100%">
                 <tr>
-                    <th>Theme Name</th>
-                    <th>Description</th>
-                    <th>Author</th>
-                    <th>Download</th>
+                    <th><?php i18n("Theme Name"); ?></th>
+                    <th><?php i18n("Description"); ?></th>
+                    <th><?php i18n("Author"); ?></th>
+                    <th><?php i18n("Download"); ?></th>
                 </tr>
             <?php
             if($market != '') {
@@ -97,14 +97,14 @@
                 }
             } else {
                 ?>
-                <tr><td colspan="4">Theme Market currently unavailable.</td></tr>
+                <tr><td colspan="4"><?php i18n("Theme Market currently unavailable."); ?></td></tr>
                 <?php
             }
             
             ?>
             </table>
             </div>
-            <button class="btn-left" onclick="codiad.theme_manager.list();return false;">Installed Themes</button><button class="btn-mid" onclick="codiad.theme_manager.check();return false;">Update Check</button><button class="btn-right" onclick="codiad.modal.unload();return false;">Close</button>
+            <button class="btn-left" onclick="codiad.theme_manager.list();return false;"><?php i18n("Installed Themes"); ?></button><button class="btn-mid" onclick="codiad.theme_manager.check();return false;"><?php i18n("Update Check"); ?></button><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
             <?php
             
             break;
@@ -186,11 +186,11 @@
             
             if($themecount == 0) {
             ?>
-            <tr><td colspan="<?php echo $colspan;?>">No Themes installed. Check Theme Market.</td></tr>
+            <tr><td colspan="<?php echo $colspan;?>"><?php i18n("No Themes installed. Check Theme Market."); ?></td></tr>
             <?php
             } else {
             ?>
-            <tr><td colspan="<?php echo $colspan;?>" align="right"><?php echo $themecount; ?> Themes installed.</td></tr>
+            <tr><td colspan="<?php echo $colspan;?>" align="right"><?php echo $themecount; ?> <?php i18n("Themes installed."); ?></td></tr>
             <?php
             }
             
@@ -273,7 +273,7 @@
                                         }
                                     } else {
                                         ?>
-                                            <td><font style="color:green">Latest</font></td>
+                                            <td><font style="color:green"><?php i18n("Latest"); ?></font></td>
                                         <?php
                                     }
                                 } else {
@@ -292,7 +292,7 @@
             
             if($themecount == 0) {
             ?>
-            <tr><td colspan="4">No Themes installed. Check Themes Market.</td></tr>
+            <tr><td colspan="4"><?php i18n("No Themes installed. Check Themes Market."); ?></td></tr>
             <?php
             }             
             ?>

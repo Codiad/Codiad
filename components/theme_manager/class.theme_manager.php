@@ -150,8 +150,8 @@ class Theme_manager extends Common {
             }
         }
 
-        if(file_exists(THEMES.'/'.$name.'/plugin.json')) {
-            $data = json_decode(file_get_contents(THEMES.'/'.$name.'/plugin.json'),true);
+        if(file_exists(THEMES.'/'.$name.'/theme.json')) {
+            $data = json_decode(file_get_contents(THEMES.'/'.$name.'/theme.json'),true);
             if(substr($data[0]['url'],-4) == '.git') {
                 $data[0]['url'] = substr($data[0]['url'],0,-4);
             }
