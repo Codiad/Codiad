@@ -207,7 +207,7 @@
             ?>
             </table>
             </div>
-            <button class="btn-left" onclick="window.location.reload();return false;"><?php i18n("Reload Codiad"); ?></button><button class="btn-mid" onclick="codiad.theme_manager.market();return false;"><?php i18n("Theme Market"); ?></button><button class="btn-mid" onclick="codiad.theme_manager.check();return false;"><?php i18n("Update Check"); ?></button><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
+            <button class="btn-mid" onclick="codiad.theme_manager.market();return false;"><?php i18n("Theme Market"); ?></button><button class="btn-mid" onclick="codiad.theme_manager.check();return false;"><?php i18n("Update Check"); ?></button><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
             <?php
             
             break;
