@@ -153,7 +153,7 @@ if(isset($_SESSION['theme'])) {
                 
                 <div class="language-selector">
                     <label><span class="icon-picture login-icon"></span> Theme</label>
-                    <select name="theme">
+                    <select name="theme" id="theme">
                         <option value="default">Default</option>
                         <?php
                         include 'languages/code.php';
