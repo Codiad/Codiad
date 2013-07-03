@@ -166,7 +166,7 @@ if(isset($_SESSION['theme'])) {
                         <?php } endforeach; ?>
                     </select>
                     <label><span class="icon-language login-icon"></span> Language</label>
-                    <select name="language">
+                    <select name="language" id="language">
                         <?php
                         include 'languages/code.php';
                         foreach(glob("languages/*.php") as $filename): 

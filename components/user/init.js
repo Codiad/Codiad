@@ -26,6 +26,8 @@
             var _this = this;
             this.loginForm.on('submit', function(e) {
                 e.preventDefault();
+                // Save Language
+                localStorage.setItem('codiad.language', $("#language").val());
                 // Save Theme
                 localStorage.setItem('codiad.theme', $("#theme").val());
                 _this.authenticate();
@@ -36,6 +38,15 @@
             $("#theme option").each(function()
             {
                 if($(this).val() == theme) {
+                    $(this).attr("selected","selected");
+                }
+            });
+            
+            // Get Language
+            var language = localStorage.getItem('codiad.language');
+            $("#language option").each(function()
+            {
+                if($(this).val() == language) {
                     $(this).attr("selected","selected");
                 }
             });
