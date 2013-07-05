@@ -5,9 +5,9 @@ config.php
 data/
 workspace/
 plugins/
+themes/*
+!themes/default/
 .project
 .buildpath
 .settings/
 .svn/
-components/update/version.json
-
