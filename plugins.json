@@ -29,6 +29,11 @@
     "description" : "Adds Surround (Eclipse) ability to add/wrap common functions",
     "url" : "https://github.com/Andr3as/Codiad-SurroundWith"
   },
+  { "author" : "Andr3as",
+    "name" : "AutoAlign",
+    "description" : "Adds better formatting through variable alignment and spacing",
+    "url" : "https://github.com/Andr3as/Codiad-AutoAlignment"
+  },
   { "author" : "Fluidbyte",
     "name" : "DocHub",
     "description" : "Access DocHub resources directly from within Codiad",
