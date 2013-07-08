@@ -76,8 +76,7 @@ class Plugin_manager extends Common {
         if(substr($repo,-4) == '.git') {
             $repo = substr($repo,0,-4);
         }
-        $repo .= '/archive/master.zip';
-        if(file_put_contents(PLUGINS.'/'.$name.'.zip', fopen($repo, 'r'))) {
+        if(file_put_contents(PLUGINS.'/'.$name.'.zip', fopen($repo.'/archive/master.zip', 'r'))) {
             $zip = new ZipArchive;
             $res = $zip->open(PLUGINS.'/'.$name.'.zip');
             // open downloaded archive
@@ -94,7 +93,7 @@ class Plugin_manager extends Common {
 
             unlink(PLUGINS.'/'.$name.'.zip');
             // Response
-            echo formatJSEND("success",null);
+            $this->Activate(substr($repo, strrpos($repo, "/") + 1)."-master");
         } else {
             die(formatJSEND("error","Unable to download ".$repo));
         }
