@@ -37,17 +37,20 @@
             <input type="hidden" name="remoteversion" value="<?php echo $vars[0]['data']['remoteversion']; ?>">
             <label><?php i18n("Update Check"); ?></label>
             <br><table>
-                <tr><td><?php i18n("Your Version"); ?></td><td><?php echo $vars[0]['data']['currentversion']; ?></td></tr>
-                <tr><td><?php i18n("Latest Version"); ?></td><td><?php echo $vars[0]['data']['remoteversion']; ?></td></tr>
+                <tr><td width="40%"><?php i18n("Your Version"); ?></td><td><?php echo $vars[0]['data']['currentversion']; ?></td></tr>
+                <tr><td width="40%"><?php i18n("Latest Version"); ?></td><td><?php echo $vars[0]['data']['remoteversion']; ?></td></tr>
             </table>
             <?php if($vars[0]['data']['currentversion'] != $vars[0]['data']['remoteversion']) { ?>
             <br><label><?php i18n("Changes on Codiad"); ?></label>
-            <pre style="overflow: auto; max-height: 200px; max-width: 450px;"><?php echo $vars[0]['data']['message']; ?></pre>
+            <pre style="overflow: auto; max-height: 200px; max-width: 510px;"><?php echo $vars[0]['data']['message']; ?></pre>
             <?php } else { ?>
             <br><br><b><label><?php i18n("Congratulation, your system is up to date."); ?></label></b>
             <?php if($vars[0]['data']['name'] != '') { ?>
             <em><?php i18n("Last update was done by "); ?><?php echo $vars[0]['data']['name']; ?>.</em>
             <?php } } ?>
+            <?php if($vars[0]['data']['nightly']) { ?>
+            <br><em class="note">Note: Your installation is a nightly build. Codiad might be unstable.</em><br>
+            <?php } ?>
             <br><?php
                 if($vars[0]['data']['currentversion'] != $vars[0]['data']['remoteversion']) {
                     echo '<button class="btn-left" onclick="codiad.update.download();return false;">Download Codiad</button>&nbsp;';

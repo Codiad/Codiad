@@ -49,3 +49,7 @@ define("WSURL", BASE_URL . "/workspace");
 // Theme Market
 //define("TMURL", "http://codiad.com/themes.json");
 
+// Update Check
+//define("UPDATEURL", "http://update.codiad.com/?v={VER}&o={OS}&p={PHP}&w={WEB}");
+//define("ARCHIVEURL", "https://github.com/Codiad/Codiad/archive/master.zip");
+//define("COMMITURL", "https://api.github.com/repos/Codiad/Codiad/commits");
