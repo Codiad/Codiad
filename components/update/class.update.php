@@ -13,8 +13,8 @@ class Update {
     //////////////////////////////////////////////////////////////////
 
     public $remote = "";
+    public $commits = "";
     public $archive = "";
-    public $commit = "";
 
     //////////////////////////////////////////////////////////////////
     // METHODS
@@ -28,7 +28,8 @@ class Update {
 
     public function __construct(){
         ini_set("user_agent" , "Codiad");
-        $this->remote = "https://api.github.com/repos/Codiad/Codiad/commits";
+        $this->remote = "http://update.codiad.com/?v={VER}&o={OS}&p={PHP}&w={WEB}";
+        $this->commits = "https://api.github.com/repos/Codiad/Codiad/commits";
         $this->archive = "https://github.com/Codiad/Codiad/archive/master.zip";
     }
 
@@ -39,40 +40,36 @@ class Update {
     public function Init() {
         $version = array();
         if(!file_exists(DATA ."/version.php")) {
-            if(file_exists(BASE_PATH."/.git/FETCH_HEAD")) {
-                $data = file(BASE_PATH."/.git/FETCH_HEAD");
-                foreach($data as $line) {
-                    $branch = explode("	", $line);
-                    if(strpos($branch[2], "master") !== false) {
-                        break;
-                    }
-                }
-                $version[] = array("version"=>$branch[0],"time"=>time(),"name"=>"");
+            $remote = $this->getRemoteVersion();
+            if(file_exists(BASE_PATH."/.git/HEAD")) {
+                $local = $this->getLocalVersion();
+                $version[] = array("version"=>$local[0]['version'],"time"=>time(),"optout"=>"true","name"=>"");
                 saveJSON('version.php',$version);
             } else {
-                $remote = json_decode(file_get_contents($this->remote.'/HEAD'),true);
-                $version[] = array("version"=>$remote["sha"],"time"=>time(),"name"=>"");
+                $version[] = array("version"=>$remote[0]["commit"]["sha"],"time"=>time(),"optout"=>"true","name"=>"");
                 saveJSON('version.php',$version);
             }
         } else {
-            $app = getJSON('version.php');
-            if($app[0]['version'] == '' && $app[0]['name'] == $_SESSION['user']) {
-                $remote = json_decode(file_get_contents($this->remote.'/HEAD'),true);
-                $version[] = array("version"=>$remote["sha"],"time"=>time(),"name"=>$_SESSION['user']);
-                saveJSON('version.php',$version);
-            }
-            if(file_exists(BASE_PATH."/.git/FETCH_HEAD")) {
-                $data = file(BASE_PATH."/.git/FETCH_HEAD");
-                foreach($data as $line) {
-                    $branch = explode("	", $line);
-                    if(strpos($branch[2], "master") !== false) {
-                        break;
-                    }
-                }
-                if($app[0]['version'] != $branch[0]) {
-                    $version[] = array("version"=>$branch[0],"time"=>time(),"name"=>"");
+            $local = $this->getLocalVersion();
+            
+            if(!isset($local[0]['optout'])) {
+                $remote = $this->getRemoteVersion();
+                $this->OptOut();
+            }            
+            
+            if(file_exists(BASE_PATH."/.git/HEAD")) {
+                $current = getJSON('version.php');
+                if($local[0]['version'] != $current[0]['version']) {
+                    $remote = $this->getRemoteVersion();
+                    $version[] = array("version"=>$local[0]['version'],"time"=>time(),"optout"=>"true","name"=>"");
                     saveJSON('version.php',$version);
                 }
+            } else {
+              if($local[0]['version'] == '' && $local[0]['name'] == $_SESSION['user']) {
+                  $remote = $this->getRemoteVersion();
+                  $version[] = array("version"=>$remote[0]["commit"]["sha"],"time"=>time(),"optout"=>"true","name"=>$_SESSION['user']);
+                  saveJSON('version.php',$version);
+              }
             }
         }
     }
@@ -82,7 +79,17 @@ class Update {
     //////////////////////////////////////////////////////////////////
 
     public function Clear() {
-        $version[] = array("version"=>"","time"=>time(),"name"=>$_SESSION['user']);
+        $version[] = array("version"=>"","time"=>time(),"optout"=>"true","name"=>$_SESSION['user']);
+        saveJSON('version.php',$version);
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Clear Version
+    //////////////////////////////////////////////////////////////////
+
+    public function OptOut() {
+        $current = getJSON('version.php');
+        $version[] = array("version"=>$current[0]['version'],"time"=>$current[0]['time'],"optout"=>"true","name"=>$current[0]['name']);
         saveJSON('version.php',$version);
     }
 
@@ -91,31 +98,33 @@ class Update {
     //////////////////////////////////////////////////////////////////
 
     public function Check() {
-        if(file_exists(BASE_PATH."/.git/FETCH_HEAD")) {
-            $data = file(BASE_PATH."/.git/FETCH_HEAD");
-            foreach($data as $line) {
-                $branch = explode("	", $line);
-                if(strpos($branch[2], "master") !== false) {
-                    break;
-                }
+        $local = $this->getLocalVersion();
+        $remote = $this->getRemoteVersion($local[0]['version']);
+        
+        $nightly = true;
+        $archive = Common::getConstant('ARCHIVEURL', $this->archive);
+        $latest = '';
+        
+        foreach($remote as $tag) {
+            if($latest == '') {
+                $latest = $tag["name"];
+                $archive = $tag["zipball_url"];
             }
-            $app[0]['version'] = $branch[0];
-            $app[0]['name'] = "";
-        } else {
-            $app = getJSON('version.php');
+            if($local[0]['version'] == $tag["commit"]["sha"]) {
+                $local[0]['version'] = $tag["name"];
+                $nightly = false;
+                break;
+            }
         }
-
-        if($this->remote != '') {
-            $remote = json_decode(file_get_contents($this->remote),true);
-        }
-
+                
         $search = array("\r\n", "\n", "\r");
         $replace = array(" ", " ", " ");
 
         $message = '';
         $merge = '';
-        foreach($remote as $commit) {
-            if($app[0]['version'] != $commit["sha"]) {
+        $commits = json_decode(file_get_contents(Common::getConstant('COMMITURL', $this->commits)),true);
+        foreach($commits as $commit) {
+            if($local[0]['version'] != $commit["sha"]) {
                 if(strpos($commit["commit"]["message"],"Merge") === false) {
                     $message .= '- '.str_replace($search,$replace,$commit["commit"]["message"]).'<br/>';
                 } else {
@@ -130,7 +139,40 @@ class Update {
             $message = $merge;
         }
 
-        return "[".formatJSEND("success",array("currentversion"=>$app[0]['version'],"remoteversion"=>$remote[0]["sha"],"message"=>$message,"archive"=>$this->archive,"name"=>$app[0]['name']))."]";
+        return "[".formatJSEND("success",array("currentversion"=>$local[0]['version'],"remoteversion"=>$latest,"message"=>$message,"archive"=>$archive,"nightly"=>$nightly,"name"=>$local[0]['name']))."]";
+    }
+        
+    //////////////////////////////////////////////////////////////////
+    // Get Local Version
+    //////////////////////////////////////////////////////////////////
+    
+    public function getLocalVersion() {
+        if(file_exists(BASE_PATH."/.git/HEAD")) {
+            $tmp = file_get_contents(BASE_PATH."/.git/HEAD");
+            if (strpos($tmp,"ref:") === false) {
+                $data[0]['version'] = trim($tmp);
+            } else {
+                $data[0]['version'] = trim(file_get_contents(BASE_PATH."/.git/".trim(str_replace('ref: ', '', $tmp))));
+            }
+            $data[0]['name'] = "";
+        } else {
+            $data = getJSON('version.php');
+        }
+        return $data;
+    }
+        
+    //////////////////////////////////////////////////////////////////
+    // Get Remote Version
+    //////////////////////////////////////////////////////////////////
+        
+    public function getRemoteVersion($localversion = "") {
+        $remoteurl = Common::getConstant('UPDATEURL', $this->remote);
+        $remoteurl = str_replace("{OS}", PHP_OS, $remoteurl);
+        $remoteurl = str_replace("{PHP}", phpversion(), $remoteurl);
+        $remoteurl = str_replace("{VER}", $localversion, $remoteurl);
+        $remoteurl = str_replace("{WEB}", $_SERVER['SERVER_SOFTWARE'], $remoteurl);
+        
+        return json_decode(file_get_contents($remoteurl),true);
     }
 
 }
