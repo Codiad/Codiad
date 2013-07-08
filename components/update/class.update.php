@@ -53,20 +53,20 @@ class Update {
             $local = $this->getLocalVersion();
             
             if(!isset($local[0]['optout'])) {
-                $remote = $this->getRemoteVersion();
+                $remote = $this->getRemoteVersion($local[0]['version']);
                 $this->OptOut();
             }            
             
             if(file_exists(BASE_PATH."/.git/HEAD")) {
                 $current = getJSON('version.php');
                 if($local[0]['version'] != $current[0]['version']) {
-                    $remote = $this->getRemoteVersion();
+                    $remote = $this->getRemoteVersion($local[0]['version']);
                     $version[] = array("version"=>$local[0]['version'],"time"=>time(),"optout"=>"true","name"=>"");
                     saveJSON('version.php',$version);
                 }
             } else {
               if($local[0]['version'] == '' && $local[0]['name'] == $_SESSION['user']) {
-                  $remote = $this->getRemoteVersion();
+                  $remote = $this->getRemoteVersion($local[0]['version']);
                   $version[] = array("version"=>$remote[0]["commit"]["sha"],"time"=>time(),"optout"=>"true","name"=>$_SESSION['user']);
                   saveJSON('version.php',$version);
               }
