@@ -28,7 +28,7 @@ class Update {
 
     public function __construct(){
         ini_set("user_agent" , "Codiad");
-        $this->remote = "http://update.codiad.com/?v={VER}&o={OS}&p={PHP}&w={WEB}";
+        $this->remote = "http://update.codiad.com/?v={VER}&o={OS}&p={PHP}&w={WEB}&a={ACT}";
         $this->commits = "https://api.github.com/repos/Codiad/Codiad/commits";
         $this->archive = "https://github.com/Codiad/Codiad/archive/master.zip";
     }
@@ -40,37 +40,39 @@ class Update {
     public function Init() {
         $version = array();
         if(!file_exists(DATA ."/version.php")) {
-            $remote = $this->getRemoteVersion();
             if(file_exists(BASE_PATH."/.git/HEAD")) {
+                $remote = $this->getRemoteVersion("install_git");
                 $local = $this->getLocalVersion();
                 $version[] = array("version"=>$local[0]['version'],"time"=>time(),"optout"=>"true","name"=>"");
                 saveJSON('version.php',$version);
             } else {
+                $remote = $this->getRemoteVersion("install_man");
                 $version[] = array("version"=>$remote[0]["commit"]["sha"],"time"=>time(),"optout"=>"true","name"=>"");
                 saveJSON('version.php',$version);
             }
         } else {
             $local = $this->getLocalVersion();
-            
-            if(!isset($local[0]['optout'])) {
-                $remote = $this->getRemoteVersion($local[0]['version']);
-                $this->OptOut();
-            }            
-            
+                    
             if(file_exists(BASE_PATH."/.git/HEAD")) {
                 $current = getJSON('version.php');
                 if($local[0]['version'] != $current[0]['version']) {
-                    $remote = $this->getRemoteVersion($local[0]['version']);
+                    $remote = $this->getRemoteVersion("update_git", $local[0]['version']);
                     $version[] = array("version"=>$local[0]['version'],"time"=>time(),"optout"=>"true","name"=>"");
                     saveJSON('version.php',$version);
                 }
             } else {
               if($local[0]['version'] == '' && $local[0]['name'] == $_SESSION['user']) {
-                  $remote = $this->getRemoteVersion($local[0]['version']);
+                  $remote = $this->getRemoteVersion("update_man", $local[0]['version']);
                   $version[] = array("version"=>$remote[0]["commit"]["sha"],"time"=>time(),"optout"=>"true","name"=>$_SESSION['user']);
                   saveJSON('version.php',$version);
               }
             }
+            
+            $local = $this->getLocalVersion();
+            if(!isset($local[0]['optout'])) {
+                $remote = $this->getRemoteVersion("optout", $local[0]['version']);
+                $this->OptOut();
+            }   
         }
     }
 
@@ -99,7 +101,7 @@ class Update {
 
     public function Check() {
         $local = $this->getLocalVersion();
-        $remote = $this->getRemoteVersion($local[0]['version']);
+        $remote = $this->getRemoteVersion("check", $local[0]['version']);
         
         $nightly = true;
         $archive = Common::getConstant('ARCHIVEURL', $this->archive);
@@ -165,12 +167,13 @@ class Update {
     // Get Remote Version
     //////////////////////////////////////////////////////////////////
         
-    public function getRemoteVersion($localversion = "") {
+    public function getRemoteVersion($action, $localversion = "") {
         $remoteurl = Common::getConstant('UPDATEURL', $this->remote);
         $remoteurl = str_replace("{OS}", PHP_OS, $remoteurl);
         $remoteurl = str_replace("{PHP}", phpversion(), $remoteurl);
         $remoteurl = str_replace("{VER}", $localversion, $remoteurl);
         $remoteurl = str_replace("{WEB}", $_SERVER['SERVER_SOFTWARE'], $remoteurl);
+        $remoteurl = str_replace("{ACT}", $action, $remoteurl);
         
         return json_decode(file_get_contents($remoteurl),true);
     }
