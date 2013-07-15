@@ -8,14 +8,14 @@
 
 require_once('../../common.php');
 
-class Plugin_manager extends Common {
+class Theme_manager extends Common {
 
     //////////////////////////////////////////////////////////////////
     // PROPERTIES
     //////////////////////////////////////////////////////////////////
 
-    public $plugins     = '';
-    public $market      = 'http://codiad.com/plugins.json';
+    public $themes     = '';
+    public $market      = 'http://codiad.com/themes.json';
 
     //////////////////////////////////////////////////////////////////
     // METHODS
@@ -28,11 +28,11 @@ class Plugin_manager extends Common {
     //////////////////////////////////////////////////////////////////
 
     public function __construct(){
-        if(!file_exists(DATA.'/plugins.php')) {
-          saveJSON('plugins.php', array(''));
+        if(!file_exists(DATA.'/themes.php')) {
+          saveJSON('themes.php', array(''));
         }  
-        $this->plugins = getJSON('plugins.php');
-        $this->market = Common::getConstant('PMURL', $this->market);
+        $this->themes = getJSON('themes.php');
+        $this->market = Common::getConstant('TMURL', $this->market);
     }
 
     //////////////////////////////////////////////////////////////////
@@ -44,48 +44,48 @@ class Plugin_manager extends Common {
     }
 
     //////////////////////////////////////////////////////////////////
-    // Deactivate Plugin
+    // Deactivate Theme
     //////////////////////////////////////////////////////////////////
 
     public function Deactivate($name){
         $revised_array = array();
-        foreach($this->plugins as $plugin){
-            if($plugin!=$name){
-                $revised_array[] = $plugin;
+        foreach($this->themes as $theme){
+            if($theme!=$name){
+                $revised_array[] = $theme;
             }
         }
         // Save array back to JSON
-        saveJSON('plugins.php',$revised_array);
+        saveJSON('themes.php',$revised_array);
         // Response
         echo formatJSEND("success",null);
     }
 
     //////////////////////////////////////////////////////////////////
-    // Activate Plugin
+    // Activate Theme
     //////////////////////////////////////////////////////////////////
 
     public function Activate($name){
-        $this->plugins[] = $name;
-        saveJSON('plugins.php',$this->plugins);
+        $this->themes[] = $name;
+        saveJSON('themes.php',$this->themes);
         // Response
         echo formatJSEND("success",null);
     }
 
     //////////////////////////////////////////////////////////////////
-    // Install Plugin
+    // Install Theme
     //////////////////////////////////////////////////////////////////
 
     public function Install($name, $repo){
         if(substr($repo,-4) == '.git') {
             $repo = substr($repo,0,-4);
         }
-        if(file_put_contents(PLUGINS.'/'.$name.'.zip', fopen($repo.'/archive/master.zip', 'r'))) {
+        if(file_put_contents(THEMES.'/'.$name.'.zip', fopen($repo.'/archive/master.zip', 'r'))) {
             $zip = new ZipArchive;
-            $res = $zip->open(PLUGINS.'/'.$name.'.zip');
+            $res = $zip->open(THEMES.'/'.$name.'.zip');
             // open downloaded archive
             if ($res === TRUE) {
               // extract archive
-              if($zip->extractTo(PLUGINS) === true) {
+              if($zip->extractTo(THEMES) === true) {
                 $zip->close();
               } else {
                 die(formatJSEND("error","Unable to open ".$name.".zip"));
@@ -94,7 +94,7 @@ class Plugin_manager extends Common {
                 die(formatJSEND("error","ZIP Extension not found"));
             }
 
-            unlink(PLUGINS.'/'.$name.'.zip');
+            unlink(THEMES.'/'.$name.'.zip');
             // Response
             $this->Activate(substr($repo, strrpos($repo, "/") + 1)."-master");
         } else {
@@ -103,7 +103,7 @@ class Plugin_manager extends Common {
     }
 
     //////////////////////////////////////////////////////////////////
-    // Remove Plugin
+    // Remove theme
     //////////////////////////////////////////////////////////////////
 
     public function Remove($name){
@@ -113,12 +113,12 @@ class Plugin_manager extends Common {
             @array_map('rrmdir',glob($path.'/*'))==@rmdir($path);
         }
 
-        rrmdir(PLUGINS.'/'.$name);
+        rrmdir(THEMES.'/'.$name);
         $this->Deactivate($name);
     }
 
     //////////////////////////////////////////////////////////////////
-    // Update Plugin
+    // Update Theme
     //////////////////////////////////////////////////////////////////
 
     public function Update($name){
@@ -149,8 +149,8 @@ class Plugin_manager extends Common {
             }
         }
 
-        if(file_exists(PLUGINS.'/'.$name.'/plugin.json')) {
-            $data = json_decode(file_get_contents(PLUGINS.'/'.$name.'/plugin.json'),true);
+        if(file_exists(THEMES.'/'.$name.'/theme.json')) {
+            $data = json_decode(file_get_contents(THEMES.'/'.$name.'/theme.json'),true);
             if(substr($data[0]['url'],-4) == '.git') {
                 $data[0]['url'] = substr($data[0]['url'],0,-4);
             }
@@ -163,20 +163,20 @@ class Plugin_manager extends Common {
               }
             }
 
-            if(file_exists(PLUGINS.'/_'.session_id()) || mkdir(PLUGINS.'/_'.session_id())) {
-              if(file_put_contents(PLUGINS.'/_'.session_id().'/'.$name.'.zip', fopen($data[0]['url'], 'r'))) {
+            if(file_exists(THEMES.'/_'.session_id()) || mkdir(THEMES.'/_'.session_id())) {
+              if(file_put_contents(THEMES.'/_'.session_id().'/'.$name.'.zip', fopen($data[0]['url'], 'r'))) {
                   $zip = new ZipArchive;
-                  $res = $zip->open(PLUGINS.'/_'.session_id().'/'.$name.'.zip');
+                  $res = $zip->open(THEMES.'/_'.session_id().'/'.$name.'.zip');
                   // open downloaded archive
                   if ($res === TRUE) {
                     // extract archive
-                    if($zip->extractTo(PLUGINS.'/_'.session_id().'') === true) {
+                    if($zip->extractTo(THEMES.'/_'.session_id().'') === true) {
                       $zip->close();
                       $srcname = $name;
                       if(substr($srcname, -6) != "master") {
                         $srcname = $srcname.'-master';
                       }
-                      cpy(PLUGINS.'/_'.session_id().'/'.$srcname, PLUGINS.'/'.$name, $ign);
+                      cpy(THEMES.'/_'.session_id().'/'.$srcname, THEMES.'/'.$name, $ign);
                     } else {
                       die(formatJSEND("error","Unable to open ".$name.".zip"));
                     }
@@ -184,7 +184,7 @@ class Plugin_manager extends Common {
                       die(formatJSEND("error","ZIP Extension not found"));
                   }
 
-                  rrmdir(PLUGINS.'/_'.session_id());
+                  rrmdir(THEMES.'/_'.session_id());
                   // Response
                   echo formatJSEND("success",null);
               } else {
@@ -194,7 +194,7 @@ class Plugin_manager extends Common {
               die(formatJSEND("error","Unable to create temp dir "));
             }
         } else {
-            echo formatJSEND("error","Unable to find plugin ".$name);
+            echo formatJSEND("error","Unable to find theme ".$name);
         }
     }
 }

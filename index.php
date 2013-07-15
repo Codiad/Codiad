@@ -40,6 +40,13 @@ if(!file_exists(DATA . '/plugins.php')) {
     $plugins = getJSON('plugins.php');
 }
 
+
+// Themes
+$theme = THEME;
+if(isset($_SESSION['theme'])) {
+  $theme = $_SESSION['theme'];
+}
+
 ?>
 <!doctype html>
 
@@ -51,8 +58,8 @@ if(!file_exists(DATA . '/plugins.php')) {
     $stylesheets = array("jquery.toastmessage.css","reset.css","fonts.css","screen.css");
    
     foreach($stylesheets as $sheet){
-        if(file_exists(THEMES . "/". THEME . "/".$sheet)){
-            echo('<link rel="stylesheet" href="themes/'.THEME.'/'.$sheet.'">');
+        if(file_exists(THEMES . "/". $theme . "/".$sheet)){
+            echo('<link rel="stylesheet" href="themes/'.$theme.'/'.$sheet.'">');
         } else {
             echo('<link rel="stylesheet" href="themes/default/'.$sheet.'">');
         }
@@ -60,8 +67,8 @@ if(!file_exists(DATA . '/plugins.php')) {
     
     // Load Component CSS Files    
     foreach($components as $component){
-        if(file_exists(THEMES . "/". THEME . "/" . $component . "/screen.css")){
-            echo('<link rel="stylesheet" href="themes/'.THEME.'/'.$component.'/screen.css">');
+        if(file_exists(THEMES . "/". $theme . "/" . $component . "/screen.css")){
+            echo('<link rel="stylesheet" href="themes/'.$theme.'/'.$component.'/screen.css">');
         } else {
             if(file_exists("themes/default/" . $component . "/screen.css")){
                 echo('<link rel="stylesheet" href="themes/default/'.$component.'/screen.css">');
@@ -75,8 +82,8 @@ if(!file_exists(DATA . '/plugins.php')) {
     
     // Load Plugin CSS Files    
     foreach($plugins as $plugin){
-        if(file_exists(THEMES . "/". THEME . "/" . $plugin . "/screen.css")){
-            echo('<link rel="stylesheet" href="themes/'.THEME.'/'.$plugin.'/screen.css">');
+        if(file_exists(THEMES . "/". $theme . "/" . $plugin . "/screen.css")){
+            echo('<link rel="stylesheet" href="themes/'.$theme.'/'.$plugin.'/screen.css">');
         } else {
             if(file_exists("themes/default/" . $plugin . "/screen.css")){
                 echo('<link rel="stylesheet" href="themes/default/'.$plugin.'/screen.css">');
@@ -145,8 +152,21 @@ if(!file_exists(DATA . '/plugins.php')) {
                 <input type="password" name="password">
                 
                 <div class="language-selector">
+                    <label><span class="icon-picture login-icon"></span> Theme</label>
+                    <select name="theme" id="theme">
+                        <option value="default">Default</option>
+                        <?php
+                        include 'languages/code.php';
+                        foreach(getJSON('themes.php') as $theme): 
+                            if(file_exists("themes/" . $theme . "/theme.json")) {
+                                $data = file_get_contents("themes/" . $theme . "/theme.json");
+                                $data = json_decode($data,true);
+                            ?>
+                            <option value="<?php echo $theme; ?>" <?php if($theme == THEME) { echo "selected"; } ?>><?php if($data[0]['name'] != '') { echo $data[0]['name']; } else { echo $theme; } ?></option>
+                        <?php } endforeach; ?>
+                    </select>
                     <label><span class="icon-language login-icon"></span> Language</label>
-                    <select name="language">
+                    <select name="language" id="language">
                         <?php
                         include 'languages/code.php';
                         foreach(glob("languages/*.php") as $filename): 
@@ -161,7 +181,7 @@ if(!file_exists(DATA . '/plugins.php')) {
                 
                 <button>Login</button>
 
-                <a class="show-language-selector">Language</a>
+                <a class="show-language-selector">More</a>
 
             </form>
 

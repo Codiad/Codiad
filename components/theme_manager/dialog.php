@@ -18,20 +18,20 @@
     switch($_GET['action']){
     
         //////////////////////////////////////////////////////////////
-        // Plugin Market
+        // Theme Market
         //////////////////////////////////////////////////////////////
         
         case 'market':
         
-            require_once('class.plugin_manager.php');
-            $pm = new Plugin_manager();
-            $market = $pm->Market();
+            require_once('class.theme_manager.php');
+            $tm = new Theme_manager();
+            $market = $tm->Market();
             ?>
-            <label><?php i18n("Plugin Market"); ?></label>
-            <div id="plugin-list">
+            <label><?php i18n("Theme Market"); ?></label>
+            <div id="theme-list">
             <table width="100%">
                 <tr>
-                    <th><?php i18n("Plugin Name"); ?></th>
+                    <th><?php i18n("Theme Name"); ?></th>
                     <th><?php i18n("Description"); ?></th>
                     <th><?php i18n("Author"); ?></th>
                     <th><?php i18n("Download"); ?></th>
@@ -39,37 +39,37 @@
             <?php
             if($market != '') {
                 $marketlist = array();
-                foreach($market as $plugin) {
-                    if(!isset($plugin['category']) || $plugin['category'] == '') {
-                        $plugin['category'] = 'Common';
+                foreach($market as $theme) {
+                    if(!isset($theme['category']) || $theme['category'] == '') {
+                        $theme['category'] = 'Common';
                     }
-                    if(!array_key_exists($plugin['category'], $marketlist)) {
-                        $marketlist[$plugin['category']] = array();
+                    if(!array_key_exists($theme['category'], $marketlist)) {
+                        $marketlist[$theme['category']] = array();
                     } 
-                    array_push($marketlist[$plugin['category']], $plugin);
+                    array_push($marketlist[$theme['category']], $theme);
                 }
                 
                 ksort($marketlist);
-                $isDownloadable = (is_writeable(PLUGINS) && extension_loaded('zip') && extension_loaded('openssl') && ini_get('allow_url_fopen') == 1);
+                $isDownloadable = (is_writeable(THEMES) && extension_loaded('zip') && extension_loaded('openssl') && ini_get('allow_url_fopen') == 1);
                 
-                foreach($marketlist as $category=>$pluginlist) {
+                foreach($marketlist as $category=>$themelist) {
                     ?>
                     <tr>
                     <th colspan="4"><?php echo $category;?></th>
                     </tr>
                     <?php
-                    foreach($pluginlist as $plugin) {
-                        if(substr($plugin['url'],-4) == '.git') {
-                            $plugin['url'] = substr($plugin['url'],0,-4);
+                    foreach($themelist as $theme) {
+                        if(substr($theme['url'],-4) == '.git') {
+                            $theme['url'] = substr($theme['url'],0,-4);
                         }
                     
                         ?>
                         <tr>
-                            <td><?php echo $plugin['name']; ?></td>
-                            <td width="400px"><?php echo $plugin['description']; ?></td>
-                            <td><?php echo $plugin['author']; ?></td>
+                            <td><?php echo $theme['name']; ?></td>
+                            <td width="400px"><?php echo $theme['description']; ?></td>
+                            <td><?php echo $theme['author']; ?></td>
                             <?php
-                                if(file_exists(PLUGINS.substr($plugin['url'],strrpos($plugin['url'],'/'))) || file_exists(PLUGINS.substr($plugin['url'],strrpos($plugin['url'],'/')).'-master')) {
+                                if(file_exists(THEMES.substr($theme['url'],strrpos($theme['url'],'/'))) || file_exists(THEMES.substr($theme['url'],strrpos($theme['url'],'/')).'-master')) {
                                     ?>
                                     <td><div class="icon-check icon"></div></td>
                                     <?php
@@ -77,11 +77,11 @@
                                     if(checkAccess()){
                                         if($isDownloadable) {
                                         ?>
-                                         <td><table style="text-align:center;border-spacing:0;border-collapse:collapse;"><tr><td style="border: 0;padding: 0;"><a class="icon-download icon" onclick="codiad.plugin_manager.install('<?php echo $plugin['name']; ?>','<?php echo $plugin['url']; ?>');return false;"></a></td><td style="border: 0;padding: 0;"><a class="icon-github icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $plugin['url']; ?>');return false;"></a></td></tr></table></td>   
+                                         <td><table style="text-align:center;border-spacing:0;border-collapse:collapse;"><tr><td style="border: 0;padding: 0;"><a class="icon-download icon" onclick="codiad.theme_manager.install('<?php echo $theme['name']; ?>','<?php echo $theme['url']; ?>');return false;"></a></td><td style="border: 0;padding: 0;"><a class="icon-github icon" onclick="codiad.theme_manager.openInBrowser('<?php echo $theme['url']; ?>');return false;"></a></td></tr></table></td>   
                                         <?php       
                                         } else {
                                         ?>
-                                        <td><a class="icon-download icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $plugin['url']; ?>');return false;"></a></td>
+                                        <td><a class="icon-download icon" onclick="codiad.theme_manager.openInBrowser('<?php echo $theme['url']; ?>');return false;"></a></td>
                                         <?php
                                         }                             
                                     } else {
@@ -97,50 +97,50 @@
                 }
             } else {
                 ?>
-                <tr><td colspan="4"><?php i18n("Plugin Market currently unavailable."); ?></td></tr>
+                <tr><td colspan="4"><?php i18n("Theme Market currently unavailable."); ?></td></tr>
                 <?php
             }
             
             ?>
             </table>
             </div>
-            <button class="btn-left" onclick="codiad.plugin_manager.list();return false;"><?php i18n("Installed Plugins"); ?></button><button class="btn-mid" onclick="codiad.plugin_manager.check();return false;"><?php i18n("Update Check"); ?></button><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
+            <button class="btn-left" onclick="codiad.theme_manager.list();return false;"><?php i18n("Installed Themes"); ?></button><button class="btn-mid" onclick="codiad.theme_manager.check();return false;"><?php i18n("Update Check"); ?></button><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
             <?php
             
             break;
         
         //////////////////////////////////////////////////////////////
-        // List Plugins
+        // List Themes
         //////////////////////////////////////////////////////////////
         
         case 'list':
             ?>
-            <label><?php i18n("Plugin List"); ?></label>
-            <div id="plugin-list">
+            <label><?php i18n("Theme List"); ?></label>
+            <div id="theme-list">
             <table width="100%">
                 <tr>
-                    <th><?php i18n("Plugin Name"); ?></th>
+                    <th><?php i18n("Theme Name"); ?></th>
                     <th><?php i18n("Version"); ?></th>
                     <th><?php i18n("Author"); ?></th>
                     <th width="5"><?php i18n("Active"); ?></th>
-                    <?php if(is_writeable(PLUGINS)) { ?>
+                    <?php if(is_writeable(THEMES)) { ?>
                     <th width="5"><?php i18n("Delete"); ?></th>
                     <?php } ?>
                 </tr>
             <?php
             
-            // Get projects JSON data
-            $plugins = getJSON('plugins.php');
-            $availableplugins = array();
-            $plugincount = 0;
-            foreach (scandir(PLUGINS) as $fname){
+            // Get JSON data
+            $themes = getJSON('themes.php');
+            $availablethemes = array();
+            $themecount = 0;
+            foreach (scandir(THEMES) as $fname){
                 if($fname == '.' || $fname == '..' ){
                     continue;
                 }
-                if(is_dir(PLUGINS.'/'.$fname)){
-                    $availableplugins[] = $fname;
-                    if(file_exists(PLUGINS . "/" . $fname . "/plugin.json")) {
-                        $data = file_get_contents(PLUGINS . "/" . $fname . "/plugin.json");
+                if(is_dir(THEMES.'/'.$fname)){
+                    $availablethemes[] = $fname;
+                    if(file_exists(THEMES . "/" . $fname . "/theme.json")) {
+                        $data = file_get_contents(THEMES . "/" . $fname . "/theme.json");
                         $data = json_decode($data,true);
                         ?>
                         <tr>
@@ -149,24 +149,24 @@
                             <td><?php echo $data[0]['author']; ?></td>
                             <?php
                                 if(checkAccess()){
-                                    if(in_array($fname, $plugins)) {
+                                    if(in_array($fname, $themes)) {
                                     ?>
-                                    <td><a onclick="codiad.plugin_manager.deactivate('<?php echo($fname); ?>');" class="icon-check icon"></a></td>
+                                    <td><a onclick="codiad.theme_manager.deactivate('<?php echo($fname); ?>');" class="icon-check icon"></a></td>
                                     <?php 
                                     } else {
                                     ?>
-                                     <td><a onclick="codiad.plugin_manager.activate('<?php echo($fname); ?>');" class="icon-block icon"></a></td>   
+                                     <td><a onclick="codiad.theme_manager.activate('<?php echo($fname); ?>');" class="icon-block icon"></a></td>   
                                     <?php                                    
                                     }
-                                    if(is_writeable(PLUGINS)) {
+                                    if(is_writeable(THEMES)) {
                                         ?>
-                                        <td><a onclick="codiad.plugin_manager.remove('<?php echo($fname); ?>');" class="icon-cancel-circled icon"></a></td>
+                                        <td><a onclick="codiad.theme_manager.remove('<?php echo($fname); ?>');" class="icon-cancel-circled icon"></a></td>
                                         <?php
                                     }
                                 } else {
                                     ?>
-                                    <td><div class="<?php if(in_array($fname, $plugins)) { echo 'icon-check'; } else { echo 'icon-block'; } ?> icon"></div></td>
-                                    <?php if(is_writeable(PLUGINS)) { ?>
+                                    <td><div class="<?php if(in_array($fname, $themes)) { echo 'icon-check'; } else { echo 'icon-block'; } ?> icon"></div></td>
+                                    <?php if(is_writeable(THEMES)) { ?>
                                     <td></td>
                                     <?php
                                     }
@@ -174,73 +174,73 @@
                             ?>
                         </tr>
                         <?php
-                        $plugincount++;
+                        $themecount++;
                     }
                 }
             }
             
             $colspan = 4;            
-            if(is_writeable(PLUGINS)) {
+            if(is_writeable(THEMES)) {
                 $colspan = 5;
             }
             
-            if($plugincount == 0) {
+            if($themecount == 0) {
             ?>
-            <tr><td colspan="<?php echo $colspan;?>"><?php i18n("No Plugins installed. Check Plugin Market."); ?></td></tr>
+            <tr><td colspan="<?php echo $colspan;?>"><?php i18n("No Themes installed. Check Theme Market."); ?></td></tr>
             <?php
             } else {
             ?>
-            <tr><td colspan="<?php echo $colspan;?>" align="right"><?php echo $plugincount; ?> <?php i18n("Plugins installed."); ?></td></tr>
+            <tr><td colspan="<?php echo $colspan;?>" align="right"><?php echo $themecount; ?> <?php i18n("Themes installed."); ?></td></tr>
             <?php
             }
             
-            // clean old plugins from json file
+            // clean old Themes from json file
             $revised_array = array();
-            foreach($plugins as $plugin){
-                if(in_array($plugin, $availableplugins)){
-                    $revised_array[] = $plugin;
+            foreach($themes as $theme){
+                if(in_array($theme, $availablethemes)){
+                    $revised_array[] = $theme;
                 }
             }
             // Save array back to JSON
-            saveJSON('plugins.php',$revised_array);
+            saveJSON('themes.php',$revised_array);
             
             ?>
             </table>
             </div>
-            <button class="btn-left" onclick="window.location.reload();return false;"><?php i18n("Reload Codiad"); ?></button><button class="btn-mid" onclick="codiad.plugin_manager.market();return false;"><?php i18n("Plugin Market"); ?></button><button class="btn-mid" onclick="codiad.plugin_manager.check();return false;"><?php i18n("Update Check"); ?></button><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
+            <button class="btn-mid" onclick="codiad.theme_manager.market();return false;"><?php i18n("Theme Market"); ?></button><button class="btn-mid" onclick="codiad.theme_manager.check();return false;"><?php i18n("Update Check"); ?></button><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
             <?php
             
             break;
             
         //////////////////////////////////////////////////////////////
-        // Update Plugins
+        // Update Themes
         //////////////////////////////////////////////////////////////
         
         case 'check':
             ?>
-            <label><?php i18n("Plugin Update Check"); ?></label>
-            <div id="plugin-list">
+            <label><?php i18n("Theme Update Check"); ?></label>
+            <div id="theme-list">
             <table width="100%">
                 <tr>
-                    <th><?php i18n("Plugin Name"); ?></th>
+                    <th><?php i18n("Theme Name"); ?></th>
                     <th><?php i18n("Your Version"); ?></th>
                     <th><?php i18n("Latest Version"); ?></th>
                     <th><?php i18n("Download"); ?></th>
                 </tr>
             <?php
             
-            $isDownloadable = (is_writeable(PLUGINS) && extension_loaded('zip') && extension_loaded('openssl') && ini_get('allow_url_fopen') == 1);
+            $isDownloadable = (is_writeable(THEMES) && extension_loaded('zip') && extension_loaded('openssl') && ini_get('allow_url_fopen') == 1);
             
             // Get projects JSON data
-            $plugins = getJSON('plugins.php');
-            $plugincount = 0;
-            foreach (scandir(PLUGINS) as $fname){
+            $themes = getJSON('themes.php');
+            $themecount = 0;
+            foreach (scandir(THEMES) as $fname){
                 if($fname == '.' || $fname == '..' ){
                     continue;
                 }
-                if(is_dir(PLUGINS.'/'.$fname)){
-                    if(file_exists(PLUGINS . "/" . $fname . "/plugin.json")) {
-                        $data = file_get_contents(PLUGINS . "/" . $fname . "/plugin.json");
+                if(is_dir(THEMES.'/'.$fname)){
+                    if(file_exists(THEMES . "/" . $fname . "/theme.json")) {
+                        $data = file_get_contents(THEMES . "/" . $fname . "/theme.json");
                         $data = json_decode($data,true);
                         
                         if($data[0]['url'] != '') {
@@ -248,7 +248,7 @@
                             if(substr($url,-4) == '.git') {
                                 $url = substr($url,0,-4);
                             }
-                            $url = $url.'/master/plugin.json';
+                            $url = $url.'/master/theme.json';
                             $remote = json_decode(file_get_contents($url),true);
                         }
                         
@@ -264,11 +264,11 @@
                                     if($remote[0]['version'] != $data[0]['version']) {
                                         if($isDownloadable) {
                                         ?>
-                                            <td><table style="text-align:center;border-spacing:0;border-collapse:collapse;"><tr><td style="border: 0;padding: 0;"><a class="icon-download icon" onclick="codiad.plugin_manager.update('<?php echo $fname; ?>');return false;"></a></td><td style="border: 0;padding: 0;"><a class="icon-github icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $data[0]['url']; ?>');return false;"></a></td></tr></table></td>
+                                            <td><table style="text-align:center;border-spacing:0;border-collapse:collapse;"><tr><td style="border: 0;padding: 0;"><a class="icon-download icon" onclick="codiad.theme_manager.update('<?php echo $fname; ?>');return false;"></a></td><td style="border: 0;padding: 0;"><a class="icon-github icon" onclick="codiad.theme_manager.openInBrowser('<?php echo $data[0]['url']; ?>');return false;"></a></td></tr></table></td>
                                         <?php
                                         } else {
                                         ?>
-                                        <td><a class="icon-download icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $data[0]['url']; ?>');return false;"></a></td>
+                                        <td><a class="icon-download icon" onclick="codiad.theme_manager.openInBrowser('<?php echo $data[0]['url']; ?>');return false;"></a></td>
                                         <?php
                                         }
                                     } else {
@@ -285,20 +285,20 @@
                             ?>
                         </tr>
                         <?php
-                        $plugincount++;
+                        $themecount++;
                     }
                 }
             }
             
-            if($plugincount == 0) {
+            if($themecount == 0) {
             ?>
-            <tr><td colspan="4"><?php i18n("No Plugins installed. Check Plugin Market."); ?></td></tr>
+            <tr><td colspan="4"><?php i18n("No Themes installed. Check Themes Market."); ?></td></tr>
             <?php
             }             
             ?>
             </table>
             </div>
-            <button class="btn-left" onclick="codiad.plugin_manager.check();return false;"><?php i18n("Rescan"); ?></button><button class="btn-mid" onclick="codiad.plugin_manager.list();return false;"><?php i18n("Installed Plugins"); ?></button><button class="btn-mid" onclick="codiad.plugin_manager.market();return false;"><?php i18n("Plugin Market"); ?></button><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
+            <button class="btn-left" onclick="codiad.theme_manager.check();return false;"><?php i18n("Rescan"); ?></button><button class="btn-mid" onclick="codiad.theme_manager.list();return false;"><?php i18n("Installed Themes"); ?></button><button class="btn-mid" onclick="codiad.theme_manager.market();return false;"><?php i18n("Theme Market"); ?></button><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
             <?php
             
             break;
