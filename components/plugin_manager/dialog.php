@@ -129,6 +129,10 @@
                 </tr>
             <?php
             
+            if(!file_exists(DATA.'/plugins.php')) {
+              saveJSON('plugins.php', array(''));
+            }  
+            
             // Get projects JSON data
             $plugins = getJSON('plugins.php');
             $availableplugins = array();
