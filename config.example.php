@@ -46,6 +46,9 @@ define("WSURL", BASE_URL . "/workspace");
 // Plugin Market
 //define("PMURL", "http://codiad.com/plugins.json");
 
+// Theme Market
+//define("TMURL", "http://codiad.com/themes.json");
+
 // Update Check
 //define("UPDATEURL", "http://update.codiad.com/?v={VER}&o={OS}&p={PHP}&w={WEB}&a={ACT}");
 //define("ARCHIVEURL", "https://github.com/Codiad/Codiad/archive/master.zip");

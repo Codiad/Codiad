@@ -40,6 +40,9 @@
         else
             $User->lang = 'en';
 
+        // theme
+        $User->theme = $_POST['theme'];
+
         $User->Authenticate();
     }
 
