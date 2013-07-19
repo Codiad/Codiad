@@ -129,6 +129,10 @@
                 </tr>
             <?php
             
+            if(!file_exists(DATA.'/themes.php')) {
+              saveJSON('themes.php', array(''));
+            }  
+            
             // Get JSON data
             $themes = getJSON('themes.php');
             $availablethemes = array();
