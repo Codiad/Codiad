@@ -8,7 +8,7 @@
 
 require_once('../../common.php');
 require_once('class.filemanager.php');
-
+require_once('../fileext_textmode/class.fileextension_textmode.php');
 //////////////////////////////////////////////////////////////////
 // Verify Session or Key
 //////////////////////////////////////////////////////////////////
@@ -94,6 +94,8 @@ switch($_GET['action']){
     // Search
     //////////////////////////////////////////////////////////////////
     case 'search':
+         $fileExtension = new fileextension_textmode();
+         $availableFileExtensions = $fileExtension->getDefaultExtensions();
     ?>
     <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">
     <table class="file-search-table">
@@ -111,6 +113,21 @@ switch($_GET['action']){
                     <option value="1"><?php i18n("Workspace Projects"); ?></option>
                     <?php } ?>
                 </select>
+            </td>
+        </tr>
+        <tr>
+            <td width="65%">
+               <label><?php i18n("File Type:"); ?></label>
+               <select name="search_file_type" multiple>
+               <?php
+                   ksort($availableFileExtensions);
+                   foreach($availableFileExtensions as $key => $value) {
+                        printf('<option value="%s">%s</option>', $key, $key);
+                   }
+                ?>
+                </select>
+            </td>
+            <td>
             </td>
         </tr>
     </table>

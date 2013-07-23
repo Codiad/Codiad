@@ -29,6 +29,7 @@ class Filemanager extends Common {
     public $upload_json   = "";
     public $search_string = "";
 
+    public $search_file_type = "*";
     public $query         = "";
     public $foptions     = "";
 
@@ -62,6 +63,9 @@ class Filemanager extends Common {
         }
         // Search
         if(!empty($post['search_string'])){ $this->search_string = $post['search_string']; }
+        if(!empty($post['search_file_type'])){
+           $this->search_file_type = $post['search_file_type'];
+        }
         // Create
         if(!empty($get['type'])){ $this->type = $get['type']; }
         // Modify\Create
@@ -206,7 +210,7 @@ class Filemanager extends Common {
             }
             $input = str_replace('"' , '', $this->search_string);
             $input = preg_quote($input);
-            $output = shell_exec('grep -i -I -n -R "' . $input . '" ' . $this->path . '/* ');
+            $output = shell_exec('grep -i -I -n -R --include=*.' . $this->search_file_type . ' "' . $input . '" ' . $this->path . '/* ');
             $output_arr = explode("\n", $output);
             $return = array();
             foreach($output_arr as $line){

@@ -634,10 +634,22 @@
                 e.preventDefault();
                 searchString = $('#modal-content form input[name="search_string"]')
                     .val();
+                selectedFileTypes =  $('#modal-content form select[name="search_file_type"]')
+                     .val();
+                searchFileType='';
+                if (selectedFileTypes) {
+                    if(selectedFileTypes.length == 1) {
+                        searchFileType = selectedFileTypes.join(",");
+                    }
+                    else {
+                        searchFileType = '{' + selectedFileTypes.join(",") + '}';
+                    }
+                }
                 searchType = $('#modal-content form select[name="search_type"]')
                     .val();
                 $.post(_this.controller + '?action=search&path=' + path + '&type=' + searchType, {
-                    search_string: searchString
+                    search_string: searchString,
+                    search_file_type: searchFileType
                 }, function(data) {
                     searchResponse = codiad.jsend.parse(data);
                     if (searchResponse != 'error') {
