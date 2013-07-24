@@ -625,6 +625,15 @@
                 action: 'search',
                 path: path
             });
+            codiad.modal.load_process.done( function() {
+                var lastSearched = JSON.parse(localStorage.getItem("lastSearched"));
+                if(lastSearched) {
+                    $('#modal-content form input[name="search_string"]').val(lastSearched.searchText);
+                    $('#modal-content form input[name="search_file_type"]').val(lastSearched.fileExtension);
+                    $('#modal-content form select[name="search_type"]').val(lastSearched.searchType);
+                    $('#filemanager-search-results').slideDown().html(lastSearched.searchResults);
+                }
+            });
             codiad.modal.hideOverlay();
             var _this = this;
             $('#modal-content form')
@@ -634,16 +643,12 @@
                 e.preventDefault();
                 searchString = $('#modal-content form input[name="search_string"]')
                     .val();
-                selectedFileTypes =  $('#modal-content form select[name="search_file_type"]')
+                fileExtensions=$('#modal-content form input[name="search_file_type"]')
                      .val();
-                searchFileType='';
-                if (selectedFileTypes) {
-                    if(selectedFileTypes.length == 1) {
-                        searchFileType = selectedFileTypes.join(",");
-                    }
-                    else {
-                        searchFileType = '{' + selectedFileTypes.join(",") + '}';
-                    }
+                searchFileType=$.trim(fileExtensions);
+                if (searchFileType != '') {
+                    //season the string to use in find command
+                    searchFileType = "\\(" + searchFileType.replace(/,/g, "\\|") + "\\)";
                 }
                 searchType = $('#modal-content form select[name="search_type"]')
                     .val();
@@ -666,6 +671,7 @@
                         $('#filemanager-search-results')
                             .slideDown()
                             .html(results);
+                        _this.saveSearchResults(searchString, searchType, fileExtensions, results);
                     } else {
                         $('#filemanager-search-results')
                             .slideUp();
@@ -676,6 +682,18 @@
             });
         },
 
+        /////////////////////////////////////////////////////////////////
+        // saveSearchResults
+        /////////////////////////////////////////////////////////////////
+        saveSearchResults: function(searchText, searchType, fileExtensions, searchResults) {
+            var lastSearched = {
+                searchText: searchText,
+                searchType: searchType,
+                fileExtension: fileExtensions,
+                searchResults: searchResults
+            };
+            localStorage.setItem("lastSearched", JSON.stringify(lastSearched));
+        },
         //////////////////////////////////////////////////////////////////
         // Upload
         //////////////////////////////////////////////////////////////////
