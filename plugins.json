@@ -52,7 +52,7 @@
   },
   { "author" : "Andr3as",
     "name" : "CodeFTP",
-    "description" : "FTP Client",
+    "description" : "Allows FTP connection to remote servers",
     "url" : "https://github.com/Andr3as/Codiad-CodeFTP"
   }
 ]
