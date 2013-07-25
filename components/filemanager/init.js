@@ -648,7 +648,7 @@
                 searchFileType=$.trim(fileExtensions);
                 if (searchFileType != '') {
                     //season the string to use in find command
-                    searchFileType = "\\(" + searchFileType.replace(/,/g, "\\|") + "\\)";
+                    searchFileType = "\\(" + searchFileType.replace(/\s+/g, "\\|") + "\\)";
                 }
                 searchType = $('#modal-content form select[name="search_type"]')
                     .val();
