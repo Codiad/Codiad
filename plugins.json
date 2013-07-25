@@ -49,5 +49,10 @@
     "description" : "Boilerplate for developing Codiad Plugins",
     "category" : "Development",
     "url" : "https://github.com/Fluidbyte/Codiad-Plugin-Template"
+  },
+  { "author" : "Andr3as",
+    "name" : "CodeFTP",
+    "description" : "FTP Client",
+    "url" : "https://github.com/Andr3as/Codiad-CodeFTP"
   }
 ]
