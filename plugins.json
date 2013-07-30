@@ -51,8 +51,8 @@
     "url" : "https://github.com/Fluidbyte/Codiad-Plugin-Template"
   },
   { "author" : "Andr3as",
-    "name" : "CodeFTP",
-    "description" : "Allows FTP connection to remote servers",
-    "url" : "https://github.com/Andr3as/Codiad-CodeFTP"
+    "name" : "CodeTransfer",
+    "description" : "Allows FTP/SCP connection to remote servers",
+    "url" : "https://github.com/Andr3as/Codiad-CodeTransfer"
   }
 ]
