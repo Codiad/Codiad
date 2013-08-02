@@ -38,7 +38,7 @@
     {
         "title": "Preview",
         "icon": "icon-eye",
-        "applies-to" : "file-only no-external",
+        "applies-to" : "both no-external",
         "onclick": "codiad.filemanager.openInBrowser($('#context-menu').attr('data-path'));"
     },
     {
