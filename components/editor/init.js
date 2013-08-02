@@ -385,7 +385,7 @@
                 }
             });
 
-            $.each(['printMargin', 'highlightLine', 'indentGuides', 'wrapMode', 'rightSidebarTrigger', "softTabs"],
+            $.each(['printMargin', 'highlightLine', 'indentGuides', 'wrapMode', 'rightSidebarTrigger', 'fileManagerTrigger', "softTabs"],
                    function(idx, key) {
                        var localValue =
                            localStorage.getItem('codiad.editor.' + key);
@@ -1038,6 +1038,23 @@
             this.settings.rightSidebarTrigger = t;
             // LocalStorage
             localStorage.setItem('codiad.editor.rightSidebarTrigger', t);
+        },
+        
+        //////////////////////////////////////////////////////////////////
+        //
+        // Set trigger for clicking on the filemanager
+        //
+        // Parameters:
+        //   t - {Boolean} (false for Hover, true for Click)
+        //   i - {Editor}  (If omitted, Defaults to all editors)
+        //
+        //////////////////////////////////////////////////////////////////
+
+        setFileManagerTrigger: function(t, i) {
+            this.settings.fileManagerTrigger = t;
+            // LocalStorage
+            localStorage.setItem('codiad.editor.fileManagerTrigger', t);
+            codiad.project.loadSide();
         },
         
         

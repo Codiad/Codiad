@@ -85,7 +85,7 @@
         // Load and list projects in the sidebar.
         //////////////////////////////////////////////////////////////////
         loadSide: function() {
-            $('.sb-projects-content').load(this.dialog + '?action=sidelist');
+            $('.sb-projects-content').load(this.dialog + '?action=sidelist&trigger='+localStorage.getItem('codiad.editor.fileManagerTrigger'));
             this._sideExpanded = true;
         },
         
