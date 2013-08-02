@@ -63,22 +63,45 @@
                 });
             $('#file-manager a')
                 .live('dblclick', function() { // Open or Expand
-                    if ($(this)
-                        .hasClass('directory')) {
-                        _this.index($(this)
-                            .attr('data-path'));
-                    } else {
-                        _this.openFile($(this)
-                            .attr('data-path'));
+                    if (!codiad.editor.settings.fileManagerTrigger) {
+                      if ($(this)
+                          .hasClass('directory')) {
+                          _this.index($(this)
+                              .attr('data-path'));
+                      } else {
+                          _this.openFile($(this)
+                              .attr('data-path'));
+                      }
+                      if (!$(this).parent().children("span").hasClass('none')) {
+                          if ($(this).parent().children("span").hasClass('plus')) {
+                              $(this).parent().children("span").removeClass('plus')
+                              $(this).parent().children("span").addClass('minus');
+                          } else {
+                              $(this).parent().children("span").removeClass('minus')
+                              $(this).parent().children("span").addClass('plus');
+                          }
+                      }
                     }
-                    if (!$(this).parent().children("span").hasClass('none')) {
-                        if ($(this).parent().children("span").hasClass('plus')) {
-                            $(this).parent().children("span").removeClass('plus')
-                            $(this).parent().children("span").addClass('minus');
-                        } else {
-                            $(this).parent().children("span").removeClass('minus')
-                            $(this).parent().children("span").addClass('plus');
-                        }
+                })
+                .live('click', function() { // Open or Expand
+                    if (codiad.editor.settings.fileManagerTrigger) {
+                      if ($(this)
+                          .hasClass('directory')) {
+                          _this.index($(this)
+                              .attr('data-path'));
+                      } else {
+                          _this.openFile($(this)
+                              .attr('data-path'));
+                      }
+                      if (!$(this).parent().children("span").hasClass('none')) {
+                          if ($(this).parent().children("span").hasClass('plus')) {
+                              $(this).parent().children("span").removeClass('plus')
+                              $(this).parent().children("span").addClass('minus');
+                          } else {
+                              $(this).parent().children("span").removeClass('minus')
+                              $(this).parent().children("span").addClass('plus');
+                          }
+                      }
                     }
                 })
                 .live("contextmenu", function(e) { // Context Menu
