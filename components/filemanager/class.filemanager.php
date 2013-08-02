@@ -239,12 +239,14 @@ class Filemanager extends Common {
         if(is_file($this->path)){
             $output = file_get_contents($this->path);
             
-            if(!mb_check_encoding($output, 'UTF-8')) {
-                if(mb_check_encoding($output, 'ISO-8859-1')) {
-                    $output = utf8_encode($output);
-                } else {
-                    $output = mb_convert_encoding($content, 'UTF-8');
-                }
+            if(extension_loaded('mbstring')) {
+              if(!mb_check_encoding($output, 'UTF-8')) {
+                  if(mb_check_encoding($output, 'ISO-8859-1')) {
+                      $output = utf8_encode($output);
+                  } else {
+                      $output = mb_convert_encoding($content, 'UTF-8');
+                  }
+              }
             }
         
             $this->status = "success";
