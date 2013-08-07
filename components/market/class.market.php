@@ -183,7 +183,7 @@ class Market extends Common {
               if($file_headers[0] != 'HTTP/1.1 404 Not Found') {
                   $type = 'themes';
               } else {
-                  die(formatJSEND("error","No type for ".$repo));
+                  die(formatJSEND("error","Invalid Repository"));
               }
           }
         }

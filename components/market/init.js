@@ -41,6 +41,18 @@
         },
         
         //////////////////////////////////////////////////////////////////
+        // Search marketplace
+        //////////////////////////////////////////////////////////////////
+
+        search: function(query) {
+            $('#modal-content form')
+                .die('submit'); // Prevent form bubbling
+            if(query != '') {
+              codiad.modal.load(800, this.dialog + '?action=list&type=undefined&query='+query);
+            }
+        },
+        
+        //////////////////////////////////////////////////////////////////
         // Checks for plugin updates
         //////////////////////////////////////////////////////////////////
 
