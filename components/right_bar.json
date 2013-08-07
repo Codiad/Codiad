@@ -40,14 +40,9 @@
         "onclick": "codiad.modal.load(400, 'components/editor/dialog.php?action=settings');codiad.modal.hideOverlay();"
     },
     {
-        "title": "Plugins",
-        "icon": "icon-tag",
-        "onclick": "codiad.plugin_manager.list();"
-    },
-      {
-        "title": "Themes",
-        "icon": "icon-picture",
-        "onclick": "codiad.theme_manager.list();"
+        "title": "Marketplace",
+        "icon": "icon-cloud",
+        "onclick": "codiad.market.list();"
     },
     {
         "title": "break",
