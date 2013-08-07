@@ -203,6 +203,7 @@ class Market extends Common {
             }
 
             unlink(BASE_PATH.'/'.$type.'/'.$name.'.zip');
+            $tmp = file_get_contents($this->url.'/?i='.$name);
             // Response
             $this->Activate($type, substr($repo, strrpos($repo, "/") + 1)."-master");
         } else {
