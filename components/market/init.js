@@ -52,17 +52,7 @@
               codiad.modal.load(800, this.dialog + '?action=list&type=undefined&query='+query);
             }
         },
-        
-        //////////////////////////////////////////////////////////////////
-        // Checks for plugin updates
-        //////////////////////////////////////////////////////////////////
-
-        check: function() {
-            $('#modal-content form')
-                .die('submit'); // Prevent form bubbling
-            codiad.modal.load(500, this.dialog + '?action=check');
-        },
-        
+                
         openInBrowser: function(path) {
             window.open(path, '_newtab');
         },
@@ -71,7 +61,7 @@
         // Install
         //////////////////////////////////////////////////////////////////
 
-        install: function(type, name, repo) {
+        install: function(page, type, name, repo) {
             var _this = this;
             if(repo != '') {
               $('#modal-content').html('<div id="modal-loading"></div><div align="center">Installing ' + name + '...</div><br>');
@@ -80,7 +70,7 @@
                   if (response == 'error') {
                       codiad.message.error(response.message);
                   }
-                  _this.list();
+                  _this.list(page);
               });
             } else {
                codiad.message.error('No Repository URL');
@@ -91,7 +81,7 @@
         // Remove
         //////////////////////////////////////////////////////////////////
 
-        remove: function(type, name) {
+        remove: function(page, type, name) {
             var _this = this;
             $('#modal-content').html('<div id="modal-loading"></div><div align="center">Deleting ' + name + '...</div><br>');
             $.get(_this.controller + '?action=remove&type=' + type + '&name=' + name, function(data) {
@@ -99,7 +89,7 @@
                 if (response == 'error') {
                     codiad.message.error(response.message);
                 }
-                _this.list();
+                _this.list(page);
             });
         },
         
@@ -107,7 +97,7 @@
         // Update
         //////////////////////////////////////////////////////////////////
 
-        update: function(type, name) {
+        update: function(page, type, name) {
             var _this = this;
             $('#modal-content').html('<div id="modal-loading"></div><div align="center">Updating ' + name + '...</div><br>');
             $.get(_this.controller + '?action=update&type=' + type + '&name=' + name, function(data) {
@@ -115,7 +105,7 @@
                 if (response == 'error') {
                     codiad.message.error(response.message);
                 }
-                _this.check();
+                _this.list(page);
             });
         },
 
@@ -123,12 +113,12 @@
         // Activate
         //////////////////////////////////////////////////////////////////
 
-        activate: function(type, name) {
+        activate: function(page, type, name) {
             var _this = this;
             $.get(this.controller + '?action=activate&type=' + type + '&name=' + name, function(data) {
                 var response = codiad.jsend.parse(data);
                 if (response != 'error') {
-                    _this.list();
+                    _this.list(page);
                 }
             });
         },
@@ -137,12 +127,12 @@
         // Deactivate
         //////////////////////////////////////////////////////////////////
 
-        deactivate: function(type, name) {
+        deactivate: function(page, type, name) {
             var _this = this;
             $.get(this.controller + '?action=deactivate&type=' + type + '&name=' + name, function(data) {
                 var response = codiad.jsend.parse(data);
                 if (response != 'error') {
-                    _this.list();
+                    _this.list(page);
                 }
             });
         }

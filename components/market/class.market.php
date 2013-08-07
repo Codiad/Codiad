@@ -113,7 +113,7 @@ class Market extends Common {
                         $data[0]['type'] = 'plugins';
                         $data[0]['image'] = '';
                         $data[0]['count'] = -1;
-                        $data[0]['description'] = 'Manual Installation found.';
+                        $data[0]['description'] = 'Manual Installation';
                         array_push($this->remote, $data[0]);
                     }
                 }
@@ -140,7 +140,7 @@ class Market extends Common {
                         $data[0]['type'] = 'themes';
                         $data[0]['image'] = '';
                         $data[0]['count'] = -1;
-                        $data[0]['description'] = 'Manual Installation found.';
+                        $data[0]['description'] = 'Manual Installation';
                         array_push($this->remote, $data[0]);
                     }
                 }

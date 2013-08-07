@@ -52,6 +52,7 @@
                 }
                 ksort($marketplace);
                 
+                $extLoaded = (extension_loaded('zip') && extension_loaded('openssl') && ini_get('allow_url_fopen') == 1);
                 function sort_name($a, $b) { return strnatcmp($a['name'], $b['name']); }
                 
                 foreach($marketplace as $type=>$data) {
@@ -65,7 +66,7 @@
                             }
                             echo '<tr><td><div style="position:relative;height:110px">';
                             $left = 0;
-                            if($addon['image'] != '') {
+                            if(isset($addon['image']) && $addon['image'] != '') {
                               echo '<div style="margin-top:5px;"><a onclick="codiad.market.openInBrowser(\''.$addon['image'].'\');return false;"><img src="'.$addon['image'].'" width="150" height="100"></a></div>';
                               $left = 150;
                             } else {
@@ -76,18 +77,28 @@
                             if(isset($addon['new'])) {
                                 echo '<div style="position:absolute;top:0px;left:0px;z-index:10000;"><img src="./themes/default/images/new.png"></div>';
                             }
-                            echo '<div style="position:absolute;top:0px;left:'.($left+10).'px;"><a style="font-weight:bold;" onclick="codiad.market.openInBrowser(\''.$addon['url'].'\');return false;">'.$addon['name'].'</a></div>';
+                            echo '<div style="position:absolute;top:2px;left:'.($left+10).'px;"><a style="font-weight:bold;" onclick="codiad.market.openInBrowser(\''.$addon['url'].'\');return false;">'.$addon['name'].'</a></div>';
                             echo '<div style="position:absolute;top:15px;left:'.($left+10).'px;"><font style="font-size:10px">'.ucfirst(rtrim($type,'s')).' - '.ucfirst($category).' | <a style="font-weight:bold;text-decoration:underline;" onclick="codiad.market.openInBrowser(\'https://github.com/'.$addon['author'].'\');return false;">'.$addon['author'].'</a> | '.$addon['count'].' Users</font></div>';
                             echo '<div style="position:absolute;top:25px;left:'.($left+5).'px;"><pre style="height:60px;color:#a8a6a8;width:'.(550-$left).'px;white-space: pre-wrap;">'.$addon['description'].'</pre></div>';
                             if(isset($addon['version'])) {
                               if(!isset($addon['update'])) {
-                                  echo '<div style="position:absolute;top:5px;left:575px;"><font style="color:green">Latest Version v'.$addon['version'].'</font></div>';
+                                  echo '<div style="position:absolute;top:7px;left:570px;"><font style="color:green">Latest Version v'.$addon['version'].'</font></div>';
                               } else {
-                                 echo '<div style="position:absolute;top:-5px;left:575px;"><button style="color: blue; width:140px" onclick="codiad.market.update(\''.$type.'\', \''.$addon['folder'].'\');return false;">Update '.ucfirst(rtrim($type,'s')).'</button></div>';
+                                 if($extLoaded && is_writable(BASE_PATH.'/'.$type.'/'.$addon['folder'])) {
+                                  echo '<div style="position:absolute;top:-5px;left:570px;"><button style="color: blue; width:150px" onclick="codiad.market.update(\''.$_GET['type'].'\',\''.$type.'\', \''.$addon['folder'].'\');return false;">Update '.ucfirst(rtrim($type,'s')).'</button></div>';
+                                 } else {
+                                  echo '<div style="position:absolute;top:-5px;left:570px;"><button style="width:150px" onclick="codiad.market.openInBrowser(\''.$addon['url'].'\');">Download '.ucfirst(rtrim($type,'s')).'</button><div>';
+                                 }
                               }
-                              echo '<div style="position:absolute;top:30px;left:575px;"><button style="color: red; width:140px" onclick="codiad.market.remove(\''.$type.'\', \''.$addon['folder'].'\');return false;">Delete '.ucfirst(rtrim($type,'s')).'</button><div>';
+                              if(is_writable(BASE_PATH.'/'.$type.'/'.$addon['folder'])) {
+                                echo '<div style="position:absolute;top:30px;left:570px;"><button style="color: red; width:150px" onclick="codiad.market.remove(\''.$_GET['type'].'\',\''.$type.'\', \''.$addon['folder'].'\');return false;">Delete '.ucfirst(rtrim($type,'s')).'</button><div>';
+                              }
                             } else {
-                              echo '<div style="position:absolute;top:-5px;left:575px;"><button style="width:140px" onclick="codiad.market.install(\''.$type.'\', \''.$addon['name'].'\',\''.$addon['url'].'\');return false;">Install '.ucfirst(rtrim($type,'s')).'</button><div>';
+                              if($extLoaded && is_writable(BASE_PATH.'/'.$type)) {
+                                echo '<div style="position:absolute;top:-5px;left:570px;"><button style="width:150px" onclick="codiad.market.install(\''.$_GET['type'].'\',\''.$type.'\', \''.$addon['name'].'\',\''.$addon['url'].'\');return false;">Install '.ucfirst(rtrim($type,'s')).'</button><div>';
+                              } else {
+                                echo '<div style="position:absolute;top:-5px;left:570px;"><button style="width:150px" onclick="codiad.market.openInBrowser(\''.$addon['url'].'\');">Download '.ucfirst(rtrim($type,'s')).'</button><div>';
+                              }
                             }
                             echo '</div></td></tr>';
                           }
@@ -106,205 +117,7 @@
             <?php
             
             break;
-        
-        //////////////////////////////////////////////////////////////
-        // List Plugins
-        //////////////////////////////////////////////////////////////
-        
-        case 'list2':
-            ?>
-            <label><?php i18n("Plugin List"); ?></label>
-            <div id="plugin-list">
-            <table width="100%">
-                <tr>
-                    <th><?php i18n("Plugin Name"); ?></th>
-                    <th><?php i18n("Version"); ?></th>
-                    <th><?php i18n("Author"); ?></th>
-                    <th width="5"><?php i18n("Active"); ?></th>
-                    <?php if(is_writeable(PLUGINS)) { ?>
-                    <th width="5"><?php i18n("Delete"); ?></th>
-                    <?php } ?>
-                </tr>
-            <?php
-            
-            if(!file_exists(DATA.'/plugins.php')) {
-              saveJSON('plugins.php', array(''));
-            }  
-            
-            // Get projects JSON data
-            $plugins = getJSON('plugins.php');
-            $availableplugins = array();
-            $plugincount = 0;
-            foreach (scandir(PLUGINS) as $fname){
-                if($fname == '.' || $fname == '..' ){
-                    continue;
-                }
-                if(is_dir(PLUGINS.'/'.$fname)){
-                    $availableplugins[] = $fname;
-                    if(file_exists(PLUGINS . "/" . $fname . "/plugin.json")) {
-                        $data = file_get_contents(PLUGINS . "/" . $fname . "/plugin.json");
-                        $data = json_decode($data,true);
-                        ?>
-                        <tr>
-                            <td><?php if($data[0]['name'] != '') { echo $data[0]['name']; } else { echo $fname; } ?></td>
-                            <td><?php echo $data[0]['version']; ?></td>
-                            <td><?php echo $data[0]['author']; ?></td>
-                            <?php
-                                if(checkAccess()){
-                                    if(in_array($fname, $plugins)) {
-                                    ?>
-                                    <td><a onclick="codiad.plugin_manager.deactivate('<?php echo($fname); ?>');" class="icon-check icon"></a></td>
-                                    <?php 
-                                    } else {
-                                    ?>
-                                     <td><a onclick="codiad.plugin_manager.activate('<?php echo($fname); ?>');" class="icon-block icon"></a></td>   
-                                    <?php                                    
-                                    }
-                                    if(is_writeable(PLUGINS)) {
-                                        ?>
-                                        <td><a onclick="codiad.plugin_manager.remove('<?php echo($fname); ?>');" class="icon-cancel-circled icon"></a></td>
-                                        <?php
-                                    }
-                                } else {
-                                    ?>
-                                    <td><div class="<?php if(in_array($fname, $plugins)) { echo 'icon-check'; } else { echo 'icon-block'; } ?> icon"></div></td>
-                                    <?php if(is_writeable(PLUGINS)) { ?>
-                                    <td></td>
-                                    <?php
-                                    }
-                                }
-                            ?>
-                        </tr>
-                        <?php
-                        $plugincount++;
-                    }
-                }
-            }
-            
-            $colspan = 4;            
-            if(is_writeable(PLUGINS)) {
-                $colspan = 5;
-            }
-            
-            if($plugincount == 0) {
-            ?>
-            <tr><td colspan="<?php echo $colspan;?>"><?php i18n("No Plugins installed. Check Plugin Market."); ?></td></tr>
-            <?php
-            } else {
-            ?>
-            <tr><td colspan="<?php echo $colspan;?>" align="right"><?php echo $plugincount; ?> <?php i18n("Plugins installed."); ?></td></tr>
-            <?php
-            }
-            
-            // clean old plugins from json file
-            $revised_array = array();
-            foreach($plugins as $plugin){
-                if(in_array($plugin, $availableplugins)){
-                    $revised_array[] = $plugin;
-                }
-            }
-            // Save array back to JSON
-            saveJSON('plugins.php',$revised_array);
-            
-            ?>
-            </table>
-            </div>
-            <button class="btn-left" onclick="window.location.reload();return false;"><?php i18n("Reload Codiad"); ?></button><button class="btn-mid" onclick="codiad.plugin_manager.market();return false;"><?php i18n("Plugin Market"); ?></button><button class="btn-mid" onclick="codiad.plugin_manager.check();return false;"><?php i18n("Update Check"); ?></button><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
-            <?php
-            
-            break;
-            
-        //////////////////////////////////////////////////////////////
-        // Update Plugins
-        //////////////////////////////////////////////////////////////
-        
-        case 'check':
-            ?>
-            <label><?php i18n("Plugin Update Check"); ?></label>
-            <div id="plugin-list">
-            <table width="100%">
-                <tr>
-                    <th><?php i18n("Plugin Name"); ?></th>
-                    <th><?php i18n("Your Version"); ?></th>
-                    <th><?php i18n("Latest Version"); ?></th>
-                    <th><?php i18n("Download"); ?></th>
-                </tr>
-            <?php
-            
-            $isDownloadable = (is_writeable(PLUGINS) && extension_loaded('zip') && extension_loaded('openssl') && ini_get('allow_url_fopen') == 1);
-            
-            // Get projects JSON data
-            $plugins = getJSON('plugins.php');
-            $plugincount = 0;
-            foreach (scandir(PLUGINS) as $fname){
-                if($fname == '.' || $fname == '..' ){
-                    continue;
-                }
-                if(is_dir(PLUGINS.'/'.$fname)){
-                    if(file_exists(PLUGINS . "/" . $fname . "/plugin.json")) {
-                        $data = file_get_contents(PLUGINS . "/" . $fname . "/plugin.json");
-                        $data = json_decode($data,true);
-                        
-                        if($data[0]['url'] != '') {
-                            $url = str_replace('github.com','raw.github.com',$data[0]['url']);
-                            if(substr($url,-4) == '.git') {
-                                $url = substr($url,0,-4);
-                            }
-                            $url = $url.'/master/plugin.json';
-                            $remote = json_decode(file_get_contents($url),true);
-                        }
-                        
-                        ?>
-                        <tr>
-                            <td><?php if($data[0]['name'] != '') { echo $data[0]['name']; } else { echo $fname; } ?></td>
-                            <td><?php echo $data[0]['version']; ?></td>
-                            <?php
-                                if($data[0]['url'] != '') {                                   
-                                    ?>
-                                    <td><?php if($remote[0]['version'] != '') { echo($remote[0]['version']); } else { echo 'n/a'; } ?></td>
-                                    <?php
-                                    if($remote[0]['version'] != $data[0]['version']) {
-                                        if($isDownloadable) {
-                                        ?>
-                                            <td><table style="text-align:center;border-spacing:0;border-collapse:collapse;"><tr><td style="border: 0;padding: 0;"><a class="icon-download icon" onclick="codiad.plugin_manager.update('<?php echo $fname; ?>');return false;"></a></td><td style="border: 0;padding: 0;"><a class="icon-github icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $data[0]['url']; ?>');return false;"></a></td></tr></table></td>
-                                        <?php
-                                        } else {
-                                        ?>
-                                        <td><a class="icon-download icon" onclick="codiad.plugin_manager.openInBrowser('<?php echo $data[0]['url']; ?>');return false;"></a></td>
-                                        <?php
-                                        }
-                                    } else {
-                                        ?>
-                                            <td><font style="color:green"><?php i18n("Latest"); ?></font></td>
-                                        <?php
-                                    }
-                                } else {
-                                    ?>
-                                    <td>n/a</td>
-                                    <td></td> 
-                                    <?php 
-                                }
-                            ?>
-                        </tr>
-                        <?php
-                        $plugincount++;
-                    }
-                }
-            }
-            
-            if($plugincount == 0) {
-            ?>
-            <tr><td colspan="4"><?php i18n("No Plugins installed. Check Plugin Market."); ?></td></tr>
-            <?php
-            }             
-            ?>
-            </table>
-            </div>
-            <button class="btn-left" onclick="codiad.plugin_manager.check();return false;"><?php i18n("Rescan"); ?></button><button class="btn-mid" onclick="codiad.plugin_manager.list();return false;"><?php i18n("Installed Plugins"); ?></button><button class="btn-mid" onclick="codiad.plugin_manager.market();return false;"><?php i18n("Plugin Market"); ?></button><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
-            <?php
-            
-            break;
-                    
+             
     }
     
 ?>
