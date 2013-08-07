@@ -60,15 +60,19 @@
 
         install: function(type, name, repo) {
             var _this = this;
-            $('#modal-content').html('<div id="modal-loading"></div><div align="center">Installing ' + name + '...</div><br>');
-            $.get(_this.controller + '?action=install&type=' + type + '&name=' + name + '&repo=' + repo, function(data) {
-                var response = codiad.jsend.parse(data);
-                if (response == 'error') {
-                    codiad.message.error(response.message);
-                } else {
-                    _this.list();
-                }
-            });
+            if(repo != '') {
+              $('#modal-content').html('<div id="modal-loading"></div><div align="center">Installing ' + name + '...</div><br>');
+              $.get(_this.controller + '?action=install&type=' + type + '&name=' + name + '&repo=' + repo, function(data) {
+                  var response = codiad.jsend.parse(data);
+                  if (response == 'error') {
+                      codiad.message.error(response.message);
+                  } else {
+                      _this.list();
+                  }
+              });
+            } else {
+               codiad.message.error('No Repository URL');
+            }
         },
         
         //////////////////////////////////////////////////////////////////
