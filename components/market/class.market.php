@@ -174,6 +174,19 @@ class Market extends Common {
         if(substr($repo,-4) == '.git') {
             $repo = substr($repo,0,-4);
         }
+        if($type == '') {
+          $file_headers = @get_headers(str_replace('github.com','raw.github.com',$repo.'/master/plugin.json'));
+          if($file_headers[0] != 'HTTP/1.1 404 Not Found') {
+              $type = 'plugins';
+          } else {
+              $file_headers = @get_headers(str_replace('github.com','raw.github.com',$repo.'/master/theme.json'));
+              if($file_headers[0] != 'HTTP/1.1 404 Not Found') {
+                  $type = 'themes';
+              } else {
+                  die(formatJSEND("error","No type for ".$repo));
+              }
+          }
+        }
         if(file_put_contents(BASE_PATH.'/'.$type.'/'.$name.'.zip', fopen($repo.'/archive/master.zip', 'r'))) {
             $zip = new ZipArchive;
             $res = $zip->open(BASE_PATH.'/'.$type.'/'.$name.'.zip');

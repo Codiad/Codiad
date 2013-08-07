@@ -66,9 +66,8 @@
                   var response = codiad.jsend.parse(data);
                   if (response == 'error') {
                       codiad.message.error(response.message);
-                  } else {
-                      _this.list();
                   }
+                  _this.list();
               });
             } else {
                codiad.message.error('No Repository URL');
