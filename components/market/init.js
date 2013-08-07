@@ -9,20 +9,19 @@
     var codiad = global.codiad;
 
     $(function() {
-        codiad.theme_manager.init();
+        codiad.market.init();
     });
 
-    codiad.theme_manager = {
+    codiad.market = {
 
-        controller: 'components/theme_manager/controller.php',
-        dialog: 'components/theme_manager/dialog.php',
+        controller: 'components/market/controller.php',
+        dialog: 'components/market/dialog.php',
 
-        init: function() {
-           
+        init: function() {  
         },
         
         //////////////////////////////////////////////////////////////////
-        // Open the theme manager market
+        // Open the plugin manager market
         //////////////////////////////////////////////////////////////////
         
         market: function() {
@@ -32,17 +31,17 @@
         },
 
         //////////////////////////////////////////////////////////////////
-        // Open the theme manager dialog
+        // Open marketplace
         //////////////////////////////////////////////////////////////////
 
-        list: function() {
+        list: function(type) {
             $('#modal-content form')
                 .die('submit'); // Prevent form bubbling
-            codiad.modal.load(500, this.dialog + '?action=list');
+            codiad.modal.load(800, this.dialog + '?action=list&type='+type);
         },
         
         //////////////////////////////////////////////////////////////////
-        // Checks for theme updates
+        // Checks for plugin updates
         //////////////////////////////////////////////////////////////////
 
         check: function() {
@@ -56,13 +55,13 @@
         },
         
         //////////////////////////////////////////////////////////////////
-        // Install theme
+        // Install
         //////////////////////////////////////////////////////////////////
 
-        install: function(name, repo) {
+        install: function(type, name, repo) {
             var _this = this;
             $('#modal-content').html('<div id="modal-loading"></div><div align="center">Installing ' + name + '...</div><br>');
-            $.get(_this.controller + '?action=install&name=' + name + '&repo=' + repo, function(data) {
+            $.get(_this.controller + '?action=install&type=' + type + '&name=' + name + '&repo=' + repo, function(data) {
                 var response = codiad.jsend.parse(data);
                 if (response == 'error') {
                     codiad.message.error(response.message);
@@ -73,12 +72,13 @@
         },
         
         //////////////////////////////////////////////////////////////////
-        // Remove theme
+        // Remove
         //////////////////////////////////////////////////////////////////
 
-        remove: function(name) {
+        remove: function(type, name) {
             var _this = this;
-            $.get(_this.controller + '?action=remove&name=' + name, function(data) {
+            $('#modal-content').html('<div id="modal-loading"></div><div align="center">Deleting ' + name + '...</div><br>');
+            $.get(_this.controller + '?action=remove&type=' + type + '&name=' + name, function(data) {
                 var response = codiad.jsend.parse(data);
                 if (response == 'error') {
                     codiad.message.error(response.message);
@@ -88,13 +88,13 @@
         },
         
         //////////////////////////////////////////////////////////////////
-        // Update theme
+        // Update
         //////////////////////////////////////////////////////////////////
 
-        update: function(name) {
+        update: function(type, name) {
             var _this = this;
             $('#modal-content').html('<div id="modal-loading"></div><div align="center">Updating ' + name + '...</div><br>');
-            $.get(_this.controller + '?action=update&name=' + name, function(data) {
+            $.get(_this.controller + '?action=update&type=' + type + '&name=' + name, function(data) {
                 var response = codiad.jsend.parse(data);
                 if (response == 'error') {
                     codiad.message.error(response.message);
@@ -104,12 +104,12 @@
         },
 
         //////////////////////////////////////////////////////////////////
-        // Activate theme
+        // Activate
         //////////////////////////////////////////////////////////////////
 
-        activate: function(name) {
+        activate: function(type, name) {
             var _this = this;
-            $.get(this.controller + '?action=activate&name=' + name, function(data) {
+            $.get(this.controller + '?action=activate&type=' + type + '&name=' + name, function(data) {
                 var response = codiad.jsend.parse(data);
                 if (response != 'error') {
                     _this.list();
@@ -118,12 +118,12 @@
         },
 
         //////////////////////////////////////////////////////////////////
-        // Deactivate theme
+        // Deactivate
         //////////////////////////////////////////////////////////////////
 
-        deactivate: function(name) {
+        deactivate: function(type, name) {
             var _this = this;
-            $.get(this.controller + '?action=deactivate&name=' + name, function(data) {
+            $.get(this.controller + '?action=deactivate&type=' + type + '&name=' + name, function(data) {
                 var response = codiad.jsend.parse(data);
                 if (response != 'error') {
                     _this.list();

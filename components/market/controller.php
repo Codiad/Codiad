@@ -8,7 +8,7 @@
 
 
     require_once('../../common.php');
-    require_once('class.plugin_manager.php');
+    require_once('class.market.php');
 
     //////////////////////////////////////////////////////////////////
     // Verify Session or Key
@@ -16,55 +16,55 @@
 
     checkSession();
 
-    $Plugin_manager = new Plugin_manager();
+    $market = new Market();
     
     //////////////////////////////////////////////////////////////////
-    // Deactivate Plugin
+    // Deactivate
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='deactivate'){
         if(checkAccess()) {
-            $Plugin_manager->Deactivate($_GET['name']);
+            $market->Deactivate($_GET['type'], $_GET['name']);
         }
     }
     
     //////////////////////////////////////////////////////////////////
-    // Activate Plugin
+    // Activate
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='activate'){
         if(checkAccess()) {
-            $Plugin_manager->Activate($_GET['name']);
+            $market->Activate($_GET['type'], $_GET['name']);
         }
     }
     
     //////////////////////////////////////////////////////////////////
-    // Install Plugin
+    // Install
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='install'){
         if(checkAccess()) {
-            $Plugin_manager->Install($_GET['name'], $_GET['repo']);
+            $market->Install($_GET['type'], $_GET['name'], $_GET['repo']);
         }
     }
     
     //////////////////////////////////////////////////////////////////
-    // Remove Plugin
+    // Remove 
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='remove'){
         if(checkAccess()) {
-            $Plugin_manager->Remove($_GET['name']);
+            $market->Remove($_GET['type'], $_GET['name']);
         }
     }
     
     //////////////////////////////////////////////////////////////////
-    // Update Plugin
+    // Update
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='update'){
         if(checkAccess()) {
-            $Plugin_manager->Update($_GET['name']);
+            $market->Update($_GET['type'], $_GET['name']);
         }
     }
 

@@ -1,0 +1,291 @@
+<?php
+
+/*
+*  Copyright (c) Codiad & daeks (codiad.com), distributed
+*  as-is and without warranty under the MIT License. See
+*  [root]/license.txt for more. This information must remain intact.
+*/
+
+require_once('../../common.php');
+
+class Market extends Common {
+
+    //////////////////////////////////////////////////////////////////
+    // PROPERTIES
+    //////////////////////////////////////////////////////////////////
+
+    public $local       = array();
+    public $url         = 'http://market.codiad.com';
+    public $remote      = null;
+    public $tmp         = array();
+    public $old         = '';
+
+    //////////////////////////////////////////////////////////////////
+    // METHODS
+    //////////////////////////////////////////////////////////////////
+
+    // -----------------------------||----------------------------- //
+
+    //////////////////////////////////////////////////////////////////
+    // Construct
+    //////////////////////////////////////////////////////////////////
+
+    public function __construct(){
+        if(!file_exists(DATA.'/plugins.php')) {
+          saveJSON('plugins.php', array(''));
+        }
+        if(!file_exists(DATA.'/themes.php')) {
+          saveJSON('themes.php', array(''));
+        }
+        if(!file_exists(DATA.'/cache')) {
+          mkdir(DATA.'/cache');
+        }
+        $this->local['plugins'] = getJSON('plugins.php');
+        $this->local['themes'] = getJSON('themes.php');
+        $this->url = Common::getConstant('MARKETURL', $this->url);
+        if(!file_exists(DATA.'/cache/market.current')) {
+          file_put_contents(DATA.'/cache/market.current',file_get_contents($this->url));
+          copy(DATA.'/cache/market.current',DATA.'/cache/market.last');
+        } else {
+          if (time()-filemtime(DATA.'/cache/market.current') > 24 * 3600) {
+            copy(DATA.'/cache/market.current',DATA.'/cache/market.last');
+            file_put_contents(DATA.'/market.cache',file_get_contents($this->url));
+          }
+        }
+        $this->old = json_decode(file_get_contents(DATA.'/cache/market.last'),true);
+        $this->remote = json_decode(file_get_contents(DATA.'/cache/market.current'),true);
+        foreach($this->remote as $key=>$data) {
+          if(substr($data['url'],-4) == '.git') {
+              $data['url'] = substr($data['url'],0,-4);
+          }
+          if(file_exists(BASE_PATH.'/'.$data['type'].substr($data['url'],strrpos($data['url'],'/')))) {
+              $data['folder'] = substr($data['url'],strrpos($data['url'],'/')+1);
+          } else {
+            if(file_exists(BASE_PATH.'/'.$data['type'].substr($data['url'],strrpos($data['url'],'/')).'-master')) {
+                $data['folder'] = substr($data['url'],strrpos($data['url'],'/')+1).'-master';
+            }
+          }
+          
+          if(isset($data['folder'])) {
+              $local = json_decode(file_get_contents(BASE_PATH.'/'.$data['type'].'/'.$data['folder'].'/'.rtrim($data['type'],'s').'.json'),true);
+              $remote = json_decode(file_get_contents(str_replace('github.com','raw.github.com',$data['url']).'/master/'.rtrim($data['type'],'s').'.json'),true);
+              $data['version'] = $local[0]['version'];
+              if($remote[0]['version'] != $local[0]['version']) {
+                $data['update'] = $remote[0]['version'];
+              }
+          }
+
+          $found = false;
+          foreach($this->old as $key=>$old) {
+            if($old['name'] == $data['name']) {
+              $found = true;
+              break;
+            }
+          }
+          
+          if(!$found && !isset($data['folder'])) {
+            $data['new'] = '1';
+          }
+             
+          array_push($this->tmp, $data);
+        }
+        
+        $this->remote = $this->tmp;
+        
+        // Scan plugins directory for missing plugins
+        foreach (scandir(PLUGINS) as $fname){
+                if($fname == '.' || $fname == '..' ){
+                    continue;
+                }
+                if(is_dir(PLUGINS.'/'.$fname)){
+                    $found = false;
+                    foreach($this->remote as $key=>$data) {
+                      if(isset($data['folder']) && $data['folder'] == $fname) {
+                        $found = true;
+                        break;
+                      }
+                    }
+                    if(!$found && file_exists(PLUGINS . "/" . $fname . "/plugin.json")) {
+                        $data = file_get_contents(PLUGINS . "/" . $fname . "/plugin.json");
+                        $data = json_decode($data,true);
+                        $data[0]['name'] = $fname;
+                        $data[0]['type'] = 'plugins';
+                        $data[0]['image'] = '';
+                        $data[0]['count'] = -1;
+                        $data[0]['description'] = 'Manual Installation found.';
+                        array_push($this->remote, $data[0]);
+                    }
+                }
+         }
+         
+        // Scan theme directory for missing plugins
+        foreach (scandir(THEMES) as $fname){
+                if($fname == '.' || $fname == '..' || $fname == 'default'){
+                    continue;
+                }
+                if(is_dir(THEMES.'/'.$fname)){
+                    $found = false;
+                    foreach($this->remote as $key=>$data) {
+                      if(isset($data['folder']) && $data['folder'] == $fname) {
+                        $found = true;
+                        break;
+                      }
+                    }
+                    if(!$found && file_exists(THEMES . "/" . $fname . "/theme.json")) {
+                        $data = file_get_contents(THEMES . "/" . $fname . "/theme.json");
+                        $data = json_decode($data,true);
+                        $data[0]['name'] = $fname;
+                        $data[0]['type'] = 'themes';
+                        $data[0]['image'] = '';
+                        $data[0]['count'] = -1;
+                        $data[0]['description'] = 'Manual Installation found.';
+                        array_push($this->remote, $data[0]);
+                    }
+                }
+         }
+    }
+
+    //////////////////////////////////////////////////////////////////
+    // Deactivate Plugin
+    //////////////////////////////////////////////////////////////////
+
+    public function Deactivate($type, $name){
+        saveJSON($type.'.php',array_diff($this->local[$type], array($name)));
+        echo formatJSEND("success",null);
+    }
+
+    //////////////////////////////////////////////////////////////////
+    // Activate Plugin
+    //////////////////////////////////////////////////////////////////
+
+    public function Activate($type, $name){
+        $this->local[$type][] = $name;
+        saveJSON($type.'.php',$this->local[$type]);
+        echo formatJSEND("success",null);
+    }
+
+    //////////////////////////////////////////////////////////////////
+    // Install Plugin
+    //////////////////////////////////////////////////////////////////
+
+    public function Install($type, $name, $repo){
+        if(substr($repo,-4) == '.git') {
+            $repo = substr($repo,0,-4);
+        }
+        if(file_put_contents(BASE_PATH.'/'.$type.'/'.$name.'.zip', fopen($repo.'/archive/master.zip', 'r'))) {
+            $zip = new ZipArchive;
+            $res = $zip->open(BASE_PATH.'/'.$type.'/'.$name.'.zip');
+            // open downloaded archive
+            if ($res === TRUE) {
+              // extract archive
+              if($zip->extractTo(BASE_PATH.'/'.$type) === true) {
+                $zip->close();
+              } else {
+                die(formatJSEND("error","Unable to open ".$name.".zip"));
+              }
+            } else {
+                die(formatJSEND("error","ZIP Extension not found"));
+            }
+
+            unlink(BASE_PATH.'/'.$type.'/'.$name.'.zip');
+            // Response
+            $this->Activate($type, substr($repo, strrpos($repo, "/") + 1)."-master");
+        } else {
+            die(formatJSEND("error","Unable to download ".$repo));
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////
+    // Remove Plugin
+    //////////////////////////////////////////////////////////////////
+
+    public function Remove($type, $name){
+        function rrmdir($path){
+            return is_file($path)?
+            @unlink($path):
+            @array_map('rrmdir',glob($path.'/*'))==@rmdir($path);
+        }
+
+        rrmdir(BASE_PATH.'/'.$type.'/'.$name);
+        $this->Deactivate($type, $name);
+    }
+
+    //////////////////////////////////////////////////////////////////
+    // Update Plugin
+    //////////////////////////////////////////////////////////////////
+
+    public function Update($type, $name){
+        function rrmdir($path){
+            return is_file($path)?
+            @unlink($path):
+            @array_map('rrmdir',glob($path.'/*'))==@rmdir($path);
+        }
+
+        function cpy($source, $dest, $ign){
+            if(is_dir($source)) {
+                $dir_handle=opendir($source);
+                while($file=readdir($dir_handle)){
+                    if(!in_array($file, $ign)){
+                        if(is_dir($source."/".$file)){
+                            if(!file_exists($dest."/".$file)) {
+                              mkdir($dest."/".$file);
+                            }
+                            cpy($source."/".$file, $dest."/".$file, $ign);
+                        } else {
+                            copy($source."/".$file, $dest."/".$file);
+                        }
+                    }
+                }
+                closedir($dir_handle);
+            } else {
+                copy($source, $dest);
+            }
+        }
+
+        if(file_exists(BASE_PATH.'/'.$type.'/'.$name.'/plugin.json')) {
+            $data = json_decode(file_get_contents(BASE_PATH.'/'.$type.'/'.$name.'/'.rtrim($type, "s").'.json'),true);
+            $local[0]['url'] = rtrim($local[0]['url'], ".git");
+            $local[0]['url'] .= '/archive/master.zip';
+
+            $ign = array(".","..");
+            if(isset($local[0]['exclude'])) {
+              foreach(explode(",",$local[0]['exclude']) as $exclude) {
+                array_push($ign, $exclude);
+              }
+            }
+
+            if(file_exists(BASE_PATH.'/'.$type.'/_'.session_id()) || mkdir(BASE_PATH.'/'.$type.'/_'.session_id())) {
+              if(file_put_contents(BASE_PATH.'/'.$type.'/_'.session_id().'/'.$name.'.zip', fopen($local[0]['url'], 'r'))) {
+                  $zip = new ZipArchive;
+                  $res = $zip->open(BASE_PATH.'/'.$type.'/_'.session_id().'/'.$name.'.zip');
+                  // open downloaded archive
+                  if ($res === TRUE) {
+                    // extract archive
+                    if($zip->extractTo(BASE_PATH.'/'.$type.'/_'.session_id().'') === true) {
+                      $zip->close();
+                      $srcname = $name;
+                      if(substr($srcname, -6) != "master") {
+                        $srcname = $srcname.'-master';
+                      }
+                      cpy(BASE_PATH.'/'.$type.'/_'.session_id().'/'.$srcname, BASE_PATH.'/'.$type.'/'.$name, $ign);
+                    } else {
+                      die(formatJSEND("error","Unable to open ".$name.".zip"));
+                    }
+                  } else {
+                      die(formatJSEND("error","ZIP Extension not found"));
+                  }
+
+                  rrmdir(BASE_PATH.'/'.$type.'/_'.session_id());
+                  // Response
+                  echo formatJSEND("success",null);
+              } else {
+                  die(formatJSEND("error","Unable to download ".$repo));
+              }
+            } else {
+              die(formatJSEND("error","Unable to create temp dir "));
+            }
+        } else {
+            echo formatJSEND("error","Unable to find ".$name);
+        }
+    }
+}
