@@ -31,7 +31,7 @@
             <table width="100%">
                 <tr>
                     <th valign="middle"><button style="margin:0;" class="btn-left" onclick="codiad.market.list();return false;">All</button><button class="btn-mid" style="margin:0;"  onclick="codiad.market.list('plugins');return false;">Plugins</button><button class="btn-right" style="margin:0;" onclick="codiad.market.list('themes');return false;">Themes</button></th>
-                    <th valign="middle" width="30%"><input style="margin:0;display:inline" onkeyup="codiad.market.search(this.value)" value="<?php if(isset($_GET['query'])) echo $_GET['query'];?>" placeholder="Search"></th>
+                    <th valign="middle" width="30%"><input style="margin:0;display:inline" onkeyup="codiad.market.search(event, this.value)" value="<?php if(isset($_GET['query'])) echo $_GET['query'];?>" placeholder="Press Enter to Search"></th>
                 </tr>
              </table>
              <div style="height: 450px; width: 100%; overflow-y: auto; overflow-x: hidden;">
@@ -60,7 +60,7 @@
                       foreach($data as $category=>$subdata) {
                           usort($subdata, 'sort_name');
                           foreach($subdata as $addon){
-                            if(isset($_GET['query']) && strpos($addon['name'], $_GET['query']) === false) {
+                            if(isset($_GET['query']) && (strpos(strtolower($addon['name']), strtolower($_GET['query'])) === false)) {
                               break;
                             }
                             echo '<tr><td><div style="position:relative;height:110px">';

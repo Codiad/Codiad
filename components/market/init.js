@@ -44,10 +44,11 @@
         // Search marketplace
         //////////////////////////////////////////////////////////////////
 
-        search: function(query) {
+        search: function(e, query) {
             $('#modal-content form')
                 .die('submit'); // Prevent form bubbling
-            if(query != '') {
+            var key= e.charCode || e.keyCode || e.which;
+            if(query != '' && key==13) {
               codiad.modal.load(800, this.dialog + '?action=list&type=undefined&query='+query);
             }
         },
