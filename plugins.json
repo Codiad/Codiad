@@ -22,7 +22,18 @@
   { "author" : "daeks",
     "name" : "AutoUpdate",
     "description" : "Hooks into the Codiad updater to allow for automatic update",
+    "image": "https://raw.github.com/daeks/Codiad-AutoUpdate/master/screen.png",
     "url" : "https://github.com/daeks/Codiad-AutoUpdate"
+  },
+  { "author" : "Andr3as",
+    "name" : "Compress",
+    "description" : "Compress CSS Files",
+    "url" : "https://github.com/Andr3as/Codiad-Compress"
+  },
+  { "author" : "Andr3as",
+    "name" : "Permissions",
+    "description" : "Allows to change file permissions",
+    "url" : "https://github.com/Andr3as/Codiad-Permissions"
   },
   { "author" : "Andr3as",
     "name" : "SurroundWith",
