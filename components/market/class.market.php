@@ -186,6 +186,8 @@ class Market extends Common {
                   die(formatJSEND("error","Invalid Repository"));
               }
           }
+        } else {
+            $tmp = file_get_contents($this->url.'/?t='.rtrim($type, "s").'&i='.$name);
         }
         if(file_put_contents(BASE_PATH.'/'.$type.'/'.$name.'.zip', fopen($repo.'/archive/master.zip', 'r'))) {
             $zip = new ZipArchive;
@@ -203,7 +205,6 @@ class Market extends Common {
             }
 
             unlink(BASE_PATH.'/'.$type.'/'.$name.'.zip');
-            $tmp = file_get_contents($this->url.'/?i='.$name);
             // Response
             $this->Activate($type, substr($repo, strrpos($repo, "/") + 1)."-master");
         } else {
