@@ -1,6 +1,7 @@
 [ { "author" : "daeks",
     "name" : "Modern",
     "description" : "Modern Filemanager Icon-Theme for Codiad",
+    "image": "https://raw.github.com/daeks/Codiad-Theme-Modern/master/screen.png",
     "url" : "https://github.com/daeks/Codiad-Theme-Modern"
   }
 ]

@@ -1,6 +1,7 @@
 [ { "author" : "daeks",
     "name" : "PullTester",
     "description" : "Util to view and pull requests from Codiad core",
+    "image": "https://raw.github.com/daeks/Codiad-PullTester/master/screen.png",
     "category" : "Development",
     "url" : "https://github.com/daeks/Codiad-PullTester"
   },
@@ -17,6 +18,7 @@
   { "author" : "daeks",
     "name" : "DiffViewer",
     "description" : "Allows user to compare 2 files and to see all changes made in it",
+    "image": "https://raw.github.com/daeks/Codiad-DiffViewer/master/screen.png",
     "url" : "https://github.com/daeks/Codiad-DiffViewer"
   },
   { "author" : "daeks",
@@ -58,6 +60,7 @@
   { "author" : "daeks",
     "name" : "GitAdmin",
     "description" : "Allows for pulling repos into your current project",
+    "image": "https://raw.github.com/daeks/Codiad-GitAdmin/master/screen.png",
     "url" : "https://github.com/daeks/Codiad-GitAdmin"
   },
   { "author" : "Fluidbyte",
