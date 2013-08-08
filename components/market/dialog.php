@@ -30,8 +30,8 @@
             <div id="market-list">
             <table width="100%">
                 <tr>
-                    <th valign="middle"><button style="margin:0;" class="btn-left" onclick="codiad.market.list();return false;">All</button><button class="btn-mid" style="margin:0;"  onclick="codiad.market.list('plugins');return false;">Plugins</button><button class="btn-right" style="margin:0;" onclick="codiad.market.list('themes');return false;">Themes</button></th>
-                    <th valign="middle" width="30%"><input style="margin:0;display:inline" onkeyup="codiad.market.search(event, this.value)" value="<?php if(isset($_GET['query'])) echo $_GET['query'];?>" placeholder="Press Enter to Search"></th>
+                    <th valign="middle" style="white-space:nowrap;"><button style="margin:0;" class="btn-left" onclick="codiad.market.list();return false;">All</button><button class="btn-mid" style="margin:0;"  onclick="codiad.market.list('plugins');return false;">Plugins</button><button class="btn-right" style="margin:0;" onclick="codiad.market.list('themes');return false;">Themes</button></th>
+                    <th valign="middle" width="30%" style="white-space:nowrap;"><input style="margin:0;display:inline" onkeyup="codiad.market.search(event, this.value)" value="<?php if(isset($_GET['query'])) echo $_GET['query'];?>" placeholder="Press Enter to Search"></th>
                 </tr>
              </table>
              <div style="height: 450px; width: 100%; overflow-y: auto; overflow-x: hidden;">
@@ -85,19 +85,19 @@
                                   echo '<div style="position:absolute;top:7px;left:570px;"><font style="color:green">Latest Version v'.$addon['version'].'</font></div>';
                               } else {
                                  if($extLoaded && is_writable(BASE_PATH.'/'.$type.'/'.$addon['folder'])) {
-                                  echo '<div style="position:absolute;top:-5px;left:570px;"><button style="color: blue; width:150px" onclick="codiad.market.update(\''.$_GET['type'].'\',\''.$type.'\', \''.$addon['folder'].'\');return false;">Update '.ucfirst(rtrim($type,'s')).'</button></div>';
+                                  echo '<div style="position:absolute;top:-5px;left:570px;"><button style="color: blue; width:150px;white-space:nowrap;" onclick="codiad.market.update(\''.$_GET['type'].'\',\''.$type.'\', \''.$addon['folder'].'\');return false;">Update '.ucfirst(rtrim($type,'s')).'</button></div>';
                                  } else {
-                                  echo '<div style="position:absolute;top:-5px;left:570px;"><button style="width:150px" onclick="codiad.market.openInBrowser(\''.$addon['url'].'\');">Download '.ucfirst(rtrim($type,'s')).'</button><div>';
+                                  echo '<div style="position:absolute;top:-5px;left:570px;"><button style="width:150px;white-space:nowrap;" onclick="codiad.market.openInBrowser(\''.$addon['url'].'\');">Download '.ucfirst(rtrim($type,'s')).'</button><div>';
                                  }
                               }
                               if(is_writable(BASE_PATH.'/'.$type.'/'.$addon['folder'])) {
-                                echo '<div style="position:absolute;top:30px;left:570px;"><button style="color: red; width:150px" onclick="codiad.market.remove(\''.$_GET['type'].'\',\''.$type.'\', \''.$addon['folder'].'\');return false;">Delete '.ucfirst(rtrim($type,'s')).'</button><div>';
+                                echo '<div style="position:absolute;top:30px;left:570px;"><button style="color: red; width:150px;white-space:nowrap;" onclick="codiad.market.remove(\''.$_GET['type'].'\',\''.$type.'\', \''.$addon['folder'].'\');return false;">Delete '.ucfirst(rtrim($type,'s')).'</button><div>';
                               }
                             } else {
                               if($extLoaded && is_writable(BASE_PATH.'/'.$type)) {
-                                echo '<div style="position:absolute;top:-5px;left:570px;"><button style="width:150px" onclick="codiad.market.install(\''.$_GET['type'].'\',\''.$type.'\', \''.$addon['name'].'\',\''.$addon['url'].'\');return false;">Install '.ucfirst(rtrim($type,'s')).'</button><div>';
+                                echo '<div style="position:absolute;top:-5px;left:570px;"><button style="width:150px;white-space:nowrap;" onclick="codiad.market.install(\''.$_GET['type'].'\',\''.$type.'\', \''.$addon['name'].'\',\''.$addon['url'].'\');return false;">Install '.ucfirst(rtrim($type,'s')).'</button><div>';
                               } else {
-                                echo '<div style="position:absolute;top:-5px;left:570px;"><button style="width:150px" onclick="codiad.market.openInBrowser(\''.$addon['url'].'\');">Download '.ucfirst(rtrim($type,'s')).'</button><div>';
+                                echo '<div style="position:absolute;top:-5px;left:570px;"><button style="width:150px;white-space:nowrap;" onclick="codiad.market.openInBrowser(\''.$addon['url'].'\');">Download '.ucfirst(rtrim($type,'s')).'</button><div>';
                               }
                             }
                             echo '</div></td></tr>';
@@ -110,9 +110,9 @@
             </div>
             <table width="100%">
                 <tr>
-                    <th valign="middle" width="150px"><button onclick="window.location.reload();return false;"><?php i18n("Reload Codiad"); ?></button></th>
+                    <th valign="middle" width="150px"><button style="white-space:nowrap;" onclick="window.location.reload();return false;"><?php i18n("Reload Codiad"); ?></button></th>
                     <th valign="middle"><input style="margin:0;display:inline" id="repourl" placeholder="Enter GitHub Repository Url..."></th>
-                    <th valign="middle" align="right" width="222px"><button class="btn-left" onclick="codiad.market.install('<?php echo $_GET['type']; ?>','','Manually',getElementById('repourl').value);return false;"><?php i18n("Install Manually"); ?></button><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button></th>
+                    <th valign="middle" align="right" style="white-space:nowrap;" width="222px"><button class="btn-left" onclick="codiad.market.install('<?php echo $_GET['type']; ?>','','Manually',getElementById('repourl').value);return false;"><?php i18n("Install Manually"); ?></button><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button></th>
                 </tr>
              </table>
             <?php
