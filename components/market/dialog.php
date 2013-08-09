@@ -61,25 +61,26 @@
                       foreach($data as $category=>$subdata) {
                           usort($subdata, 'sort_name');
                           foreach($subdata as $addon){
-                            if(isset($_GET['query']) && (strpos(strtolower($addon['name']), strtolower($_GET['query'])) === false)) {
+                            if(isset($_GET['query']) && (strpos(strtolower(trim($addon['name'])), strtolower(trim($_GET['query']))) === false)) {
                               break;
                             }
                             echo '<tr><td><div style="position:relative;height:110px">';
                             $left = 0;
+                            $right = 0;
                             if(isset($addon['image']) && $addon['image'] != '') {
-                              echo '<div style="margin-top:5px;"><a onclick="codiad.market.openInBrowser(\''.$addon['image'].'\');return false;"><img src="'.$addon['image'].'" width="150" height="100"></a></div>';
-                              $left = 150;
+                              echo '<div style="position:absolute;top:5px;left:404px;"><a onclick="codiad.market.openInBrowser(\''.$addon['image'].'\');return false;"><img src="'.$addon['image'].'" width="150" height="100"></a></div>';
+                              $right = 160;
                             } else {
                               if(isset($addon['new'])) {
-                                $left = $left + 40;
+                                $left = $left + 30;
                               }
                             }
                             if(isset($addon['new'])) {
-                                echo '<div style="position:absolute;top:0px;left:0px;z-index:10000;"><img src="./themes/default/images/new.png"></div>';
+                                echo '<div style="position:absolute;top:0px;left:0px;z-index:10000;"><img src="./themes/default/images/new.png" width="35" height="35"></div>';
                             }
-                            echo '<div style="position:absolute;top:2px;left:'.($left+10).'px;"><a style="font-weight:bold;" onclick="codiad.market.openInBrowser(\''.$addon['url'].'\');return false;">'.$addon['name'].'</a></div>';
+                            echo '<div style="position:absolute;top:2px;left:'.($left+10).'px;"><a style="font-weight:bold;font-size:14px" onclick="codiad.market.openInBrowser(\''.$addon['url'].'\');return false;">'.$addon['name'].'</a></div>';
                             echo '<div style="position:absolute;top:15px;left:'.($left+10).'px;"><font style="font-size:10px">'.ucfirst(rtrim($type,'s')).' - '.ucfirst($category).' | <a style="font-weight:bold;text-decoration:underline;" onclick="codiad.market.openInBrowser(\'https://github.com/'.$addon['author'].'\');return false;">'.$addon['author'].'</a> | '.$addon['count'].' Users</font></div>';
-                            echo '<div style="position:absolute;top:25px;left:'.($left+5).'px;"><pre style="height:60px;color:#a8a6a8;width:'.(550-$left).'px;white-space: pre-wrap;">'.$addon['description'].'</pre></div>';
+                            echo '<div style="position:absolute;top:25px;left:5px;"><pre style="height:60px;color:#a8a6a8;width:'.(550-$right).'px;white-space: pre-wrap;">'.$addon['description'].'</pre></div>';
                             if(isset($addon['version'])) {
                               if(!isset($addon['update'])) {
                                   echo '<div style="position:absolute;top:7px;left:570px;"><font style="color:green">Latest Version v'.$addon['version'].'</font></div>';
