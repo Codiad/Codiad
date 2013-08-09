@@ -111,7 +111,7 @@
             </div>
             <table width="100%">
                 <tr>
-                    <th valign="middle" width="150px"><button style="white-space:nowrap;" onclick="window.location.reload();return false;"><?php i18n("Reload Codiad"); ?></button></th>
+                    <th valign="middle" align="center" width="40px"><button style="white-space:nowrap;" class="icon-arrows-ccw bigger-icon" onclick="window.location.reload();return false;"></button></th>
                     <th valign="middle"><input style="margin:0;display:inline" id="repourl" placeholder="<?php i18n("Enter GitHub Repository Url..."); ?>"></th>
                     <th valign="middle" align="right" style="white-space:nowrap;" width="222px"><button class="btn-left" onclick="codiad.market.install('<?php echo $_GET['type']; ?>','','Manually',getElementById('repourl').value);return false;"><?php i18n("Install Manually"); ?></button><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button></th>
                 </tr>
