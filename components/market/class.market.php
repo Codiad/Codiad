@@ -49,7 +49,7 @@ class Market extends Common {
         } else {
           if (time()-filemtime(DATA.'/cache/market.current') > 24 * 3600) {
             copy(DATA.'/cache/market.current',DATA.'/cache/market.last');
-            file_put_contents(DATA.'/market.cache',file_get_contents($this->url));
+            file_put_contents(DATA.'/cache/market.current',file_get_contents($this->url));
           }
         }
         $this->old = json_decode(file_get_contents(DATA.'/cache/market.last'),true);
