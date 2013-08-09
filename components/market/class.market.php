@@ -18,7 +18,7 @@ class Market extends Common {
     public $url         = 'http://market.codiad.com';
     public $remote      = null;
     public $tmp         = array();
-    public $old         = '';
+    public $old         = null;
 
     //////////////////////////////////////////////////////////////////
     // METHODS
@@ -31,6 +31,7 @@ class Market extends Common {
     //////////////////////////////////////////////////////////////////
 
     public function __construct(){
+        // initial setup
         if(!file_exists(DATA.'/plugins.php')) {
           saveJSON('plugins.php', array(''));
         }
@@ -40,9 +41,11 @@ class Market extends Common {
         if(!file_exists(DATA.'/cache')) {
           mkdir(DATA.'/cache');
         }
+        // get existing data
         $this->local['plugins'] = getJSON('plugins.php');
         $this->local['themes'] = getJSON('themes.php');
         $this->url = Common::getConstant('MARKETURL', $this->url);
+        // load market from server
         if(!file_exists(DATA.'/cache/market.current')) {
           file_put_contents(DATA.'/cache/market.current',file_get_contents($this->url));
           copy(DATA.'/cache/market.current',DATA.'/cache/market.last');
@@ -52,12 +55,14 @@ class Market extends Common {
             file_put_contents(DATA.'/cache/market.current',file_get_contents($this->url));
           }
         }
+        // get current and last market cache to establish array
         $this->old = json_decode(file_get_contents(DATA.'/cache/market.last'),true);
         $this->remote = json_decode(file_get_contents(DATA.'/cache/market.current'),true);
         foreach($this->remote as $key=>$data) {
           if(substr($data['url'],-4) == '.git') {
               $data['url'] = substr($data['url'],0,-4);
           }
+          // check if folder exists for that extension
           if(file_exists(BASE_PATH.'/'.$data['type'].substr($data['url'],strrpos($data['url'],'/')))) {
               $data['folder'] = substr($data['url'],strrpos($data['url'],'/')+1);
           } else {
@@ -66,6 +71,7 @@ class Market extends Common {
             }
           }
           
+          // extension exists locally, so load its metadata
           if(isset($data['folder'])) {
               $local = json_decode(file_get_contents(BASE_PATH.'/'.$data['type'].'/'.$data['folder'].'/'.rtrim($data['type'],'s').'.json'),true);
               $remote = json_decode(file_get_contents(str_replace('github.com','raw.github.com',$data['url']).'/master/'.rtrim($data['type'],'s').'.json'),true);
@@ -75,6 +81,7 @@ class Market extends Common {
               }
           }
 
+          // check old cache for new ones
           $found = false;
           foreach($this->old as $key=>$old) {
             if($old['name'] == $data['name']) {
@@ -82,14 +89,12 @@ class Market extends Common {
               break;
             }
           }
-          
           if(!$found && !isset($data['folder'])) {
             $data['new'] = '1';
           }
              
           array_push($this->tmp, $data);
         }
-        
         $this->remote = $this->tmp;
         
         // Scan plugins directory for missing plugins
@@ -259,9 +264,11 @@ class Market extends Common {
             }
         }
 
-        if(file_exists(BASE_PATH.'/'.$type.'/'.$name.'/plugin.json')) {
+        if(file_exists(BASE_PATH.'/'.$type.'/'.$name.'/'.rtrim($type, "s").'.json')) {
             $data = json_decode(file_get_contents(BASE_PATH.'/'.$type.'/'.$name.'/'.rtrim($type, "s").'.json'),true);
-            $local[0]['url'] = rtrim($local[0]['url'], ".git");
+            if(substr($local[0]['url'],-4) == '.git') {
+                $local[0]['url'] = substr($local[0]['url'],0,-4);
+            }
             $local[0]['url'] .= '/archive/master.zip';
 
             $ign = array(".","..");

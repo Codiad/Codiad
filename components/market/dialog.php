@@ -30,7 +30,7 @@
             <div id="market-list">
             <table width="100%">
                 <tr>
-                    <th valign="middle" style="white-space:nowrap;"><button style="margin:0;" class="btn-left" onclick="codiad.market.list();return false;">All</button><button class="btn-mid" style="margin:0;"  onclick="codiad.market.list('plugins');return false;">Plugins</button><button class="btn-right" style="margin:0;" onclick="codiad.market.list('themes');return false;">Themes</button></th>
+                    <th valign="middle" style="white-space:nowrap;"><button style="margin:0;" class="btn-left" onclick="codiad.market.list();return false;"><?php i18n("All"); ?></button><button class="btn-mid" style="margin:0;"  onclick="codiad.market.list('plugins');return false;"><?php i18n("Plugins"); ?></button><button class="btn-right" style="margin:0;" onclick="codiad.market.list('themes');return false;"><?php i18n("Themes"); ?></button></th>
                     <th valign="middle" width="30%" style="white-space:nowrap;"><input style="margin:0;display:inline" onkeyup="codiad.market.search(event, this.value)" value="<?php if(isset($_GET['query'])) echo $_GET['query'];?>" placeholder="Press Enter to Search"></th>
                 </tr>
              </table>
