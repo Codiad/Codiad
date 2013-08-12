@@ -24,10 +24,10 @@
         // Open marketplace
         //////////////////////////////////////////////////////////////////
 
-        list: function(type) {
+        list: function(type, note) {
             $('#modal-content form')
                 .die('submit'); // Prevent form bubbling
-            codiad.modal.load(800, this.dialog + '?action=list&type='+type);
+            codiad.modal.load(800, this.dialog + '?action=list&type='+type+'&note='+note);
         },
         
         //////////////////////////////////////////////////////////////////
@@ -39,7 +39,7 @@
                 .die('submit'); // Prevent form bubbling
             var key= e.charCode || e.keyCode || e.which;
             if(query != '' && key==13) {
-              codiad.modal.load(800, this.dialog + '?action=list&type=undefined&query='+query);
+              codiad.modal.load(800, this.dialog + '?action=list&note=false&type=undefined&query='+query);
             }
         },
                 
@@ -60,7 +60,7 @@
                   if (response == 'error') {
                       codiad.message.error(response.message);
                   }
-                  _this.list(page);
+                  _this.list(page, true);
               });
             } else {
                codiad.message.error('No Repository URL');
@@ -79,7 +79,7 @@
                 if (response == 'error') {
                     codiad.message.error(response.message);
                 }
-                _this.list(page);
+                _this.list(page, false);
             });
         },
         
@@ -95,7 +95,7 @@
                 if (response == 'error') {
                     codiad.message.error(response.message);
                 }
-                _this.list(page);
+                _this.list(page, false);
             });
         },
 
@@ -108,7 +108,7 @@
             $.get(this.controller + '?action=activate&type=' + type + '&name=' + name, function(data) {
                 var response = codiad.jsend.parse(data);
                 if (response != 'error') {
-                    _this.list(page);
+                    _this.list(page, true);
                 }
             });
         },
@@ -122,7 +122,7 @@
             $.get(this.controller + '?action=deactivate&type=' + type + '&name=' + name, function(data) {
                 var response = codiad.jsend.parse(data);
                 if (response != 'error') {
-                    _this.list(page);
+                    _this.list(page, true);
                 }
             });
         }

@@ -34,7 +34,7 @@
                     <th valign="middle" width="30%" style="white-space:nowrap;"><input style="margin:0;display:inline" onkeyup="codiad.market.search(event, this.value)" value="<?php if(isset($_GET['query'])) echo $_GET['query'];?>" placeholder="<?php i18n("Press Enter to Search"); ?>"></th>
                 </tr>
              </table>
-             <div style="height: 450px; width: 100%; overflow-y: auto; overflow-x: hidden;">
+             <div class="wrapper">
              <table width="100%">
             <?php
                 $marketplace = array();
@@ -109,6 +109,9 @@
             ?>
             </table></div>
             </div>
+            <?php if($_GET['note'] != 'undefined' && $_GET['note'] == 'true') { ?>
+            <div class="arrow_box"><?php i18n("Reload Codiad to Activate"); ?></div>
+            <? } ?>
             <table width="100%">
                 <tr>
                     <th valign="middle" align="center" width="40px"><button style="white-space:nowrap;" class="icon-arrows-ccw bigger-icon" onclick="window.location.reload();return false;"></button></th>
