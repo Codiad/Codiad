@@ -34,12 +34,12 @@
         // Search marketplace
         //////////////////////////////////////////////////////////////////
 
-        search: function(e, query) {
+        search: function(e, query, note) {
             $('#modal-content form')
                 .die('submit'); // Prevent form bubbling
             var key= e.charCode || e.keyCode || e.which;
             if(query != '' && key==13) {
-              codiad.modal.load(800, this.dialog + '?action=list&note=false&type=undefined&query='+query);
+              codiad.modal.load(800, this.dialog + '?action=list&note=' + note + '&type=undefined&query='+query);
             }
         },
                 
