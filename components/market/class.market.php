@@ -15,7 +15,7 @@ class Market extends Common {
     //////////////////////////////////////////////////////////////////
 
     public $local       = array();
-    public $url         = 'http://market.codiad.com';
+    public $url         = 'http://market.codiad.com/json';
     public $remote      = null;
     public $tmp         = array();
     public $old         = null;
