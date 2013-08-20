@@ -243,12 +243,14 @@ class Filemanager extends Common {
         if(is_file($this->path)){
             $output = file_get_contents($this->path);
             
-            if(!mb_check_encoding($output, 'UTF-8')) {
-                if(mb_check_encoding($output, 'ISO-8859-1')) {
-                    $output = utf8_encode($output);
-                } else {
-                    $output = mb_convert_encoding($content, 'UTF-8');
-                }
+            if(extension_loaded('mbstring')) {
+              if(!mb_check_encoding($output, 'UTF-8')) {
+                  if(mb_check_encoding($output, 'ISO-8859-1')) {
+                      $output = utf8_encode($output);
+                  } else {
+                      $output = mb_convert_encoding($content, 'UTF-8');
+                  }
+              }
             }
         
             $this->status = "success";
@@ -270,7 +272,7 @@ class Filemanager extends Common {
     public function openinbrowser(){
         $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         $domainName = $_SERVER['HTTP_HOST'];
-        $url =  $protocol.WSURL.$this->rel_path;
+        $url =  $protocol.WSURL.'/'.$this->rel_path;
         $this->status = "success";
         $this->data = '"url":' . json_encode(rtrim($url,"/"));
         $this->respond();

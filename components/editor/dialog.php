@@ -211,6 +211,18 @@ switch($_GET['action']){
 		
 	</tr>
 	
+	<tr>
+	
+		<td><?php i18n("Filemanager Trigger"); ?></td>
+		<td>
+		
+		<select class="setting" data-setting="filemanager-trigger">
+			<option value="false"><?php i18n("Double Click") ?></option>
+			<option value="true"><?php i18n("Single Click") ?></option>
+		</select>
+		
+	</tr>
+	
 	
     </table>
     <button class="btn-left" onclick="codiad.fileext_textmode.open();" ><?php i18n("Extensions"); ?></button>
@@ -257,6 +269,9 @@ var editor_settings = {
                 case 'right-sidebar-trigger':
                     $(this).children('option[value="'+codiad.editor.settings.rightSidebarTrigger+'"]').prop('selected',true);
                     break;
+                case 'filemanager-trigger':
+                    $(this).children('option[value="'+codiad.editor.settings.fileManagerTrigger+'"]').prop('selected',true);
+                    break;    
                 case "soft-tabs": 
                     $(this).children('option[value="'+codiad.editor.settings.softTabs+'"]').prop('selected',true);
                	break;
@@ -302,6 +317,10 @@ var editor_settings = {
                         var bool_val = (val == "true");
                         codiad.editor.setRightSidebarTrigger(bool_val);
                         break;
+                    case 'filemanager-trigger':
+                        var bool_val = (val == "true");
+                        codiad.editor.setFileManagerTrigger(bool_val);
+                        break;    
                     case "soft-tabs":
                         var bool_val = (val == "true");
                         codiad.editor.setSoftTabs(bool_val);

@@ -41,10 +41,17 @@
                 $show = true;
                 if($projects_assigned && !in_array($data['path'],$projects_assigned)){ $show=false; }
                 if($show){
+                  if($_GET['trigger'] == 'true') {
                 ?>
                 <li onclick="codiad.project.open('<?php echo($data['path']); ?>');"><div class="icon-archive icon"></div><?php echo($data['name']); ?></li>
                 
                 <?php
+                } else {
+                ?>
+                <li ondblclick="codiad.project.open('<?php echo($data['path']); ?>');"><div class="icon-archive icon"></div><?php echo($data['name']); ?></li>
+                
+                <?php
+                }
                 }
             } 
             ?>
