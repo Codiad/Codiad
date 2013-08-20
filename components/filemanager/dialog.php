@@ -8,7 +8,6 @@
 
 require_once('../../common.php');
 require_once('class.filemanager.php');
-
 //////////////////////////////////////////////////////////////////
 // Verify Session or Key
 //////////////////////////////////////////////////////////////////
@@ -111,6 +110,14 @@ switch($_GET['action']){
                     <option value="1"><?php i18n("Workspace Projects"); ?></option>
                     <?php } ?>
                 </select>
+            </td>
+        </tr>
+        <tr>
+            <td width="65%">
+               <label><?php i18n("File Type:"); ?></label>
+               <input type="text" name="search_file_type" placeholder="space seperated file types eg: js c php">
+            </td>
+            <td>
             </td>
         </tr>
     </table>
