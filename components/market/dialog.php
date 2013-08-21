@@ -109,12 +109,15 @@
             ?>
             </table></div>
             </div>
-            <?php if($_GET['note'] != 'undefined' && $_GET['note'] == 'true') { ?>
-            <div class="arrow_box"><?php i18n("Reload Codiad to Activate"); ?></div>
-            <? } ?>
             <table width="100%">
                 <tr>
-                    <th valign="middle" align="center" width="40px"><button style="white-space:nowrap;" class="icon-arrows-ccw bigger-icon" onclick="window.location.reload();return false;"></button></th>
+                    <th valign="middle" align="center" width="40px"><?php
+                      if($_GET['note'] != 'undefined' && $_GET['note'] == 'true') {
+                         ?><button style="color: blue;white-space:nowrap;" onclick="window.location.reload();return false;"><?php i18n("Reload Codiad"); ?></button><?php
+                      } else {
+                         ?><button style="white-space:nowrap;" class="icon-arrows-ccw bigger-icon" style="display:inline;" onclick="window.location.reload();return false;"></button><?php
+                      }                    
+                    ?></th>
                     <th valign="middle"><input style="margin:0;display:inline" id="repourl" placeholder="<?php i18n("Enter GitHub Repository Url..."); ?>"></th>
                     <th valign="middle" align="right" style="white-space:nowrap;" width="222px"><button class="btn-left" onclick="codiad.market.install('<?php echo $_GET['type']; ?>','','Manually',getElementById('repourl').value);return false;"><?php i18n("Install Manually"); ?></button><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button></th>
                 </tr>

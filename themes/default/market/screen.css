@@ -1,37 +1,3 @@
-.arrow_box {
-	position: absolute;
-	z-index: 10000;
-	padding: 10px;
-	bottom: 72px;
-	left: -38px;
-	background: #1a1a1a;
-	border: 2px solid #fff;
-}
-.arrow_box:after, .arrow_box:before {
-	top: 100%;
-	border: solid transparent;
-	content: " ";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
-}
-
-.arrow_box:after {
-	border-color: rgba(26, 26, 26, 0);
-	border-top-color: #1a1a1a;
-	border-width: 20px;
-	left: 50%;
-	margin-left: -20px;
-}
-.arrow_box:before {
-	border-color: rgba(255, 255, 255, 0);
-	border-top-color: #fff;
-	border-width: 23px;
-	left: 50%;
-	margin-left: -23px;
-}
-
 .wrapper {
   height: 450px; 
   width: 100%; 
