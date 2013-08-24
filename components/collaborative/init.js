@@ -241,30 +241,30 @@
         },
 
         onSelectionChange: function (e) {
-			// Selection change can be fired 100's of times per second as the mouse drags
-			// Got to regulate the interval for optimization
-			var now = new Date().getTime();
-			var minInterval = 500;
-			if (typeof(this.onSelectionChange.lastSelectionChange) === 'undefined') {
-				console.log("initialize last selection change");
-				this.onSelectionChange.lastSelectionChange = now;
-			}
-			var interval = now - this.onSelectionChange.lastSelectionChange;
-			this.onSelectionChange.lastSelectionChange = now;
-			
-			if (interval < minInterval) {
-				var intervalDifference = minInterval - interval;
-				clearTimeout(this.onSelectionChange.deferredPost);
-				this.onSelectionChange.deferredPost = setTimeout(this.$postSelectionChange, intervalDifference);
-			}
-			else {
-				this.$postSelectionChange();
-			}
+            // Selection change can be fired 100's of times per second as the mouse drags
+            // Got to regulate the interval for optimization
+            var now = new Date().getTime();
+            var minInterval = 500;
+            if (typeof(this.onSelectionChange.lastSelectionChange) === 'undefined') {
+                console.log("initialize last selection change");
+                this.onSelectionChange.lastSelectionChange = now;
+            }
+            var interval = now - this.onSelectionChange.lastSelectionChange;
+            this.onSelectionChange.lastSelectionChange = now;
+            
+            if (interval < minInterval) {
+                var intervalDifference = minInterval - interval;
+                clearTimeout(this.onSelectionChange.deferredPost);
+                this.onSelectionChange.deferredPost = setTimeout(this.$postSelectionChange, intervalDifference);
+            }
+            else {
+                this.$postSelectionChange();
+            }
         },
-		
-		postSelectionChange: function () {
+        
+        postSelectionChange: function () {
             console.log('selection change');
-			var post = { action: 'sendSelectionChange',
+            var post = { action: 'sendSelectionChange',
                 filename: codiad.active.getPath(),
                 selection: JSON.stringify(this._getSelection().getRange()) };
             // console.log(post);
@@ -274,7 +274,7 @@
                 // console.log(data);
                 codiad.jsend.parse(data);
             });
-		},
+        },
 
         /* Request the server for the collaborators selections for the current
          * file. */
