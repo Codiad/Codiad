@@ -92,6 +92,8 @@
             // Assuming the mode file has no dependencies
             $.loadScript('components/editor/ace-editor/mode-' + mode + '.js',
             fn);
+            /* Notify listeners. */
+            amplify.publish('active.onOpen', path);
         },
 
         init: function() {
@@ -446,6 +448,9 @@
         //////////////////////////////////////////////////////////////////
 
         save: function(path) {
+            /* Notify listeners. */
+            amplify.publish('active.onSave', path);
+
             var _this = this;
             if ((path && !this.isOpen(path)) || (!path && !codiad.editor.getActive())) {
                 codiad.message.error(i18n('No Open Files to save'));
@@ -527,6 +532,9 @@
         },
         
         removeAll: function() {
+            /* Notify listeners. */
+            amplify.publish('active.onRemoveAll');
+
             var _this = this;
             var changed = false;
             
@@ -658,6 +666,9 @@
 
                 newSession.on("changeMode", fn);
                 newSession.setMode("ace/mode/" + mode);
+                
+                /* Notify listeners. */
+                amplify.publish('active.onRenameFile', {"oldPath": oldPath, "newPath": newPath});
 
             } else {
                 // A folder was renamed
@@ -668,6 +679,8 @@
                         switchSessions.apply(this, [key, newKey]);
                     }
                 }
+                /* Notify listeners. */
+                amplify.publish('active.onRenameFolder', {"oldPath": oldPath, "newPath": newPath});
             }
             $.get(this.controller + '?action=rename&old_path=' + oldPath + '&new_path=' + newPath);
         },
