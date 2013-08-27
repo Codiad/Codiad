@@ -47,7 +47,15 @@ class Market extends Common {
         $this->url = Common::getConstant('MARKETURL', $this->url);
         // load market from server
         if(!file_exists(DATA.'/cache/market.current')) {
-          file_put_contents(DATA.'/cache/market.current',file_get_contents($this->url));
+          $optout = "";
+          foreach($this->local as $key=>$value) {
+            foreach($value as $data) {
+              if(trim($data) != '') {
+                $optout .= rtrim($key, "s").":".str_replace("-master","", trim($data)).",";
+              }
+            }
+          }
+          file_put_contents(DATA.'/cache/market.current',file_get_contents($this->url.'/?o='.substr($optout,0,-1)));
           copy(DATA.'/cache/market.current',DATA.'/cache/market.last');
         } else {
           if (time()-filemtime(DATA.'/cache/market.current') > 24 * 3600) {
@@ -192,7 +200,7 @@ class Market extends Common {
               }
           }
         } else {
-            $tmp = file_get_contents($this->url.'/?t='.rtrim($type, "s").'&i='.$name);
+            $tmp = file_get_contents($this->url.'/?t='.rtrim($type, "s").'&i='.str_replace("-master","", array_pop(explode('/', $repo))));
         }
         if(file_put_contents(BASE_PATH.'/'.$type.'/'.$name.'.zip', fopen($repo.'/archive/master.zip', 'r'))) {
             $zip = new ZipArchive;
