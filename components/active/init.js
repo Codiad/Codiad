@@ -87,13 +87,13 @@
                     codiad.editor.setSession(session);
                 }
                 _this.add(path, session, focus);
+                /* Notify listeners. */
+                amplify.publish('active.onOpen', path);
             };
 
             // Assuming the mode file has no dependencies
             $.loadScript('components/editor/ace-editor/mode-' + mode + '.js',
             fn);
-            /* Notify listeners. */
-            amplify.publish('active.onOpen', path);
         },
 
         init: function() {
@@ -666,10 +666,6 @@
 
                 newSession.on("changeMode", fn);
                 newSession.setMode("ace/mode/" + mode);
-                
-                /* Notify listeners. */
-                amplify.publish('active.onRenameFile', {"oldPath": oldPath, "newPath": newPath});
-
             } else {
                 // A folder was renamed
                 var newKey;
@@ -679,10 +675,11 @@
                         switchSessions.apply(this, [key, newKey]);
                     }
                 }
-                /* Notify listeners. */
-                amplify.publish('active.onRenameFolder', {"oldPath": oldPath, "newPath": newPath});
             }
-            $.get(this.controller + '?action=rename&old_path=' + oldPath + '&new_path=' + newPath);
+            $.get(this.controller + '?action=rename&old_path=' + oldPath + '&new_path=' + newPath, function() {
+                /* Notify listeners. */
+                amplify.publish('active.onRename', {"oldPath": oldPath, "newPath": newPath});
+            });
         },
 
         //////////////////////////////////////////////////////////////////
