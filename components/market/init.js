@@ -9,124 +9,120 @@
     var codiad = global.codiad;
 
     $(function() {
-        codiad.theme_manager.init();
+        codiad.market.init();
     });
 
-    codiad.theme_manager = {
+    codiad.market = {
 
-        controller: 'components/theme_manager/controller.php',
-        dialog: 'components/theme_manager/dialog.php',
+        controller: 'components/market/controller.php',
+        dialog: 'components/market/dialog.php',
 
-        init: function() {
-           
+        init: function() {  
         },
-        
+
         //////////////////////////////////////////////////////////////////
-        // Open the theme manager market
+        // Open marketplace
         //////////////////////////////////////////////////////////////////
-        
-        market: function() {
+
+        list: function(type, note) {
             $('#modal-content form')
                 .die('submit'); // Prevent form bubbling
-            codiad.modal.load(500, this.dialog + '?action=market');
-        },
-
-        //////////////////////////////////////////////////////////////////
-        // Open the theme manager dialog
-        //////////////////////////////////////////////////////////////////
-
-        list: function() {
-            $('#modal-content form')
-                .die('submit'); // Prevent form bubbling
-            codiad.modal.load(500, this.dialog + '?action=list');
+            codiad.modal.load(800, this.dialog + '?action=list&type='+type+'&note='+note);
         },
         
         //////////////////////////////////////////////////////////////////
-        // Checks for theme updates
+        // Search marketplace
         //////////////////////////////////////////////////////////////////
 
-        check: function() {
+        search: function(e, query, note) {
             $('#modal-content form')
                 .die('submit'); // Prevent form bubbling
-            codiad.modal.load(500, this.dialog + '?action=check');
+            var key= e.charCode || e.keyCode || e.which;
+            if(query != '' && key==13) {
+              codiad.modal.load(800, this.dialog + '?action=list&note=' + note + '&type=undefined&query='+query);
+            }
         },
-        
+                
         openInBrowser: function(path) {
             window.open(path, '_newtab');
         },
         
         //////////////////////////////////////////////////////////////////
-        // Install theme
+        // Install
         //////////////////////////////////////////////////////////////////
 
-        install: function(name, repo) {
+        install: function(page, type, name, repo) {
             var _this = this;
-            $('#modal-content').html('<div id="modal-loading"></div><div align="center">Installing ' + name + '...</div><br>');
-            $.get(_this.controller + '?action=install&name=' + name + '&repo=' + repo, function(data) {
+            if(repo != '') {
+              $('#modal-content').html('<div id="modal-loading"></div><div align="center">Installing ' + name + '...</div><br>');
+              $.get(_this.controller + '?action=install&type=' + type + '&name=' + name + '&repo=' + repo, function(data) {
+                  var response = codiad.jsend.parse(data);
+                  if (response == 'error') {
+                      codiad.message.error(response.message);
+                  }
+                  _this.list(page, true);
+              });
+            } else {
+               codiad.message.error('No Repository URL');
+            }
+        },
+        
+        //////////////////////////////////////////////////////////////////
+        // Remove
+        //////////////////////////////////////////////////////////////////
+
+        remove: function(page, type, name) {
+            var _this = this;
+            $('#modal-content').html('<div id="modal-loading"></div><div align="center">Deleting ' + name + '...</div><br>');
+            $.get(_this.controller + '?action=remove&type=' + type + '&name=' + name, function(data) {
                 var response = codiad.jsend.parse(data);
                 if (response == 'error') {
                     codiad.message.error(response.message);
-                } else {
-                    _this.list();
                 }
+                _this.list(page, false);
             });
         },
         
         //////////////////////////////////////////////////////////////////
-        // Remove theme
+        // Update
         //////////////////////////////////////////////////////////////////
 
-        remove: function(name) {
-            var _this = this;
-            $.get(_this.controller + '?action=remove&name=' + name, function(data) {
-                var response = codiad.jsend.parse(data);
-                if (response == 'error') {
-                    codiad.message.error(response.message);
-                }
-                _this.list();
-            });
-        },
-        
-        //////////////////////////////////////////////////////////////////
-        // Update theme
-        //////////////////////////////////////////////////////////////////
-
-        update: function(name) {
+        update: function(page, type, name) {
             var _this = this;
             $('#modal-content').html('<div id="modal-loading"></div><div align="center">Updating ' + name + '...</div><br>');
-            $.get(_this.controller + '?action=update&name=' + name, function(data) {
+            $.get(_this.controller + '?action=update&type=' + type + '&name=' + name, function(data) {
                 var response = codiad.jsend.parse(data);
                 if (response == 'error') {
                     codiad.message.error(response.message);
                 }
-                _this.check();
+                _this.list(page, false);
             });
         },
 
         //////////////////////////////////////////////////////////////////
-        // Activate theme
+        // Activate
         //////////////////////////////////////////////////////////////////
 
-        activate: function(name) {
+        activate: function(page, type, name) {
             var _this = this;
-            $.get(this.controller + '?action=activate&name=' + name, function(data) {
+            $.get(this.controller + '?action=activate&type=' + type + '&name=' + name, function(data) {
                 var response = codiad.jsend.parse(data);
                 if (response != 'error') {
-                    _this.list();
+                    _this.list(page, true);
                 }
             });
         },
 
         //////////////////////////////////////////////////////////////////
-        // Deactivate theme
+        // Deactivate
         //////////////////////////////////////////////////////////////////
 
-        deactivate: function(name) {
+        deactivate: function(page, type, name) {
             var _this = this;
-            $.get(this.controller + '?action=deactivate&name=' + name, function(data) {
+            $.get(this.controller + '?action=deactivate&type=' + type + '&name=' + name, function(data) {
                 var response = codiad.jsend.parse(data);
                 if (response != 'error') {
-                    _this.list();
+                    _this.list(page, true);
                 }
             });
         }

@@ -208,11 +208,8 @@ define("WORKSPACE", BASE_PATH . "/workspace");
 // URLS
 define("WSURL", BASE_URL . "/workspace");
 
-// Plugin Market
-//define("PMURL", "http://codiad.com/plugins.json");
-
-// Theme Market
-//define("TMURL", "http://codiad.com/themes.json");
+// Marketplace
+//define("MARKETURL", "http://market.codiad.com/json");
 
 // Update Check
 //define("UPDATEURL", "http://update.codiad.com/?v={VER}&o={OS}&p={PHP}&w={WEB}&a={ACT}");
