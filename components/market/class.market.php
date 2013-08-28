@@ -274,20 +274,20 @@ class Market extends Common {
 
         if(file_exists(BASE_PATH.'/'.$type.'/'.$name.'/'.rtrim($type, "s").'.json')) {
             $data = json_decode(file_get_contents(BASE_PATH.'/'.$type.'/'.$name.'/'.rtrim($type, "s").'.json'),true);
-            if(substr($local[0]['url'],-4) == '.git') {
-                $local[0]['url'] = substr($local[0]['url'],0,-4);
+            if(substr($data[0]['url'],-4) == '.git') {
+                $data[0]['url'] = substr($data[0]['url'],0,-4);
             }
-            $local[0]['url'] .= '/archive/master.zip';
+            $data[0]['url'] .= '/archive/master.zip';
 
             $ign = array(".","..");
-            if(isset($local[0]['exclude'])) {
-              foreach(explode(",",$local[0]['exclude']) as $exclude) {
+            if(isset($data[0]['exclude'])) {
+              foreach(explode(",",$data[0]['exclude']) as $exclude) {
                 array_push($ign, $exclude);
               }
             }
 
             if(file_exists(BASE_PATH.'/'.$type.'/_'.session_id()) || mkdir(BASE_PATH.'/'.$type.'/_'.session_id())) {
-              if(file_put_contents(BASE_PATH.'/'.$type.'/_'.session_id().'/'.$name.'.zip', fopen($local[0]['url'], 'r'))) {
+              if(file_put_contents(BASE_PATH.'/'.$type.'/_'.session_id().'/'.$name.'.zip', fopen($data[0]['url'], 'r'))) {
                   $zip = new ZipArchive;
                   $res = $zip->open(BASE_PATH.'/'.$type.'/_'.session_id().'/'.$name.'.zip');
                   // open downloaded archive
