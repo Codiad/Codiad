@@ -67,6 +67,8 @@
                     _this.loadCurrent();
                     codiad.modal.unload();
                     codiad.user.project(path);
+                    /* Notify listeners. */
+                    amplify.publish('project.onOpen', path);
                 }
             });
         },
@@ -148,6 +150,8 @@
                             _this.open(createResponse.path);
                             codiad.modal.unload();
                             _this.loadSide();
+                            /* Notify listeners. */
+                            amplify.publish('project.onCreate', {"name": projectName, "path": projectPath, "git_repo": gitRepo, "git_branch": gitBranch});
                         }
                     });
                 }
@@ -175,6 +179,8 @@
                         _this.loadSide();
                         $('#file-manager a[data-type="root"]').html(projectName);
                         codiad.modal.unload();
+                        /* Notify listeners. */
+                        amplify.publish('project.onRename', {"path": projectPath, "name": projectName});
                     }
                 });
             });
@@ -216,6 +222,8 @@
                                 codiad.active.remove(curPath);
                             }
                         });
+                        /* Notify listeners. */
+                        amplify.publish('project.onDelete', {"path": projectPath, "name": name});
                     }
                 });
             });
