@@ -244,9 +244,8 @@
             // Selection change can be fired 100's of times per second as the mouse drags
             // Got to regulate the interval for optimization
             var now = new Date().getTime();
-            var minInterval = 500;
+            var minInterval = 250;
             if (typeof(this.onSelectionChange.lastSelectionChange) === 'undefined') {
-                console.log("initialize last selection change");
                 this.onSelectionChange.lastSelectionChange = now;
             }
             var interval = now - this.onSelectionChange.lastSelectionChange;
@@ -263,12 +262,10 @@
         },
         
         postSelectionChange: function () {
-            console.log('selection change');
             var post = { action: 'sendSelectionChange',
                 filename: codiad.active.getPath(),
                 selection: JSON.stringify(this._getSelection().getRange()) };
-            // console.log(post);
-
+                
             $.post(this.controller, post, function (data) {
                 // console.log('complete selection change');
                 // console.log(data);
