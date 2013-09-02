@@ -70,13 +70,10 @@
                             if(isset($addon['image']) && $addon['image'] != '') {
                               echo '<div style="position:absolute;top:5px;left:404px;"><a onclick="codiad.market.openInBrowser(\''.$addon['image'].'\');return false;"><img src="'.$addon['image'].'" width="150" height="100"></a></div>';
                               $right = 160;
-                            } else {
-                              if(isset($addon['new'])) {
-                                $left = $left + 30;
-                              }
-                            }
+                            } 
                             if(isset($addon['new'])) {
                                 echo '<div style="position:absolute;top:0px;left:0px;z-index:10000;"><img src="./themes/default/images/new.png" width="35" height="35"></div>';
+                                $left = $left + 30;
                             }
                             echo '<div style="position:absolute;top:2px;left:'.($left+10).'px;"><a style="font-weight:bold;font-size:14px" onclick="codiad.market.openInBrowser(\''.$addon['url'].'\');return false;">'.$addon['name'].'</a></div>';
                             echo '<div style="position:absolute;top:15px;left:'.($left+10).'px;"><font style="font-size:10px">'.get_i18n(ucfirst(rtrim($type,'s'))).' - '.get_i18n(ucfirst($category)).' | <a style="font-weight:bold;text-decoration:underline;" onclick="codiad.market.openInBrowser(\'https://github.com/'.$addon['author'].'\');return false;">'.$addon['author'].'</a> | '.$addon['count'].' '.get_i18n("Users").'</font></div>';
