@@ -3,5 +3,11 @@
     "description" : "Modern Filemanager Icon-Theme for Codiad",
     "image": "https://raw.github.com/daeks/Codiad-Theme-Modern/master/screen.png",
     "url" : "https://github.com/daeks/Codiad-Theme-Modern"
+  },
+  { "author" : "lightux",
+    "name" : "Clear",
+    "description" : "Clear Theme from lightux - updated by daeks",
+    "image": "https://raw.github.com/daeks/Codiad-Theme-Clear/master/screen.png",
+    "url" : "https://github.com/daeks/Codiad-Theme-Clear"
   }
 ]
