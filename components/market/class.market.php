@@ -51,7 +51,13 @@ class Market extends Common {
           foreach($this->local as $key=>$value) {
             foreach($value as $data) {
               if(trim($data) != '') {
-                $optout .= rtrim($key, "s").":".str_replace("-master","", trim($data)).",";
+                if(file_exists(BASE_PATH.'/'.$key.'/'.$data.'/'.rtrim($key, "s").'.json')) {
+                  $tmp = json_decode(file_get_contents(BASE_PATH.'/'.$key.'/'.$data.'/'.rtrim($key, "s").'.json'),true);
+                  if(substr($tmp[0]['url'],-4) == '.git') {
+                      $tmp[0]['url'] = substr($tmp[0]['url'],0,-4);
+                  }
+                  $optout .= rtrim($key, "s").":".array_pop(explode('/', $tmp[0]['url'])).",";
+                }
               }
             }
           }
