@@ -79,7 +79,7 @@
                 if (response == 'error') {
                     codiad.message.error(response.message);
                 }
-                _this.list(page, false);
+                _this.list(page, true);
             });
         },
         
