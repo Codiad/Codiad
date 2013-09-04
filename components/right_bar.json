@@ -1,76 +1,91 @@
 [
     {
         "title": "Save",
+        "admin": false,
         "icon": "icon-install",
         "onclick": "codiad.active.save();"
     },
     {
         "title": "Save All",
+        "admin": false,
         "icon": "icon-install",
         "onclick": "codiad.active.saveAll();"
     },
     {
-        "title": "plugins",
+        "title": "Plugins",
+        "admin": false,
+        "icon": null,
+        "onclick": null
+    },
+    {
+        "title": "pluginbar",
+        "admin": false,
+        "icon": null,
+        "onclick": null
+    },
+    {
+        "title": "Administration",
+        "admin": true,
         "icon": null,
         "onclick": null
     },
     {
         "title": "Projects",
+        "admin": true,
         "icon": "icon-archive",
         "onclick": "codiad.project.list();"
     },
     {
-        "title": "break",
-        "icon": null,
-        "onclick": null
-    },
-    {
         "title": "Users",
+        "admin": true,
         "icon": "icon-users",
         "onclick": "codiad.user.list();"
     },
     {
-        "title": "break",
+        "title": "System",
+        "admin": true,
+        "icon": null,
+        "onclick": null
+    },
+    {
+        "title": "Marketplace",
+        "admin": true,
+        "icon": "icon-cloud",
+        "onclick": "codiad.market.list();"
+    },
+    {
+        "title": "Update Check",
+        "admin": true,
+        "icon": "icon-share",
+        "onclick": "codiad.update.check();"
+    },
+    {
+        "title": "Account",
+        "admin": false,
         "icon": null,
         "onclick": null
     },
     {
         "title": "Settings",
+        "admin": false,
         "icon": "icon-doc-text",
         "onclick": "codiad.modal.load(400, 'components/editor/dialog.php?action=settings');codiad.modal.hideOverlay();"
     },
     {
-        "title": "Marketplace",
-        "icon": "icon-cloud",
-        "onclick": "codiad.market.list();"
-    },
-    {
-        "title": "break",
-        "icon": null,
-        "onclick": null
-    },
-    {
         "title": "Password",
+        "admin": false,
         "icon": "icon-flashlight",
         "onclick": "codiad.user.password();"
     },
     {
         "title": "break",
-        "icon": null,
-        "onclick": null
-    },
-        {
-        "title": "Update Check",
-        "icon": "icon-share",
-        "onclick": "codiad.update.check();"
-    },
-    {
-        "title": "break",
+        "admin": false,
         "icon": null,
         "onclick": null
     },
     {
         "title": "Logout",
+        "admin": false,
         "icon": "icon-logout",
         "onclick": "codiad.user.logout();"
     }

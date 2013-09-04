@@ -689,6 +689,13 @@ table [class^="icon-"], [class*=" icon-"] {
     overflow: auto;
 }
 
+.sb-right-category {
+    font-size:14px;
+    font-weight:600;
+    color:#7F7F7F;
+    padding-bottom:10px;
+}
+
 #sb-right a {
     display: block;
     min-width: 100%;
