@@ -117,7 +117,7 @@
                       if($_GET['note'] != 'undefined' && $_GET['note'] == 'true') {
                          ?><button style="color: blue;white-space:nowrap;" onclick="window.location.reload();return false;"><?php i18n("Reload Codiad"); ?></button><?php
                       } else {
-                         ?><button style="white-space:nowrap;" class="icon-arrows-ccw bigger-icon" style="display:inline;" onclick="window.location.reload();return false;"></button><?php
+                         ?><button class="icon-arrows-ccw bigger-icon" onclick="window.location.reload();return false;"></button><?php
                       }                    
                     ?></th>
                     <th valign="middle"><input style="margin:0;display:inline" id="repourl" placeholder="<?php i18n("Enter GitHub Repository Url..."); ?>"></th>
