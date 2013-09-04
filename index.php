@@ -335,27 +335,38 @@ if(isset($_SESSION['theme'])) {
                 ////////////////////////////////////////////////////////////
 
                 foreach($right_bar as $item_rb=>$data){
-
+                    if(!isset($data['admin'])) {
+                      $data['admin'] = false;
+                    }
                     if($data['title']=='break'){
-                        echo("<hr>");
-                    } else if ($data['title']=='plugins'){
-                        echo("<hr>");
-                        foreach ($plugins as $plugin){
-                             if(file_exists(PLUGINS . "/" . $plugin . "/plugin.json")) {
-                                $pdata = file_get_contents(PLUGINS . "/" . $plugin . "/plugin.json");
-                                $pdata = json_decode($pdata,true);
-                                if(isset($pdata[0]['rightbar'])) {
-                                    foreach($pdata[0]['rightbar'] as $rightbar) {
-                                        if(isset($rightbar['action']) && isset($rightbar['icon']) && isset($rightbar['title'])) {
-                                            echo('<a onclick="'.$rightbar['action'].'"><span class="'.$rightbar['icon'].'"></span>'.$rightbar['title'].'</a>');
+                        if(!$data['admin'] || $data['admin'] && checkAccess()) {
+                            echo("<hr>");
+                        }
+                    }else if($data['title']!='break' && $data['title']!='pluginbar' && $data['onclick'] == ''){
+                        if(!$data['admin'] || $data['admin'] && checkAccess()) {
+                            echo("<hr><span style='font-size:14px;font-weight:600;color:#999;padding-bottom:15px;'>".get_i18n($data['title'])."</span>");
+                        }
+                    }else if ($data['title']=='pluginbar'){
+                        if(!$data['admin'] || $data['admin'] && checkAccess()) {
+                            foreach ($plugins as $plugin){
+                                 if(file_exists(PLUGINS . "/" . $plugin . "/plugin.json")) {
+                                    $pdata = file_get_contents(PLUGINS . "/" . $plugin . "/plugin.json");
+                                    $pdata = json_decode($pdata,true);
+                                    if(isset($pdata[0]['rightbar'])) {
+                                        foreach($pdata[0]['rightbar'] as $rightbar) {
+                                            if(isset($rightbar['action']) && isset($rightbar['icon']) && isset($rightbar['title'])) {
+                                                echo('<a onclick="'.$rightbar['action'].'"><span class="'.$rightbar['icon'].'"></span>'.$rightbar['title'].'</a>');
+                                            }
                                         }
+                                        //echo("<hr>");
                                     }
-                                    echo("<hr>");
-                                }
-                             }
+                                 }
+                            }
                         }
                     } else{
-                        echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].' bigger-icon"></span>'.get_i18n($data['title']).'</a>');
+                        if(!$data['admin'] || $data['admin'] && checkAccess()) {
+                            echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].' bigger-icon"></span>'.get_i18n($data['title']).'</a>');
+                        }
                     }
 
                 }
