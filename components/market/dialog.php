@@ -22,7 +22,12 @@
         //////////////////////////////////////////////////////////////
         
         case 'list':
-        
+            if(!checkAccess()){ 
+            ?>
+            <label><?php i18n("Restricted"); ?></label>
+            <pre><?php i18n("You can not access the marketplace"); ?></pre>
+            <button onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
+            <?php } else {
             require_once('class.market.php');
             $market = new Market();
             ?>
@@ -112,7 +117,7 @@
                       if($_GET['note'] != 'undefined' && $_GET['note'] == 'true') {
                          ?><button style="color: blue;white-space:nowrap;" onclick="window.location.reload();return false;"><?php i18n("Reload Codiad"); ?></button><?php
                       } else {
-                         ?><button style="white-space:nowrap;" class="icon-arrows-ccw bigger-icon" style="display:inline;" onclick="window.location.reload();return false;"></button><?php
+                         ?><button class="icon-arrows-ccw bigger-icon" onclick="window.location.reload();return false;"></button><?php
                       }                    
                     ?></th>
                     <th valign="middle"><input style="margin:0;display:inline" id="repourl" placeholder="<?php i18n("Enter GitHub Repository Url..."); ?>"></th>
@@ -120,7 +125,7 @@
                 </tr>
              </table>
             <?php
-            
+            }            
             break;
              
     }
