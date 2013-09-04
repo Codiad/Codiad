@@ -22,7 +22,12 @@
         //////////////////////////////////////////////////////////////
         
         case 'list':
-        
+            if(!checkAccess()){ 
+            ?>
+            <label><?php i18n("Restricted"); ?></label>
+            <pre><?php i18n("You can not access the marketplace"); ?></pre>
+            <button onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
+            <?php } else {
             require_once('class.market.php');
             $market = new Market();
             ?>
@@ -120,7 +125,7 @@
                 </tr>
              </table>
             <?php
-            
+            }            
             break;
              
     }
