@@ -693,7 +693,7 @@ table [class^="icon-"], [class*=" icon-"] {
     font-size:14px;
     font-weight:600;
     color:#999;
-    padding-bottom:15px;
+    padding-bottom:10px;
 }
 
 #sb-right a {
