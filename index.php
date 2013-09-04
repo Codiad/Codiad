@@ -344,7 +344,7 @@ if(isset($_SESSION['theme'])) {
                         }
                     }else if($data['title']!='break' && $data['title']!='pluginbar' && $data['onclick'] == ''){
                         if(!$data['admin'] || $data['admin'] && checkAccess()) {
-                            echo("<hr><span style='font-size:14px;font-weight:600;color:#999;padding-bottom:15px;'>".get_i18n($data['title'])."</span>");
+                            echo("<hr><span class='sb-right-category'>".get_i18n($data['title'])."</span>");
                         }
                     }else if ($data['title']=='pluginbar'){
                         if(!$data['admin'] || $data['admin'] && checkAccess()) {
