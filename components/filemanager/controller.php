@@ -31,6 +31,14 @@
         $_GET['no_return']='true';
         require_once('../project/controller.php');
     }
+    
+    //////////////////////////////////////////////////////////////////
+    // Security Check
+    //////////////////////////////////////////////////////////////////   
+    
+    if (strpos($_GET['path'],$_SESSION['project']) != 0) {
+      die('{"status":"error","message":"Invalid Path"}');
+    }
 
     //////////////////////////////////////////////////////////////////
     // Define Root
