@@ -58,12 +58,14 @@
             //this.removeServerTextForAllFiles();
 
             this.$onSelectionChange = this.onSelectionChange.bind(this);
+            this.$onChange = this.onChange.bind(this);
             this.$postSelectionChange = this.postSelectionChange.bind(this);
 
             this.$updateCollaboratorsSelections = this.updateCollaboratorsSelections.bind(this);
             this.$displaySelections = this.displaySelections.bind(this);
 
             this.$synchronizeText = this.synchronizeText.bind(this);
+            this.$postSynchronizeText = this.postSynchronizeText.bind(this);
 
             this.$sendHeartbeat = this.sendHeartbeat.bind(this);
 
@@ -83,7 +85,6 @@
                 /* Create the initial shadow for the current file. */
                 _this.shadows[_this.currentFilename] = _this._getCurrentFileText();
                 _this.sendAsShadow(_this.currentFilename, _this.shadows[_this.currentFilename]);
-
                 _this.addListeners();
             });
 
@@ -130,6 +131,11 @@
                  * changes. */
                 this.setCollaborationStatus.synchronizeTextIntervalRef =
                     setInterval(this.$synchronizeText, 500);
+                
+                /* Sync right away for responsiveness - there's often already a
+                 * server copy of the collab file */
+                this.$synchronizeText();
+                
             } else if (!enableCollaboration && this.enableCollaboration) {
                 console.log('Stopping collaboration logic.');
                 this.enableCollaboration = false;
@@ -221,11 +227,13 @@
         /* Add appropriate listeners to the current EditSession. */
         addListeners: function () {
             this.addListenerToOnSelectionChange();
+            this.addListenerToOnChange();
         },
 
         /* Remove listeners from the current EditSession. */
         removeListeners: function () {
             this.removeListenerToOnSelectionChange();
+            this.removeListenerToOnChange();
         },
 
         addListenerToOnSelectionChange: function () {
@@ -239,12 +247,25 @@
             selection.removeEventListener('changeCursor', this.$onSelectionChange);
             selection.removeEventListener('changeSelection', this.$onSelectionChange);
         },
-
+        
+        addListenerToOnChange: function () {
+            var editor = this._getEditor();
+            editor.addEventListener('change', this.$onChange);
+        },
+        
+        removeListenerToOnChange: function () {
+            var editor = this._getEditor();
+            editor.removeEventListener('change', this.$onChange);
+        },
+        
+        onChange: function(e) {
+            this.$synchronizeText();
+        },
+        
+        /* Throttling mechanism for postSelectionChange */
         onSelectionChange: function (e) {
-            // Selection change can be fired 100's of times per second as the mouse drags
-            // Got to regulate the interval for optimization
-            var now = new Date().getTime();
             var minInterval = 250;
+            var now = new Date().getTime();
             if (typeof(this.onSelectionChange.lastSelectionChange) === 'undefined') {
                 this.onSelectionChange.lastSelectionChange = now;
             }
@@ -265,7 +286,7 @@
             var post = { action: 'sendSelectionChange',
                 filename: codiad.active.getPath(),
                 selection: JSON.stringify(this._getSelection().getRange()) };
-                
+
             $.post(this.controller, post, function (data) {
                 // console.log('complete selection change');
                 // console.log(data);
@@ -386,9 +407,35 @@
             }
         },
 
+        /* Throttling mechanism for postSynchronizeText */
+        synchronizeText: function () {
+            var _this = this;
+            var now = new Date().getTime();
+            var minInterval = 350;
+            if (typeof(this.synchronizeText.lastRun) === 'undefined') {
+                this.synchronizeText.lastRun = now;
+            }
+            var interval = now - this.synchronizeText.lastRun;
+            
+            var _this = this;
+            var successCallback = function() {
+                _this.synchronizeText.lastRun = now;
+                _this.$postSynchronizeText();
+            };
+            
+            clearTimeout(this.synchronizeText.deferredPost);
+            if (interval < minInterval) {
+                var intervalDifference = minInterval - interval;
+                this.synchronizeText.deferredPost = setTimeout(successCallback, intervalDifference);
+            }
+            else {
+                successCallback();
+            }
+        },
+        
         /* Make a diff of the current file text with the shadow and send it to
          * the server. */
-        synchronizeText: function () {
+        postSynchronizeText: function () {
             var _this = this;
             var currentFilename = this.currentFilename;
 
@@ -590,4 +637,3 @@
     };
 
 })(this, jQuery);
-
