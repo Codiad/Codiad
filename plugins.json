@@ -52,6 +52,12 @@
     "description" : "Add Emmet support to Codiad",
     "url" : "https://github.com/Andr3as/Codiad-Emmet"
   },
+  { "author" : "tholum",
+    "name" : "SVN",
+    "description" : "Allows SVN connection to remote repositories",
+    "image": "https://raw.github.com/tholum/Codiad-SVN/master/screen.png",
+    "url" : "https://github.com/tholum/Codiad-SVN"
+  },
   { "author" : "Fluidbyte",
     "name" : "DocHub",
     "description" : "Access DocHub resources directly from within Codiad",
