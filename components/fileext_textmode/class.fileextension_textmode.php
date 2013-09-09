@@ -112,7 +112,6 @@ class fileextension_textmode{
 			'plain_text',
 			'powershell',
 			'prolog',
-			
 			'python',
 			'r',
 			'rdoc',
@@ -133,7 +132,6 @@ class fileextension_textmode{
 			'tex',
 			'text',
 			'textile',
-			'tmsnippet',
 			'toml',
 			'typescript',
 			'twig',
