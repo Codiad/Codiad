@@ -113,7 +113,6 @@
         'tex',
         'text',
         'textile',
-        'tmsnippet',
         'toml',
         'typescript',
         'twig',

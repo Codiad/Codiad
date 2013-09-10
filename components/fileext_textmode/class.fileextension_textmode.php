@@ -132,7 +132,6 @@ class fileextension_textmode{
 			'tex',
 			'text',
 			'textile',
-			'tmsnippet',
 			'toml',
 			'typescript',
 			'twig',
