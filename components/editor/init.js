@@ -7,10 +7,10 @@
 (function(global, $) {
 
     // Classes from Ace
-    var VirtualRenderer = require('ace/virtual_renderer').VirtualRenderer;
-    var Editor = require('ace/editor').Editor;
-    var EditSession = require('ace/edit_session').EditSession;
-    var UndoManager = require("ace/undomanager").UndoManager;
+    var VirtualRenderer = ace.require('ace/virtual_renderer').VirtualRenderer;
+    var Editor = ace.require('ace/editor').Editor;
+    var EditSession = ace.require('ace/edit_session').EditSession;
+    var UndoManager = ace.require("ace/undomanager").UndoManager;
 
     // Editor modes that have been loaded
     var editorModes = {};
@@ -113,6 +113,7 @@
         'tex',
         'text',
         'textile',
+        'tmsnippet',
         'toml',
         'typescript',
         'twig',
@@ -849,12 +850,12 @@
 
                     // Mark the mode as loaded
                     editorModes[m] = true;
-                    var EditorMode = require('ace/mode/' + m).Mode;
+                    var EditorMode = ace.require('ace/mode/' + m).Mode;
                     i.getSession().setMode(new EditorMode());
                 }, true);
             } else {
 
-                var EditorMode = require('ace/mode/' + m).Mode;
+                var EditorMode = ace.require('ace/mode/' + m).Mode;
                 i.getSession().setMode(new EditorMode());
 
             }

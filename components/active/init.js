@@ -6,9 +6,9 @@
 
 (function(global, $) {
 
-    var EditSession = require('ace/edit_session')
+    var EditSession = ace.require('ace/edit_session')
         .EditSession;
-    var UndoManager = require('ace/undomanager')
+    var UndoManager = ace.require('ace/undomanager')
         .UndoManager;
 
     var codiad = global.codiad;
