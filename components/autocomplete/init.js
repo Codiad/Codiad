@@ -6,8 +6,8 @@
 
 (function (global, $) {
 
-    var EventEmitter = require('ace/lib/event_emitter').EventEmitter;
-    var Range = require('ace/range').Range;
+    var EventEmitter = ace.require('ace/lib/event_emitter').EventEmitter;
+    var Range = ace.require('ace/range').Range;
 
 
     var codiad = global.codiad;

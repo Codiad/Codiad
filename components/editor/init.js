@@ -7,10 +7,10 @@
 (function(global, $) {
 
     // Classes from Ace
-    var VirtualRenderer = require('ace/virtual_renderer').VirtualRenderer;
-    var Editor = require('ace/editor').Editor;
-    var EditSession = require('ace/edit_session').EditSession;
-    var UndoManager = require("ace/undomanager").UndoManager;
+    var VirtualRenderer = ace.require('ace/virtual_renderer').VirtualRenderer;
+    var Editor = ace.require('ace/editor').Editor;
+    var EditSession = ace.require('ace/edit_session').EditSession;
+    var UndoManager = ace.require("ace/undomanager").UndoManager;
 
     // Editor modes that have been loaded
     var editorModes = {};
@@ -27,32 +27,47 @@
     // modes available for selecting
     var availableTextModes = new Array(
         'abap',
+        'actionscript',
+        'ada',
         'asciidoc',
+        'assembly_x86',
+        'autohotkey',
+        'batchfile',
         'c9search',
         'c_cpp',
         'clojure',
+        'cobol',
         'coffee',
         'coldfusion',
         'csharp',
         'css',
         'curly',
+        'd',
         'dart',
         'diff',
         'django',
         'dot',
+        'ejs',
+        'erlang',
+        'forth',
         'ftl',
         'glsl',
         'golang',
         'groovy',
         'haml',
+        'haskell',
         'haxe',
         'html',
+        'html_ruby',
+        'ini',
         'jade',
         'java',
         'javascript',
         'json',
+        'jsoniq',
         'jsp',
         'jsx',
+        'julia',
         'latex',
         'less',
         'liquid',
@@ -63,27 +78,34 @@
         'lua',
         'luapage',
         'lucene',
+        'matlab',
         'makefile',
         'markdown',
         'mushcode',
+        'mysql',
+        'nix',
         'objectivec',
         'ocaml',
         'pascal',
         'perl',
         'pgsql',
         'php',
+        'plain_text',
         'powershell',
+        'prolog',
         'python',
         'r',
         'rdoc',
         'rhtml',
         'ruby',
+        'rust',
         'sass',
         'scad',
         'scala',
         'scheme',
         'scss',
         'sh',
+        'snippets',
         'sql',
         'stylus',
         'svg',
@@ -91,11 +113,12 @@
         'tex',
         'text',
         'textile',
-        'tmsnippet',
         'toml',
         'typescript',
+        'twig',
         'vbscript',
         'velocity',
+        'verilog',
         'xml',
         'xquery',
         'yaml'
@@ -826,12 +849,12 @@
 
                     // Mark the mode as loaded
                     editorModes[m] = true;
-                    var EditorMode = require('ace/mode/' + m).Mode;
+                    var EditorMode = ace.require('ace/mode/' + m).Mode;
                     i.getSession().setMode(new EditorMode());
                 }, true);
             } else {
 
-                var EditorMode = require('ace/mode/' + m).Mode;
+                var EditorMode = ace.require('ace/mode/' + m).Mode;
                 i.getSession().setMode(new EditorMode());
 
             }
