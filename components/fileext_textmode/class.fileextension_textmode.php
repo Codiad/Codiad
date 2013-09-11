@@ -39,7 +39,8 @@ class fileextension_textmode{
 			'py' => 'python',
 			'rb' => 'ruby',
 			'jade' => 'jade',
-			'coffee' => 'coffee');
+			'coffee' => 'coffee',
+			'vm' => 'velocity');
 
 	//////////////////////////////////////////////////////////////////
 	//availiable text modes
