@@ -4,6 +4,13 @@
     margin: 15px 0;
 }
 
+.project-wrapper {
+  max-height: 450px; 
+  width: 100%; 
+  overflow-y: auto; 
+  overflow-x: hidden;
+}
+
 .project-list-title {
     position: absolute;
     z-index: 9998;

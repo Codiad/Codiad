@@ -33,11 +33,14 @@
             <div id="user-list">
             <table width="100%">
                 <tr>
-                    <th><?php i18n("Login"); ?></th>
-                    <th width="5"><?php i18n("Password"); ?></th>
-                    <th width="5"><?php i18n("Projects"); ?></th>
-                    <th width="5"><?php i18n("Delete"); ?></th>
+                    <th width="150"><?php i18n("Login"); ?></th>
+                    <th width="85"><?php i18n("Password"); ?></th>
+                    <th width="75"><?php i18n("Projects"); ?></th>
+                    <th width="70"><?php i18n("Delete"); ?></th>
                 </tr>
+            </table>
+            <div class="user-wrapper">
+            <table width="100%" style="word-wrap: break-word;word-break: break-all;">    
             <?php
 
             // Get projects JSON data
@@ -45,17 +48,17 @@
             foreach($users as $user=>$data){
             ?>
             <tr>
-                <td><?php echo($data['username']); ?></td>
-                <td><a onclick="codiad.user.password('<?php echo($data['username']); ?>');" class="icon-flashlight bigger-icon"></a></td>
-                <td><a onclick="codiad.user.projects('<?php echo($data['username']); ?>');" class="icon-archive bigger-icon"></a></td>
+                <td width="150"><?php echo($data['username']); ?></td>
+                <td width="85"><a onclick="codiad.user.password('<?php echo($data['username']); ?>');" class="icon-flashlight bigger-icon"></a></td>
+                <td width="75"><a onclick="codiad.user.projects('<?php echo($data['username']); ?>');" class="icon-archive bigger-icon"></a></td>
                 <?php
                     if($_SESSION['user'] == $data['username']){
                     ?>
-                    <td><a onclick="codiad.message.error('You Cannot Delete Your Own Account');" class="icon-block bigger-icon"></a></td>
+                    <td width="75"><a onclick="codiad.message.error('You Cannot Delete Your Own Account');" class="icon-block bigger-icon"></a></td>
                     <?php
                     }else{
                     ?>
-                    <td><a onclick="codiad.user.delete('<?php echo($data['username']); ?>');" class="icon-cancel-circled bigger-icon"></a></td>
+                    <td width="70"><a onclick="codiad.user.delete('<?php echo($data['username']); ?>');" class="icon-cancel-circled bigger-icon"></a></td>
                     <?php
                     }
                     ?>
@@ -64,6 +67,7 @@
             }
             ?>
             </table>
+            </div>
             </div>
             <button class="btn-left" onclick="codiad.user.createNew();"><?php i18n("New Account"); ?></button>
     		<button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
