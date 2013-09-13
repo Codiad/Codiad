@@ -41,10 +41,29 @@ class Market extends Common {
         if(!file_exists(DATA.'/cache')) {
           mkdir(DATA.'/cache');
         }
+        
         // get existing data
         $this->local['plugins'] = getJSON('plugins.php');
         $this->local['themes'] = getJSON('themes.php');
         $this->url = Common::getConstant('MARKETURL', $this->url);
+        
+        // clean existing plugins
+        foreach($this->local as $key=>$value) {
+          $revised_array = array();
+          foreach($value as $data) {
+            if(trim($data) != '') {
+              if(file_exists(BASE_PATH.'/'.$key.'/'.$data.'/'.rtrim($key, "s").'.json')) {
+                  $revised_array[] = $data;
+              }
+            }
+          }
+          saveJSON($key.'.php',$revised_array);
+        }
+        
+        // reload existing data
+        $this->local['plugins'] = getJSON('plugins.php');
+        $this->local['themes'] = getJSON('themes.php');  
+        
         // load market from server
         if(!file_exists(DATA.'/cache/market.current')) {
           $optout = "";
