@@ -96,10 +96,10 @@ class Market extends Common {
               $data['url'] = substr($data['url'],0,-4);
           }
           // check if folder exists for that extension
-          if(file_exists(BASE_PATH.'/'.$data['type'].substr($data['url'],strrpos($data['url'],'/')))) {
+          if(file_exists(BASE_PATH.'/'.$data['type'].substr($data['url'],strrpos($data['url'],'/'.rtrim($data['type'],'s').'.json')))) {
               $data['folder'] = substr($data['url'],strrpos($data['url'],'/')+1);
           } else {
-            if(file_exists(BASE_PATH.'/'.$data['type'].substr($data['url'],strrpos($data['url'],'/')).'-master')) {
+            if(file_exists(BASE_PATH.'/'.$data['type'].substr($data['url'],strrpos($data['url'],'/')).'-master/'.rtrim($data['type'],'s').'.json')) {
                 $data['folder'] = substr($data['url'],strrpos($data['url'],'/')+1).'-master';
             }
           }
@@ -112,6 +112,9 @@ class Market extends Common {
               if($remote[0]['version'] != $local[0]['version']) {
                 $data['update'] = $remote[0]['version'];
               }
+              $data['remote'] = 0;
+          } else {
+            $data['remote'] = 1;
           }
 
           // check old cache for new ones
@@ -151,6 +154,7 @@ class Market extends Common {
                         $data[0]['type'] = 'plugins';
                         $data[0]['image'] = '';
                         $data[0]['count'] = -1;
+                        $data[0]['remote'] = 0;
                         $data[0]['description'] = 'Manual Installation';
                         array_push($this->remote, $data[0]);
                     }
@@ -178,6 +182,7 @@ class Market extends Common {
                         $data[0]['type'] = 'themes';
                         $data[0]['image'] = '';
                         $data[0]['count'] = -1;
+                        $data[0]['remote'] = 0;
                         $data[0]['description'] = 'Manual Installation';
                         array_push($this->remote, $data[0]);
                     }
