@@ -65,7 +65,7 @@
                 
                 foreach($marketplace as $remote=>$markettype) {
                     ksort($markettype);
-                    echo '<tr><th>';
+                    echo '<tr><th class="market-remote-title">';
                     if(!$remote) {
                       echo get_i18n("Installed");
                     } else {
