@@ -81,11 +81,11 @@
                                 if(isset($_GET['query']) && (strpos(strtolower(trim($addon['name'])), strtolower(trim($_GET['query']))) === false)) {
                                   break;
                                 }
-                                echo '<tr><td><div style="position:relative;height:110px">';
+                                echo '<tr><td><div style="position:relative;height:100px">';
                                 $left = 0;
                                 $right = 0;
                                 if(isset($addon['image']) && $addon['image'] != '') {
-                                  echo '<div style="position:absolute;top:5px;left:404px;"><a onclick="codiad.market.openInBrowser(\''.$addon['image'].'\');return false;"><img src="'.$addon['image'].'" width="150" height="100"></a></div>';
+                                  echo '<div style="position:absolute;top:5px;left:404px;"><a onclick="codiad.market.openInBrowser(\''.$addon['image'].'\');return false;"><img src="'.$addon['image'].'" width="150" height="90"></a></div>';
                                   $right = 160;
                                 } 
                                 if(isset($addon['new'])) {
