@@ -96,10 +96,10 @@ class Market extends Common {
               $data['url'] = substr($data['url'],0,-4);
           }
           // check if folder exists for that extension
-          if(file_exists(BASE_PATH.'/'.$data['type'].substr($data['url'],strrpos($data['url'],'/')))) {
+          if(file_exists(BASE_PATH.'/'.$data['type'].substr($data['url'],strrpos($data['url'],'/'.rtrim($data['type'],'s').'.json')))) {
               $data['folder'] = substr($data['url'],strrpos($data['url'],'/')+1);
           } else {
-            if(file_exists(BASE_PATH.'/'.$data['type'].substr($data['url'],strrpos($data['url'],'/')).'-master')) {
+            if(file_exists(BASE_PATH.'/'.$data['type'].substr($data['url'],strrpos($data['url'],'/')).'-master/'.rtrim($data['type'],'s').'.json')) {
                 $data['folder'] = substr($data['url'],strrpos($data['url'],'/')+1).'-master';
             }
           }
