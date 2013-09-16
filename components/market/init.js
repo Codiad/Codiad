@@ -98,33 +98,5 @@
                 _this.list(page, false);
             });
         },
-
-        //////////////////////////////////////////////////////////////////
-        // Activate
-        //////////////////////////////////////////////////////////////////
-
-        activate: function(page, type, name) {
-            var _this = this;
-            $.get(this.controller + '?action=activate&type=' + type + '&name=' + name, function(data) {
-                var response = codiad.jsend.parse(data);
-                if (response != 'error') {
-                    _this.list(page, true);
-                }
-            });
-        },
-
-        //////////////////////////////////////////////////////////////////
-        // Deactivate
-        //////////////////////////////////////////////////////////////////
-
-        deactivate: function(page, type, name) {
-            var _this = this;
-            $.get(this.controller + '?action=deactivate&type=' + type + '&name=' + name, function(data) {
-                var response = codiad.jsend.parse(data);
-                if (response != 'error') {
-                    _this.list(page, true);
-                }
-            });
-        }
     };
 })(this, jQuery);

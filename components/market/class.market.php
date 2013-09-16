@@ -32,38 +32,15 @@ class Market extends Common {
 
     public function __construct(){
         // initial setup
-        if(!file_exists(DATA.'/plugins.php')) {
-          saveJSON('plugins.php', array(''));
-        }
-        if(!file_exists(DATA.'/themes.php')) {
-          saveJSON('themes.php', array(''));
-        }
         if(!file_exists(DATA.'/cache')) {
           mkdir(DATA.'/cache');
         }
         
         // get existing data
-        $this->local['plugins'] = getJSON('plugins.php');
-        $this->local['themes'] = getJSON('themes.php');
+        $this->local['plugins'] = Common::readDirectory(PLUGINS);
+        $this->local['themes'] = Common::readDirectory(THEMES);
         $this->url = Common::getConstant('MARKETURL', $this->url);
-        
-        // clean existing plugins
-        foreach($this->local as $key=>$value) {
-          $revised_array = array();
-          foreach($value as $data) {
-            if(trim($data) != '') {
-              if(file_exists(BASE_PATH.'/'.$key.'/'.$data.'/'.rtrim($key, "s").'.json')) {
-                  $revised_array[] = $data;
-              }
-            }
-          }
-          saveJSON($key.'.php',$revised_array);
-        }
-        
-        // reload existing data
-        $this->local['plugins'] = getJSON('plugins.php');
-        $this->local['themes'] = getJSON('themes.php');  
-        
+                
         // load market from server
         if(!file_exists(DATA.'/cache/market.current')) {
           $optout = "";
@@ -191,25 +168,6 @@ class Market extends Common {
     }
 
     //////////////////////////////////////////////////////////////////
-    // Deactivate Plugin
-    //////////////////////////////////////////////////////////////////
-
-    public function Deactivate($type, $name){
-        saveJSON($type.'.php',array_diff($this->local[$type], array($name)));
-        echo formatJSEND("success",null);
-    }
-
-    //////////////////////////////////////////////////////////////////
-    // Activate Plugin
-    //////////////////////////////////////////////////////////////////
-
-    public function Activate($type, $name){
-        $this->local[$type][] = $name;
-        saveJSON($type.'.php',$this->local[$type]);
-        echo formatJSEND("success",null);
-    }
-
-    //////////////////////////////////////////////////////////////////
     // Install Plugin
     //////////////////////////////////////////////////////////////////
 
@@ -249,7 +207,7 @@ class Market extends Common {
 
             unlink(BASE_PATH.'/'.$type.'/'.$name.'.zip');
             // Response
-            $this->Activate($type, substr($repo, strrpos($repo, "/") + 1)."-master");
+            echo formatJSEND("success",null);
         } else {
             die(formatJSEND("error","Unable to download ".$repo));
         }
@@ -267,7 +225,7 @@ class Market extends Common {
         }
 
         rrmdir(BASE_PATH.'/'.$type.'/'.$name);
-        $this->Deactivate($type, $name);
+        echo formatJSEND("success",null);
     }
 
     //////////////////////////////////////////////////////////////////
