@@ -30,11 +30,13 @@
   { "author" : "Andr3as",
     "name" : "Compress",
     "description" : "Compress CSS Files",
+    "image": "https://raw.github.com/Andr3as/Codiad-Compress/master/screen.png",
     "url" : "https://github.com/Andr3as/Codiad-Compress"
   },
   { "author" : "Andr3as",
     "name" : "Permissions",
     "description" : "Allows to change file permissions",
+    "image": "https://raw.github.com/Andr3as/Codiad-Permissions/master/screen.png",
     "url" : "https://github.com/Andr3as/Codiad-Permissions"
   },
   { "author" : "Andr3as",
@@ -78,6 +80,7 @@
   { "author" : "Andr3as",
     "name" : "CodeTransfer",
     "description" : "Allows FTP/SCP connection to remote servers",
+    "image": "https://raw.github.com/Andr3as/Codiad-CodeTransfer/master/screen.png",
     "url" : "https://github.com/Andr3as/Codiad-CodeTransfer"
   }
 ]
