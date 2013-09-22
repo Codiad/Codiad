@@ -42,8 +42,8 @@
   { "author" : "Andr3as",
     "name" : "SurroundWith",
     "description" : "Adds Surround (Eclipse) ability to add/wrap common functions",
-    "image": "https://raw.github.com/Andr3as/Codiad-Codiad-SurroundWithSur/master/screen.png",
-    "url" : "https://github.com/Andr3as/roundWith"
+    "image": "https://raw.github.com/Andr3as/Codiad-SurroundWith/master/screen.png",
+    "url" : "https://github.com/Andr3as/Codiad-SurroundWith"
   },
   { "author" : "Andr3as",
     "name" : "AutoAlign",
