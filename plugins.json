@@ -42,16 +42,19 @@
   { "author" : "Andr3as",
     "name" : "SurroundWith",
     "description" : "Adds Surround (Eclipse) ability to add/wrap common functions",
-    "url" : "https://github.com/Andr3as/Codiad-SurroundWith"
+    "image": "https://raw.github.com/Andr3as/Codiad-Codiad-SurroundWithSur/master/screen.png",
+    "url" : "https://github.com/Andr3as/roundWith"
   },
   { "author" : "Andr3as",
     "name" : "AutoAlign",
     "description" : "Adds better formatting through variable alignment and spacing",
+    "image": "https://raw.github.com/Andr3as/Codiad-AutoAlignment/master/screen.png",
     "url" : "https://github.com/Andr3as/Codiad-AutoAlignment"
   },
   { "author" : "Andr3as",
     "name" : "Emmet",
     "description" : "Add Emmet support to Codiad",
+    "image": "https://raw.github.com/Andr3as/Codiad-Emmet/master/screen.png",
     "url" : "https://github.com/Andr3as/Codiad-Emmet"
   },
   { "author" : "tholum",
