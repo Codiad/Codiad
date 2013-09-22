@@ -115,9 +115,9 @@ $lang = array(
    "Hide"                                                => "Cacher",
    "No Wrap"                                             => "Retour à la ligne manuel",  
    "Wrap Lines"                                          => "Retour à la ligne automatique",
-   "Right Sidebar Trigger"                               => "Right Sidebar Trigger",
-   "Hover"                                               => "Hover",
-   "Click"                                               => "Click",
+   "Right Sidebar Trigger"                               => "Afficher la barre de droite",
+   "Hover"                                               => "Au survol",
+   "Click"                                               => "Au clic",
    "Close"                                               => "Fermer",
    "On"                                                  => "Activé",
    "Off"                                                 => "Désactivé",
@@ -150,8 +150,9 @@ $lang = array(
    "Project Loaded"                                      => "Projet chargé",
    "File saved"                                          => "Fichier sauvegardé",
    "Copied to Clipboard"                                 => "Copié vers le presse-papier",
-   "Nothing in Your Clipboard"                           => "Presse-papiers vide",
+   "Nothing in Your Clipboard"                           => "Presse-papier vide",
    "Cannot Paste Directory Into Itself"                  => "Les dossiers source et destination sont identiques",
-   "File could not be saved"                             => "Le fichier n'a pas pu être enregistré"
+   "File could not be saved"                             => "Le fichier n'a pas pu être enregistré",
+   "File Type:"                                          => "Type de fichiers",
 );
 ?>
