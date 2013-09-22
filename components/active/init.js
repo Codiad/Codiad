@@ -71,7 +71,7 @@
                 var draft = _this.checkDraft(path);
                 if (draft) {
                     content = draft;
-                    codiad.message.success(i18n('Recovered unsaved content for: ') + path);
+                    codiad.message.success(i18n('Recovered unsaved content for: {%path%}', {path : path}));
                 }
 
                 //var session = new EditSession(content, new Mode());

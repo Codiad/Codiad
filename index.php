@@ -101,8 +101,14 @@ if(isset($_SESSION['theme'])) {
 <body>
     <script>
     var i18n = (function(lang) {
-        return function(word) {
-            return (word in lang) ? lang[word] : word;
+        return function(word,args) {
+            var translation = (word in lang) ? lang[word] : word;
+            if (args !== undefined) {
+                $.each(args, function(key, value) {
+                    translation = translation.replace('{%' + key + '%}', value);
+                });
+            }
+            return translation;
         }
     })(<?php echo json_encode($lang); ?>)
     </script>
