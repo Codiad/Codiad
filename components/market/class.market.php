@@ -108,7 +108,9 @@ class Market extends Common {
                         $data[0]['image'] = '';
                         $data[0]['count'] = -1;
                         $data[0]['remote'] = 0;
-                        $data[0]['description'] = 'Manual Installation';
+                        if(!isset($data[0]['description'])) {
+                          $data[0]['description'] = 'Manual Installation';
+                        }
                         array_push($this->remote, $data[0]);
                     }
                 }
@@ -136,7 +138,9 @@ class Market extends Common {
                         $data[0]['image'] = '';
                         $data[0]['count'] = -1;
                         $data[0]['remote'] = 0;
-                        $data[0]['description'] = 'Manual Installation';
+                        if(!isset($data[0]['description'])) {
+                          $data[0]['description'] = 'Manual Installation';
+                        }
                         array_push($this->remote, $data[0]);
                     }
                 }
