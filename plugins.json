@@ -29,7 +29,7 @@
   },
   { "author" : "Andr3as",
     "name" : "Compress",
-    "description" : "Compress CSS Files",
+    "description" : "Compress CSS nda JS Files",
     "image": "https://raw.github.com/Andr3as/Codiad-Compress/master/screen.png",
     "url" : "https://github.com/Andr3as/Codiad-Compress"
   },
@@ -56,6 +56,35 @@
     "description" : "Add Emmet support to Codiad",
     "image": "https://raw.github.com/Andr3as/Codiad-Emmet/master/screen.png",
     "url" : "https://github.com/Andr3as/Codiad-Emmet"
+  },
+  { "author" : "Andr3as",
+    "name" : "CodeDate",
+    "description" : "Allows to insert the current date or time",
+    "image": "https://raw.github.com/Andr3as/Codiad-CodeDate/master/screen.png",
+    "url" : "https://github.com/Andr3as/Codiad-CodeDate"
+  },
+  { "author" : "Andr3as",
+    "name" : "CompletePlus",
+    "description" : "Alternative autocomplete; Expandable by plugins",
+    "url" : "https://github.com/Andr3as/Codiad-CompletePlus"
+  },
+  { "author" : "Andr3as",
+    "name" : "Include",
+    "description" : "Sets file links through autocomplete",
+    "image": "https://raw.github.com/Andr3as/Codiad-Include/master/screen.png",
+    "url" : "https://github.com/Andr3as/Codiad-Include"
+  },
+  { "author" : "Andr3as",
+    "name" : "CodePrint",
+    "description" : "Allows to print files",
+    "image": "https://raw.github.com/Andr3as/Codiad-CodePrint/master/screen.png",
+    "url" : "https://github.com/Andr3as/Codiad-CodePrint"
+  },
+  { "author" : "Andr3as",
+    "name" : "MarkdownPreview",
+    "description" : "Displays a preview of markdown files",
+    "image": "https://raw.github.com/Andr3as/Codiad-MarkdownPreview/master/screen.png",
+    "url" : "https://github.com/Andr3as/Codiad-MarkdownPreview"
   },
   { "author" : "tholum",
     "name" : "SVN",
