@@ -68,48 +68,7 @@ class Market extends Common {
         // get current and last market cache to establish array
         $this->old = json_decode(file_get_contents(DATA.'/cache/market.last'),true);
         $this->remote = json_decode(file_get_contents(DATA.'/cache/market.current'),true);
-        foreach($this->remote as $key=>$data) {
-          if(substr($data['url'],-4) == '.git') {
-              $data['url'] = substr($data['url'],0,-4);
-          }
-          // check if folder exists for that extension
-          if(file_exists(BASE_PATH.'/'.$data['type'].substr($data['url'],strrpos($data['url'],'/'.rtrim($data['type'],'s').'.json')))) {
-              $data['folder'] = substr($data['url'],strrpos($data['url'],'/')+1);
-          } else {
-            if(file_exists(BASE_PATH.'/'.$data['type'].substr($data['url'],strrpos($data['url'],'/')).'-master/'.rtrim($data['type'],'s').'.json')) {
-                $data['folder'] = substr($data['url'],strrpos($data['url'],'/')+1).'-master';
-            }
-          }
-          
-          // extension exists locally, so load its metadata
-          if(isset($data['folder'])) {
-              $local = json_decode(file_get_contents(BASE_PATH.'/'.$data['type'].'/'.$data['folder'].'/'.rtrim($data['type'],'s').'.json'),true);
-              $remote = json_decode(file_get_contents(str_replace('github.com','raw.github.com',$data['url']).'/master/'.rtrim($data['type'],'s').'.json'),true);
-              $data['version'] = $local[0]['version'];
-              if($remote[0]['version'] != $local[0]['version']) {
-                $data['update'] = $remote[0]['version'];
-              }
-              $data['remote'] = 0;
-          } else {
-            $data['remote'] = 1;
-          }
-
-          // check old cache for new ones
-          $found = false;
-          foreach($this->old as $key=>$old) {
-            if($old['name'] == $data['name']) {
-              $found = true;
-              break;
-            }
-          }
-          if(!$found && !isset($data['folder'])) {
-            $data['new'] = '1';
-          }
-             
-          array_push($this->tmp, $data);
-        }
-        $this->remote = $this->tmp;
-        
+                
         // Scan plugins directory for missing plugins
         foreach (scandir(PLUGINS) as $fname){
                 if($fname == '.' || $fname == '..' ){
@@ -165,6 +124,49 @@ class Market extends Common {
                     }
                 }
          }
+         
+         // CHeck for updates
+         foreach($this->remote as $key=>$data) {
+          if(substr($data['url'],-4) == '.git') {
+              $data['url'] = substr($data['url'],0,-4);
+          }
+          // check if folder exists for that extension
+          if(file_exists(BASE_PATH.'/'.$data['type'].substr($data['url'],strrpos($data['url'],'/'.rtrim($data['type'],'s').'.json')))) {
+              $data['folder'] = substr($data['url'],strrpos($data['url'],'/')+1);
+          } else {
+            if(file_exists(BASE_PATH.'/'.$data['type'].substr($data['url'],strrpos($data['url'],'/')).'-master/'.rtrim($data['type'],'s').'.json')) {
+                $data['folder'] = substr($data['url'],strrpos($data['url'],'/')+1).'-master';
+            }
+          }
+          
+          // extension exists locally, so load its metadata
+          if(isset($data['folder'])) {
+              $local = json_decode(file_get_contents(BASE_PATH.'/'.$data['type'].'/'.$data['folder'].'/'.rtrim($data['type'],'s').'.json'),true);
+              $remote = json_decode(file_get_contents(str_replace('github.com','raw.github.com',$data['url']).'/master/'.rtrim($data['type'],'s').'.json'),true);
+              $data['version'] = $local[0]['version'];
+              if($remote[0]['version'] != $local[0]['version']) {
+                $data['update'] = $remote[0]['version'];
+              }
+              $data['remote'] = 0;
+          } else {
+            $data['remote'] = 1;
+          }
+
+          // check old cache for new ones
+          $found = false;
+          foreach($this->old as $key=>$old) {
+            if($old['name'] == $data['name']) {
+              $found = true;
+              break;
+            }
+          }
+          if(!$found && !isset($data['folder'])) {
+            $data['new'] = '1';
+          }
+             
+          array_push($this->tmp, $data);
+        }
+        $this->remote = $this->tmp;
     }
 
     //////////////////////////////////////////////////////////////////
