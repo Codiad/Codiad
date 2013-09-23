@@ -71,17 +71,6 @@ class Market extends Common {
         // check old cache for new ones
         $this->tmp = array();
         foreach($this->remote as $key=>$data) {
-          $found = false;
-          foreach($this->old as $key=>$old) {
-            if($old['name'] == $data['name']) {
-              $found = true;
-              break;
-            }
-          }
-          if(!$found && !isset($data['folder'])) {
-            $data['new'] = '1';
-          }
-          
           // check if folder exists for that extension
           if(substr($data['url'],-4) == '.git') {
               $data['url'] = substr($data['url'],0,-4);
@@ -93,7 +82,19 @@ class Market extends Common {
                 $data['folder'] = substr($data['url'],strrpos($data['url'],'/')+1).'-master';
             }
           }
-             
+        
+          // check if new plugin already exists in local cache
+          $found = false;
+          foreach($this->old as $key=>$old) {
+            if($old['name'] == $data['name']) {
+              $found = true;
+              break;
+            }
+          }
+          if(!$found && !isset($data['folder'])) {
+            $data['new'] = '1';
+          }
+                   
           array_push($this->tmp, $data);
         }
         $this->remote = $this->tmp;
