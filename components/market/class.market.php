@@ -68,6 +68,23 @@ class Market extends Common {
         // get current and last market cache to establish array
         $this->old = json_decode(file_get_contents(DATA.'/cache/market.last'),true);
         $this->remote = json_decode(file_get_contents(DATA.'/cache/market.current'),true);
+        // check old cache for new ones
+        $this->tmp = array();
+        foreach($this->remote as $key=>$data) {
+          $found = false;
+          foreach($this->old as $key=>$old) {
+            if($old['name'] == $data['name']) {
+              $found = true;
+              break;
+            }
+          }
+          if(!$found && !isset($data['folder'])) {
+            $data['new'] = '1';
+          }
+             
+          array_push($this->tmp, $data);
+        }
+        $this->remote = $this->tmp;
                 
         // Scan plugins directory for missing plugins
         foreach (scandir(PLUGINS) as $fname){
@@ -125,7 +142,8 @@ class Market extends Common {
                 }
          }
          
-         // CHeck for updates
+         // Check for updates
+         $this->tmp = array();
          foreach($this->remote as $key=>$data) {
           if(substr($data['url'],-4) == '.git') {
               $data['url'] = substr($data['url'],0,-4);
@@ -150,20 +168,7 @@ class Market extends Common {
               $data['remote'] = 0;
           } else {
             $data['remote'] = 1;
-          }
-
-          // check old cache for new ones
-          $found = false;
-          foreach($this->old as $key=>$old) {
-            if($old['name'] == $data['name']) {
-              $found = true;
-              break;
-            }
-          }
-          if(!$found && !isset($data['folder'])) {
-            $data['new'] = '1';
-          }
-             
+          }             
           array_push($this->tmp, $data);
         }
         $this->remote = $this->tmp;
