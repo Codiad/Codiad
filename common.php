@@ -92,6 +92,24 @@
         }
 
         //////////////////////////////////////////////////////////////////
+        // Read Content of directory
+        //////////////////////////////////////////////////////////////////
+        
+        public static function readDirectory($foldername) {
+          $tmp = array();
+          $allFiles = scandir($foldername);
+          foreach ($allFiles as $fname){
+              if($fname == '.' || $fname == '..' ){
+                  continue;
+              }
+              if(is_dir($foldername.'/'.$fname)){
+                  $tmp[] = $fname;
+              }
+          }
+          return $tmp;
+        }
+
+        //////////////////////////////////////////////////////////////////
         // Log debug message
         // Messages will be displayed in the console when the response is
         // made with the formatJSEND function.

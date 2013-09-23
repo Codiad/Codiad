@@ -18,10 +18,6 @@
     $users = $path . "/data/users.php";
     $projects = $path . "/data/projects.php";
     $active = $path . "/data/active.php";
-    $pluginpath = $path . "/plugins";
-    $plugins = $path . "/data/plugins.php";
-    $themepath = $path . "/themes";
-    $themes = $path . "/data/themes.php";
     $config = $path . "/config.php";
 
 //////////////////////////////////////////////////////////////////////
@@ -124,40 +120,7 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     //////////////////////////////////////////////////////////////////
 
     saveJSON($active,array(''));
-    //////////////////////////////////////////////////////////////////
-    // Create Plugin file
-    //////////////////////////////////////////////////////////////////
-
-    //read all directories from plugins
-    $pluginlist = array();
-    $allFiles = scandir($pluginpath);
-    foreach ($allFiles as $fname){
-        if($fname == '.' || $fname == '..' ){
-            continue;
-        }
-        if(is_dir($pluginpath.'/'.$fname)){
-            $pluginlist[] = $fname;
-        }
-    }
-
-    saveJSON($plugins,$pluginlist);
-    //////////////////////////////////////////////////////////////////
-    // Create Theme file
-    //////////////////////////////////////////////////////////////////
-
-    //read all directories from themes
-    $themelist = array();
-    $allFiles = scandir($themepath);
-    foreach ($allFiles as $fname){
-        if($fname == '.' || $fname == '..' ){
-            continue;
-        }
-        if(is_dir($themepath.'/'.$fname)){
-            $themelist[] = $fname;
-        }
-    }
-
-    saveJSON($themes,$themelist);
+    
     //////////////////////////////////////////////////////////////////
     // Create Config
     //////////////////////////////////////////////////////////////////
