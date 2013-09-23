@@ -81,6 +81,18 @@ class Market extends Common {
           if(!$found && !isset($data['folder'])) {
             $data['new'] = '1';
           }
+          
+          // check if folder exists for that extension
+          if(substr($data['url'],-4) == '.git') {
+              $data['url'] = substr($data['url'],0,-4);
+          }
+          if(file_exists(BASE_PATH.'/'.$data['type'].substr($data['url'],strrpos($data['url'],'/'.rtrim($data['type'],'s').'.json')))) {
+              $data['folder'] = substr($data['url'],strrpos($data['url'],'/')+1);
+          } else {
+            if(file_exists(BASE_PATH.'/'.$data['type'].substr($data['url'],strrpos($data['url'],'/')).'-master/'.rtrim($data['type'],'s').'.json')) {
+                $data['folder'] = substr($data['url'],strrpos($data['url'],'/')+1).'-master';
+            }
+          }
              
           array_push($this->tmp, $data);
         }
@@ -148,19 +160,7 @@ class Market extends Common {
          
          // Check for updates
          $this->tmp = array();
-         foreach($this->remote as $key=>$data) {
-          if(substr($data['url'],-4) == '.git') {
-              $data['url'] = substr($data['url'],0,-4);
-          }
-          // check if folder exists for that extension
-          if(file_exists(BASE_PATH.'/'.$data['type'].substr($data['url'],strrpos($data['url'],'/'.rtrim($data['type'],'s').'.json')))) {
-              $data['folder'] = substr($data['url'],strrpos($data['url'],'/')+1);
-          } else {
-            if(file_exists(BASE_PATH.'/'.$data['type'].substr($data['url'],strrpos($data['url'],'/')).'-master/'.rtrim($data['type'],'s').'.json')) {
-                $data['folder'] = substr($data['url'],strrpos($data['url'],'/')+1).'-master';
-            }
-          }
-          
+         foreach($this->remote as $key=>$data) {         
           // extension exists locally, so load its metadata
           if(isset($data['folder'])) {
               $local = json_decode(file_get_contents(BASE_PATH.'/'.$data['type'].'/'.$data['folder'].'/'.rtrim($data['type'],'s').'.json'),true);
