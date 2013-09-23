@@ -10,38 +10,12 @@ $context_menu = json_decode($context_menu,true);
 $right_bar = file_get_contents(COMPONENTS . "/right_bar.json");
 $right_bar = json_decode($right_bar,true);
 
-// Components
-$components = array();
-//read all directories from components
-$allFiles = scandir(COMPONENTS);
-foreach ($allFiles as $fname){
-    if($fname == '.' || $fname == '..' ){
-        continue;
-    }
-    if(is_dir(COMPONENTS.'/'.$fname)){
-        $components[] = $fname;
-    }
-}
+// Read Components, Plugins, Themes
+$components = Common::readDirectory(COMPONENTS);
+$plugins = Common::readDirectory(PLUGINS);
+$themes = Common::readDirectory(THEMES);
 
-// Plugins
-$plugins = array();
-if(!file_exists(DATA . '/plugins.php')) {
-    //read all directories from plugins
-    $allFiles = scandir(PLUGINS);
-    foreach ($allFiles as $fname){
-        if($fname == '.' || $fname == '..' ){
-            continue;
-        }
-        if(is_dir(PLUGINS.'/'.$fname)){
-            $plugins[] = $fname;
-        }
-    }
-} else {
-    $plugins = getJSON('plugins.php');
-}
-
-
-// Themes
+// Theme
 $theme = THEME;
 if(isset($_SESSION['theme'])) {
   $theme = $_SESSION['theme'];
@@ -157,9 +131,9 @@ if(isset($_SESSION['theme'])) {
                         <option value="default">Default</option>
                         <?php
                         include 'languages/code.php';
-                        foreach(getJSON('themes.php') as $theme): 
-                            if(file_exists("themes/" . $theme . "/theme.json")) {
-                                $data = file_get_contents("themes/" . $theme . "/theme.json");
+                        foreach($themes as $theme): 
+                            if(file_exists(THEMES."/" . $theme . "/theme.json")) {
+                                $data = file_get_contents(THEMES."/" . $theme . "/theme.json");
                                 $data = json_decode($data,true);
                             ?>
                             <option value="<?php echo $theme; ?>" <?php if($theme == THEME) { echo "selected"; } ?>><?php if($data[0]['name'] != '') { echo $data[0]['name']; } else { echo $theme; } ?></option>
