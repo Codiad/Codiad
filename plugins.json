@@ -114,5 +114,10 @@
     "description" : "Allows FTP/SCP connection to remote servers",
     "image": "https://raw.github.com/Andr3as/Codiad-CodeTransfer/master/screen.png",
     "url" : "https://github.com/Andr3as/Codiad-CodeTransfer"
+  },
+  { "author" : "Codiad",
+    "name" : "Collaborative",
+    "description" : "Ajax based Collaborative Plugin for Codiad",
+    "url" : "https://github.com/Codiad/Codiad-Collaborative"
   }
 ]
