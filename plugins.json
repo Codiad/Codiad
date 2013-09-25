@@ -29,7 +29,7 @@
   },
   { "author" : "Andr3as",
     "name" : "Compress",
-    "description" : "Compress CSS nda JS Files",
+    "description" : "Compress CSS and JS Files",
     "image": "https://raw.github.com/Andr3as/Codiad-Compress/master/screen.png",
     "url" : "https://github.com/Andr3as/Codiad-Compress"
   },
