@@ -103,11 +103,11 @@
     "image": "https://raw.github.com/daeks/Codiad-GitAdmin/master/screen.png",
     "url" : "https://github.com/daeks/Codiad-GitAdmin"
   },
-  { "author" : "Fluidbyte",
+  { "author" : "Codiad",
     "name" : "PluginTemplate",
     "description" : "Boilerplate for developing Codiad Plugins",
     "category" : "Development",
-    "url" : "https://github.com/Fluidbyte/Codiad-Plugin-Template"
+    "url" : "https://github.com/Codiad/Codiad-Plugin-Template"
   },
   { "author" : "Andr3as",
     "name" : "CodeTransfer",
