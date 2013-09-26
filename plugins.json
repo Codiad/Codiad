@@ -109,6 +109,12 @@
     "category" : "Development",
     "url" : "https://github.com/Codiad/Codiad-Plugin-Template"
   },
+  { "author" : "daeks",
+    "name" : "Macro",
+    "description" : "Allows custom predefined shell commands",
+    "image": "https://raw.github.com/daeks/Codiad-Macro/master/screen.png",
+    "url" : "https://github.com/daeks/Codiad-Macro"
+  },
   { "author" : "Andr3as",
     "name" : "CodeTransfer",
     "description" : "Allows FTP/SCP connection to remote servers",
