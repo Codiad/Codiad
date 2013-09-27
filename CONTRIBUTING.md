@@ -16,11 +16,13 @@ Stick to the conventions defined in other components as closely as possible.
 
 * Utilize the same commenting structure
 * Use underscores in namespaces instead of interCaps
+* Use intend with 4 spaces in your code
+* Use single quotes for parameternames and double quotes for strings 
 * When working with the editor utilize the `active` object whenever possible instead of going direct to the `editor`
 
-**Formatting**
+**Javascript Formatting**
 
 In order to maintain a consistant code structure to the code across the application please run any changes through JSBeautifier (http://jsbeautifier.org/) with 
 the default settings.
 
-If you have questions, please ask. Submit an issue or [contact me (fluidbyte) directly](mailto:dev@codiad.com). 
+If you have questions, please ask. Submit an issue or [contact us directly](mailto:dev@codiad.com). 
