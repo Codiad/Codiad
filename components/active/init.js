@@ -48,15 +48,18 @@
             return !!this.sessions[path];
         },
 
-        open: function(path, content, mtime, inBackground, focus) {
+        open: function(path, content, mtime, inBackground, focus, publish) {
             if (focus === undefined) {
                 focus = true;
+            }
+            if(publish === undefined) {
+              publish = true;
             }
             
             var _this = this;
             
             if (this.isOpen(path)) {
-                if(focus) this.focus(path);
+                if(focus) this.focus(path, true, publish);
                 return;
             }
             var ext = codiad.filemanager.getExtension(path);
@@ -88,7 +91,9 @@
                 }
                 _this.add(path, session, focus);
                 /* Notify listeners. */
-                amplify.publish('active.onOpen', path);
+                if(publish) {
+                  amplify.publish('active.onOpen', path);
+                }
             };
 
             // Assuming the mode file has no dependencies
@@ -373,7 +378,7 @@
         // Focus on opened file
         //////////////////////////////////////////////////////////////////
 
-        focus: function(path, moveToTabList) {
+        focus: function(path, moveToTabList, publish) {
             if (moveToTabList === undefined) {
                 moveToTabList = true;
             }
@@ -386,9 +391,15 @@
                 this.history.push(path);
                 $.get(this.controller, {'action':'focused', 'path':path});
             }
+            
+            if(publish === undefined) {
+              publish = true;
+            }
 
             /* Notify listeners. */
-            amplify.publish('active.onFocus', path);
+            if(publish) {
+              amplify.publish('active.onFocus', path);
+            }
         },
 
         highlightEntry: function(path, moveToTabList) {
@@ -447,9 +458,14 @@
         // Save active editor
         //////////////////////////////////////////////////////////////////
 
-        save: function(path) {
+        save: function(path, publish) {
+            if(publish === undefined) {
+              publish = true;
+            }
             /* Notify listeners. */
-            amplify.publish('active.onSave', path);
+            if(publish) {
+              amplify.publish('active.onSave', path);
+            }
 
             var _this = this;
             if ((path && !this.isOpen(path)) || (!path && !codiad.editor.getActive())) {
@@ -531,9 +547,14 @@
             }
         },
         
-        removeAll: function() {
+        removeAll: function(publish) {
+            if(publish === undefined) {
+              publish = true;
+            }
             /* Notify listeners. */
-            amplify.publish('active.onRemoveAll');
+            if(publish) {
+              amplify.publish('active.onRemoveAll');
+            }
 
             var _this = this;
             var changed = false;
@@ -575,9 +596,14 @@
             $.get(this.controller + '?action=removeall');
         },
 
-        close: function(path) {
+        close: function(path, publish) {
+            if(publish === undefined) {
+              publish = true;
+            }
             /* Notify listeners. */
-            amplify.publish('active.onClose', path);
+            if(publish) {
+              amplify.publish('active.onClose', path);
+            }
 
             var _this = this;
             var session = this.sessions[path];
@@ -632,7 +658,7 @@
         // Process rename
         //////////////////////////////////////////////////////////////////
 
-        rename: function(oldPath, newPath) {
+        rename: function(oldPath, newPath, publish) {
             var switchSessions = function(oldPath, newPath) {
                 var tabThumb = this.sessions[oldPath].tabThumb;
                 tabThumb.attr('data-path', newPath);
@@ -678,7 +704,12 @@
             }
             $.get(this.controller + '?action=rename&old_path=' + oldPath + '&new_path=' + newPath, function() {
                 /* Notify listeners. */
-                amplify.publish('active.onRename', {"oldPath": oldPath, "newPath": newPath});
+                if(publish === undefined) {
+                  publish = true;
+                }
+                if(publish) {
+                  amplify.publish('active.onRename', {"oldPath": oldPath, "newPath": newPath});
+                }
             });
         },
 
