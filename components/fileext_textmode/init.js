@@ -37,7 +37,7 @@
         //////////////////////////////////////////////////////////////////
 		//initial method to get the stored associations
         //////////////////////////////////////////////////////////////////
-		setEditorFileExtensionTextModes : function(data){
+		setEditorFileExtensionTextModes : function(data, publish){
 			resp = $.parseJSON(data);
 			if(resp.status != 'error' && resp.extensions != undefined){
 				codiad.editor.clearFileExtensionTextMode();
@@ -50,8 +50,14 @@
 					self.availableTextModes = resp.textModes;
 				}
 				
+				if(publish === undefined) {
+          publish = true;
+        }
+				
 				/* Notify listeners. */
-	            amplify.publish('fileext_textmode.loadedExtensions');
+				if(publish) {
+          amplify.publish('fileext_textmode.loadedExtensions');
+        }
 			}
 			self.showStatus(data);
 		},

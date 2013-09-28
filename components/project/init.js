@@ -58,7 +58,7 @@
         // Open Project
         //////////////////////////////////////////////////////////////////
 
-        open: function(path) {
+        open: function(path, publish) {
             var _this = this;
             codiad.finder.contractFinder();
             $.get(this.controller + '?action=open&path=' + path, function(data) {
@@ -68,7 +68,12 @@
                     codiad.modal.unload();
                     codiad.user.project(path);
                     /* Notify listeners. */
-                    amplify.publish('project.onOpen', path);
+                    if(publish === undefined) {
+                      publish = true;
+                    }
+                    if(publish) {
+                      amplify.publish('project.onOpen', path);
+                    }
                 }
             });
         },
@@ -125,7 +130,7 @@
         // Create Project
         //////////////////////////////////////////////////////////////////
 
-        create: function(close) {
+        create: function(close, publish) {
             var _this = this;
             create = true;
             codiad.modal.load(500, this.dialog + '?action=create&close=' + close);
@@ -151,7 +156,12 @@
                             codiad.modal.unload();
                             _this.loadSide();
                             /* Notify listeners. */
-                            amplify.publish('project.onCreate', {"name": projectName, "path": projectPath, "git_repo": gitRepo, "git_branch": gitBranch});
+                            if(publish === undefined) {
+                              publish = true;
+                            }
+                            if(publish) {
+                              amplify.publish('project.onCreate', {"name": projectName, "path": projectPath, "git_repo": gitRepo, "git_branch": gitBranch});
+                            }
                         }
                     });
                 }
@@ -162,7 +172,7 @@
         // Rename Project
         //////////////////////////////////////////////////////////////////
 
-        rename: function(path) {
+        rename: function(path, publish) {
             var _this = this;
             codiad.modal.load(500, this.dialog + '?action=rename&path=' + escape(path));
             $('#modal-content form')
@@ -180,7 +190,12 @@
                         $('#file-manager a[data-type="root"]').html(projectName);
                         codiad.modal.unload();
                         /* Notify listeners. */
-                        amplify.publish('project.onRename', {"path": projectPath, "name": projectName});
+                        if(publish === undefined) {
+                          publish = true;
+                        }
+                        if(publish) {
+                          amplify.publish('project.onRename', {"path": projectPath, "name": projectName});
+                        }
                     }
                 });
             });
@@ -190,7 +205,7 @@
         // Delete Project
         //////////////////////////////////////////////////////////////////
 
-        delete: function(name, path) {
+        delete: function(name, path, publish) {
             var _this = this;
             codiad.modal.load(500, this.dialog + '?action=delete&name=' + escape(name) + '&path=' + escape(path));
             $('#modal-content form')
@@ -223,7 +238,12 @@
                             }
                         });
                         /* Notify listeners. */
-                        amplify.publish('project.onDelete', {"path": projectPath, "name": name});
+                        if(publish === undefined) {
+                          publish = true;
+                        }
+                        if(publish) {
+                          amplify.publish('project.onDelete', {"path": projectPath, "name": name});
+                        }
                     }
                 });
             });
