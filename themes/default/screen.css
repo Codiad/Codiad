@@ -129,6 +129,7 @@ a:hover,a:active {;
 /* FORMS */
 
 label {
+    cursor: pointer;
     display: block;
     padding: 0 0 5px 0;
     font-size: 14px;
