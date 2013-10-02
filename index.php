@@ -30,7 +30,7 @@ if(isset($_SESSION['theme'])) {
     <?php
     // Load System CSS Files
     $stylesheets = array("jquery.toastmessage.css","reset.css","fonts.css","screen.css");
-   
+
     foreach($stylesheets as $sheet){
         if(file_exists(THEMES . "/". $theme . "/".$sheet)){
             echo('<link rel="stylesheet" href="themes/'.$theme.'/'.$sheet.'">');
@@ -38,8 +38,8 @@ if(isset($_SESSION['theme'])) {
             echo('<link rel="stylesheet" href="themes/default/'.$sheet.'">');
         }
     }
-    
-    // Load Component CSS Files    
+
+    // Load Component CSS Files
     foreach($components as $component){
         if(file_exists(THEMES . "/". $theme . "/" . $component . "/screen.css")){
             echo('<link rel="stylesheet" href="themes/'.$theme.'/'.$component.'/screen.css">');
@@ -53,8 +53,8 @@ if(isset($_SESSION['theme'])) {
             }
         }
     }
-    
-    // Load Plugin CSS Files    
+
+    // Load Plugin CSS Files
     foreach($plugins as $plugin){
         if(file_exists(THEMES . "/". $theme . "/" . $plugin . "/screen.css")){
             echo('<link rel="stylesheet" href="themes/'.$theme.'/'.$plugin.'/screen.css">');
@@ -119,19 +119,19 @@ if(isset($_SESSION['theme'])) {
 
             <form id="login" method="post" style="position: fixed; width: 350px; top: 30%; left: 50%; margin-left: -175px; padding: 35px;">
 
-                <label><span class="icon-user login-icon"></span> Username</label>
-                <input type="text" name="username" autofocus="autofocus" autocomplete="off">
+                <label for="username"><span class="icon-user login-icon"></span> Username</label>
+                <input type="text" name="username" autofocus="autofocus" autocomplete="off" id="username">
 
-                <label><span class="icon-lock login-icon"></span> Password</label>
-                <input type="password" name="password">
-                
+                <label for="password"><span class="icon-lock login-icon"></span> Password</label>
+                <input type="password" name="password" id="password">
+
                 <div class="language-selector">
                     <label><span class="icon-picture login-icon"></span> Theme</label>
                     <select name="theme" id="theme">
                         <option value="default">Default</option>
                         <?php
                         include 'languages/code.php';
-                        foreach($themes as $theme): 
+                        foreach($themes as $theme):
                             if(file_exists(THEMES."/" . $theme . "/theme.json")) {
                                 $data = file_get_contents(THEMES."/" . $theme . "/theme.json");
                                 $data = json_decode($data,true);
@@ -143,7 +143,7 @@ if(isset($_SESSION['theme'])) {
                     <select name="language" id="language">
                         <?php
                         include 'languages/code.php';
-                        foreach(glob("languages/*.php") as $filename): 
+                        foreach(glob("languages/*.php") as $filename):
                             $lang_code = str_replace(array("languages/", ".php"), "", $filename);
                             if(!isset($languages[$lang_code])) continue;
                             $lang_disp = ucfirst(strtolower($languages[$lang_code]));
@@ -152,7 +152,7 @@ if(isset($_SESSION['theme'])) {
                         <?php endforeach; ?>
                     </select>
                 </div>
-                
+
                 <button>Login</button>
 
                 <a class="show-language-selector">More</a>
@@ -212,7 +212,7 @@ if(isset($_SESSION['theme'])) {
                             }
 
                         }
-                        
+
                         foreach ($plugins as $plugin){
                              if(file_exists(PLUGINS . "/" . $plugin . "/plugin.json")) {
                                 $pdata = file_get_contents(PLUGINS . "/" . $plugin . "/plugin.json");
@@ -237,10 +237,10 @@ if(isset($_SESSION['theme'])) {
                 <ul id="list-active-files"></ul>
 
             </div>
-            
+
             <div id="side-projects" class="sb-left-projects">
                 <div id="project-list" class="sb-project-list">
-                
+
                     <div class="project-list-title">
                         <h2><?php i18n("Projects"); ?></h2>
                         <a id="projects-collapse" class="icon-down-dir icon" alt="<?php i18n("Collapse"); ?>"></a>
@@ -248,9 +248,9 @@ if(isset($_SESSION['theme'])) {
                         <a id="projects-create" class="icon-plus icon" alt="<?php i18n("Create Project"); ?>"></a>
                         <?php } ?>
                     </div>
-                    
+
                     <div class="sb-projects-content"></div>
-                    
+
                 </div>
             </div>
 
@@ -376,7 +376,7 @@ if(isset($_SESSION['theme'])) {
                 echo('<script src="components/'.$component.'/init.js"></script>"');
             }
         }
-        
+
         foreach($plugins as $plugin){
             if(file_exists(PLUGINS . "/" . $plugin . "/init.js")){
                 echo('<script src="plugins/'.$plugin.'/init.js"></script>"');
