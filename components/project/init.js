@@ -67,6 +67,7 @@
                     _this.loadCurrent();
                     codiad.modal.unload();
                     codiad.user.project(path);
+                    localStorage.removeItem("lastSearched");
                     /* Notify listeners. */
                     amplify.publish('project.onOpen', path);
                 }
