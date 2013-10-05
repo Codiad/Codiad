@@ -182,7 +182,7 @@
                     _this.contextMenuHide();
                 });
             /* Notify listeners. */
-            amplify.publish('context-menu.onShow', {"e":e, "path": path, "type": type});
+            amplify.publish('context-menu.onShow', {e: e, path: path, type: type});
         },
 
         contextMenuHide: function() {
