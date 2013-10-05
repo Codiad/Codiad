@@ -181,6 +181,8 @@
                 .click(function() {
                     _this.contextMenuHide();
                 });
+            /* Notify listeners. */
+            amplify.publish('context-menu.onShow', {e: e, path: path, type: type});
         },
 
         contextMenuHide: function() {
@@ -188,6 +190,8 @@
                 .fadeOut(200);
             $('#file-manager a')
                 .removeClass('context-menu-active');
+            /* Notify listeners. */
+            amplify.publish('context-menu.onHide');
         },
 
         //////////////////////////////////////////////////////////////////
