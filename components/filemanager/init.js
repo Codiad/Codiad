@@ -658,7 +658,9 @@
                     $('#modal-content form input[name="search_string"]').val(lastSearched.searchText);
                     $('#modal-content form input[name="search_file_type"]').val(lastSearched.fileExtension);
                     $('#modal-content form select[name="search_type"]').val(lastSearched.searchType);
-                    $('#filemanager-search-results').slideDown().html(lastSearched.searchResults);
+                    if(lastSearched.searchResults != '') {
+                      $('#filemanager-search-results').slideDown().html(lastSearched.searchResults);
+                    }
                 }
             });
             codiad.modal.hideOverlay();
@@ -684,8 +686,8 @@
                     search_file_type: searchFileType
                 }, function(data) {
                     searchResponse = codiad.jsend.parse(data);
+                    var results = '';
                     if (searchResponse != 'error') {
-                        var results = '';
                         $.each(searchResponse.index, function(key, val) {
                             // Cleanup file format
                             if(val['file'].substr(-1) == '/') {
@@ -698,11 +700,11 @@
                         $('#filemanager-search-results')
                             .slideDown()
                             .html(results);
-                        _this.saveSearchResults(searchString, searchType, fileExtensions, results);
                     } else {
                         $('#filemanager-search-results')
                             .slideUp();
                     }
+                    _this.saveSearchResults(searchString, searchType, fileExtensions, results);
                     $('#filemanager-search-processing')
                         .hide();
                 });
