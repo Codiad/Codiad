@@ -123,7 +123,7 @@
   },
   { "author" : "Codiad",
     "name" : "Collaborative",
-    "description" : "Ajax based Collaborative Plugin for Codiad",
+    "description" : "Ajax based Collaborative Plugin for Codiad. Requires version 2.x or newer",
     "category" : "Collaboration",
     "url" : "https://github.com/Codiad/Codiad-Collaborative"
   }
