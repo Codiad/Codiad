@@ -126,5 +126,10 @@
     "description" : "Ajax based Collaborative Plugin for Codiad. Requires version 2.x or newer",
     "category" : "Collaboration",
     "url" : "https://github.com/Codiad/Codiad-Collaborative"
+  },
+  { "author" : "LRancez",
+    "name" : "DeepLinking",
+    "description" : "Provides direct access linking for Codiad",
+    "url" : "https://github.com/LRancez/Codiad-Deep-Linking"
   }
 ]
