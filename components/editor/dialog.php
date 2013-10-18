@@ -224,6 +224,21 @@ switch($_GET['action']){
 	</tr>
 	
 	
+	<tr> 
+    
+        <td><?php i18n("File Tabs Title"); /*dF*/?><span style="display:block;clear:left;font-size:10px;font-weight:400;color:#DF0000;margin-top:-1px;">*Codaid will be reloaded!</span></td>
+        <td>
+        
+        <select class="setting" data-setting="tab-names">
+        	<option value="false"><?php i18n("Full Name And Path"); ?></option>
+            <option value="true"><?php i18n("File Name Only"); ?></option>
+        </select>
+        
+        </td>
+        
+    </tr>
+	
+	
     </table>
     <button class="btn-left" onclick="codiad.fileext_textmode.open();" ><?php i18n("Extensions"); ?></button>
     <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Close"); ?></button>
@@ -278,6 +293,9 @@ var editor_settings = {
                	case "tab-size": 
                		$(this).children('option[value="'+codiad.editor.settings.tabSize+'"]').prop('selected',true);
                	break;
+               	case "tab-names": /*dF*/
+                    $(this).children('option[value="'+codiad.editor.settings.tabNames+'"]').prop('selected',true);
+               	break;
             }
         });
     },
@@ -327,6 +345,10 @@ var editor_settings = {
                     break;
                     case "tab-size":
                         codiad.editor.setTabSize(val);
+                    break;
+                    case "tab-names": /*dF*/
+                        codiad.editor.setTabNames(val);
+                        window.location.reload();
                     break;
                 }
             }

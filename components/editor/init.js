@@ -334,7 +334,8 @@
             indentGuides: true,
             wrapMode: false,
             softTabs: false,
-            tabSize: 4
+            tabSize: 4,
+            tabNames: false /*dF*/
         },
    
         rootContainer: null,
@@ -378,14 +379,14 @@
 
             var _this = this;
 
-            $.each(['theme', 'fontSize', "tabSize"], function(idx, key) {
+            $.each(['theme', 'fontSize', "tabSize", "tabNames"], function(idx, key) {/*dF*/
                 var localValue = localStorage.getItem('codiad.editor.' + key);
                 if (localValue !== null) {
                     _this.settings[key] = localValue;
                 }
             });
 
-            $.each(['printMargin', 'highlightLine', 'indentGuides', 'wrapMode', 'rightSidebarTrigger', 'fileManagerTrigger', "softTabs"],
+            $.each(['printMargin', 'highlightLine', 'indentGuides', 'wrapMode', 'rightSidebarTrigger', 'fileManagerTrigger', "softTabs", "tabNames"],/*dF*/
                    function(idx, key) {
                        var localValue =
                            localStorage.getItem('codiad.editor.' + key);
@@ -1080,6 +1081,20 @@
             localStorage.setItem('codiad.editor.tabSize', s);
             
         },
+        	
+        /*dF*/	
+        //////////////////////////////////////////////////////////////////
+        // 	
+        // set Tab Names
+        //
+        // Parameters: full name and path or file name only 
+        //
+        //////////////////////////////////////////////////////////////////
+
+        setTabNames: function(d) {	
+            	localStorage.setItem('codiad.editor.tabNames', d);
+        },
+        	
         
         //////////////////////////////////////////////////////////////////
         //
