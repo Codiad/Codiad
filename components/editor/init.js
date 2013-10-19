@@ -335,7 +335,7 @@
             wrapMode: false,
             softTabs: false,
             tabSize: 4,
-            tabNames: false /*dF*/
+            tabNames: false
         },
    
         rootContainer: null,
@@ -379,14 +379,14 @@
 
             var _this = this;
 
-            $.each(['theme', 'fontSize', "tabSize", "tabNames"], function(idx, key) {/*dF*/
+            $.each(['theme', 'fontSize', "tabSize", "tabNames"], function(idx, key) {
                 var localValue = localStorage.getItem('codiad.editor.' + key);
                 if (localValue !== null) {
                     _this.settings[key] = localValue;
                 }
             });
 
-            $.each(['printMargin', 'highlightLine', 'indentGuides', 'wrapMode', 'rightSidebarTrigger', 'fileManagerTrigger', "softTabs", "tabNames"],/*dF*/
+            $.each(['printMargin', 'highlightLine', 'indentGuides', 'wrapMode', 'rightSidebarTrigger', 'fileManagerTrigger', "softTabs", "tabNames"],
                    function(idx, key) {
                        var localValue =
                            localStorage.getItem('codiad.editor.' + key);
@@ -1081,21 +1081,20 @@
             localStorage.setItem('codiad.editor.tabSize', s);
             
         },
-        	
-        /*dF*/	
+
         //////////////////////////////////////////////////////////////////
         // 	
         // set Tab Names
         //
-        // Parameters: full name and path or file name only 
+        // Parameters: 
+        //   d - {Boolean} (false for full name and path, true for file name only)
         //
         //////////////////////////////////////////////////////////////////
 
         setTabNames: function(d) {	
-            	localStorage.setItem('codiad.editor.tabNames', d);
+            localStorage.setItem('codiad.editor.tabNames', d);
         },
-        	
-        
+
         //////////////////////////////////////////////////////////////////
         //
         // Enable or disable Soft Tabs

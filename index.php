@@ -309,10 +309,6 @@ if(isset($_SESSION['theme'])) {
                 <a id="current-mode"><span class="icon-layout"></span></a>
                 <div class="divider"></div>
                 <div id="current-file"></div>
-                
-                <div class="divider"></div>
-                <a onclick="codiad.user.logout();" class="ico-wrapper"><span class="icon-logout bigger-icon" style="margin-top:1px;"></span><?php i18n("Logout"); ?></a>
-                
             </div>
             <div id="changemode-menu" class="options-menu">
             </div>
