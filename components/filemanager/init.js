@@ -260,6 +260,7 @@
         //////////////////////////////////////////////////////////////////
 
         index: function(path, rescan) {
+            var _this = this;
             if (rescan === undefined) {
                 rescan = false;
             }
@@ -315,11 +316,11 @@
                         }
                     }
                     node.removeClass('loading');
-                    if (rescan && this.rescanChildren.length > this.rescanCounter) {
-                        this.rescan(this.rescanChildren[this.rescanCounter++]);
+                    if (rescan && _this.rescanChildren.length > _this.rescanCounter) {
+                        _this.rescan(_this.rescanChildren[_this.rescanCounter++]);
                     } else {
-                        this.rescanChildren = [];
-                        this.rescanCounter = 0;
+                        _this.rescanChildren = [];
+                        _this.rescanCounter = 0;
                     }
                 });
             }
