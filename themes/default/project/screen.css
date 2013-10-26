@@ -21,6 +21,7 @@
     background-color: #303030;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.898) inset;
     border-top: 2px solid #141414;
+    overflow:hidden;
 }
 
 .project-list-title h2 {

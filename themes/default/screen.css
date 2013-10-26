@@ -504,6 +504,7 @@ table [class^="icon-"], [class*=" icon-"] {
     -webkit-user-select: none;
     user-select: none;
     background: #1a1a1a;
+    overflow:hidden;
 }
 
 .sidebar#sb-left {
@@ -519,6 +520,7 @@ table [class^="icon-"], [class*=" icon-"] {
     height: 33px;
     background-color: #303030;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.898) inset;
+    overflow:hidden;
 }
 #sb-left-title.active {
     border-bottom: 1px solid gray;
