@@ -259,6 +259,8 @@
         // Loop out all files and folders in directory path
         //////////////////////////////////////////////////////////////////
 
+        indexFiles: [],
+
         index: function(path, rescan) {
             var _this = this;
             if (rescan === undefined) {
@@ -279,7 +281,10 @@
                     node.addClass('open');
                     var objectsResponse = codiad.jsend.parse(data);
                     if (objectsResponse != 'error') {
-                        files = objectsResponse.index;
+                        /* Notify listener */
+                        _this.indexFiles = objectsResponse.index;
+                        amplify.publish("file-manager.onIndex", {path: path, files: _this.indexFiles});
+                        var files = _this.indexFiles;
                         if (files.length > 0) {
                             var display = 'display:none;';
                             if (rescan) {
