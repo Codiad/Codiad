@@ -504,12 +504,12 @@ table [class^="icon-"], [class*=" icon-"] {
     -webkit-user-select: none;
     user-select: none;
     background: #1a1a1a;
-    overflow:hidden;
 }
 
 .sidebar#sb-left {
     width: 300px;
     left: 0;
+    overflow:hidden;
 }
 #sb-left-title{
     position: absolute;
