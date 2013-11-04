@@ -184,10 +184,11 @@
                 }, function() {
                     $(this)
                         .data("timeout_r", setTimeout($.proxy(function() {
+                        var df_sbarWidthR = $("#sb-right").width(); // avoiding var override
                         if (!codiad.sidebars.rightLock) {
                             $(this)
                                 .animate({
-                                    'right': '-190px'
+                                    'right': -(df_sbarWidthR-10)
                                 }, 300, 'easeOutQuart');
                             var sbarWidthL = $("#sb-left")
                                 .width(),

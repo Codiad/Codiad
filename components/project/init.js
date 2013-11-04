@@ -103,10 +103,11 @@
         },
         
         projectsCollapse: function() {
+        	var df_sideProj = $(".project-list-title").height(); // get height (df_ to avoid var override)
             this._sideExpanded = false;
-            $('#side-projects').css('height', 33+'px');
+            $('#side-projects').css('height', df_sideProj+'px');
             $('.project-list-title').css('right', 0);
-            $('.sb-left-content').css('bottom', 33+'px');
+            $('.sb-left-content').css('bottom', df_sideProj+'px');
             $('#projects-collapse')
                 .removeClass('icon-down-dir')
                 .addClass('icon-up-dir');

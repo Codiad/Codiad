@@ -69,6 +69,16 @@
         $(window)
             .on('load resize', function() {
 
+            // get top Bar total height + all possible modifiers
+			var df_topBarT = $("#editor-top-bar").height() + parseInt($("#editor-top-bar").css('padding-top'))+ parseInt($("#editor-top-bar").css('padding-bottom'))
+							+ parseInt($("#editor-top-bar").css('border-top-width')) + parseInt($("#editor-top-bar").css('border-bottom-width'))
+							+ parseInt($("#editor-top-bar").css('margin-top')) + parseInt($("#editor-top-bar").css('margin-bottom'));
+			// get top Bar total height + all possible modifiers
+			var df_botBarT = $("#editor-bottom-bar").height()+ parseInt($("#editor-bottom-bar").css('padding-top'))+ parseInt($("#editor-bottom-bar").css('padding-bottom'))
+							+ parseInt($("#editor-bottom-bar").css('border-top-width')) + parseInt($("#editor-bottom-bar").css('border-bottom-width'))
+							+ parseInt($("#editor-bottom-bar").css('margin-top')) + parseInt($("#editor-bottom-bar").css('margin-bottom'));
+			var df_totalBar = df_botBarT + df_topBarT; // calculate total bars height
+
             var marginL, reduction;
             if ($("#sb-left")
                 .css('left') !== 0 && !codiad.sidebars.leftLock) {
@@ -88,7 +98,7 @@
             $('#root-editor-wrapper')
                 .css({
                 'height': ($('body')
-                    .outerHeight() - 60) + 'px' // TODO Adjust '75' in function of the final tabs height.
+                    .outerHeight() - df_totalBar) + 'px' // auto-detect // TODO Adjust '75' in function of the final tabs height.
             });
 
         });

@@ -981,14 +981,20 @@
         createListThumb: function(path) {
             return $('<li data-path="' + path + '"><a title="'+path+'"><span></span><div>' + path + '</div></a></li>');
         },
-
-        createTabThumb: function(path) {
-            split = this.splitDirectoryAndFileName(path);
-            return $('<li class="tab-item" data-path="' + path + '"><a class="label" title="' + path + '">' 
+		
+		createTabThumb: function(path) {
+			var tabName = localStorage.getItem('codiad.editor.tabNames');
+        	split = this.splitDirectoryAndFileName(path);
+        	if (tabName=="true"){
+        			return $('<li class="tab-item" data-path="' + path + '"><a class="label" title="' + path + '"><span class="file-name">' + split.fileName + '</span>' 
+                    + '</a><a class="close">x</a></li>');
+        	} else {
+        			return $('<li class="tab-item" data-path="' + path + '"><a class="label" title="' + path + '">' 
                     + split.directory + '<span class="file-name">' + split.fileName + '</span>' 
                     + '</a><a class="close">x</a></li>');
+        	}
         },
-
+		
         createMenuItemThumb: function(path) {
             split = this.splitDirectoryAndFileName(path);
             return $('<li data-path="' + path + '"><a title="' + path + '"><span class="label"></span><div class="label">' 

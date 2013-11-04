@@ -209,6 +209,8 @@ switch($_GET['action']){
 			<option value="true"><?php i18n("Click") ?></option>
 		</select>
 		
+		</td>
+		
 	</tr>
 	
 	<tr>
@@ -220,8 +222,25 @@ switch($_GET['action']){
 			<option value="false"><?php i18n("Double Click") ?></option>
 			<option value="true"><?php i18n("Single Click") ?></option>
 		</select>
+			
+		</td>
 		
 	</tr>
+	
+	
+	<tr> 
+    
+        <td><?php i18n("File Tabs Title"); ?></td>
+        <td>
+        
+        <select class="setting" data-setting="tab-names">
+        	<option value="false"><?php i18n("Full Name And Path"); ?></option>
+            <option value="true"><?php i18n("File Name Only"); ?></option>
+        </select>
+        
+        </td>
+        
+    </tr>
 	
 	
     </table>
@@ -278,6 +297,9 @@ var editor_settings = {
                	case "tab-size": 
                		$(this).children('option[value="'+codiad.editor.settings.tabSize+'"]').prop('selected',true);
                	break;
+               	case "tab-names":
+                    $(this).children('option[value="'+codiad.editor.settings.tabNames+'"]').prop('selected',true);
+               	break;
             }
         });
     },
@@ -327,6 +349,9 @@ var editor_settings = {
                     break;
                     case "tab-size":
                         codiad.editor.setTabSize(val);
+                    break;
+                    case "tab-names":
+                        codiad.editor.setTabNames(val);
                     break;
                 }
             }
