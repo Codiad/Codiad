@@ -121,6 +121,41 @@
     "image": "https://raw.github.com/Andr3as/Codiad-CodeTransfer/master/screen.png",
     "url" : "https://github.com/Andr3as/Codiad-CodeTransfer"
   },
+  { "author" : "Andr3as",
+    "name" : "Beautify",
+    "description" : "Beautify js, json, html or css files",
+    "url" : "https://github.com/Andr3as/Codiad-Beautify"
+  },
+  { "author" : "Andr3as",
+    "name" : "Bookmarks",
+    "description" : "Set bookmarks and jump between them",
+    "url" : "https://github.com/Andr3as/Codiad-Bookmarks"
+  },
+  { "author" : "Andr3as",
+    "name" : "Duplicate",
+    "description" : "Duplicate files directly through the filemanager",
+    "url" : "https://github.com/Andr3as/Codiad-Duplicate"
+  },
+  { "author" : "Andr3as",
+    "name" : "CodeDocs",
+    "description" : "Create your jsdoc documentation directly through the filemanager",
+    "url" : "https://github.com/Andr3as/Codiad-CodeDocs"
+  },
+  { "author" : "Andr3as",
+    "name" : "Ignore",
+    "description" : "Hide/Ignore files and directories in the filemanager",
+    "url" : "https://github.com/Andr3as/Codiad-Ignore"
+  },
+  { "author" : "Andr3as",
+    "name" : "CodeSettings",
+    "description" : "Create your own keybindings",
+    "url" : "https://github.com/Andr3as/Codiad-CodeSettings"
+  },
+  { "author" : "Andr3as",
+    "name" : "HTMLPreview",
+    "description" : "Open html file as preview during editing a css file",
+    "url" : "https://github.com/Andr3as/Codiad-HTMLPreview"
+  },
   { "author" : "Codiad",
     "name" : "Collaborative",
     "description" : "Ajax based Collaborative Plugin for Codiad. Requires version 2.x or newer",
