@@ -195,10 +195,15 @@ if(!$workspace || !$data || !$config || $register){
             // Check empty fields
 
             empty_fields = false;
-            $('input').each(function(){
-                if($(this).val()=='' && $(this).attr('name')!='path'){ empty_fields = true; }
+ $('input').each(function(){
+                if($(this).val()=='' && $(this).attr('name')!='path'){  
+                                switch( $(this).attr('name')){
+                                        case 'username':case 'password':case 'password_confirm':case 'project_name':
+                                        empty_fields = true;
+                                        break;
+                                }  
+                        }
             });
-
             if(empty_fields){ alert('All fields must be filled out'); }
 
             // Check password
