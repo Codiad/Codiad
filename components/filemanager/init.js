@@ -489,6 +489,8 @@
                             codiad.modal.unload();
                             // Add new element to filemanager screen
                             codiad.filemanager.createObject(path, createPath, type);
+                            /* Notify listeners. */
+                            amplify.publish('file-manager.onCreate', {createPath: createPath, path: path, shortName: shortName, type: type});
                         }
                     });
                 });
