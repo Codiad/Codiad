@@ -283,7 +283,7 @@
                     if (objectsResponse != 'error') {
                         /* Notify listener */
                         _this.indexFiles = objectsResponse.index;
-                        amplify.publish("file-manager.onIndex", {path: path, files: _this.indexFiles});
+                        amplify.publish("filemanager.onIndex", {path: path, files: _this.indexFiles});
                         var files = _this.indexFiles;
                         if (files.length > 0) {
                             var display = 'display:none;';
@@ -490,7 +490,7 @@
                             // Add new element to filemanager screen
                             codiad.filemanager.createObject(path, createPath, type);
                             /* Notify listeners. */
-                            amplify.publish('file-manager.onCreate', {createPath: createPath, path: path, shortName: shortName, type: type});
+                            amplify.publish('filemanager.onCreate', {createPath: createPath, path: path, shortName: shortName, type: type});
                         }
                     });
                 });
