@@ -36,7 +36,7 @@
     // Security Check
     //////////////////////////////////////////////////////////////////   
     
-    if (strpos($_GET['path'],$_SESSION['project']) != 0) {
+    if (strpos($_GET['path'],$_SESSION['project']) !== 0) {
       die('{"status":"error","message":"Invalid Path"}');
     }
 
