@@ -143,6 +143,7 @@ class Project extends Common {
                     
                     // Pull from Git Repo?
                     if($this->gitrepo && filter_var($this->gitrepo, FILTER_VALIDATE_URL) !== false){
+												$this->git_branch = $this->SanitizeGitBranch();
 												if(!$this->isAbsPath($this->path)) {
 														$this->command_exec = "cd " . escapeshellarg(WORKSPACE . '/' . $this->path) . " && git init && git remote add origin " . escapeshellarg($this->gitrepo) . " && git pull origin " . escapeshellarg($this->gitbranch);
 												} else {
@@ -162,6 +163,15 @@ class Project extends Common {
              echo formatJSEND("error","Project Name/Folder is empty");
         }
     }
+    
+    //////////////////////////////////////////////////////////////////
+    // Sanitize GitBranch
+    //////////////////////////////////////////////////////////////////
+
+    public function SanitizeGitBranch(){
+        $sanitized = str_replace(array("..",chr(40), chr(177),"~","^",":","?","*","[","@{","\\"),array(""),$this->git_branch);
+        return $sanitized;
+    }   
     
     //////////////////////////////////////////////////////////////////
     // Rename
