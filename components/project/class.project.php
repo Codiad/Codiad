@@ -142,13 +142,12 @@ class Project extends Common {
                     saveJSON('projects.php',$this->projects);
                     
                     // Pull from Git Repo?
-                    if($this->gitrepo){
-												$this->gitbranch = trim(shell_exec("git check-ref-format --branch ".$this->gitbranch));
-                        if(!$this->isAbsPath($this->path)) {
-                            $this->command_exec = "cd " . WORKSPACE . '/' . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
-                        } else {
-                            $this->command_exec = "cd " . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
-                        }
+                    if($this->gitrepo && filter_var($this->gitrepo, FILTER_VALIDATE_URL) !== false){
+												if(!$this->isAbsPath($this->path)) {
+														$this->command_exec = "cd " . escapeshellarg (WORKSPACE . '/' . $this->path) . " && git init && git remote add origin " . escapeshellarg ($this->gitrepo) . " && git pull origin " . escapeshellarg ($this->gitbranch);
+												} else {
+														$this->command_exec = "cd " . escapeshellarg($this->path) . " && git init && git remote add origin " . escapeshellarg ($this->gitrepo) . " && git pull origin " . escapeshellarg ($this->gitbranch);
+												}
                         $this->ExecuteCMD();
                     }
                     
