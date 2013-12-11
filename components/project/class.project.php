@@ -142,6 +142,7 @@ class Project extends Common {
                     
                     // Pull from Git Repo?
                     if($this->gitrepo){
+												$this->gitbranch = trim(shell_exec("git check-ref-format --branch ".$this->gitbranch));
                         if(!$this->isAbsPath($this->path)) {
                             $this->command_exec = "cd " . WORKSPACE . '/' . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
                         } else {
