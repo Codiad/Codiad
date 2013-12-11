@@ -107,6 +107,7 @@ class Project extends Common {
     public function Create(){
         if($this->name != '' && $this->path != '') {
             $this->path = $this->cleanPath();
+            $this->name = htmlspecialchars($this->name);
             if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' || !$this->isAbsPath($this->path)) {
                 $this->path = $this->SanitizePath();
             }
