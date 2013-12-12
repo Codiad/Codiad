@@ -7,6 +7,13 @@
 
     Common::startSession();
 
+    // Load external auth, if defined
+    define("CUSTOM_AUTH", BASE_PATH . "/auth/custom.php");
+    if (!defined(CUSTOM_AUTH)){
+      require_once(CUSTOM_AUTH);
+    }
+    
+
     //////////////////////////////////////////////////////////////////
     // Common Class
     //////////////////////////////////////////////////////////////////
