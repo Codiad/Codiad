@@ -157,7 +157,7 @@ $cookie_lifetime = "0";
 date_default_timezone_set("' . $_POST['timezone'] . '");
 
 // External Authentification
-//define("EXTERNAL_AUTH", \'/path/to/customauth.php\');
+//define("AUTH_PATH", \'/path/to/customauth.php\');
 
 //////////////////////////////////////////////////////////////////
 // ** DO NOT EDIT CONFIG BELOW **

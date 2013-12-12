@@ -84,8 +84,8 @@
             session_start();
             
             //Check for external authentification
-            if(defined('EXTERNAL_AUTH')){
-								require_once(EXTERNAL_AUTH);
+            if(defined('AUTH_PATH')){
+								require_once(AUTH_PATH);
 						}
 
             global $lang;
