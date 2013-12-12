@@ -85,8 +85,8 @@
             
             //Check for external authentification
             if(defined('AUTH_PATH')){
-								require_once(AUTH_PATH);
-						}
+                require_once(AUTH_PATH);
+            }
 
             global $lang;
             if (isset($_SESSION['lang'])) {
