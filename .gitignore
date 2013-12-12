@@ -1,6 +1,7 @@
 *~
 *\#
 *.swp
+auth/
 config.php
 data/
 workspace/
