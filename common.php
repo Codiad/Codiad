@@ -82,6 +82,11 @@
             session_name(md5(BASE_PATH));
 
             session_start();
+            
+            //Check for external authentification
+            if(defined('EXTERNAL_AUTH')){
+								require_once(EXTERNAL_AUTH);
+						}
 
             global $lang;
             if (isset($_SESSION['lang'])) {
