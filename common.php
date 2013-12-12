@@ -82,6 +82,10 @@
             session_name(md5(BASE_PATH));
 
             session_start();
+            
+            if(defined('EXTERNAL_AUTH')){
+								require_once(EXTERNAL_AUTH);
+						}
 
             global $lang;
             if (isset($_SESSION['lang'])) {
@@ -149,14 +153,21 @@
         //////////////////////////////////////////////////////////////////
 
         public static function checkSession(){
+            if(!Common::checkAuth()) {
+                exit('{"status":"error","message":"Authentication Error"}');
+            }
+        }
+        
+        public static function checkAuth(){
             // Set any API keys
             $api_keys = array();
             // Check API Key or Session Authentication
             $key = "";
             if(isset($_GET['key'])){ $key = $_GET['key']; }
             if(!isset($_SESSION['user']) && !in_array($key,$api_keys)){
-                exit('{"status":"error","message":"Authentication Error"}');
+                return false;
             }
+            return true;
         }
 
         //////////////////////////////////////////////////////////////////

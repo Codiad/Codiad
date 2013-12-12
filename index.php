@@ -102,7 +102,7 @@ if(isset($_SESSION['theme'])) {
     // NOT LOGGED IN
     //////////////////////////////////////////////////////////////////
 
-    if(!isset($_SESSION['user'])){
+    if(!Common::checkAuth()){
 
         $path = rtrim(str_replace("index.php", "", $_SERVER['SCRIPT_FILENAME']),"/");
 
