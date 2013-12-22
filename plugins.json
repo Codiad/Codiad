@@ -10,6 +10,11 @@
     "description" : "Simple HEX and RGB color utility",
     "url" : "https://github.com/Fluidbyte/Codiad-ColorPicker"
   },
+  { "author" : "neissa",
+    "name" : "HtmlEntities",
+    "description" : "Simple transformation of special char to their html code",
+    "url" : "https://github.com/neissa/Codiad-HtmlEntities"
+  },
   { "author" : "Fluidbyte",
     "name" : "Terminal",
     "description" : "Allows execution of terminal command through Codiad",
