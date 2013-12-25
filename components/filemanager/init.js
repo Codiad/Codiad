@@ -176,13 +176,13 @@
                 .on('mouseover', function() {
                     _this.contextMenuHide();
                 });
+            /* Notify listeners. */
+            amplify.publish('context-menu.onShow', {e: e, path: path, type: type});
             // Hide on click
             $('#context-menu a')
                 .click(function() {
                     _this.contextMenuHide();
                 });
-            /* Notify listeners. */
-            amplify.publish('context-menu.onShow', {e: e, path: path, type: type});
         },
 
         contextMenuHide: function() {
