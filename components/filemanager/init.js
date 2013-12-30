@@ -248,8 +248,6 @@
                         $('<ul>' + appendage + '</ul>')
                             .insertAfter(parentNode);
                     }
-                    /* Notify listeners. */
-                    amplify.publish('filemanager.onCreateObject', {parent: parent, path: path, type: type});
                 } else {
                     parentNode.parent().children('span').removeClass('none');  
                     parentNode.parent().children('span').addClass('plus');  
