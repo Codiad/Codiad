@@ -552,6 +552,8 @@
                     if (pasteResponse != 'error') {
                         _this.createObject(path, path + '/' + shortName, type);
                         codiad.modal.unload();
+                        /* Notify listeners. */
+                        amplify.publish('filemanager.onPaste', {path: path, shortName: shortName, duplicate: duplicate});
                     }
                 });
         },
