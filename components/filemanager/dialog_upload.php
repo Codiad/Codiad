@@ -51,7 +51,10 @@ $(function () {
         },
         done: function(e, data){
             $.each(data.result, function (index, file){
-                codiad.filemanager.createObject('<?php echo($_GET['path']); ?>','<?php echo($_GET['path']); ?>/'+file.name,'file');
+                var path = '<?php echo($_GET['path']); ?>';
+                codiad.filemanager.createObject(path, path + "/" + file.name,'file');
+                /* Notify listeners. */
+                amplify.publish('filemanager.onUpload', {file: file, path: path});
             });
             setTimeout(function(){
                 $('#upload-progress .bar').animate({'width':0},700);
