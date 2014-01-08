@@ -176,13 +176,13 @@
                 .on('mouseover', function() {
                     _this.contextMenuHide();
                 });
+            /* Notify listeners. */
+            amplify.publish('context-menu.onShow', {e: e, path: path, type: type});
             // Hide on click
             $('#context-menu a')
                 .click(function() {
                     _this.contextMenuHide();
                 });
-            /* Notify listeners. */
-            amplify.publish('context-menu.onShow', {e: e, path: path, type: type});
         },
 
         contextMenuHide: function() {
@@ -552,6 +552,8 @@
                     if (pasteResponse != 'error') {
                         _this.createObject(path, path + '/' + shortName, type);
                         codiad.modal.unload();
+                        /* Notify listeners. */
+                        amplify.publish('filemanager.onPaste', {path: path, shortName: shortName, duplicate: duplicate});
                     }
                 });
         },
