@@ -107,6 +107,7 @@ class Project extends Common {
     public function Create(){
         if($this->name != '' && $this->path != '') {
             $this->path = $this->cleanPath();
+            $this->name = htmlspecialchars($this->name);
             if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' || !$this->isAbsPath($this->path)) {
                 $this->path = $this->SanitizePath();
             }
@@ -141,12 +142,13 @@ class Project extends Common {
                     saveJSON('projects.php',$this->projects);
                     
                     // Pull from Git Repo?
-                    if($this->gitrepo){
-                        if(!$this->isAbsPath($this->path)) {
-                            $this->command_exec = "cd " . WORKSPACE . '/' . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
-                        } else {
-                            $this->command_exec = "cd " . $this->path . " && git init && git remote add origin " . $this->gitrepo . " && git pull origin " . $this->gitbranch;
-                        }
+                    if($this->gitrepo && filter_var($this->gitrepo, FILTER_VALIDATE_URL) !== false){
+												$this->git_branch = $this->SanitizeGitBranch();
+												if(!$this->isAbsPath($this->path)) {
+														$this->command_exec = "cd " . escapeshellarg(WORKSPACE . '/' . $this->path) . " && git init && git remote add origin " . escapeshellarg($this->gitrepo) . " && git pull origin " . escapeshellarg($this->gitbranch);
+												} else {
+														$this->command_exec = "cd " . escapeshellarg($this->path) . " && git init && git remote add origin " . escapeshellarg($this->gitrepo) . " && git pull origin " . escapeshellarg($this->gitbranch);
+												}
                         $this->ExecuteCMD();
                     }
                     
@@ -161,6 +163,15 @@ class Project extends Common {
              echo formatJSEND("error","Project Name/Folder is empty");
         }
     }
+    
+    //////////////////////////////////////////////////////////////////
+    // Sanitize GitBranch
+    //////////////////////////////////////////////////////////////////
+
+    public function SanitizeGitBranch(){
+        $sanitized = str_replace(array("..",chr(40), chr(177),"~","^",":","?","*","[","@{","\\"),array(""),$this->git_branch);
+        return $sanitized;
+    }   
     
     //////////////////////////////////////////////////////////////////
     // Rename
