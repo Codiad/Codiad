@@ -744,6 +744,8 @@ table [class^="icon-"], [class*=" icon-"] {
     position: fixed;
     top: 15%;
     left: 50%;
+    max-height: 70vh;
+	overflow: auto;
     background: #333;
     z-index: 9999999;
     min-height: 100px;
