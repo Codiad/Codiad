@@ -475,7 +475,7 @@
                 .live('submit', function(e) {
                     e.preventDefault();
                     var shortName = $('#modal-content form input[name="object_name"]')
-                        .val();
+                        .val().replace(' ','_');
                     var path = $('#modal-content form input[name="path"]')
                         .val();
                     var type = $('#modal-content form input[name="type"]')
@@ -563,7 +563,7 @@
         //////////////////////////////////////////////////////////////////
 
         renameNode: function(path) {
-            var shortName = this.getShortName(path);
+            var shortName = this.getShortName(path).replace(' ','_');
             var type = this.getType(path);
             var _this = this;
             codiad.modal.load(250, this.dialog, { action: 'rename', path: path, short_name: shortName, type: type});
