@@ -82,7 +82,7 @@
     display: none;
     top: 0;
     left: 0;
-    position: absolute;
+    position: fixed;
     width: 140px;
     padding: 0;
     background: #333;
