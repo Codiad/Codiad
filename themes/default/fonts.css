@@ -19,6 +19,19 @@
   font-weight: normal; font-style: normal;
 }
 
+/* Firefox workaround */
+@-moz-document url-prefix() {
+	@font-face {
+	  font-family: 'entypo';
+	  src: url('fonts/entypo.eot');
+	  src: url('fonts/entypo.eot?#iefix') format('embedded-opentype'),
+	       url('fonts/entypo.woff') format('woff'),
+	       url('fonts/entypo.ttf') format('truetype'),
+	       url('fonts/entypo.svg#entypo') format('svg');
+	  font-weight: normal; font-style: normal;
+	}
+}
+
 .icon-note:before { content: "\266a"; } /* '\266a' */
 .icon-note-beamed:before { content: "\266b"; } /* '\266b' */
 .icon-music:before { content: "🎵"; } /* '\1f3b5' */
