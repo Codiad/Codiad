@@ -41,6 +41,23 @@ class Project extends Common {
     }
     
     //////////////////////////////////////////////////////////////////
+    // Check Project Access
+    //////////////////////////////////////////////////////////////////
+
+	public function CheckAccess(){
+        if ($this->assigned) {
+            foreach($this->assigned as $project) {
+                if ($project == $this->name) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return true;
+        }
+	}
+
+    //////////////////////////////////////////////////////////////////
     // Get First (Default, none selected)
     //////////////////////////////////////////////////////////////////
 
