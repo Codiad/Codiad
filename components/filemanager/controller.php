@@ -36,8 +36,18 @@
     // Security Check
     //////////////////////////////////////////////////////////////////   
     
-    if (strpos($_GET['path'],$_SESSION['project']) !== 0) {
-      die('{"status":"error","message":"Invalid Path"}');
+    $check      = false;
+    $projects   = getJSON('projects.php');
+    foreach($projects as $project) {
+        if (strpos($_GET['path'],$project['path']) === 0) {
+            require_once('../project/controller.php');
+            $Project = new Project();
+            $Project->name = $project['name'];
+            $check = $Project->CheckAccess();
+        }
+    }
+    if (!$check) {
+        die('{"status":"error","message":"Invalid Path"}');
     }
 
     //////////////////////////////////////////////////////////////////
