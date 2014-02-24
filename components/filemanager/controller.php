@@ -40,10 +40,10 @@
     $projects   = getJSON('projects.php');
     foreach($projects as $project) {
         if (strpos($_GET['path'],$project['path']) === 0) {
-            require_once('../project/controller.php');
+            require_once('../project/class.project.php');
             $Project = new Project();
             $Project->name = $project['name'];
-            $check = $Project->CheckAccess();
+            $check = $Project->CheckProjectAccess();
         }
     }
     if (!$check) {

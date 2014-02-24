@@ -44,7 +44,7 @@ class Project extends Common {
     // Check Project Access
     //////////////////////////////////////////////////////////////////
 
-	public function CheckAccess(){
+	public function CheckProjectAccess(){
         if ($this->assigned) {
             foreach($this->assigned as $project) {
                 if ($project == $this->name) {
@@ -110,6 +110,8 @@ class Project extends Common {
                 $_SESSION['project'] = $data['path'];
             }
         }
+        //Security Check
+        $pass = $pass & $this->CheckProjectAccess();
         if($pass){
             echo formatJSEND("success",array("name"=>$this->name,"path"=>$this->path));
         }else{
