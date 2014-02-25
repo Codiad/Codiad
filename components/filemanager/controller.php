@@ -35,18 +35,8 @@
     //////////////////////////////////////////////////////////////////
     // Security Check
     //////////////////////////////////////////////////////////////////   
-    
-    $check      = false;
-    $projects   = getJSON('projects.php');
-    foreach($projects as $project) {
-        if (strpos($_GET['path'],$project['path']) === 0) {
-            require_once('../project/class.project.php');
-            $Project = new Project();
-            $Project->name = $project['name'];
-            $check = $Project->CheckProjectAccess();
-        }
-    }
-    if (!$check) {
+
+    if (!checkPath($_GET['path'])) {
         die('{"status":"error","message":"Invalid Path"}');
     }
 
