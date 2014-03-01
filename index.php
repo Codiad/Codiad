@@ -219,9 +219,11 @@ if(isset($_SESSION['theme'])) {
                                 $pdata = json_decode($pdata,true);
                                 if(isset($pdata[0]['contextmenu'])) {
                                     foreach($pdata[0]['contextmenu'] as $contextmenu) {
-                                        if(isset($contextmenu['applies-to']) && isset($contextmenu['action']) && isset($contextmenu['icon']) && isset($contextmenu['title'])) {
-                                            echo('<hr class="'.$contextmenu['applies-to'].'">');
-                                            echo('<a class="'.$contextmenu['applies-to'].'" onclick="'.$contextmenu['action'].'"><span class="'.$contextmenu['icon'].'"></span>'.$contextmenu['title'].'</a>');
+                                        if((!isset($contextmenu['admin']) || ($contextmenu['admin']) && checkAccess()) || !$contextmenu['admin']){
+                                            if(isset($contextmenu['applies-to']) && isset($contextmenu['action']) && isset($contextmenu['icon']) && isset($contextmenu['title'])) {
+                                                echo('<hr class="'.$contextmenu['applies-to'].'">');
+                                                echo('<a class="'.$contextmenu['applies-to'].'" onclick="'.$contextmenu['action'].'"><span class="'.$contextmenu['icon'].'"></span>'.$contextmenu['title'].'</a>');
+                                            }
                                         }
                                     }
                                 }
@@ -328,8 +330,10 @@ if(isset($_SESSION['theme'])) {
                                     $pdata = json_decode($pdata,true);
                                     if(isset($pdata[0]['rightbar'])) {
                                         foreach($pdata[0]['rightbar'] as $rightbar) {
-                                            if(isset($rightbar['action']) && isset($rightbar['icon']) && isset($rightbar['title'])) {
-                                                echo('<a onclick="'.$rightbar['action'].'"><span class="'.$rightbar['icon'].'"></span>'.$rightbar['title'].'</a>');
+                                            if((!isset($rightbar['admin']) || ($rightbar['admin']) && checkAccess()) || !$rightbar['admin']){
+                                                if(isset($rightbar['action']) && isset($rightbar['icon']) && isset($rightbar['title'])) {
+                                                    echo('<a onclick="'.$rightbar['action'].'"><span class="'.$rightbar['icon'].'"></span>'.$rightbar['title'].'</a>');
+                                                }
                                             }
                                         }
                                         //echo("<hr>");
