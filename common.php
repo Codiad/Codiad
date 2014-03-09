@@ -239,6 +239,28 @@
         }
 
         //////////////////////////////////////////////////////////////////
+        // Check Path
+        //////////////////////////////////////////////////////////////////
+
+        public static function checkPath($path) {
+            if(file_exists(DATA . "/" . $_SESSION['user'] . '_acl.php')){
+                foreach (getJSON($_SESSION['user'] . '_acl.php') as $projects=>$data) {
+                    if (strpos($path, $data) === 0) {
+                        return true;
+                    }
+                }
+            } else {
+                foreach(getJSON('projects.php') as $project=>$data){
+                    if (strpos($path, $data['path']) === 0) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+
+        //////////////////////////////////////////////////////////////////
         // Check Function Availability
         //////////////////////////////////////////////////////////////////
 
@@ -275,5 +297,6 @@
     function saveJSON($file,$data,$namespace=""){ Common::saveJSON($file,$data,$namespace); }
     function formatJSEND($status,$data=false){ return Common::formatJSEND($status,$data); }
     function checkAccess() { return Common::checkAccess(); }
+    function checkPath($path) { return Common::checkPath($path); }
     function isAvailable($func) { return Common::isAvailable($func); }
 ?>
