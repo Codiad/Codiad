@@ -23,7 +23,10 @@
                         _this.concludeTask(e.data);
                     }, false);
                 }
-                this.scheduleNext();
+
+                if (this.taskQueue.length == 1) {
+                    this.scheduleNext();
+                }
             } else {
                 callback(false,taskConfig.id);
             }
