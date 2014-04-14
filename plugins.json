@@ -171,5 +171,22 @@
     "name" : "DeepLinking",
     "description" : "Provides direct access linking for Codiad",
     "url" : "https://github.com/LRancez/Codiad-Deep-Linking"
+  },
+  { "author" : "Andr3as",
+    "name" : "DragDrop",
+    "description" : "Drag and Drop within the filemanager",
+    "url" : "https://github.com/Andr3as/Codiad-DragDrop"
+  },
+  { "author" : "Andr3as",
+    "name" : "Favorites",
+    "description" : "Set folders as favorites for quick access",
+    "image": "https://raw.githubusercontent.com/Andr3as/Codiad-Favorites/master/screen.png",
+    "url" : "https://github.com/Andr3as/Codiad-Favorites"
+  },
+  { "author" : "Andr3as",
+    "name" : "CodeGit",
+    "description" : "Git integration for Codiad",
+    "image": "https://raw.githubusercontent.com/Andr3as/Codiad-CodeGit/master/screen.png",
+    "url" : "https://github.com/Andr3as/Codiad-CodeGit"
   }
 ]
