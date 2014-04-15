@@ -188,5 +188,20 @@
     "description" : "Git integration for Codiad",
     "image": "https://raw.githubusercontent.com/Andr3as/Codiad-CodeGit/master/screen.png",
     "url" : "https://github.com/Andr3as/Codiad-CodeGit"
+  },
+  { "author" : "dev-rke",
+    "name" : "LessCompiler",
+    "description" : "Less Compiler for Codiad",
+    "url" : "https://github.com/dev-rke/Codiad-LessCompiler"
+  },
+  { "author" : "dev-rke",
+    "name" : "CoffeeScriptCompiler",
+    "description" : "CoffeeScript Compiler for Codiad",
+    "url" : "https://github.com/dev-rke/Codiad-CoffeeScriptCompiler"
+  },
+  { "author" : "dev-rke",
+    "name" : "ToDo",
+    "description" : "ToDo Parser for Codiad",
+    "url" : "https://github.com/dev-rke/Codiad-ToDo"
   }
 ]
