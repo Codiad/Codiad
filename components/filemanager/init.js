@@ -44,64 +44,17 @@
 
             $('#file-manager span')
                 .live('click', function() { // Open or Expand
-                    if ($(this).parent().children("a").attr('data-type') == 'directory') {
-                        _this.index($(this).parent().children("a")
-                            .attr('data-path'));
-                    } else {
-                        _this.openFile($(this).parent().children("a")
-                            .attr('data-path'));
-                    }
-                    if (!$(this).hasClass('none')) {
-                        if ($(this).hasClass('plus')) {
-                            $(this).removeClass('plus')
-                            $(this).addClass('minus');
-                        } else {
-                            $(this).removeClass('minus')
-                            $(this).addClass('plus');
-                        }
-                    }
+                    _this.nodeCommand($(this).parent().children("a"));
                 });
             $('#file-manager a')
                 .live('dblclick', function() { // Open or Expand
                     if (!codiad.editor.settings.fileManagerTrigger) {
-                      if ($(this)
-                          .hasClass('directory')) {
-                          _this.index($(this)
-                              .attr('data-path'));
-                      } else {
-                          _this.openFile($(this)
-                              .attr('data-path'));
-                      }
-                      if (!$(this).parent().children("span").hasClass('none')) {
-                          if ($(this).parent().children("span").hasClass('plus')) {
-                              $(this).parent().children("span").removeClass('plus')
-                              $(this).parent().children("span").addClass('minus');
-                          } else {
-                              $(this).parent().children("span").removeClass('minus')
-                              $(this).parent().children("span").addClass('plus');
-                          }
-                      }
+                        _this.nodeCommand($(this));
                     }
                 })
                 .live('click', function() { // Open or Expand
                     if (codiad.editor.settings.fileManagerTrigger) {
-                      if ($(this)
-                          .hasClass('directory')) {
-                          _this.index($(this)
-                              .attr('data-path'));
-                      } else {
-                          _this.openFile($(this)
-                              .attr('data-path'));
-                      }
-                      if (!$(this).parent().children("span").hasClass('none')) {
-                          if ($(this).parent().children("span").hasClass('plus')) {
-                              $(this).parent().children("span").removeClass('plus')
-                              $(this).parent().children("span").addClass('minus');
-                          } else {
-                              $(this).parent().children("span").removeClass('minus')
-                              $(this).parent().children("span").addClass('plus');
-                          }
-                      }
+                        _this.nodeCommand($(this));
                     }
                 })
                 .live("contextmenu", function(e) { // Context Menu
@@ -112,6 +65,33 @@
                     $(this)
                         .addClass('context-menu-active');
                 });
+        },
+
+        //////////////////////////////////////////////////////////////////
+        // Node Command
+        //////////////////////////////////////////////////////////////////
+
+        nodeCommand: function(node) {
+            var _this = this;
+            
+            if (node.hasClass('directory')) {
+                //If the node clicked is a directory, list its contents.
+                _this.index(node.attr('data-path'));
+
+                //Toggle the arrow indicator.
+                if (!node.parent().children("span").hasClass('none')) {
+                    if (node.parent().children("span").hasClass('plus')) {
+                        node.parent().children("span").removeClass('plus')
+                        node.parent().children("span").addClass('minus');
+                    } else {
+                        node.parent().children("span").removeClass('minus')
+                        node.parent().children("span").addClass('plus');
+                    }
+                }
+            } else {
+                //If the node clicked is a file, open it.
+                _this.openFile(node.attr('data-path'));
+            }
         },
 
         //////////////////////////////////////////////////////////////////
