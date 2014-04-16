@@ -361,9 +361,6 @@
 
             if(focus) {
                 this.focus(path);
-                
-                // Check for any registered users.
-                this.check(path);
             }
             
             // Mark draft as changed
@@ -385,10 +382,12 @@
             
             if(path != this.getPath()) {
                 codiad.editor.setSession(this.sessions[path]);
-                this.check(path);
                 this.history.push(path);
                 $.get(this.controller, {'action':'focused', 'path':path});
             }
+            
+            /* Check for users registered on the file. */
+            this.check(path);
 
             /* Notify listeners. */
             amplify.publish('active.onFocus', path);
