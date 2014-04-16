@@ -44,17 +44,17 @@
 
             $('#file-manager span')
                 .live('click', function() { // Open or Expand
-                    _this.nodeCommand($(this).parent().children("a"));
+                    _this.nodeCommand($(this).parent());
                 });
             $('#file-manager a')
                 .live('dblclick', function() { // Open or Expand
                     if (!codiad.editor.settings.fileManagerTrigger) {
-                        _this.nodeCommand($(this));
+                        _this.nodeCommand($(this).parent());
                     }
                 })
                 .live('click', function() { // Open or Expand
                     if (codiad.editor.settings.fileManagerTrigger) {
-                        _this.nodeCommand($(this));
+                        _this.nodeCommand($(this).parent());
                     }
                 })
                 .live("contextmenu", function(e) { // Context Menu
@@ -73,24 +73,27 @@
 
         nodeCommand: function(node) {
             var _this = this;
+            var nodeLabel = node.children('a');
             
-            if (node.hasClass('directory')) {
+            if (nodeLabel.hasClass('directory')) {
                 //If the node clicked is a directory, list its contents.
-                _this.index(node.attr('data-path'));
+                _this.index(nodeLabel.attr('data-path'));
 
                 //Toggle the arrow indicator.
-                if (!node.parent().children("span").hasClass('none')) {
-                    if (node.parent().children("span").hasClass('plus')) {
-                        node.parent().children("span").removeClass('plus')
-                        node.parent().children("span").addClass('minus');
+                var nodeArrow = node.children('span');
+                
+                if (!nodeArrow.hasClass('none')) {
+                    if (nodeArrow.hasClass('plus')) {
+                        nodeArrow.removeClass('plus')
+                        nodeArrow.addClass('minus');
                     } else {
-                        node.parent().children("span").removeClass('minus')
-                        node.parent().children("span").addClass('plus');
+                        nodeArrow.removeClass('minus')
+                        nodeArrow.addClass('plus');
                     }
                 }
             } else {
                 //If the node clicked is a file, open it.
-                _this.openFile(node.attr('data-path'));
+                _this.openFile(nodeLabel.attr('data-path'));
             }
         },
 
