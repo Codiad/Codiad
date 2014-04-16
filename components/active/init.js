@@ -361,6 +361,9 @@
 
             if(focus) {
                 this.focus(path);
+                
+                // Check for any registered users.
+                this.check(path);
             }
             
             // Mark draft as changed
