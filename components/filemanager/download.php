@@ -48,7 +48,7 @@
           # Execute the tar command and save file
           $filename .= '.tar.gz';
 
-          system("tar -pczf ".$targetPath.$filename." ".$dir);
+          system("tar -pczf ".$targetPath.$filename." -C ".WORKSPACE." ".$_GET['path']);
           $download_file = $targetPath.$filename;
         }elseif(extension_loaded('zip')){ //Check if zip-Extension is availiable
           //build zipfile
