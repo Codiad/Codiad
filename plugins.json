@@ -189,6 +189,11 @@
     "image": "https://raw.githubusercontent.com/Andr3as/Codiad-CodeGit/master/screen.png",
     "url" : "https://github.com/Andr3as/Codiad-CodeGit"
   },
+  { "author" : "RustyGumbo",
+    "name" : "FileUse",
+    "description" : "Displays other users viewing the file",
+    "url" : "https://github.com/RustyGumbo/Codiad-FileUse"
+  },
   { "author" : "dev-rke",
     "name" : "LessCompiler",
     "description" : "Less Compiler for Codiad",
