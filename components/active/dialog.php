@@ -30,7 +30,7 @@ switch($_GET['action']){
     
     <pre><?php echo($path); ?></pre>
 
-    <button class="btn-left" onclick="save_and_close('<?php echo($path); ?>'); return false;"><?php i18n("Save&Close"); ?></button>
+    <button class="btn-left" onclick="save_and_close('<?php echo($path); ?>'); return false;"><?php i18n("Save & Close"); ?></button>
     <button class="btn-mid" onclick="close_without_save('<?php echo($path); ?>'); return false;"><?php i18n("Discard Changes"); ?></button>
     <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Cancel"); ?></button>
     <?php
