@@ -38,6 +38,7 @@ class fileextension_textmode{
 			'hpp' => 'c_cpp',
 			'py' => 'python',
 			'rb' => 'ruby',
+			'erb' => 'html_ruby',
 			'jade' => 'jade',
 			'coffee' => 'coffee',
 			'vm' => 'velocity');
