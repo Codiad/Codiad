@@ -8,6 +8,7 @@ $languages = array(
     "es" => "español",
     "pt" => "português",
     "ro" => "romanian",
-    "hu" => "magyar"
+    "hu" => "magyar",
+    "sv" => "swedish"
 );
 ?>
