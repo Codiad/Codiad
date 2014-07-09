@@ -27,8 +27,6 @@ switch($_GET['action']){
     case 'search':
     $type = $_GET['type'];
     ?>
-    <input type="hidden" name="id" value="<?php echo($_GET['id']); ?>">
-
     <label><?php i18n("Find:"); ?></label>
     <input type="text" name="find" autofocus="autofocus" autocomplete="off">
     
