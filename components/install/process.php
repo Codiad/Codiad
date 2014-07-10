@@ -111,7 +111,7 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     // Create Users file
     //////////////////////////////////////////////////////////////////
 
-    $user_data = array("username"=>$username,"password"=>$password,"project"=>$project_path);
+    $user_data = array("username"=>$username,"password"=>$password,"project"=>$project_path,"challenge"=>"");
 
     saveJSON($users,array($user_data));
 
