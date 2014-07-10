@@ -63,12 +63,22 @@
         //////////////////////////////////////////////////////////////////
 
         authenticate: function() {
-            $.post(this.controller + '?action=authenticate', this.loginForm.serialize(), function(data) {
+            var username = $('#login input[name="username"]').val();
+            $.post(this.controller + '?action=challenge', {'username' : username }, function(data) {
                 parsed = codiad.jsend.parse(data);
                 if (parsed != 'error') {
-                    // Session set, reload
-                    window.location.reload();
-                }
+                    var password = $('#login input[name="password"]').val();
+                    $('#login input[name="password"]').val(hex_md5(hex_sha1(hex_md5(password)) + parsed.challenge));
+                    $.post(codiad.user.controller + '?action=authenticate', $('#login').serialize(), function(data) {
+                        parsed = codiad.jsend.parse(data);
+                        if (parsed != 'error') {
+                            // Session set, reload
+                            window.location.reload();
+                        } else {
+                          $('#login input[name="password"]').val(password);
+                        }
+                    });
+                } 
             });
         },
 

@@ -159,6 +159,8 @@ if(isset($_SESSION['theme'])) {
 
             </form>
 
+            <script src="js/md5.js"></script>
+            <script src="js/sha1.js"></script>
             <script src="components/user/init.js"></script>
             <?php
 

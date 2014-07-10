@@ -17,7 +17,7 @@
     // Verify Session or Key
     //////////////////////////////////////////////////////////////////
 
-    if($_GET['action']!='authenticate'){ checkSession(); }
+    if($_GET['action']!='authenticate'&&$_GET['action']!='challenge'){ checkSession(); }
 
     $User = new User();
 
@@ -44,6 +44,20 @@
         $User->theme = $_POST['theme'];
 
         $User->Authenticate();
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Challenge
+    //////////////////////////////////////////////////////////////////
+
+    if($_GET['action']=='challenge'){
+    	if(!isset($_POST['username'])){
+    		die(formatJSEND("error","Missing username"));
+    	}
+    	
+    	$User->username = $_POST['username'];
+    	
+      $User->Challenge();
     }
 
     //////////////////////////////////////////////////////////////////
