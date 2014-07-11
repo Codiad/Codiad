@@ -642,7 +642,7 @@
                     .text(newPath.substring(1));
                 this.sessions[newPath] = this.sessions[oldPath];
                 this.sessions[newPath].path = newPath;
-                this.sessions[oldPath] = undefined;
+                delete this.sessions[oldPath];
             };
             if (this.sessions[oldPath]) {
                 // A file was renamed
