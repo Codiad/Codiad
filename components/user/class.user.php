@@ -18,6 +18,7 @@ class User {
     public $project     = '';
     public $projects    = '';
     public $users       = '';
+    public $challenges  = '';
     public $actives     = '';
     public $lang        = '';
     public $theme       = '';
@@ -35,6 +36,7 @@ class User {
     public function __construct(){
         $this->users = getJSON('users.php');
         $this->actives = getJSON('active.php');
+        $this->challenges = getJSON('challenges.php','cache');
     }
 
     //////////////////////////////////////////////////////////////////
@@ -44,9 +46,16 @@ class User {
     public function Authenticate(){
 
         $pass = false;
-        $users = getJSON('users.php');
+        $challenges = getJSON('challenges.php','cache');
+        foreach($challenges as $challenge){
+            if($challenge['username']==$this->username){
+                $this->challenge = $challenge['challenge'];
+            }
+        }
+
+        $users = getJSON('users.php');        
         foreach($users as $user){
-            if($user['username']==$this->username && md5($user['password'].$user['challenge'])==$this->password){
+            if($user['username']==$this->username && md5($user['password'].$this->challenge)==$this->password){
                 $pass = true;
                 $_SESSION['user'] = $this->username;
                 $_SESSION['lang'] = $this->lang;
@@ -66,15 +75,20 @@ class User {
     public function Challenge(){
         $revised_array = array();
         $this->challenge = time();
-        foreach($this->users as $user=>$data){
+        $pass = false;
+        foreach($this->challenges as $challenges=>$data){
             if($data['username']==$this->username){
-                $revised_array[] = array("username"=>$data['username'],"password"=>$data['password'],"project"=>$data['project'],"challenge"=>$this->challenge);
+                $revised_array[] = array("username"=>$data['username'],"challenge"=>$this->challenge);
+                $pass = true;
             }else{
-                $revised_array[] = array("username"=>$data['username'],"password"=>$data['password'],"project"=>$data['project'],"challenge"=>$data['challenge']);
+                $revised_array[] = array("username"=>$data['username'],"challenge"=>$data['challenge']);
             }
         }
+        if(!$pass) {
+            array_push($revised_array,array("username"=>$this->username,"challenge"=>$this->challenge));
+        }        
         // Save array back to JSON
-        saveJSON('users.php',$revised_array);
+        saveJSON('challenges.php',$revised_array, 'cache');
         // Response
         echo formatJSEND("success",array("challenge"=>$this->challenge));
     }
@@ -87,7 +101,7 @@ class User {
         $this->EncryptPassword();
         $pass = $this->checkDuplicate();
         if($pass){
-            $this->users[] = array("username"=>$this->username,"password"=>$this->password,"project"=>"","challenge"=>"");
+            $this->users[] = array("username"=>$this->username,"password"=>$this->password,"project"=>"");
             saveJSON('users.php',$this->users);
             echo formatJSEND("success",array("username"=>$this->username));
         }else{
@@ -104,7 +118,7 @@ class User {
         $revised_array = array();
         foreach($this->users as $user=>$data){
             if($data['username']!=$this->username){
-                $revised_array[] = array("username"=>$data['username'],"password"=>$data['password'],"project"=>$data['project'],"challenge"=>$data['challenge']);
+                $revised_array[] = array("username"=>$data['username'],"password"=>$data['password'],"project"=>$data['project']);
             }
         }
         // Save array back to JSON
@@ -136,9 +150,9 @@ class User {
         $revised_array = array();
         foreach($this->users as $user=>$data){
             if($data['username']==$this->username){
-                $revised_array[] = array("username"=>$data['username'],"password"=>$this->password,"challenge"=>$data['challenge']);
+                $revised_array[] = array("username"=>$data['username'],"password"=>$this->password);
             }else{
-                $revised_array[] = array("username"=>$data['username'],"password"=>$data['password'],"project"=>$data['project'],"challenge"=>$data['challenge']);
+                $revised_array[] = array("username"=>$data['username'],"password"=>$data['password'],"project"=>$data['project']);
             }
         }
         // Save array back to JSON
@@ -174,9 +188,9 @@ class User {
         $revised_array = array();
         foreach($this->users as $user=>$data){
             if($this->username==$data['username']){
-                $revised_array[] = array("username"=>$data['username'],"password"=>$data['password'],"project"=>$this->project,"challenge"=>$data['challenge']);
+                $revised_array[] = array("username"=>$data['username'],"password"=>$data['password'],"project"=>$this->project);
             }else{
-                $revised_array[] = array("username"=>$data['username'],"password"=>$data['password'],"project"=>$data['project'],"challenge"=>$data['challenge']);
+                $revised_array[] = array("username"=>$data['username'],"password"=>$data['password'],"project"=>$data['project']);
             }
         }
         // Save array back to JSON
