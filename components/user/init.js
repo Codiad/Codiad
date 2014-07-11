@@ -56,6 +56,9 @@
                 $(this).hide();
                 $('.language-selector').animate({height:'toggle'}, "fast");
             });
+            
+            $.loadScript("components/user/jquery.md5.js", true);
+            $.loadScript("components/user/jquery.sha1.js", true);
         },
 
         //////////////////////////////////////////////////////////////////
@@ -68,7 +71,7 @@
                 parsed = codiad.jsend.parse(data);
                 if (parsed != 'error') {
                     var password = $('#login input[name="password"]').val();
-                    $('#login input[name="password"]').val(hex_md5(hex_sha1(hex_md5(password)) + parsed.challenge));
+                    $('#login input[name="password"]').val($.md5($.sha1($.md5(password)) + parsed.challenge));
                     $.post(codiad.user.controller + '?action=authenticate', $('#login').serialize(), function(data) {
                         parsed = codiad.jsend.parse(data);
                         if (parsed != 'error') {
