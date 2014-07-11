@@ -52,7 +52,7 @@ class User {
             if($challenge['username']==$this->username){
                 $this->challenge = $challenge['challenge'];
             } else {
-               $revised_array[] = array("username"=>$data['username'],"challenge"=>$data['challenge']);
+               $revised_array[] = array("username"=>$challenge['username'],"challenge"=>$challenge['challenge']);
             }
         }
         saveJSON('challenges.php',$revised_array, 'cache');
