@@ -167,6 +167,13 @@
     "category" : "Collaboration",
     "url" : "https://github.com/Codiad/Codiad-Collaborative"
   },
+  {"author" : "daeks",
+    "name" : "Together",
+    "description" : "Audio and Chat Support for Codiad. Not compatible with IE.",
+    "category" : "Collaboration",
+    "image": "https://raw.githubusercontent.com/daeks/Codiad-Together/master/screen.png",
+    "url" : "https://github.com/daeks/Codiad-Together"
+  },
   { "author" : "LRancez",
     "name" : "DeepLinking",
     "description" : "Provides direct access linking for Codiad",
