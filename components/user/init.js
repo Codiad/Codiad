@@ -57,8 +57,8 @@
                 $('.language-selector').animate({height:'toggle'}, "fast");
             });
             
-            $.loadScript("components/user/jquery.md5.js", true);
-            $.loadScript("components/user/jquery.sha1.js", true);
+            $.loadScript("components/user/hash_scripts/jquery.md5.js", true);
+            $.loadScript("components/user/hash_scripts/jquery.sha1.js", true);
         },
 
         //////////////////////////////////////////////////////////////////
