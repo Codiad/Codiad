@@ -47,11 +47,15 @@ class User {
 
         $pass = false;
         $challenges = getJSON('challenges.php','cache');
+        $revised_array = array();
         foreach($challenges as $challenge){
             if($challenge['username']==$this->username){
                 $this->challenge = $challenge['challenge'];
+            } else {
+               $revised_array[] = array("username"=>$data['username'],"challenge"=>$data['challenge']);
             }
         }
+        saveJSON('challenges.php',$revised_array, 'cache');
 
         $users = getJSON('users.php');        
         foreach($users as $user){
