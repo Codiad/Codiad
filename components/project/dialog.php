@@ -185,7 +185,7 @@
         <form>
         <input type="hidden" name="project_path" value="<?php echo($_GET['path']); ?>">
         <label><span class="icon-pencil"></span><?php i18n("Rename Project"); ?></label>    
-        <input type="text" name="project_name" autofocus="autofocus" autocomplete="off" value="<?php echo($_GET['project_name']); ?>">  
+        <input type="text" name="project_name" autofocus="autofocus" autocomplete="off" value="">  
         <button class="btn-left"><?php i18n("Rename"); ?></button>&nbsp;<button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Cancel"); ?></button>
         <form>
         <?php
