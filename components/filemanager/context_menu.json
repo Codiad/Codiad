@@ -81,7 +81,7 @@
         "title": "Rename Project",
         "icon": "icon-pencil",
         "applies-to" : "root-only",
-        "onclick": "codiad.project.rename($('#context-menu').attr('data-path'));"
+        "onclick": "codiad.project.rename($('#context-menu').attr('data-path'),$('#context-menu').attr('data-name'));"
     },   
     {
         "title": "Break",
