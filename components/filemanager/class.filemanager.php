@@ -422,7 +422,9 @@ class Filemanager extends Common {
                         //DEBUG : file_put_contents($this->path.".patch", $this->patch);
                     }
 
-                    if (fwrite($file, $this->content) === false){
+                    $writeSuccess = fwrite($file, $this->content);
+                    fclose($file);
+                    if (! $writeSuccess){
                         $this->status = "error";
                         $this->message = "could not write to file";
                     } else {
@@ -433,8 +435,6 @@ class Filemanager extends Common {
                         $this->data = '"mtime":'.filemtime($this->path);
                         $this->status = "success";
                     }
-
-                    fclose($file);
                 }else{
                    $this->status = "error";
                    $this->message = "Cannot Write to File";
@@ -443,11 +443,6 @@ class Filemanager extends Common {
                 $this->status = "error";
                 $this->message = "Not A File";
             }
-        } else {
-          $file = fopen($this->path, 'w');
-          fclose($file);
-          $this->data = '"mtime":'.filemtime($this->path);
-          $this->status = "success";
         }
 
         $this->respond();

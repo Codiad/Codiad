@@ -108,7 +108,8 @@
                     e.preventDefault();
                     _this.contextMenuShow(e, $(this)
                         .attr('data-path'), $(this)
-                        .attr('data-type'));
+                        .attr('data-type'), $(this)
+                        .html());
                     $(this)
                         .addClass('context-menu-active');
                 });
@@ -118,8 +119,7 @@
         // Context Menu
         //////////////////////////////////////////////////////////////////
 
-        contextMenuShow: function(e, path, type) {
-
+        contextMenuShow: function(e, path, type, name) {
             var _this = this;
 
             // Selective options
@@ -162,7 +162,8 @@
                 })
                 .fadeIn(200)
                 .attr('data-path', path)
-                .attr('data-type', type);
+                .attr('data-type', type)
+                .attr('data-name', name);
             // Show faded 'paste' if nothing in clipboard
             if (this.clipboard === '') {
                 $('#context-menu a[content="Paste"]')
