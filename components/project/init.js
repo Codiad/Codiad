@@ -163,9 +163,9 @@
         // Rename Project
         //////////////////////////////////////////////////////////////////
 
-        rename: function(path) {
+        rename: function(path,name) {
             var _this = this;
-            codiad.modal.load(500, this.dialog + '?action=rename&path=' + escape(path));
+            codiad.modal.load(500, this.dialog + '?action=rename&path=' + escape(path) + '&name='+name);
             $('#modal-content form')
                 .live('submit', function(e) {
                 e.preventDefault();
