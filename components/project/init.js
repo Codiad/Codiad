@@ -49,7 +49,7 @@
                         .append('<ul><li><a id="project-root" data-type="root" class="directory" data-path="' + projectInfo.path + '">' + projectInfo.name + '</a></li></ul>');
                     codiad.filemanager.index(projectInfo.path);
                     codiad.user.project(projectInfo.path);
-                    codiad.message.success(i18n('Project ' + projectInfo.name + ' Loaded'));
+                    codiad.message.success(i18n('Project ') + projectInfo.name + i18n(' Loaded'));
                 }
             });
         },
@@ -202,7 +202,7 @@
                 $.get(_this.controller + '?action=delete&project_path=' + projectPath, function(data) {
                     deleteResponse = codiad.jsend.parse(data);
                     if (deleteResponse != 'error') {
-                        codiad.message.success('Project Deleted');
+                        codiad.message.success(i18n('Project Deleted'));
                         var deletefiles = $('input:checkbox[name="delete"]:checked').val();
                         var followlinks = $('input:checkbox[name="follow"]:checked').val();
                         if( typeof deletefiles !== 'undefined' ) {
