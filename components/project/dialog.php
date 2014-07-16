@@ -105,7 +105,7 @@
                         if(checkAccess()){
                             if($_SESSION['project'] == $data['path']){
                             ?>
-                            <td width="70"><a onclick="codiad.message.error('Active Project Cannot Be Removed');" class="icon-block bigger-icon"></a></td>
+                            <td width="70"><a onclick="codiad.message.error(i18n('Active Project Cannot Be Removed'));" class="icon-block bigger-icon"></a></td>
                             <?php
                             }else{
                             ?>

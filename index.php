@@ -75,8 +75,13 @@ if(isset($_SESSION['theme'])) {
 <body>
     <script>
     var i18n = (function(lang) {
-        return function(word) {
-            return (word in lang) ? lang[word] : word;
+        return function(word,args) {
+            var x;
+            var returnw = (word in lang) ? lang[word] : word;
+            for(x in args){
+                returnw=returnw.replace("%{"+x+"}%",args[x]);   
+            }
+            return returnw;
         }
     })(<?php echo json_encode($lang); ?>)
     </script>

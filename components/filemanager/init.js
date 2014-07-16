@@ -379,7 +379,7 @@
                         this.openInModal(path);
                     }
                  } else {
-                    codiad.message.error('Unable to open file in Browser');
+                    codiad.message.error(i18n('Unable to open file in Browser'));
                  }
             }
         },
@@ -437,7 +437,7 @@
                             session.serverMTime = null;
                             session.untainted = null;
                         }
-                    } else codiad.message.error('File could not be saved');
+                    } else codiad.message.error(i18n('File could not be saved'));
                     if (typeof callbacks.error === 'function') {
                         var context = callbacks.context || _this;
                         callbacks.error.apply(context, [resp.data]);
