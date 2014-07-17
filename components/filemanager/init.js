@@ -151,9 +151,9 @@
             // Show menu
             var top = e.pageY;
             if (top > $(window).height() - $('#context-menu').height()) {
-                top -= $('#context-menu').height()+30;
+                top -= $('#context-menu').height()+5;
             } else {
-                top -= 40;
+                top += 5;
             }
             $('#context-menu')
                 .css({
