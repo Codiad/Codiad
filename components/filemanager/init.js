@@ -151,14 +151,12 @@
             // Show menu
             var top = e.pageY;
             if (top > $(window).height() - $('#context-menu').height()) {
-                top -= $('#context-menu').height()+5;
-            } else {
-                top += 5;
+                top -= $('#context-menu').height();
             }
             $('#context-menu')
                 .css({
                     'top': top + 'px',
-                    'left': (e.pageX - 30) + 'px'
+                    'left': e.pageX + 'px'
                 })
                 .fadeIn(200)
                 .attr('data-path', path)
