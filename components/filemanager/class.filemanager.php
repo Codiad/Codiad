@@ -382,72 +382,72 @@ class Filemanager extends Common {
                 $this->status = "error";
                 $this->message = "Path Already Exists";
             }
-        }
-
-        // Change content
-        if($this->content || $this->patch){
-            if($this->content==' '){
-                $this->content=''; // Blank out file
-            }
-            if ($this->patch && ! $this->mtime){
-                $this->status = "error";
-                $this->message = "mtime parameter not found";
-                $this->respond();
-                return;
-            }
-            if(is_file($this->path)){
-                $serverMTime = filemtime($this->path);
-                $fileContents = file_get_contents($this->path);
-
-                if ($this->patch && $this->mtime != $serverMTime){
-                    $this->status = "error";
-                    $this->message = "Client is out of sync";
-                    //DEBUG : file_put_contents($this->path.".conflict", "SERVER MTIME :".$serverMTime.", CLIENT MTIME :".$this->mtime);
-                    $this->respond();
-                    return;
-                } else if (strlen(trim($this->patch)) == 0 && ! $this->content ){
-                    // Do nothing if the patch is empty and there is no content
-                    $this->status = "success";
-                    $this->data = '"mtime":'.$serverMTime;
-                    $this->respond();
-                    return;
-                }
-
-                if($file = fopen($this->path, 'w')){
-                    if ($this->patch){
-                        $dmp = new diff_match_patch();
-                        $p = $dmp->patch_apply($dmp->patch_fromText($this->patch), $fileContents);
-                        $this->content = $p[0];
-                        //DEBUG : file_put_contents($this->path.".orig",$fileContents );
-                        //DEBUG : file_put_contents($this->path.".patch", $this->patch);
-                    }
-
-                    if (fwrite($file, $this->content) === false){
-                        $this->status = "error";
-                        $this->message = "could not write to file";
-                    } else {
-                        // Unless stat cache is cleared the pre-cached mtime will be
-                        // returned instead of new modification time after editing
-                        // the file.
-                        clearstatcache();
-                        $this->data = '"mtime":'.filemtime($this->path);
-                        $this->status = "success";
-                    }
-
-                    fclose($file);
-                }else{
-                   $this->status = "error";
-                   $this->message = "Cannot Write to File";
-                }
-            }else{
-                $this->status = "error";
-                $this->message = "Not A File";
-            }
         } else {
-          $file = fopen($this->path, 'w');
-          fclose($file);
-          $this->data = '"mtime":'.filemtime($this->path);
-          $this->status = "success";
+            // Change content
+            if($this->content || $this->patch){
+                if($this->content==' '){
+                    $this->content=''; // Blank out file
+                }
+                if ($this->patch && ! $this->mtime){
+                    $this->status = "error";
+                    $this->message = "mtime parameter not found";
+                    $this->respond();
+                    return;
+                }
+                if(is_file($this->path)){
+                    $serverMTime = filemtime($this->path);
+                    $fileContents = file_get_contents($this->path);
+    
+                    if ($this->patch && $this->mtime != $serverMTime){
+                        $this->status = "error";
+                        $this->message = "Client is out of sync";
+                        //DEBUG : file_put_contents($this->path.".conflict", "SERVER MTIME :".$serverMTime.", CLIENT MTIME :".$this->mtime);
+                        $this->respond();
+                        return;
+                    } else if (strlen(trim($this->patch)) == 0 && ! $this->content ){
+                        // Do nothing if the patch is empty and there is no content
+                        $this->status = "success";
+                        $this->data = '"mtime":'.$serverMTime;
+                        $this->respond();
+                        return;
+                    }
+    
+                    if($file = fopen($this->path, 'w')){
+                        if ($this->patch){
+                            $dmp = new diff_match_patch();
+                            $p = $dmp->patch_apply($dmp->patch_fromText($this->patch), $fileContents);
+                            $this->content = $p[0];
+                            //DEBUG : file_put_contents($this->path.".orig",$fileContents );
+                            //DEBUG : file_put_contents($this->path.".patch", $this->patch);
+                        }
+    
+                        if (fwrite($file, $this->content) === false){
+                            $this->status = "error";
+                            $this->message = "could not write to file";
+                        } else {
+                            // Unless stat cache is cleared the pre-cached mtime will be
+                            // returned instead of new modification time after editing
+                            // the file.
+                            clearstatcache();
+                            $this->data = '"mtime":'.filemtime($this->path);
+                            $this->status = "success";
+                        }
+    
+                        fclose($file);
+                    }else{
+                       $this->status = "error";
+                       $this->message = "Cannot Write to File";
+                    }
+                }else{
+                    $this->status = "error";
+                    $this->message = "Not A File";
+                }
+            } else {
+              $file = fopen($this->path, 'w');
+              fclose($file);
+              $this->data = '"mtime":'.filemtime($this->path);
+              $this->status = "success";
+            }
         }
 
         $this->respond();
