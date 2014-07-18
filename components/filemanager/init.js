@@ -286,7 +286,7 @@
                         var files = _this.indexFiles;
                         if (files.length > 0) {
                             if (node.parent().children('span').hasClass('plus')) {
-								node.parent().children('span').removeClass('plus').addClass('minus');
+                                node.parent().children('span').removeClass('plus').addClass('minus');
                             }
                             var display = 'display:none;';
                             if (rescan) {
