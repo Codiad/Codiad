@@ -56,6 +56,32 @@
                 $(this).hide();
                 $('.language-selector').animate({height:'toggle'}, "fast");
             });
+
+            // Load Settings
+            $.get(this.controller + '?action=getSettings', function(data){
+                parsed = JSON.parse(data);
+                if (parsed.status != 'error') {
+                    $.each(parsed.data, function(i, item){
+                        localStorage.setItem(i, item);
+                    });
+                    amplify.publish('user.settings.loaded', parsed.data);
+                }
+            });
+
+            // Save Settings
+            amplify.subscribe('user.logout', function(){
+                var key, settings = {};
+                for (var i = 0; i < localStorage.length; i++) {
+                    key             = localStorage.key(i);
+                    settings[key]   = localStorage.getItem(key);
+                }
+                $.post(_this.controller + '?action=saveSettings', {settings: JSON.stringify(settings)}, function(data){
+                    parsed = codiad.jsend.parse(data);
+                    if (parsed != 'error') {
+                        codiad.message.success(i18n("Settings saved"));
+                    }
+                });
+            });
         },
 
         //////////////////////////////////////////////////////////////////
@@ -77,6 +103,7 @@
         //////////////////////////////////////////////////////////////////
 
         logout: function() {
+            amplify.publish('user.logout', {});
             $.get(this.controller + '?action=logout', function() {
                 window.location.reload();
             });
