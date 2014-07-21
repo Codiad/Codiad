@@ -10,10 +10,11 @@
 
         load: function(width, url, data) {
             data = data || {};
+            var bounds = this._getBounds();
             $('#modal')
                 .css({
-                    'top': '15%',
-                    'left': '50%',
+                    'top': bounds.top,
+                    'left': bounds.left,
                     'min-width': width + 'px',
                     'margin-left': '-' + Math.ceil(width / 2) + 'px'
                 })
@@ -39,6 +40,7 @@
         },
 
         unload: function() {
+            this._setBounds();
             $('#modal-content form')
                 .die('submit'); // Prevent form bubbling
             $('#modal, #modal-overlay')
@@ -55,6 +57,35 @@
                     .animate({
                         'margin-left': '10px'
                 }, 300, 'easeOutQuart');
+            }
+        },
+
+        _setBounds: function(bounds) {
+            if (typeof(bounds) == 'undefined') {
+                if ($('#modal').is(':visible')) {
+                    bounds      = {};
+                    bounds.top  = $('#modal').offset().top;
+                    bounds.left = $('#modal').offset().left;
+                } else {
+                    return false;
+                }
+            }
+            //Save bounds
+            localStorage.setItem("codiad.modal.top", bounds.top);
+            localStorage.setItem("codiad.modal.left", bounds.left);
+        },
+
+        _getBounds: function() {
+            if (localStorage.getItem("codiad.modal.top") !== null && localStorage.getItem("codiad.modal.left") !== null) {
+                return {
+                    top: localStorage.getItem("codiad.modal.top"),
+                    left: localStorage.getItem("codiad.modal.left")
+                };
+            } else {
+                return {
+                    top: "15%",
+                    left: "50%"
+                };
             }
         }
 
