@@ -64,8 +64,8 @@
             if (typeof(bounds) == 'undefined') {
                 if ($('#modal').is(':visible')) {
                     bounds      = {};
-                    bounds.top  = $('#modal').offset().top;
-                    bounds.left = $('#modal').offset().left;
+                    bounds.top  = Math.floor($('#modal').offset().top);
+                    bounds.left = Math.floor($('#modal').offset().left);
                 } else {
                     return false;
                 }
