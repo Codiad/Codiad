@@ -14,9 +14,11 @@ class User {
 
     public $username    = '';
     public $password    = '';
+    public $challenge   = '';
     public $project     = '';
     public $projects    = '';
     public $users       = '';
+    public $challenges  = '';
     public $actives     = '';
     public $lang        = '';
     public $theme       = '';
@@ -34,6 +36,7 @@ class User {
     public function __construct(){
         $this->users = getJSON('users.php');
         $this->actives = getJSON('active.php');
+        $this->challenges = getJSON('challenges.php','cache');
     }
 
     //////////////////////////////////////////////////////////////////
@@ -43,10 +46,20 @@ class User {
     public function Authenticate(){
 
         $pass = false;
-        $this->EncryptPassword();
-        $users = getJSON('users.php');
+        $challenges = getJSON('challenges.php','cache');
+        $revised_array = array();
+        foreach($challenges as $challenge){
+            if($challenge['username']==$this->username){
+                $this->challenge = $challenge['challenge'];
+            } else {
+               $revised_array[] = array("username"=>$challenge['username'],"challenge"=>$challenge['challenge']);
+            }
+        }
+        saveJSON('challenges.php',$revised_array, 'cache');
+
+        $users = getJSON('users.php');        
         foreach($users as $user){
-            if($user['username']==$this->username && $user['password']==$this->password){
+            if($user['username']==$this->username && md5($user['password'].$this->challenge)==$this->password){
                 $pass = true;
                 $_SESSION['user'] = $this->username;
                 $_SESSION['lang'] = $this->lang;
@@ -56,7 +69,32 @@ class User {
         }
 
         if($pass){ echo formatJSEND("success",array("username"=>$this->username)); }
-        else{ echo formatJSEND("error","Incorrect Username or Password"); }
+        else{ echo formatJSEND("error","Incorrect Username or Password "); }
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Get Challenge
+    //////////////////////////////////////////////////////////////////
+
+    public function Challenge(){
+        $revised_array = array();
+        $this->challenge = time();
+        $pass = false;
+        foreach($this->challenges as $challenges=>$data){
+            if($data['username']==$this->username){
+                $revised_array[] = array("username"=>$data['username'],"challenge"=>$this->challenge);
+                $pass = true;
+            }else{
+                $revised_array[] = array("username"=>$data['username'],"challenge"=>$data['challenge']);
+            }
+        }
+        if(!$pass) {
+            array_push($revised_array,array("username"=>$this->username,"challenge"=>$this->challenge));
+        }        
+        // Save array back to JSON
+        saveJSON('challenges.php',$revised_array, 'cache');
+        // Response
+        echo formatJSEND("success",array("challenge"=>$this->challenge));
     }
 
     //////////////////////////////////////////////////////////////////
