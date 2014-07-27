@@ -71,9 +71,12 @@
             // Save Settings
             amplify.subscribe('user.logout', function(){
                 var key, settings = {};
+                var keyRegex = /^codiad/;
                 for (var i = 0; i < localStorage.length; i++) {
-                    key             = localStorage.key(i);
-                    settings[key]   = localStorage.getItem(key);
+                    key = localStorage.key(i);
+                    if (keyRegex.test(key)) {
+                        settings[key] = localStorage.getItem(key);
+                    }
                 }
                 $.post(_this.controller + '?action=saveSettings', {settings: JSON.stringify(settings)}, function(data){
                     parsed = codiad.jsend.parse(data);
