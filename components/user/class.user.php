@@ -116,7 +116,7 @@ class User {
         $revised_array = array();
         foreach($this->users as $user=>$data){
             if($data['username']==$this->username){
-                $revised_array[] = array("username"=>$data['username'],"password"=>$this->password);
+                $revised_array[] = array("username"=>$data['username'],"password"=>$this->password,"project"=>$data['project']);
             }else{
                 $revised_array[] = array("username"=>$data['username'],"password"=>$data['password'],"project"=>$data['project']);
             }
