@@ -129,6 +129,7 @@ if(isset($_SESSION['theme'])) {
 
                 <label><span class="icon-lock login-icon"></span> Password</label>
                 <input type="password" name="password">
+                <input type="hidden" name="challenge">
                 
                 <div class="language-selector">
                     <label><span class="icon-picture login-icon"></span> Theme</label>

@@ -14,6 +14,8 @@ class User {
 
     public $username    = '';
     public $password    = '';
+    public $challenge   = '';
+    public $salt        = '';
     public $project     = '';
     public $projects    = '';
     public $users       = '';
@@ -43,10 +45,19 @@ class User {
     public function Authenticate(){
 
         $pass = false;
-        $this->EncryptPassword();
-        $users = getJSON('users.php');
+        $revised_array = array();
+        foreach(getJSON('challenges.php','cache') as $data){
+            if($data['username']==$this->username){
+                $this->salt = $data['salt'];
+            } else {
+               $revised_array[] = array("username"=>$data['username'],"salt"=>$data['salt']);
+            }
+        }
+        saveJSON('challenges.php',$revised_array, 'cache');
+
+        $users = getJSON('users.php');        
         foreach($users as $user){
-            if($user['username']==$this->username && $user['password']==$this->password){
+            if($user['username']==$this->username && md5($user['password'].$this->salt)==$this->challenge){
                 $pass = true;
                 $_SESSION['user'] = $this->username;
                 $_SESSION['lang'] = $this->lang;
@@ -57,6 +68,31 @@ class User {
 
         if($pass){ echo formatJSEND("success",array("username"=>$this->username)); }
         else{ echo formatJSEND("error","Incorrect Username or Password"); }
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Get Salt
+    //////////////////////////////////////////////////////////////////
+
+    public function Salt(){
+        $revised_array = array();
+        $this->salt = time();
+        $pass = false;
+        foreach(getJSON('challenges.php','cache') as $challenges=>$data){
+            if($data['username']==$this->username){
+                $revised_array[] = array("username"=>$data['username'],"salt"=>$this->salt);
+                $pass = true;
+            }else{
+                $revised_array[] = array("username"=>$data['username'],"salt"=>$data['salt']);
+            }
+        }
+        if(!$pass) {
+            array_push($revised_array,array("username"=>$this->username,"salt"=>$this->salt));
+        }        
+        // Save array back to JSON
+        saveJSON('challenges.php',$revised_array, 'cache');
+        // Response
+        echo formatJSEND("success",array("salt"=>$this->salt));
     }
 
     //////////////////////////////////////////////////////////////////

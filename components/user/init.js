@@ -56,6 +56,9 @@
                 $(this).hide();
                 $('.language-selector').animate({height:'toggle'}, "fast");
             });
+            
+            $.loadScript("components/user/hash_scripts/jquery.md5.js", true);
+            $.loadScript("components/user/hash_scripts/jquery.sha1.js", true);
         },
 
         //////////////////////////////////////////////////////////////////
@@ -63,12 +66,21 @@
         //////////////////////////////////////////////////////////////////
 
         authenticate: function() {
-            $.post(this.controller + '?action=authenticate', this.loginForm.serialize(), function(data) {
+            $.post(this.controller + '?action=salt', {'username' : $('#login input[name="username"]').val() }, function(data) {
                 parsed = codiad.jsend.parse(data);
                 if (parsed != 'error') {
-                    // Session set, reload
-                    window.location.reload();
-                }
+                    var password = $('#login input[name="password"]').val();
+                    if (password != '') {
+                      $('#login input[name="challenge"]').val($.md5($.sha1($.md5(password)) + parsed.salt));
+                    }
+                    $.post(codiad.user.controller + '?action=authenticate', $('#login :input[name!="password"]').serialize(), function(data) {
+                        parsed = codiad.jsend.parse(data);
+                        if (parsed != 'error') {
+                            // Session set, reload
+                            window.location.reload();
+                        }
+                    });
+                } 
             });
         },
 
@@ -126,7 +138,7 @@
                     $.post(_this.controller + '?action=create', {'username' : username , 'password' : password1 }, function(data) {
                         var createResponse = codiad.jsend.parse(data);
                         if (createResponse != 'error') {
-                            codiad.message.success(i18n('User Account Created'))
+                            codiad.message.success(i18n('User Account Created'));
                             _this.list();
                         }
                     });
@@ -149,7 +161,7 @@
                 $.get(_this.controller + '?action=delete&username=' + username, function(data) {
                     var deleteResponse = codiad.jsend.parse(data);
                     if (deleteResponse != 'error') {
-                        codiad.message.success(i18n('Account Deleted'))
+                        codiad.message.success(i18n('Account Deleted'));
                         _this.list();
                     }
                 });

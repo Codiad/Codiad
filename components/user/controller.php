@@ -17,7 +17,7 @@
     // Verify Session or Key
     //////////////////////////////////////////////////////////////////
 
-    if($_GET['action']!='authenticate'){ checkSession(); }
+    if($_GET['action']!='authenticate'&&$_GET['action']!='salt'){ checkSession(); }
 
     $User = new User();
 
@@ -26,12 +26,12 @@
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='authenticate'){
-    	if(!isset($_POST['username']) || !isset($_POST['password'])){
+    	if(!isset($_POST['username']) || !isset($_POST['challenge']) || trim($_POST['username'])=='' || trim($_POST['challenge'])==''){
     		die(formatJSEND("error","Missing username or password"));
-    	}
+    	} 
     	
         $User->username = $_POST['username'];
-        $User->password = $_POST['password'];
+        $User->challenge = $_POST['challenge'];
 
         // check if the asked languages exist and is registered in languages/code.php
         require_once '../../languages/code.php';
@@ -44,6 +44,20 @@
         $User->theme = $_POST['theme'];
 
         $User->Authenticate();
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    // Challenge
+    //////////////////////////////////////////////////////////////////
+
+    if($_GET['action']=='salt'){
+    	if(!isset($_POST['username'])){
+    		die(formatJSEND("error","Missing username"));
+    	}
+    	
+    	$User->username = $_POST['username'];
+    	
+      $User->Salt();
     }
 
     //////////////////////////////////////////////////////////////////
