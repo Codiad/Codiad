@@ -66,12 +66,12 @@
         //////////////////////////////////////////////////////////////////
 
         authenticate: function() {
-            $.post(this.controller + '?action=salt', {'username' : $('#login input[name="username"]').val() }, function(data) {
+            $.post(this.controller + '?action=token', {'username' : $('#login input[name="username"]').val() }, function(data) {
                 parsed = codiad.jsend.parse(data);
                 if (parsed != 'error') {
                     var password = $('#login input[name="password"]').val();
                     if (password != '') {
-                      $('#login input[name="challenge"]').val($.md5($.sha1($.md5(password)) + parsed.salt));
+                      $('#login input[name="challenge"]').val($.md5($.sha1($.md5(password)) + parsed.token));
                     }
                     $.post(codiad.user.controller + '?action=authenticate', $('#login :input[name!="password"]').serialize(), function(data) {
                         parsed = codiad.jsend.parse(data);

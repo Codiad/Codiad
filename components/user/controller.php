@@ -17,7 +17,7 @@
     // Verify Session or Key
     //////////////////////////////////////////////////////////////////
 
-    if($_GET['action']!='authenticate'&&$_GET['action']!='salt'){ checkSession(); }
+    if($_GET['action']!='authenticate'&&$_GET['action']!='token'){ checkSession(); }
 
     $User = new User();
 
@@ -47,17 +47,17 @@
     }
     
     //////////////////////////////////////////////////////////////////
-    // Challenge
+    // Token
     //////////////////////////////////////////////////////////////////
 
-    if($_GET['action']=='salt'){
+    if($_GET['action']=='token'){
     	if(!isset($_POST['username'])){
     		die(formatJSEND("error","Missing username"));
     	}
     	
     	$User->username = $_POST['username'];
     	
-      $User->Salt();
+      $User->Token();
     }
 
     //////////////////////////////////////////////////////////////////
