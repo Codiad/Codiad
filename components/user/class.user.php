@@ -46,14 +46,14 @@ class User {
 
         $pass = false;
         $revised_array = array();
-        foreach(getJSON('challenges.php','cache') as $data){
+        foreach(getJSON('token.php','cache') as $data){
             if($data['username']==$this->username){
                 $this->token = $data['token'];
             } else {
                $revised_array[] = array("username"=>$data['username'],"token"=>$data['token']);
             }
         }
-        saveJSON('challenges.php',$revised_array, 'cache');
+        saveJSON('token.php',$revised_array, 'cache');
 
         $users = getJSON('users.php');        
         foreach($users as $user){
@@ -78,7 +78,7 @@ class User {
         $revised_array = array();
         $this->token = time();
         $pass = false;
-        foreach(getJSON('challenges.php','cache') as $challenges=>$data){
+        foreach(getJSON('token.php','cache') as $challenges=>$data){
             if($data['username']==$this->username){
                 $revised_array[] = array("username"=>$data['username'],"token"=>$this->token);
                 $pass = true;
@@ -90,7 +90,7 @@ class User {
             array_push($revised_array,array("username"=>$this->username,"token"=>$this->token));
         }        
         // Save array back to JSON
-        saveJSON('challenges.php',$revised_array, 'cache');
+        saveJSON('token.php',$revised_array, 'cache');
         // Response
         echo formatJSEND("success",array("token"=>$this->token));
     }
