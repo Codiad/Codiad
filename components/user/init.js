@@ -77,6 +77,8 @@
         //////////////////////////////////////////////////////////////////
 
         logout: function() {
+            amplify.publish('user.logout', {});
+            codiad.settings.save();
             $.get(this.controller + '?action=logout', function() {
                 window.location.reload();
             });
