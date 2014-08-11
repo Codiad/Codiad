@@ -71,7 +71,7 @@
                     $.each(parsed, function(i, item){
                         localStorage.setItem(i, item);
                     });
-                    amplify.publish('user.settings.loaded', parsed);
+                    amplify.publish('settings.loaded', parsed);
                 }
             });
         },

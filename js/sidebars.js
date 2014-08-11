@@ -19,7 +19,7 @@
 
             var _this = this;
 
-            amplify.subscribe('user.settings.loaded', function(settings){
+            amplify.subscribe('settings.loaded', function(settings){
                 var sbWidth = localStorage.getItem('codiad.sidebars.sb-left-width');
 
                 if (sbWidth !== null) {
