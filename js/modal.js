@@ -77,18 +77,18 @@
 
         _getBounds: function(width) {
             if (localStorage.getItem("codiad.modal.top") !== null && localStorage.getItem("codiad.modal.left") !== null) {
-                var top     = localStorage.getItem('codiad.modal.top'),
-                    left    = localStorage.getItem('codiad.modal.left');
+                var top     = parseInt(localStorage.getItem('codiad.modal.top'), 10),
+                    left    = parseInt(localStorage.getItem('codiad.modal.left'), 10);
                 //Check if modal is out of window
-                if ((parseInt(top, 10) + 40) > $(window).height()) {
+                if ((top + 40) > $(window).height()) {
                     top = "15%";
                 }
-                if ((parseInt(left, 10) + parseInt(width, 10) + 40) > $(window).width()) {
+                if ((left + width + 40) > $(window).width()) {
                     left = "50%";
                 }
                 return {
-                    top: top,
-                    left: left
+                    top: top + "px",
+                    left: left + Math.ceil(width / 2) + "px"
                 };
             } else {
                 return {
