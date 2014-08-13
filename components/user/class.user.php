@@ -20,6 +20,7 @@ class User {
     public $actives     = '';
     public $lang        = '';
     public $theme       = '';
+    public $settings    = '';
 
     //////////////////////////////////////////////////////////////////
     // METHODS
@@ -191,6 +192,32 @@ class User {
             }
         }
         echo($pass);
+    }
+
+    //////////////////////////////////////////////////////////////////
+    // Save User Settings
+    //////////////////////////////////////////////////////////////////
+
+    public function SaveSettings(){
+        if (!file_exists(DATA . "/settings.php")) {
+            saveJSON('settings.php', array($this->username => array('username' => $this->username)));
+        }
+        $settings = getJSON('settings.php');
+        $settings[$this->username] = $this->settings;
+        saveJSON('settings.php', $settings);
+        echo formatJSEND("success", null);
+    }
+
+    //////////////////////////////////////////////////////////////////
+    // Get User Settings
+    //////////////////////////////////////////////////////////////////
+
+    public function GetSettings(){
+        if (!file_exists(DATA . "/settings.php")) {
+            saveJSON('settings.php', array($this->username => array('username' => $this->username)));
+        }
+        $settings = getJSON('settings.php');
+        echo formatJSEND("success", $settings[$this->username]);
     }
 
     //////////////////////////////////////////////////////////////////
