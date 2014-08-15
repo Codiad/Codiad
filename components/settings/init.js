@@ -15,12 +15,18 @@
         controller: 'components/settings/controller.php',
 
         init: function() {
+            var _this = this;
 
-            //Storage Event
-            window.addEventListener('storage', function(e){
-                console.log(e);
-            }, false);
+            /*
+             *  Storage Event:
+             *  Note: Event fires only if change was made in different window and not in this one
+             *  Details: http://dev.w3.org/html5/webstorage/#dom-localstorage
+             *  
+             *  Workaround for Storage-Event:
+             */
+			$('body').append('<iframe src="components/settings/dialog.php?action=iframe"></iframe>');
 
+            //Load Settings
             this.load();
 
         },
@@ -39,7 +45,7 @@
 
             var sync_system = (localStorage.getItem('codiad.settings.system.sync') == "true");
             var sync_plugin = (localStorage.getItem('codiad.settings.plugin.sync') == "true");
-            
+
             if (sync_system || sync_plugin) {
                 for (var i = 0; i < localStorage.length; i++) {
                     key = localStorage.key(i);
@@ -87,7 +93,7 @@
         //////////////////////////////////////////////////////////////////
 
         show: function(data_file) {
-            codiad.modal.load(400, 'components/settings/dialog.php');
+            codiad.modal.load(400, 'components/settings/dialog.php?action=settings');
             codiad.modal.hideOverlay();
             codiad.modal.load_process.done(function(){
                 if (typeof(data_file) == 'string') {
@@ -128,7 +134,6 @@
                 $('.settings-view .panel[data-file="' + data_file + '"]').show().addClass('active');
             }
         }
-
     };
 
 })(this, jQuery);
