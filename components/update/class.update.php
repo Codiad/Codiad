@@ -157,6 +157,9 @@ class Update {
                 $data[0]['version'] = trim(file_get_contents(BASE_PATH."/.git/".trim(str_replace('ref: ', '', $tmp))));
             }
             $data[0]['name'] = "";
+            if(file_exists(DATA ."/version.php")) {
+              $data[0]['optout'] = "true";
+            }
         } else {
             $data = getJSON('version.php');
         }
