@@ -168,35 +168,49 @@
         // Get JSON
         //////////////////////////////////////////////////////////////////
 
-        public static function getJSON($file,$namespace=""){
-            $path = DATA . "/";
-            if($namespace != ""){
-                $path = $path . $namespace . "/";
-                $path = preg_replace('#/+#','/',$path);
-            }
+        public static function getJSON($file,$namespace="",$use_custom=true){
+            if ($use_custom && function_exists("getData")) {
+                // Custom implementation: get anything to array
+                $type = basename($file, ".php");
+                return getData($type, $file);
+            } else {
+                // Default implementation: get json to array
+                $path = DATA . "/";
+                if($namespace != ""){
+                    $path = $path . $namespace . "/";
+                    $path = preg_replace('#/+#','/',$path);
+                }
 
-            $json = file_get_contents($path . $file);
-            $json = str_replace("|*/?>","",str_replace("<?php/*|","",$json));
-            $json = json_decode($json,true);
-            return $json;
+                $json = file_get_contents($path . $file);
+                $json = str_replace("|*/?>","",str_replace("<?php/*|","",$json));
+                $json = json_decode($json,true);
+                return $json;
+            }
         }
 
         //////////////////////////////////////////////////////////////////
         // Save JSON
         //////////////////////////////////////////////////////////////////
 
-        public static function saveJSON($file,$data,$namespace=""){
-            $path = DATA . "/";
-            if($namespace != ""){
-                $path = $path . $namespace . "/";
-                $path = preg_replace('#/+#','/',$path);
-                if(!is_dir($path)) mkdir($path);
-            }
+        public static function saveJSON($file,$data,$namespace="",$use_custom=true){
+            if ($use_custom && function_exists("saveData")) {
+                // Custom implementation: save array to anything
+                $type = basename($file, ".php");
+                saveData($type, $file, $data);
+            } else {
+                // Default implementation: save array to json
+                $path = DATA . "/";
+                if($namespace != ""){
+                    $path = $path . $namespace . "/";
+                    $path = preg_replace('#/+#','/',$path);
+                    if(!is_dir($path)) mkdir($path);
+                }
 
-            $data = "<?php/*|" . json_encode($data) . "|*/?>";
-            $write = fopen($path . $file, 'w') or die("can't open file ".$path.$file);
-            fwrite($write, $data);
-            fclose($write);
+                $data = "<?php/*|" . json_encode($data) . "|*/?>";
+                $write = fopen($path . $file, 'w') or die("can't open file ".$path.$file);
+                fwrite($write, $data);
+                fclose($write);
+            }
         }
 
         //////////////////////////////////////////////////////////////////
@@ -293,8 +307,8 @@
     function i18n($key, $args = array()) { echo Common::i18n($key, $args); }
     function get_i18n($key, $args = array()) { return Common::get_i18n($key, $args); }
     function checkSession(){ Common::checkSession(); }
-    function getJSON($file,$namespace=""){ return Common::getJSON($file,$namespace); }
-    function saveJSON($file,$data,$namespace=""){ Common::saveJSON($file,$data,$namespace); }
+    function getJSON($file,$namespace="",$use_custom=true){ return Common::getJSON($file,$namespace,$use_custom); }
+    function saveJSON($file,$data,$namespace="",$use_custom=true){ Common::saveJSON($file,$data,$namespace,$use_custom); }
     function formatJSEND($status,$data=false){ return Common::formatJSEND($status,$data); }
     function checkAccess() { return Common::checkAccess(); }
     function checkPath($path) { return Common::checkPath($path); }
