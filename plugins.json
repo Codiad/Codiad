@@ -220,5 +220,11 @@
     "name" : "ToDo",
     "description" : "ToDo Parser for Codiad",
     "url" : "https://github.com/dev-rke/Codiad-ToDo"
+  },
+  { "author" : "ViniciusGerevini",
+    "name" : "Compass",
+    "description" : "Compass integration plugin for Codiad IDE",
+    "image" : "https://github.com/ViniciusGerevini/Codiad-Compass/blob/master/screen.png",
+    "url" : "https://github.com/ViniciusGerevini/Codiad-Compass"
   }
 ]
