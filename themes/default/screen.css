@@ -153,6 +153,7 @@ input, textarea, select, button {
     border-bottom: 2px solid #595959;
     color: #fff;
     border-radius: 2px;
+    line-height: normal;
 }
 
 select option { background: #242424; }
