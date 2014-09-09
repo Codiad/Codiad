@@ -168,49 +168,63 @@
         // Get JSON
         //////////////////////////////////////////////////////////////////
 
-        public static function getJSON($file,$namespace="",$use_custom=true){
-            if ($use_custom && function_exists("getData")) {
-                // Custom implementation: get anything to array
-                $type = basename($file, ".php");
-                return getData($type, $file);
+        public static function getJSON($file,$namespace="",$callback=null){
+            $is_callback_arg = Common::isVarPassedAsArg(get_defined_vars(), func_num_args(), "callback");
+            $callback = is_callable($callback) ? $callback : !$is_callback_arg && defined("GET_FUNC_NAME") && is_callable(GET_FUNC_NAME) ? GET_FUNC_NAME : null;
+            if ($callback) {
+                return call_user_func($callback,$file,$namespace);
             } else {
-                // Default implementation: get json to array
-                $path = DATA . "/";
-                if($namespace != ""){
-                    $path = $path . $namespace . "/";
-                    $path = preg_replace('#/+#','/',$path);
-                }
-
-                $json = file_get_contents($path . $file);
-                $json = str_replace("|*/?>","",str_replace("<?php/*|","",$json));
-                $json = json_decode($json,true);
-                return $json;
+                return Common::readJSON($file,$namespace);
             }
+        }
+
+        //////////////////////////////////////////////////////////////////
+        // Read JSON
+        //////////////////////////////////////////////////////////////////
+
+        public static function readJSON($file,$namespace=""){
+            $path = DATA . "/";
+            if($namespace != ""){
+                $path = $path . $namespace . "/";
+                $path = preg_replace('#/+#','/',$path);
+            }
+
+            $json = file_get_contents($path . $file);
+            $json = str_replace("|*/?>","",str_replace("<?php/*|","",$json));
+            $json = json_decode($json,true);
+            return $json;
         }
 
         //////////////////////////////////////////////////////////////////
         // Save JSON
         //////////////////////////////////////////////////////////////////
 
-        public static function saveJSON($file,$data,$namespace="",$use_custom=true){
-            if ($use_custom && function_exists("saveData")) {
-                // Custom implementation: save array to anything
-                $type = basename($file, ".php");
-                saveData($type, $file, $data);
+        public static function saveJSON($file,$data,$namespace="",$callback=null){
+            $is_callback_arg = Common::isVarPassedAsArg(get_defined_vars(), func_num_args(), "callback");
+            $callback = is_callable($callback) ? $callback : !$is_callback_arg && defined("SAVE_FUNC_NAME") && is_callable(SAVE_FUNC_NAME) ? SAVE_FUNC_NAME : null;
+            if ($callback) {
+                call_user_func($callback,$file,$data,$namespace);
             } else {
-                // Default implementation: save array to json
-                $path = DATA . "/";
-                if($namespace != ""){
-                    $path = $path . $namespace . "/";
-                    $path = preg_replace('#/+#','/',$path);
-                    if(!is_dir($path)) mkdir($path);
-                }
-
-                $data = "<?php/*|" . json_encode($data) . "|*/?>";
-                $write = fopen($path . $file, 'w') or die("can't open file ".$path.$file);
-                fwrite($write, $data);
-                fclose($write);
+                Common::writeJSON($file,$data,$namespace);
             }
+        }
+
+        //////////////////////////////////////////////////////////////////
+        // Write JSON
+        //////////////////////////////////////////////////////////////////
+
+        public static function writeJSON($file,$data,$namespace=""){
+            $path = DATA . "/";
+            if($namespace != ""){
+                $path = $path . $namespace . "/";
+                $path = preg_replace('#/+#','/',$path);
+                if(!is_dir($path)) mkdir($path);
+            }
+
+            $data = "<?php/*|" . json_encode($data) . "|*/?>";
+            $write = fopen($path . $file, 'w') or die("can't open file ".$path.$file);
+            fwrite($write, $data);
+            fclose($write);
         }
 
         //////////////////////////////////////////////////////////////////
@@ -297,6 +311,20 @@
             return ($path[0] === '/')?true:false;
         }
 
+        //////////////////////////////////////////////////////////////////
+        // Check if a variable is passed as an argument to a function
+        //////////////////////////////////////////////////////////////////
+
+        public static function isVarPassedAsArg($func_args, $func_num_args, $arg_name) {
+            $func_args = array_keys($func_args);
+            for ($i = 0; $i < $func_num_args; $i++) {
+                if ($arg_name == $func_args[$i]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
     }
 
     //////////////////////////////////////////////////////////////////
@@ -307,8 +335,20 @@
     function i18n($key, $args = array()) { echo Common::i18n($key, $args); }
     function get_i18n($key, $args = array()) { return Common::get_i18n($key, $args); }
     function checkSession(){ Common::checkSession(); }
-    function getJSON($file,$namespace="",$use_custom=true){ return Common::getJSON($file,$namespace,$use_custom); }
-    function saveJSON($file,$data,$namespace="",$use_custom=true){ Common::saveJSON($file,$data,$namespace,$use_custom); }
+    function getJSON($file,$namespace="",$callback=null){
+        if (Common::isVarPassedAsArg(get_defined_vars(), func_num_args(), "callback")) {
+            return Common::getJSON($file,$namespace,$callback);
+        } else {
+            return Common::getJSON($file,$namespace);
+        }
+    }
+    function saveJSON($file,$data,$namespace="",$callback=null){
+        if (Common::isVarPassedAsArg(get_defined_vars(), func_num_args(), "callback")) {
+            Common::saveJSON($file,$data,$namespace,$callback);
+        } else {
+            Common::saveJSON($file,$data,$namespace);
+        }
+    }
     function formatJSEND($status,$data=false){ return Common::formatJSEND($status,$data); }
     function checkAccess() { return Common::checkAccess(); }
     function checkPath($path) { return Common::checkPath($path); }
