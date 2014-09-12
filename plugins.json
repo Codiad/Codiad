@@ -226,5 +226,10 @@
     "description" : "Compass integration plugin for Codiad IDE",
     "image" : "https://github.com/ViniciusGerevini/Codiad-Compass/blob/master/screen.png",
     "url" : "https://github.com/ViniciusGerevini/Codiad-Compass"
+  },
+  { "author" : "glitchassassin",
+    "name" : "Active-Markdown-Links",
+    "description" : "Makes links in Markdown files active to be opened directly",
+    "url" : "https://github.com/glitchassassin/Codiad-Active-Markdown-Links"
   }
 ]
