@@ -9,5 +9,10 @@
     "description" : "Clear Theme from lightux - updated by daeks",
     "image": "https://raw.github.com/daeks/Codiad-Theme-Clear/master/screen.png",
     "url" : "https://github.com/daeks/Codiad-Theme-Clear"
+  },
+  { "author" : "mohsen-shafiee",
+    "name" : "Atom",
+    "description" : "Theme for Codeiad IDE based on atom seti ui",
+    "url" : "https://github.com/mohsen-shafiee/codiad-ap-theme-ui"
   }
 ]
