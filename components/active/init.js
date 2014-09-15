@@ -638,8 +638,12 @@
             var switchSessions = function(oldPath, newPath) {
                 var tabThumb = this.sessions[oldPath].tabThumb;
                 tabThumb.attr('data-path', newPath);
+                var title = newPath;
+                if (codiad.project.isAbsPath(newPath)) {
+                    title = newPath.substring(1);
+                }
                 tabThumb.find('.label')
-                    .text(newPath.substring(1));
+                    .text(title);
                 this.sessions[newPath] = this.sessions[oldPath];
                 this.sessions[newPath].path = newPath;
                 delete this.sessions[oldPath];
