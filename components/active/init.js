@@ -643,6 +643,12 @@
                 this.sessions[newPath] = this.sessions[oldPath];
                 this.sessions[newPath].path = newPath;
                 delete this.sessions[oldPath];
+                //Rename history
+                for (var i = 0; i < this.history.length; i++) {
+                    if (this.history[i] === oldPath) {
+                        this.history[i] = newPath;
+                    }
+                }
             };
             if (this.sessions[oldPath]) {
                 // A file was renamed
