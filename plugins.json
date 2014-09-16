@@ -224,7 +224,7 @@
   { "author" : "ViniciusGerevini",
     "name" : "Compass",
     "description" : "Compass integration plugin for Codiad IDE",
-    "image" : "https://github.com/ViniciusGerevini/Codiad-Compass/blob/master/screen.png",
+    "image" : "https://raw.githubusercontent.com/ViniciusGerevini/Codiad-Compass/master/screen.png",
     "url" : "https://github.com/ViniciusGerevini/Codiad-Compass"
   },
   { "author" : "glitchassassin",
