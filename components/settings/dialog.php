@@ -21,9 +21,9 @@
     switch($_GET['action']) {
         case "settings":
 ?>
-            <label><?php i18n("Settings"); ?></label>
             <div class="settings-view">
                 <div class="config-menu">
+                	<label><?php i18n("Settings"); ?></label>
                     <div class="panels-components">
                         <ul>
                             <li name="editor-settings" data-file="components/settings/settings.editor.php" class="active">

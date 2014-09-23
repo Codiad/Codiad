@@ -41,8 +41,8 @@
 }
 
 .settings-view .panels {
-    max-height: 55vh;
-    padding: 20px;
+    max-height: 58vh;
+    padding: 5px 20px 20px;
     overflow: auto;
     width: 600px;
 }
