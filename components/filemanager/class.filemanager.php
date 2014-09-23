@@ -152,7 +152,7 @@ class Filemanager extends Common {
             chdir($this->path);
             $input = str_replace('"' , '', $this->query);
             $vinput = preg_quote($input);
-            $cmd = 'find ';
+            $cmd = 'find -L ';
             if ($this->foptions && $this->foptions['strategy']) {
               switch($this->f_options['strategy']){
               case 'left_prefix': $cmd = "$cmd -iname \"$vinput*\"";  break;
@@ -160,7 +160,7 @@ class Filemanager extends Common {
               case 'regexp':      $cmd = "$cmd -regex \"$input\"";    break;
               }
             } else {
-                $cmd = 'find -iname "' . $input . '*"';
+                $cmd = 'find -L -iname "' . $input . '*"';
             }
             $cmd = "$cmd  -printf \"%h/%f %y\n\"";
             $output = shell_exec($cmd);
@@ -210,7 +210,7 @@ class Filemanager extends Common {
             }
             $input = str_replace('"' , '', $this->search_string);
             $input = preg_quote($input);
-            $output = shell_exec('find ' . $this->path . ' -iregex  ".*' . $this->search_file_type  . '" -type f | xargs grep -i -I -n -R -H "' . $input . '"');
+            $output = shell_exec('find -L ' . $this->path . ' -iregex  ".*' . $this->search_file_type  . '" -type f | xargs grep -i -I -n -R -H "' . $input . '"');
             $output_arr = explode("\n", $output);
             $return = array();
             foreach($output_arr as $line){
