@@ -53,22 +53,3 @@
 
     </tr>
 </table>
-<script>
-    $(function(){
-        $('select.setting').each(function(){
-            codiad.editor.getSettings();
-            switch($(this).data('setting')){
-                case 'codiad.settings.system.sync':
-                    $(this).children('option[value="'+localStorage.getItem('codiad.settings.system.sync')+'"]').prop('selected',true);
-                case 'codiad.settings.plugin.sync':
-                    $(this).children('option[value="'+localStorage.getItem('codiad.settings.plugin.sync')+'"]').prop('selected',true);
-                case 'codiad.editor.rightSidebarTrigger':
-                    $(this).children('option[value="'+codiad.editor.settings.rightSidebarTrigger+'"]').prop('selected',true);
-                    break;
-                case 'codiad.editor.filemanager-trigger':
-                    $(this).children('option[value="'+codiad.editor.settings.fileManagerTrigger+'"]').prop('selected',true);
-                    break;
-            }
-        });
-    });
-</script>

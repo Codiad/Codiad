@@ -93,13 +93,15 @@
         //////////////////////////////////////////////////////////////////
 
         show: function(data_file) {
+            var _this = this;
             codiad.modal.load(400, 'components/settings/dialog.php?action=settings');
             codiad.modal.hideOverlay();
             codiad.modal.load_process.done(function(){
                 if (typeof(data_file) == 'string') {
                     codiad.settings._showTab(data_file);
+                } else {
+                    _this._loadTabValues('components/settings/settings.editor.php');
                 }
-                
                 /* Notify listeners */
                 amplify.publish('settings.dialog.show',{});
             });
@@ -116,6 +118,7 @@
         //////////////////////////////////////////////////////////////////
 
         _showTab: function(data_file) {
+            var _this = this;
             if (typeof(data_file) != 'string') {
                 return false;
             }
@@ -129,10 +132,32 @@
                     //TODO Show and hide loading information
                     /* Notify listeners */
                     amplify.publish('settings.dialog.tab_loaded',data_file);
+                    _this._loadTabValues(data_file);
                 });
             } else {
                 $('.settings-view .panel[data-file="' + data_file + '"]').show().addClass('active');
             }
+        },
+
+        //////////////////////////////////////////////////////////////////
+        //
+        // {Private} Load Settings of Specific Tab
+        //
+        //  Parameter
+        //
+        //  data_file - {String} - Location of settings file based on BASE_URL
+        //
+        //////////////////////////////////////////////////////////////////
+        _loadTabValues: function(data_file) {
+            //Load settings
+            var key, value;
+            $('.settings-view .panel[data-file="' + data_file + '"] .setting').each(function(i, item){
+                key   = $(item).attr('data-setting');
+                value = localStorage.getItem(key);
+                if (value !== null) {
+                    $(item).val(value);
+                }
+            });
         }
     };
 

@@ -149,35 +149,5 @@
     </tr>
 </table>
 <script>
-    $(function(){
-        $('select.setting').each(function(){
-            codiad.editor.getSettings();
-            switch($(this).data('setting')){
-                case 'codiad.editor.theme':
-                    $(this).children('option[value="'+codiad.editor.settings.theme+'"]').prop('selected',true);
-                    break;
-                case 'codiad.editor.fontSize':
-                    $(this).children('option[value="'+codiad.editor.settings.fontSize+'"]').prop('selected',true);
-                    break;
-                case 'codiad.editor.highlightLine':
-                    $(this).children('option[value="'+codiad.editor.settings.highlightLine+'"]').prop('selected',true);
-                    break;
-                case 'codiad.editor.indentGuides':
-                    $(this).children('option[value="'+codiad.editor.settings.indentGuides+'"]').prop('selected',true);
-                    break;
-                case 'codiad.editor.printMargin':
-                    $(this).children('option[value="'+codiad.editor.settings.printMargin+'"]').prop('selected',true);
-                    break;
-                case 'codiad.editor.wrapMode':
-                $(this).children('option[value="'+codiad.editor.settings.wrapMode+'"]').prop('selected',true);
-                break;
-                case "codiad.editor.softTabs": 
-                    $(this).children('option[value="'+codiad.editor.settings.softTabs+'"]').prop('selected',true);
-                    break;
-                case "codiad.editor.tabSize": 
-                    $(this).children('option[value="'+codiad.editor.settings.tabSize+'"]').prop('selected',true);
-                    break;
-            }
-        });
-    });
+    codiad.editor.getSettings();
 </script>
