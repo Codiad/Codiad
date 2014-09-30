@@ -26,13 +26,13 @@
                 	<label><?php i18n("Settings"); ?></label>
                     <div class="panels-components">
                         <ul>
-                            <li name="editor-settings" data-file="components/settings/settings.editor.php" class="active">
+                            <li name="editor-settings" data-file="components/settings/settings.editor.php" data-name="editor" class="active">
                                 <a><span class="icon-home bigger-icon"></span>Editor</a>
                             </li>
-                            <li name="system-settings" data-file="components/settings/settings.system.php">
+                            <li name="system-settings" data-file="components/settings/settings.system.php" data-name="system">
                                 <a><span class="icon-doc-text bigger-icon"></span>System</a>
                             </li>
-                            <li name="extension-settings" data-file="components/fileext_textmode/dialog.php?action=fileextension_textmode_form">
+                            <li name="extension-settings" data-file="components/fileext_textmode/dialog.php?action=fileextension_textmode_form" data-name="fileext_textmode">
                                 <a><span class="icon-pencil bigger-icon"></span>Extensions</a>
                             </li>
                         </ul>
@@ -49,7 +49,7 @@
                                         if (isset($data['config'])) {
                                             foreach($data['config'] as $config) {
                                                 if(isset($config['file']) && isset($config['icon']) && isset($config['title'])) {
-                                                    echo('<li data-file="plugins/' . $plugin . '/' .$config['file'].'">
+                                                    echo('<li data-file="plugins/' . $plugin . '/' .$config['file'].'" data-name="'. $data['name'] .'">
                                                         <a><span class="' . $config['icon'] . ' bigger-icon"></span>' . $config['title'] . '</a></li>');
                                                 }
                                             }

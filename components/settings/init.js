@@ -131,7 +131,8 @@
                 $('.settings-view .panel[data-file="' + data_file + '"]').load(data_file, function(){
                     //TODO Show and hide loading information
                     /* Notify listeners */
-                    amplify.publish('settings.dialog.tab_loaded',data_file);
+                    var name = $('.settings-view .config-menu li[data-file="' + data_file + '"]').attr('data-name');
+                    amplify.publish('settings.dialog.tab_loaded',name);
                     _this._loadTabValues(data_file);
                 });
             } else {
