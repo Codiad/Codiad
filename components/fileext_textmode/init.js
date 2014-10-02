@@ -25,6 +25,12 @@
 		init : function() {
 			self = this;
 			this.initEditorFileExtensionTextModes();
+
+			amplify.subscribe('settings.dialog.save', function(){
+				if ($('#FileExtTextModeDiv:visible').length !== 0) {
+					self.sendForm();
+				}
+			});
 		},
 		
         //////////////////////////////////////////////////////////////////
@@ -85,8 +91,6 @@
 			}
 			
 			$.post(this.controller+'?action=FileExtTextModeForm', formData, self.setEditorFileExtensionTextModes);
-			
-			codiad.modal.unload();
 		},
         //////////////////////////////////////////////////////////////////
 		//Add a new insert line to the form

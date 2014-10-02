@@ -32,9 +32,15 @@
                             <li name="system-settings" data-file="components/settings/settings.system.php" data-name="system">
                                 <a><span class="icon-doc-text bigger-icon"></span>System</a>
                             </li>
-                            <li name="extension-settings" data-file="components/fileext_textmode/dialog.php?action=fileextension_textmode_form" data-name="fileext_textmode">
-                                <a><span class="icon-pencil bigger-icon"></span>Extensions</a>
-                            </li>
+                            <?php
+                                if (COMMON::checkAccess()) {
+                                    ?>
+                                    <li name="extension-settings" data-file="components/fileext_textmode/dialog.php?action=fileextension_textmode_form" data-name="fileext_textmode">
+                                        <a><span class="icon-pencil bigger-icon"></span>Extensions</a>
+                                    </li>
+                                    <?php
+                                }
+                            ?>
                         </ul>
                     </div>
                     <hr>
