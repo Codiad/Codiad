@@ -82,13 +82,18 @@
                 //Check if modal is out of window
                 if ((top + 40) > $(window).height()) {
                     top = "15%";
+                } else {
+                    top += "px";
                 }
                 if ((left + width + 40) > $(window).width()) {
                     left = "50%";
+                } else {
+                    left += Math.ceil(width / 2);
+                    left += "px";
                 }
                 return {
-                    top: top + "px",
-                    left: left + Math.ceil(width / 2) + "px"
+                    top: top,
+                    left: left
                 };
             } else {
                 return {
