@@ -24,7 +24,7 @@
              *  
              *  Workaround for Storage-Event:
              */
-			$('body').append('<iframe src="components/settings/dialog.php?action=iframe"></iframe>');
+            $('body').append('<iframe src="components/settings/dialog.php?action=iframe"></iframe>');
 
             //Load Settings
             this.load();

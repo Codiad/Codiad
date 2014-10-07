@@ -10,7 +10,7 @@
     require_once('class.settings.php');
 
     if(!isset($_GET['action'])){
-    	die(formatJSEND("error","Missing parameter"));
+        die(formatJSEND("error","Missing parameter"));
     }
     
     //////////////////////////////////////////////////////////////////

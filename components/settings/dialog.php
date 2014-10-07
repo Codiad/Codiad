@@ -23,7 +23,7 @@
 ?>
             <div class="settings-view">
                 <div class="config-menu">
-                	<label><?php i18n("Settings"); ?></label>
+                    <label><?php i18n("Settings"); ?></label>
                     <div class="panels-components">
                         <ul>
                             <li name="editor-settings" data-file="components/settings/settings.editor.php" data-name="editor" class="active">
