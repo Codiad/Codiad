@@ -34,8 +34,8 @@
         <td><?php i18n("Sync system settings on all devices"); ?></td>
         <td>
             <select class="setting" data-setting="codiad.settings.system.sync">
-                <option value="true" default><?php i18n("Yes") ?></option>
-                <option value="false"><?php i18n("No") ?></option>
+                <option value="true"><?php i18n("Yes") ?></option>
+                <option value="false" default><?php i18n("No") ?></option>
             </select>
         </td>
 
@@ -46,8 +46,8 @@
         <td><?php i18n("Sync plugin settings on all devices"); ?></td>
         <td>
             <select class="setting" data-setting="codiad.settings.plugin.sync">
-                <option value="true" default><?php i18n("Yes") ?></option>
-                <option value="false"><?php i18n("No") ?></option>
+                <option value="true"><?php i18n("Yes") ?></option>
+                <option value="false" default><?php i18n("No") ?></option>
             </select>
         </td>
 
