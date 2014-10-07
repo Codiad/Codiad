@@ -37,7 +37,7 @@
             <option value="tomorrow_night_blue">Tomorrow Night Blue</option>
             <option value="tomorrow_night_bright">Tomorrow Night Bright</option>
             <option value="tomorrow_night_eighties">Tomorrow Night Eighties</option>
-            <option value="twilight">Twilight</option>
+            <option value="twilight" selected>Twilight</option>
             <option value="vibrant_ink">Vibrant Ink</option>
         </select>
         
@@ -53,7 +53,7 @@
             <option value="10px">10px</option>
             <option value="11px">11px</option>
             <option value="12px">12px</option>
-            <option value="13px">13px</option>
+            <option value="13px" selected>13px</option>
             <option value="14px">14px</option>
             <option value="15px">15px</option>
             <option value="16px">16px</option>
@@ -70,7 +70,7 @@
         <td>
         
             <select class="setting" data-setting="codiad.editor.highlightLine">
-                <option value="true"><?php i18n("Yes"); ?></option>
+                <option value="true" selected><?php i18n("Yes"); ?></option>
                 <option value="false"><?php i18n("No"); ?></option>
             </select>
             
@@ -83,7 +83,7 @@
         <td>
         
         <select class="setting" data-setting="codiad.editor.indentGuides">
-            <option value="true"><?php i18n("On"); ?></option>
+            <option value="true" selected><?php i18n("On"); ?></option>
             <option value="false"><?php i18n("Off"); ?></option>
         </select>
         
@@ -97,7 +97,7 @@
         
         <select class="setting" data-setting="codiad.editor.printMargin">
             <option value="true"><?php i18n("Show"); ?></option>
-            <option value="false"><?php i18n("Hide"); ?></option>
+            <option value="false" selected><?php i18n("Hide"); ?></option>
         </select>
         
         </td>
@@ -109,7 +109,7 @@
         <td>
         
         <select class="setting" data-setting="codiad.editor.wrapMode">
-            <option value="false"><?php i18n("No wrap"); ?></option>
+            <option value="false" selected><?php i18n("No wrap"); ?></option>
             <option value="true"><?php i18n("Wrap Lines"); ?></option>
         </select>
         
@@ -124,7 +124,7 @@
         <select class="setting" data-setting="codiad.editor.tabSize">
             <option value="2">2</option>
             <option value="3">3</option>
-            <option value="4">4</option>
+            <option value="4" selected>4</option>
             <option value="5">5</option>
             <option value="6">6</option>
             <option value="7">7</option>
@@ -140,7 +140,7 @@
         <td>
         
         <select class="setting" data-setting="codiad.editor.softTabs">
-            <option value="false"><?php i18n("No"); ?></option>
+            <option value="false" selected><?php i18n("No"); ?></option>
             <option value="true"><?php i18n("Yes"); ?></option>
         </select>
         
@@ -148,6 +148,3 @@
         
     </tr>
 </table>
-<script>
-    codiad.editor.getSettings();
-</script>
