@@ -26,6 +26,30 @@ if(ini_get('register_globals') == 1) {
 }
 
 
+$query = $_SERVER['QUERY_STRING'];
+if (!empty($query)) {
+  $fields = array(
+    'username',
+    'password',
+    'password_confirm',
+    'project_name',
+    'project_path',
+  );
+
+  $params = explode('&', $query);
+
+  foreach ($params as $param) {
+    $param = explode('=', $param);
+    
+    if (in_array($param[0], $fields)) {
+      $autocomplete[$param[0]] = $param[1];
+    }
+    else {
+	  $autocomplete[$param[0]] = '';
+	}
+  }
+}
+
 if(!$workspace || !$data || !$config || $register){
     ?>
     <h1>Installation Error</h1>
@@ -53,20 +77,20 @@ if(!$workspace || !$data || !$config || $register){
 
     <input type="hidden" name="path" value="<?php echo($path); ?>">
 
-    <label>New Username</label>
-    <input type="text" name="username" autofocus="autofocus">
+     <label>New Username</label>
+    <input type="text" name="username" autofocus="autofocus"  value="<?php echo($autocomplete['username']); ?>">
 
     <div style="float:left; width: 48%; margin-right: 4%;">
 
         <label>Password</label>
-        <input type="password" name="password">
+        <input type="password" name="password" value="<?php echo($autocomplete['password']); ?>">
 
     </div>
 
     <div style="float:left; width: 48%;">
 
         <label>Confirm Password</label>
-        <input type="password" name="password_confirm">
+        <input type="password" name="password_confirm" value="<?php echo($autocomplete['password_confirm']); ?>">
 
     </div>
 
@@ -75,10 +99,10 @@ if(!$workspace || !$data || !$config || $register){
     <hr>
 
     <label>New Project Name</label>
-    <input type="text" name="project_name">
+    <input type="text" name="project_name" value="<?php echo($autocomplete['project_name']); ?>">
     <?php if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') { ?>
     <label>Folder Name or Absolute Path</label>
-    <input type="text" name="project_path">
+    <input type="text" name="project_path" value="<?php echo($autocomplete['project_path']); ?>">
     <?php }  ?>
     <hr>
 
