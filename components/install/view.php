@@ -28,26 +28,26 @@ if(ini_get('register_globals') == 1) {
 
 $query = $_SERVER['QUERY_STRING'];
 if (!empty($query)) {
-  $fields = array(
-    'username',
-    'password',
-    'password_confirm',
-    'project_name',
-    'project_path',
-  );
+	$fields = array(
+		'username',
+		'password',
+		'password_confirm',
+		'project_name',
+		'project_path',
+	);
 
-  $params = explode('&', $query);
+	$params = explode('&', $query);
 
-  foreach ($params as $param) {
-    $param = explode('=', $param);
-    
-    if (in_array($param[0], $fields)) {
-      $autocomplete[$param[0]] = $param[1];
-    }
-    else {
-	  $autocomplete[$param[0]] = '';
+	foreach ($params as $param) {
+		$param = explode('=', $param);
+		
+		if (in_array($param[0], $fields)) {
+			$autocomplete[$param[0]] = $param[1];
+		}
+		else {
+			$autocomplete[$param[0]] = '';
+		}
 	}
-  }
 }
 
 if(!$workspace || !$data || !$config || $register){
@@ -77,7 +77,7 @@ if(!$workspace || !$data || !$config || $register){
 
     <input type="hidden" name="path" value="<?php echo($path); ?>">
 
-     <label>New Username</label>
+    <label>New Username</label>
     <input type="text" name="username" autofocus="autofocus"  value="<?php echo($autocomplete['username']); ?>">
 
     <div style="float:left; width: 48%; margin-right: 4%;">
