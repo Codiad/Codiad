@@ -274,7 +274,7 @@ if(isset($_SESSION['theme'])) {
                     <a id="tab-dropdown-button" class="icon-down-open"></a>
                 </div>
                 <div id="tab-close">
-                    <a id="tab-close-button" class="icon-cancel-circled"></a>
+                    <a id="tab-close-button" class="icon-cancel-circled" title="<?php i18n("Close All") ?>"></a>
                 </div>
                 <ul id="dropdown-list-active-files"></ul>
                 <div class="bar"></div>

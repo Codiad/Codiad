@@ -35,6 +35,16 @@ switch($_GET['action']){
     <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Cancel"); ?></button>
     <?php
     break;
+
+    case 'confirmAll':
+    ?>
+    <label><?php i18n("Close Unsaved Files?"); ?></label>
+    
+    <button class="btn-left" onclick="save_and_close_all(); return false;"><?php i18n("Save & Close"); ?></button>
+    <button class="btn-mid" onclick="close_without_save_all(); return false;"><?php i18n("Discard Changes"); ?></button>
+    <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Cancel"); ?></button>
+    <?php
+    break;
     
 }
 
@@ -61,4 +71,14 @@ switch($_GET['action']){
         codiad.modal.unload();
     }
 
+    function save_and_close_all(){
+        codiad.active.saveAll();
+        codiad.active.removeAll(true);
+        codiad.modal.unload();
+    }
+
+    function close_without_save_all(){
+        codiad.active.removeAll(true);
+        codiad.modal.unload();
+    }
 </script>

@@ -533,7 +533,8 @@
             }
         },
         
-        removeAll: function() {
+        removeAll: function(discard) {
+            discard = discard || false;
             /* Notify listeners. */
             amplify.publish('active.onRemoveAll');
 
@@ -547,11 +548,9 @@
                     changed = true;
                }
             }
-            
-            if(changed) {
-                if(confirm('Found unsaved Files. Do you want to save them?')) {
-                    _this.saveAll();
-                }
+            if(changed && !discard) {
+                codiad.modal.load(450, 'components/active/dialog.php?action=confirmAll');
+                return;
             } 
             
             for(var tab in opentabs) {
