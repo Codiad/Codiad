@@ -1,14 +1,11 @@
 #project-list {
-    max-height: 300px;
+    max-height: 50vh;
     overflow: auto;
     margin: 15px 0;
 }
 
 .project-wrapper {
-  max-height: 450px; 
   width: 100%; 
-  overflow-y: auto; 
-  overflow-x: hidden;
 }
 
 .project-list-title {

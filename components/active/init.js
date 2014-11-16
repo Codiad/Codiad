@@ -533,7 +533,8 @@
             }
         },
         
-        removeAll: function() {
+        removeAll: function(discard) {
+            discard = discard || false;
             /* Notify listeners. */
             amplify.publish('active.onRemoveAll');
 
@@ -547,11 +548,9 @@
                     changed = true;
                }
             }
-            
-            if(changed) {
-                if(confirm('Found unsaved Files. Do you want to save them?')) {
-                    _this.saveAll();
-                }
+            if(changed && !discard) {
+                codiad.modal.load(450, 'components/active/dialog.php?action=confirmAll');
+                return;
             } 
             
             for(var tab in opentabs) {
@@ -638,11 +637,21 @@
             var switchSessions = function(oldPath, newPath) {
                 var tabThumb = this.sessions[oldPath].tabThumb;
                 tabThumb.attr('data-path', newPath);
+                var title = newPath;
+                if (codiad.project.isAbsPath(newPath)) {
+                    title = newPath.substring(1);
+                }
                 tabThumb.find('.label')
-                    .text(newPath.substring(1));
+                    .text(title);
                 this.sessions[newPath] = this.sessions[oldPath];
                 this.sessions[newPath].path = newPath;
                 delete this.sessions[oldPath];
+                //Rename history
+                for (var i = 0; i < this.history.length; i++) {
+                    if (this.history[i] === oldPath) {
+                        this.history[i] = newPath;
+                    }
+                }
             };
             if (this.sessions[oldPath]) {
                 // A file was renamed
