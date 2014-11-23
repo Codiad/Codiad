@@ -115,6 +115,46 @@
         }
 
         //////////////////////////////////////////////////////////////////
+        // Delete a directory
+        //////////////////////////////////////////////////////////////////
+        
+        public static function deleteDirectory($folderName, $followSymLinks) {
+            if(!file_exists($folderName)) {
+                return false;
+            }
+            if(is_link($folderName)) {
+                if($followSymLinks) {
+                    if(is_dir(realpath($folderName))) {
+                        if(!Common::deleteDirectory(realpath($folderName), $followSymLinks)) {
+                            return false;
+                        }
+                    } else {
+                        unlink(realpath($folderName));
+                    }
+                }
+                unlink($folderName);
+            }
+            if(is_dir($folderName)) {
+                $tmp = array_diff(scandir($folderName), ['.', '..']);
+                foreach($tmp as $path) {
+                    $path = $folderName . "/" . $path;
+                    if(is_link($path) || is_dir($path)) {
+                        if(!Common::deleteDirectory($path, $followSymLinks)) {
+                            return false;
+                        }
+                    }
+                    if(is_file($path)) {
+                        unlink($path);
+                    }
+                }
+                if(!rmdir($folderName)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        //////////////////////////////////////////////////////////////////
         // Log debug message
         // Messages will be displayed in the console when the response is
         // made with the formatJSEND function.
@@ -283,6 +323,14 @@
             return ($path[0] === '/')?true:false;
         }
 
+        //////////////////////////////////////////////////////////////////
+        // Checks If the value of a string is true
+        //////////////////////////////////////////////////////////////////
+
+        public static function strToBoolean( $value ) {
+            return (strtoupper($value) === "TRUE")?true:false;
+        }
+
     }
 
     //////////////////////////////////////////////////////////////////
@@ -299,4 +347,5 @@
     function checkAccess() { return Common::checkAccess(); }
     function checkPath($path) { return Common::checkPath($path); }
     function isAvailable($func) { return Common::isAvailable($func); }
+    function strToBoolean($value) { return Common::strToBoolean($value); }
 ?>
