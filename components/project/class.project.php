@@ -195,17 +195,41 @@ class Project extends Common {
     // Delete Project
     //////////////////////////////////////////////////////////////////
 
-    public function Delete(){
-        $revised_array = array();
-        foreach($this->projects as $project=>$data){
-            if($data['path']!=$this->path){
-                $revised_array[] = array("name"=>$data['name'],"path"=>$data['path']);
+    public function Delete($hardDelete, $followSymLinks){
+		$id = $this->getIdByPath($this->path);
+		if($id !== -1) {
+			// Remove delete project
+			unset($this->projects[$id]);
+			// Save array back to JSON
+            saveJSON('projects.php',$this->projects);
+			if($hardDelete) {
+				if(!$this->isAbsPath($this->path)) {
+					$this->path = WORKSPACE . "/" . $this->path;
+				}
+				if($this->deleteDirectory($this->path, $followSymLinks)) {
+					echo formatJSEND("success", "Deleted project from the disk!");
+				} else {
+					echo formatJSEND("error", "Project can not be deleted from disk!");
+				}
+			} else {
+				echo formatJSEND("success", "Deleted project!");
+			}
+		} else {
+			echo formatJSEND("error", "Project not found!");
+		}
+    }
+
+    //////////////////////////////////////////////////////////////////
+    // Search project by path
+    //////////////////////////////////////////////////////////////////
+    
+    public function getIdByPath($path) {
+    	foreach($this->projects as $project=>$data){
+            if($data['path']==$path){
+            	return $project;
             }
         }
-        // Save array back to JSON
-        saveJSON('projects.php',$revised_array);
-        // Response
-        echo formatJSEND("success",null);
+        return -1;
     }
 
 

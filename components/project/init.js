@@ -197,9 +197,17 @@
             $('#modal-content form')
                 .live('submit', function(e) {
                 e.preventDefault();
-                var projectPath = $('#modal-content form input[name="project_path"]')
-                    .val();
-                $.get(_this.controller + '?action=delete&project_path=' + projectPath, function(data) {
+                var projectPath = $('#modal-content form input[name="project_path"]').val(),
+                    deletefiles = $('input:checkbox[name="delete"]:checked').val(),
+                    followlinks = $('input:checkbox[name="follow"]:checked').val(),
+                    deleteUrl = '?action=delete&project_path=' + projectPath;
+                if( typeof deletefiles !== 'undefined' ) {
+                    deleteUrl += '&delete=true';
+                }
+                if( typeof followlinks !== 'undefined' ) {
+                    deleteUrl += '&follow=true';
+                }
+                $.get(_this.controller + deleteUrl, function(data) {
                     deleteResponse = codiad.jsend.parse(data);
                     if (deleteResponse != 'error') {
                         codiad.message.success(i18n('Project Deleted'));

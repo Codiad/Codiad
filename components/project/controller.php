@@ -89,8 +89,10 @@
 
     if($_GET['action']=='delete'){
         if(checkAccess()) {
+            $hardDelete = strToBoolean($_GET['delete']);
+            $followSymLinks = strToBoolean($_GET['follow']);
             $Project->path = $_GET['project_path'];
-            $Project->Delete();
+            $Project->Delete($hardDelete, $followSymLinks);
         }
     }
 
