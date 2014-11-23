@@ -77,7 +77,7 @@ class Active extends Common {
             }
         }
         if(count($cur_users)!=0){
-            echo formatJSEND("error","Warning: File Currently Opened By: " . implode(", ",$cur_users));
+            echo formatJSEND("error","Warning: File ".substr($this->path,strrpos($this->path,"/")+1)." Currently Opened By: " . implode(", ",$cur_users));
         }else{
             echo formatJSEND("success");
         }

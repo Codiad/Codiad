@@ -105,7 +105,7 @@
                         if(checkAccess()){
                             if($_SESSION['project'] == $data['path']){
                             ?>
-                            <td width="70"><a onclick="codiad.message.error('Active Project Cannot Be Removed');" class="icon-block bigger-icon"></a></td>
+                            <td width="70"><a onclick="codiad.message.error(i18n('Active Project Cannot Be Removed'));" class="icon-block bigger-icon"></a></td>
                             <?php
                             }else{
                             ?>
@@ -185,7 +185,7 @@
         <form>
         <input type="hidden" name="project_path" value="<?php echo($_GET['path']); ?>">
         <label><span class="icon-pencil"></span><?php i18n("Rename Project"); ?></label>    
-        <input type="text" name="project_name" autofocus="autofocus" autocomplete="off" value="<?php echo($_GET['project_name']); ?>">  
+        <input type="text" name="project_name" autofocus="autofocus" autocomplete="off" value="<?php echo($_GET['name']); ?>">  
         <button class="btn-left"><?php i18n("Rename"); ?></button>&nbsp;<button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Cancel"); ?></button>
         <form>
         <?php

@@ -28,7 +28,7 @@
     if($_GET['action']=='get_current'){
         if(!isset($_SESSION['project'])){
             // Load default/first project
-            if($no_return){ $this->no_return = true; }
+            if($no_return){ $Project->no_return = true; }
             $Project->GetFirst();
         }else{
             // Load current

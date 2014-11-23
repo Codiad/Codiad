@@ -17,7 +17,7 @@
 
         clipboard: '',
 
-        noOpen: ['jpg', 'jpeg', 'png', 'gif', 'svg', 'bmp', 'exe', 'zip', 'tar', 'tar.gz'],
+        noOpen: ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'exe', 'zip', 'tar', 'tar.gz'],
         noBrowser: ['jpg', 'jpeg', 'png', 'gif', 'bmp'],
 
         controller: 'components/filemanager/controller.php',
@@ -108,7 +108,8 @@
                     e.preventDefault();
                     _this.contextMenuShow(e, $(this)
                         .attr('data-path'), $(this)
-                        .attr('data-type'));
+                        .attr('data-type'), $(this)
+                        .html());
                     $(this)
                         .addClass('context-menu-active');
                 });
@@ -118,8 +119,7 @@
         // Context Menu
         //////////////////////////////////////////////////////////////////
 
-        contextMenuShow: function(e, path, type) {
-
+        contextMenuShow: function(e, path, type, name) {
             var _this = this;
 
             // Selective options
@@ -151,18 +151,17 @@
             // Show menu
             var top = e.pageY;
             if (top > $(window).height() - $('#context-menu').height()) {
-                top -= $('#context-menu').height()+30;
-            } else {
-                top -= 40;
+                top -= $('#context-menu').height();
             }
             $('#context-menu')
                 .css({
                     'top': top + 'px',
-                    'left': (e.pageX - 30) + 'px'
+                    'left': e.pageX + 'px'
                 })
                 .fadeIn(200)
                 .attr('data-path', path)
-                .attr('data-type', type);
+                .attr('data-type', type)
+                .attr('data-name', name);
             // Show faded 'paste' if nothing in clipboard
             if (this.clipboard === '') {
                 $('#context-menu a[content="Paste"]')
@@ -286,6 +285,9 @@
                         amplify.publish("filemanager.onIndex", {path: path, files: _this.indexFiles});
                         var files = _this.indexFiles;
                         if (files.length > 0) {
+                            if (node.parent().children('span').hasClass('plus')) {
+                                node.parent().children('span').removeClass('plus').addClass('minus');
+                            }
                             var display = 'display:none;';
                             if (rescan) {
                                 display = '';
@@ -378,7 +380,7 @@
                         this.openInModal(path);
                     }
                  } else {
-                    codiad.message.error('Unable to open file in Browser');
+                    codiad.message.error(i18n('Unable to open file in Browser'));
                  }
             }
         },
@@ -398,7 +400,7 @@
         openInModal: function(path) {
             codiad.modal.load(250, this.dialog, {
                         action: 'preview',
-                        path: 'workspace/' + path
+                        path: path
                     });
         },
         saveModifications: function(path, data, callbacks){
@@ -436,7 +438,7 @@
                             session.serverMTime = null;
                             session.untainted = null;
                         }
-                    } else codiad.message.error('File could not be saved');
+                    } else codiad.message.error(i18n('File could not be saved'));
                     if (typeof callbacks.error === 'function') {
                         var context = callbacks.context || _this;
                         callbacks.error.apply(context, [resp.data]);

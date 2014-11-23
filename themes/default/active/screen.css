@@ -53,6 +53,7 @@
 #tab-list-active-files li a.label {
     display: block;
     float: left;
+    text-align: left;
     width: 140px;
     line-height: 25px;
     padding-top: 1px;
