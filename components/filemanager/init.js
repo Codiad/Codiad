@@ -400,7 +400,7 @@
         openInModal: function(path) {
             codiad.modal.load(250, this.dialog, {
                         action: 'preview',
-                        path: 'workspace/' + path
+                        path: path
                     });
         },
         saveModifications: function(path, data, callbacks){

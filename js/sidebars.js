@@ -155,6 +155,23 @@
                             $('#sb-left').trigger('h-resize-init');
                             codiad.active.updateTabDropdownVisibility();
                         });
+                } else {
+                    if($("#sb-left .sidebar-handle").position().left <= 0) {
+                        $("#sb-left").width(10);
+                        $("#sb-left")
+                            .animate({
+                            'left': "0px"
+                            }, 300, 'easeOutQuart');
+                        $("#sb-left .sidebar-handle").css("left",0);
+                        $('#editor-region')
+                            .animate({
+                                'margin-left': '10px'
+                            }, 300, 'easeOutQuart', function(){
+                                _this.isLeftSidebarOpen = false;
+                                $(this).trigger('h-resize-init');
+                                codiad.active.updateTabDropdownVisibility();
+                            });
+                    }
                 }
             }, this), 500));
         },

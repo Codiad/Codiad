@@ -67,7 +67,7 @@ switch($_GET['action']){
     case 'preview':
     ?>
     <label><?php i18n("Inline Preview"); ?></label>
-    <div><br><br><img src="<?php echo($_GET['path']); ?>"><br><br></div>
+    <div><br><br><img src="<?php echo(str_replace(BASE_PATH . "/", "", WORKSPACE) . "/" . $_GET['path']); ?>"><br><br></div>
     <button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
     <?php
     break;
