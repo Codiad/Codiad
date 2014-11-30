@@ -33,7 +33,7 @@
             <div id="user-list">
             <table width="100%">
                 <tr>
-                    <th width="150"><?php i18n("Login"); ?></th>
+                    <th width="150"><?php i18n("Username"); ?></th>
                     <th width="85"><?php i18n("Password"); ?></th>
                     <th width="75"><?php i18n("Projects"); ?></th>
                     <th width="70"><?php i18n("Delete"); ?></th>

@@ -113,11 +113,9 @@ switch($_GET['action']){
             </td>
         </tr>
         <tr>
-            <td width="65%">
+            <td colspan="3">
                <label><?php i18n("File Type:"); ?></label>
-               <input type="text" name="search_file_type" placeholder="space seperated file types eg: js c php">
-            </td>
-            <td>
+               <input type="text" name="search_file_type" placeholder="<?php i18n("space seperated file types eg: js c php"); ?>">
             </td>
         </tr>
     </table>
