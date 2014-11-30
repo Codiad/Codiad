@@ -252,6 +252,7 @@ if(isset($_SESSION['theme'])) {
                         <h2><?php i18n("Projects"); ?></h2>
                         <a id="projects-collapse" class="icon-down-dir icon" alt="<?php i18n("Collapse"); ?>"></a>
                         <?php if(checkAccess()) { ?>
+                        <a id="projects-manage" class="icon-archive icon"></a>
                         <a id="projects-create" class="icon-plus icon" alt="<?php i18n("Create Project"); ?>"></a>
                         <?php } ?>
                     </div>
