@@ -224,6 +224,26 @@ if(!$workspace || !$data || !$config || $register){
     $(function(){
 
         $('html, body').css('overflow', 'auto');
+		
+		// Automatically select first timezone with the appropriate GMT offset
+		function getTimeZoneString() {
+			var num = new Date().getTimezoneOffset();
+			if (num === 0) {
+				return "GMT";
+			} else {
+				var hours = Math.floor(num / 60);
+				var minutes = Math.floor((num - (hours * 60)));
+
+				if (hours < 10) hours = "0" + Math.abs(hours);
+				if (minutes < 10) minutes = "0" + Math.abs(minutes);
+				
+				return "GMT" + (num < 0 ? "+" : "-") + hours + ":" + minutes;
+			}
+		}
+		var timezone = getTimeZoneString();
+		$("[name=timezone] option").each(function() {
+			if($(this).text().indexOf(timezone) > -1) $("[name=timezone]").val($(this).val());
+		})
 
         $('#install').on('submit',function(e){
             e.preventDefault();
