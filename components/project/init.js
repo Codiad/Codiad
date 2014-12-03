@@ -27,6 +27,10 @@
                 codiad.project.create('true');
             });
             
+            $('#projects-manage').click(function(){
+                codiad.project.list();
+            });
+            
             $('#projects-collapse').click(function(){
                 if (!_this._sideExpanded) {
                     _this.projectsExpand();

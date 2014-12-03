@@ -201,7 +201,7 @@
             <form>
             <input type="hidden" name="project_path" value="<?php echo($_GET['path']); ?>">
             <label><?php i18n("Confirm Project Deletion"); ?></label>
-            <pre><?php i18n("Name:"); ?> <?php echo($_GET['name']); ?>, Path: <?php echo($_GET['path']); ?></pre>
+            <pre><?php i18n("Name:"); ?> <?php echo($_GET['name']); ?>, <?php i18n("Path:") ?> <?php echo($_GET['path']); ?></pre>
             <table>
             <tr><td width="5"><input type="checkbox" name="delete" id="delete" value="true"></td><td><?php i18n("Delete Project Files"); ?></td></tr>
             <tr><td width="5"><input type="checkbox" name="follow" id="follow" value="true"></td><td><?php i18n("Follow Symbolic Links "); ?></td></tr>
