@@ -44,7 +44,7 @@
 .icon-heart-empty:before { content: "\2661"; } /* '\2661' */
 .icon-star:before { content: "\2605"; } /* '\2605' */
 .icon-star-empty:before { content: "\2606"; } /* '\2606' */
-.icon-user:before { content: "\1f464‘¤"; } /* '\1f464' */
+.icon-user:before { content: "\1f464"; } /* '\1f464' */
 .icon-users:before { content: "\1f465"; } /* '\1f465' */
 .icon-user-add:before { content: "\e700"; } /* '\e700' */
 .icon-video:before { content: "\1f3ac"; } /* '\1f3ac' */
