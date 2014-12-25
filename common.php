@@ -174,6 +174,10 @@
                 $path = $path . $namespace . "/";
                 $path = preg_replace('#/+#','/',$path);
             }
+            
+            if(!file_exists($path . $file)) {
+                saveJSON($file,array(),$namespace);
+            }
 
             $json = file_get_contents($path . $file);
             $json = str_replace("|*/?>","",str_replace("<?php/*|","",$json));
