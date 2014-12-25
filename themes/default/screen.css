@@ -742,7 +742,7 @@ table [class^="icon-"], [class*=" icon-"] {
 
 #modal {
     display: none;
-    position: fixed;
+    position: absolute;
     top: 15%;
     left: 50%;
     max-height: 70vh;
