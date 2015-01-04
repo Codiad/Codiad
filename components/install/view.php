@@ -95,10 +95,10 @@ if(!$workspace || !$data || !$config || $register){
 
     <hr>
 
-    <label>New Project Name</label>
+    <label>Default Project Display Name <span style="float:right;"><a href="#">?</a></span></label>
     <input type="text" name="project_name" value="<?php echo($autocomplete['project_name']); ?>">
     <?php if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') { ?>
-    <label>Folder Name or Absolute Path</label>
+    <label>Default Project Folder Name or Absolute Path <span style="float:right;"><a href="#" style="color:white">?</a></span></label>
     <input type="text" name="project_path" value="<?php echo($autocomplete['project_path']); ?>">
     <?php }  ?>
     <hr>
