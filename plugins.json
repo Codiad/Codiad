@@ -184,6 +184,11 @@
     "description" : "Drag and Drop within the filemanager",
     "url" : "https://github.com/Andr3as/Codiad-DragDrop"
   },
+  { "author" : "JSXRED",
+    "name" : "Query-Designer",
+    "description" : "This plugin allow designing database queries through Codiad user interface",
+    "url" : "https://github.com/JSXRED/Codiad-Query-Designer"
+  },
   { "author" : "Andr3as",
     "name" : "Favorites",
     "description" : "Set folders as favorites for quick access",
