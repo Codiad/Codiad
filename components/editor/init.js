@@ -435,6 +435,30 @@
                    });
         },
 
+        /////////////////////////////////////////////////////////////////
+        //
+        // Apply configuration settings
+        //
+        // Parameters:
+        //   i - {Editor}
+        //
+        /////////////////////////////////////////////////////////////////
+
+        applySettings: function(i) {
+            // Check user-specified settings
+            this.getSettings();
+
+            // Apply the current configuration settings:
+            i.setTheme('ace/theme/' + this.settings.theme);
+            i.setFontSize(this.settings.fontSize);
+            i.setShowPrintMargin(this.settings.printMargin);
+            i.setHighlightActiveLine(this.settings.highlightLine);
+            i.setDisplayIndentGuides(this.settings.indentGuides);
+            i.getSession().setUseWrapMode(this.settings.wrapMode);
+            this.setTabSize(this.settings.tabSize, i);
+            this.setSoftTabs(this.settings.softTabs, i);
+        },
+
         //////////////////////////////////////////////////////////////////
         //
         // Create a new editor instance attached to given session
@@ -507,19 +531,6 @@
 
             i.el = el;
             this.setSession(session, i);
-
-            // Check user-specified settings
-            this.getSettings();
-
-            // Apply the current configuration settings:
-            i.setTheme('ace/theme/' + this.settings.theme);
-            i.setFontSize(this.settings.fontSize);
-            i.setShowPrintMargin(this.settings.printMargin);
-            i.setHighlightActiveLine(this.settings.highlightLine);
-            i.setDisplayIndentGuides(this.settings.indentGuides);
-            i.getSession().setUseWrapMode(this.settings.wrapMode);
-            this.setTabSize(this.settings.tabSize, i);
-            this.setSoftTabs(this.settings.softTabs, i);
 
             this.changeListener(i);
             this.cursorTracking(i);
@@ -787,6 +798,8 @@
                     i.setSession(proxySession);
                 }
             }
+            this.applySettings(i);
+            
             this.setActive(i);
         },
 
