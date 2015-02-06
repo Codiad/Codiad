@@ -10,6 +10,7 @@ $languages = array(
     "ro" => "romanian",
     "hu" => "magyar",
     "sv" => "swedish",
-    "cn" => "简体中文"
+    "cn" => "简体中文",
+    "pl" => "polish"
 );
 ?>
