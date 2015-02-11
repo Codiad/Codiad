@@ -11,6 +11,7 @@ $languages = array(
     "hu" => "magyar",
     "sv" => "swedish",
     "cn" => "简体中文",
-    "pl" => "polish"
+    "pl" => "polish",
+    "sk" => "slovak"
 );
 ?>
