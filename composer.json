@@ -43,7 +43,8 @@
   },
   "require-dev":
   {
-  	"phing/phing": "2.*"
+  	"phing/phing": "2.*",
+    "squizlabs/php_codesniffer": "*"
   },
   "extra":
   {
