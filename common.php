@@ -280,7 +280,7 @@
         //////////////////////////////////////////////////////////////////
 
         public static function isAbsPath( $path ) {
-            return ($path[0] === '/')?true:false;
+            return ($path[0] === '/' || $path[1] === ':')?true:false;
         }
 
     }

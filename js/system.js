@@ -94,8 +94,7 @@
         });
 
         $('#settings').click(function(){
-            codiad.modal.load(400, 'components/editor/dialog.php?action=settings');
-            codiad.modal.hideOverlay();
+            codiad.settings.show();
         });
     });
 

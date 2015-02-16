@@ -1,10 +1,8 @@
 /*Copyright @ccvca 2013*/
 
 #FileExtTextModeDiv{
-	height: 300px;
 	width: 100%;
     border-bottom: 1px solid #454445;
-    overflow: hidden;
 }
 
 #FileExtModeHeader {
@@ -12,10 +10,11 @@
     border-bottom: 2px solid #1a1a1a;
 }
 
+#FileExtModeHeader th {
+  width: 50%;
+}
+
 #FileExtTextModeDiv table{
-	overflow-y: scroll;
-	display: block;
-	height: 300px;
 	margin-top: 0px;
 }
 
@@ -25,7 +24,7 @@
 
 
 #FileExtTextModeDiv tbody td{
-	width: 184px;
+	width: 50%;
     padding: 0;
 	padding-left: 8px;
 	padding-right: 8px;

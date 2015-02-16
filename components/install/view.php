@@ -97,10 +97,8 @@ if(!$workspace || !$data || !$config || $register){
 
     <label>New Project Name</label>
     <input type="text" name="project_name" value="<?php echo($autocomplete['project_name']); ?>">
-    <?php if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') { ?>
     <label>Folder Name or Absolute Path</label>
     <input type="text" name="project_path" value="<?php echo($autocomplete['project_path']); ?>">
-    <?php }  ?>
     <hr>
       <?php
         $location = array(
