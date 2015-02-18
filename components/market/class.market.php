@@ -202,7 +202,8 @@ class Market extends Common {
               }
           }
         } else {
-            $tmp = file_get_contents($this->url.'/?t='.rtrim($type, "s").'&i='.str_replace("-master","", array_pop(explode('/', $repo))));
+            $reponame = explode('/', $repo);
+            $tmp = file_get_contents($this->url.'/?t='.rtrim($type, "s").'&i='.str_replace("-master","", $reponame[sizeof($repo)-1]));
         }
         if(file_put_contents(BASE_PATH.'/'.$type.'/'.$name.'.zip', fopen($repo.'/archive/master.zip', 'r'))) {
             $zip = new ZipArchive;
