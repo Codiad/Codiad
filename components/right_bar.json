@@ -69,7 +69,7 @@
         "title": "Settings",
         "admin": false,
         "icon": "icon-doc-text",
-        "onclick": "codiad.modal.load(400, 'components/editor/dialog.php?action=settings');codiad.modal.hideOverlay();"
+        "onclick": "codiad.settings.show();"
     },
     {
         "title": "Password",

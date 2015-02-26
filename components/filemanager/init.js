@@ -390,11 +390,15 @@
         //////////////////////////////////////////////////////////////////
 
         openInBrowser: function(path) {
-            $.get(this.controller + '?action=open_in_browser&path=' + path, function(data) {
-                var openIBResponse = codiad.jsend.parse(data);
-                if (openIBResponse != 'error') {
-                    window.open(openIBResponse.url, '_newtab');
-                }
+            $.ajax({
+                url: this.controller + '?action=open_in_browser&path=' + path,
+                success: function(data) {
+                    var openIBResponse = codiad.jsend.parse(data);
+                    if (openIBResponse != 'error') {
+                        window.open(openIBResponse.url, '_newtab');
+                    }
+                },
+                async: false
             });
         },
         openInModal: function(path) {

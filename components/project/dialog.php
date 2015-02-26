@@ -138,13 +138,9 @@
             <form>
             <label><?php i18n("Project Name"); ?></label>
             <input name="project_name" autofocus="autofocus" autocomplete="off">
-            <?php if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') { ?>
             <label><?php i18n("Folder Name or Absolute Path"); ?></label>
             <input name="project_path" autofocus="off" autocomplete="off">
-            <?php } else { ?>
-            <input type="hidden" name="project_path">
-            <?php }  ?>
-            
+                        
             <!-- Clone From GitHub -->
             <div style="width: 500px;">
             <table class="hide" id="git-clone">
