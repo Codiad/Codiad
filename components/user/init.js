@@ -77,11 +77,18 @@
         //////////////////////////////////////////////////////////////////
 
         logout: function() {
-            amplify.publish('user.logout', {});
-            codiad.settings.save();
-            $.get(this.controller + '?action=logout', function() {
-                window.location.reload();
-            });
+            var forcelogout = true;
+            if ($('#list-active-files li.changed').length > 0) {
+                forcelogout = confirm(i18n('You have unsaved files.'));
+            }
+            if(forcelogout) {
+                $('#list-active-files li.changed').each(function () { $(this).removeClass('changed')});
+                amplify.publish('user.logout', {});
+                codiad.settings.save();
+                $.get(this.controller + '?action=logout', function() {
+                    window.location.reload();
+                });
+            }
         },
 
         //////////////////////////////////////////////////////////////////
