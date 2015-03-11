@@ -15,7 +15,7 @@
     checkSession();
 
     //////////////////////////////////////////////////////////////////
-    // Check $_GET for incorrect chars or '..' for workspace ecape
+    // Check $_GET for invalid path
     //////////////////////////////////////////////////////////////////
     //TODO check if the User is allowed to access the project
     if(!isset($_GET['path']) 
