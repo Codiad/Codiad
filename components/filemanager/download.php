@@ -17,7 +17,6 @@
     //////////////////////////////////////////////////////////////////
     // Check $_GET for incorrect chars or '..' for workspace ecape
     //////////////////////////////////////////////////////////////////
-    //FIXME prevent path-variable from beeing something like ././././ which download all projects
     //TODO check if the User is allowed to access the project
     if(!isset($_GET['path']) 
     		|| preg_match('#^[\\\/]?$#i', trim($_GET['path'])) // download all Projects
