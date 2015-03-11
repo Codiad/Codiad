@@ -22,7 +22,7 @@
     if(!isset($_GET['path']) 
     		|| preg_match('#^[\\\/]?$#i', trim($_GET['path'])) // download all Projects
     		|| preg_match('#[\:*?\"<>\|]#i', $_GET['path']) //illegal chars in filenames
-    		|| strpos('..', $_GET['path']) !== false ){ // change directory up to escape Workspace
+    		|| substr_count($_GET['path'], './') > 0) { // change directory up to escape Workspace
     	exit('<script>parent.codiad.message.error("Wrong data send")</script>');
     }
 
