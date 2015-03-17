@@ -68,13 +68,18 @@
                       _this.expandOrOpen($(this));
                     }
                 })
-                .live('touchend click', function(e) { // Open or Expand
+                .live('touchstart click', function(e) { // Open or Expand
 	                e.stopPropagation();
 					e.preventDefault();
-					// this fires once on all devices
-                    if (codiad.editor.settings.fileManagerTrigger) {
-                      _this.expandOrOpen($(this));
-                    }
+					if(event.handled !== true) {
+						// this fires once on all devices
+						if (codiad.editor.settings.fileManagerTrigger) {
+	                      _this.expandOrOpen($(this));
+	                    }
+			            event.handled = true;
+			        } else {
+			            return false;
+			        }
                 })
                 .live("contextmenu", function(e) { // Context Menu
                     e.preventDefault();
