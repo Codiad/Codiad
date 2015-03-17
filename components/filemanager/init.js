@@ -63,15 +63,15 @@
                 });
             
             $('#file-manager a')
-            	.live('touchend',function(){
-	            	_this.expandOrOpen($(this));
-	            })
                 .live('dblclick', function() { // Open or Expand
                     if (!codiad.editor.settings.fileManagerTrigger) {
                       _this.expandOrOpen($(this));
                     }
                 })
-                .live('click', function() { // Open or Expand
+                .live('touchend click', function(e) { // Open or Expand
+	                e.stopPropagation();
+					e.preventDefault();
+					// this fires once on all devices
                     if (codiad.editor.settings.fileManagerTrigger) {
                       _this.expandOrOpen($(this));
                     }
