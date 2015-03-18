@@ -84,7 +84,8 @@
                     }
                 })
                 .live('click', function() { // Open or Expand
-                    if (codiad.editor.settings.fileManagerTrigger) {
+                    var touchdevice = ('ontouchstart' in window || 'onmsgesturechange' in window);
+                    if (touchdevice || codiad.editor.settings.fileManagerTrigger) {
                       if ($(this)
                           .hasClass('directory')) {
                           _this.index($(this)
