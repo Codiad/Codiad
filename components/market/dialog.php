@@ -30,7 +30,12 @@
             <?php } else {
             require_once('class.market.php');
             $market = new Market();
+            if(sizeof($market->remote) == 0){
             ?>
+            <label><?php i18n("Connection Error"); ?></label>
+            <pre><?php i18n("Connection to the market place can not be made. Please check your internet connection."); ?></pre>
+            <button onclick="codiad.modal.unload();return false;"><?php i18n("Close"); ?></button>
+            <?php } else { ?>
             <label><?php i18n("Codiad Marketplace"); ?></label>
             <div id="market-list">
             <table width="100%">
@@ -138,6 +143,7 @@
                 </tr>
              </table>
             <?php
+            }
             }            
             break;
              
