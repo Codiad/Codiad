@@ -495,6 +495,9 @@
                             codiad.modal.unload();
                             // Add new element to filemanager screen
                             codiad.filemanager.createObject(path, createPath, type);
+                            if(type == 'file') {
+                                codiad.filemanager.openFile(createPath, true);
+                            }
                             /* Notify listeners. */
                             amplify.publish('filemanager.onCreate', {createPath: createPath, path: path, shortName: shortName, type: type});
                         }
