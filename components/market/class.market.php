@@ -68,6 +68,12 @@ class Market extends Common {
         // get current and last market cache to establish array
         $this->old = json_decode(file_get_contents(DATA.'/cache/market.last'),true);
         $this->remote = json_decode(file_get_contents(DATA.'/cache/market.current'),true);
+        
+        // internet connection could not be established
+        if($this->remote == '') {
+          $this->remote = array();
+        }
+        
         // check old cache for new ones
         $this->tmp = array();
         foreach($this->remote as $key=>$data) {
