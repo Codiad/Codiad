@@ -19,7 +19,7 @@ define("BASE_URL", "domain.tld");
 // THEME : default, modern or clear (look at /themes)
 define("THEME", "default");
 
-// ABSOLUTE PATH
+// ABSOLUTE PATH, this is used as whitelist for absolute path projects 
 define("WHITEPATHS", BASE_PATH . ",/home");
 
 // SESSIONS (e.g. 7200)
