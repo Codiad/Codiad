@@ -94,6 +94,7 @@ if(isset($_SESSION['theme'])) {
     <script src="js/amplify.min.js"></script>
     <script src="js/localstorage.js"></script>
     <script src="js/jquery.hoverIntent.min.js"></script>
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
     <script src="js/system.js"></script>
     <script src="js/sidebars.js"></script>
     <script src="js/modal.js"></script>
