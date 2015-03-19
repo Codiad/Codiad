@@ -1,5 +1,7 @@
 .settings-view {
     display: flex;
+    white-space: nowrap;
+    margin-top: 15px;
 }
 
 .settings-view .big-icon{
@@ -11,6 +13,8 @@
     max-height: 55vh;
     overflow: auto;
     width: 200px;
+    display: inline-block;
+    vertical-align:top;
 }
 
 .settings-view .config-menu li {
@@ -45,4 +49,6 @@
     padding: 5px 20px 20px;
     overflow: auto;
     width: 600px;
+    display: inline-block;
+    vertical-align:top;
 }
