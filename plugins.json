@@ -236,5 +236,10 @@
     "name" : "Active-Markdown-Links",
     "description" : "Makes links in Markdown files active to be opened directly",
     "url" : "https://github.com/glitchassassin/Codiad-Active-Markdown-Links"
+  },
+  { "author" : "Smartlug",
+    "name" : "Outline",
+    "description" : "Parses function and class tags to be displayed in editor",
+    "url" : "https://github.com/Smartlug/Codiad-Outline"
   }
 ]
