@@ -636,6 +636,11 @@
 
             thisButton.click(function(e){
                 var wh = $(window).height();
+                var ww = $(window).width();
+                var left = $(this).offset().left;
+                if(left + thisMenu.width() > ww) {
+                    left = ww - thisMenu.width();
+                }  
 
                 e.stopPropagation();
 
@@ -645,7 +650,7 @@
                 thisMenu.css({
                     // display: 'block',
                     bottom: ( (wh - $(this).offset().top) + 8) + 'px',
-                    left: ($(this).offset().left - 13) + 'px'
+                    left: (left - 13) + 'px'
                 });
 
                 thisMenu.slideToggle('fast');
