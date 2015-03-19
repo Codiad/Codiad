@@ -11,7 +11,7 @@
 //////////////////////////////////////////////////////////////////
 
 // PATH TO CODIAD
-define("BASE_PATH", "/path/to/codiad");
+define("BASE_PATH", "absolute/path/to/codiad");
 
 // BASE URL TO CODIAD (without trailing slash)
 define("BASE_URL", "domain.tld");
