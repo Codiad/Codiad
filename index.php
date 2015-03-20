@@ -182,8 +182,8 @@ if(isset($_SESSION['theme'])) {
         <div id="sb-left" class="sidebar">
             <div id="sb-left-title">
                 <a id="lock-left-sidebar" class="icon-lock icon"></a>
-                <a id="finder-quick" class="icon icon-archive"></a>
                 <?php if (!common::isWINOS()) { ?>
+                <a id="finder-quick" class="icon icon-archive"></a>
                 <a id="tree-search" class="icon-search icon"></a>
                 <h2 id="finder-label"> <?php i18n("Explore"); ?> </h2>
                 <div id="finder-wrapper">
