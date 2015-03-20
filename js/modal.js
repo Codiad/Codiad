@@ -26,8 +26,7 @@
             this.load_process = $.get(url, data, function(data) {
                 $('#modal-content').html(data);
                 // Fix for Firefox autofocus goofiness
-                var touchdevice = ('ontouchstart' in window || 'onmsgesturechange' in window);
-                if(touchdevice) {
+                if(codiad.mobile.isTouchDevice) {
                     $('input[autofocus="off"]')
                         .blur();
                 } else {
