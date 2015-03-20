@@ -27,9 +27,10 @@
                 $('#modal-content').html(data);
                 // Fix for Firefox autofocus goofiness
                 if(codiad.mobile.isTouchDevice) {
-                    $('input[autofocus="off"]')
+                    $('input[autofocus]')
                         .blur();
                 } else {
+                    alert('FOCUS');
                     $('input[autofocus="autofocus"]')
                         .focus();
                 }
