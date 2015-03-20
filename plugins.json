@@ -184,6 +184,11 @@
     "description" : "Drag and Drop within the filemanager",
     "url" : "https://github.com/Andr3as/Codiad-DragDrop"
   },
+  { "author" : "JSXRED",
+    "name" : "Query-Designer",
+    "description" : "This plugin allow designing database queries through Codiad user interface",
+    "url" : "https://github.com/JSXRED/Codiad-Query-Designer"
+  },
   { "author" : "Andr3as",
     "name" : "Favorites",
     "description" : "Set folders as favorites for quick access",
@@ -261,5 +266,10 @@
     "description" : "Lint your css code with CSSLint",
     "image": "https://raw.githubusercontent.com/Andr3as/Codiad-CSSLint/master/screen.png",
     "url" : "https://github.com/Andr3as/Codiad-CSSLint"
+  },
+  { "author" : "Smartlug",
+    "name" : "Outline",
+    "description" : "Parses function and class tags to be displayed in editor",
+    "url" : "https://github.com/Smartlug/Codiad-Outline"
   }
 ]
