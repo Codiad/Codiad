@@ -27,16 +27,16 @@
                     <div class="panels-components">
                         <ul>
                             <li name="editor-settings" data-file="components/settings/settings.editor.php" data-name="editor" class="active">
-                                <a><span class="icon-home bigger-icon"></span>Editor</a>
+                                <a><span class="icon-home bigger-icon"></span><?php i18n("Editor"); ?></a>
                             </li>
                             <li name="system-settings" data-file="components/settings/settings.system.php" data-name="system">
-                                <a><span class="icon-doc-text bigger-icon"></span>System</a>
+                                <a><span class="icon-doc-text bigger-icon"></span><?php i18n("System"); ?></a>
                             </li>
                             <?php
                                 if (COMMON::checkAccess()) {
                                     ?>
                                     <li name="extension-settings" data-file="components/fileext_textmode/dialog.php?action=fileextension_textmode_form" data-name="fileext_textmode">
-                                        <a><span class="icon-pencil bigger-icon"></span>Extensions</a>
+                                        <a><span class="icon-pencil bigger-icon"></span><?php i18n("Extensions"); ?></a>
                                     </li>
                                     <?php
                                 }

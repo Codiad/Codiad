@@ -138,7 +138,10 @@
             <form>
             <label><?php i18n("Project Name"); ?></label>
             <input name="project_name" autofocus="autofocus" autocomplete="off">
-            <label><?php i18n("Folder Name or Absolute Path"); ?></label>
+            <label><?php i18n("Folder Name or Absolute Path"); ?>
+              <div class="note">DocRoot: <?php echo $_SERVER['DOCUMENT_ROOT']; ?><br/>
+              Codiad:  <?php echo BASE_PATH; ?><br/>
+              Workspace: <?php echo WORKSPACE; ?></div></label>
             <input name="project_path" autofocus="off" autocomplete="off">
                         
             <!-- Clone From GitHub -->

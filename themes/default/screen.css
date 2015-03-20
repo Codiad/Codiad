@@ -796,7 +796,13 @@ table [class^="icon-"], [class*=" icon-"] {
     background: url(loading.gif) no-repeat center;
 }
 
-    /* Download iFrame */
+/* Download iFrame */
 #download {
     display: none;
+}
+
+/* Note */
+.note {
+    color: #999; 
+    padding-top: 7px;
 }

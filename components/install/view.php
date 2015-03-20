@@ -103,7 +103,10 @@ if(!$workspace || !$data || !$config || $register || $newrelic){
 
     <label>New Project Name</label>
     <input type="text" name="project_name" value="<?php echo($autocomplete['project_name']); ?>">
-    <label>Folder Name or Absolute Path</label>
+    <label>Folder Name or Absolute Path
+      <div class="note">DocRoot: <?php echo $_SERVER['DOCUMENT_ROOT']; ?><br/>
+      Codiad: <?php echo BASE_PATH; ?><br/>
+      Workspace: <?php echo BASE_PATH . '/workspace'; ?></div></label>
     <input type="text" name="project_path" value="<?php echo($autocomplete['project_path']); ?>">
     <hr>
       <?php
