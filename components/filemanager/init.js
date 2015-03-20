@@ -23,6 +23,8 @@
         controller: 'components/filemanager/controller.php',
         dialog: 'components/filemanager/dialog.php',
         dialogUpload: 'components/filemanager/dialog_upload.php',
+        
+        clickTimer: null,
 
         init: function() {
             // Initialize node listener
@@ -41,6 +43,28 @@
             var _this = this;
             
             $('#file-manager').on('selectstart', false);
+            
+            $('#file-manager a')
+                .on('touchstart', function(e) {
+                    var event = e,
+                        path = $(this).attr('data-path'),
+                        type = $(this).attr('data-type'),
+                        html = $(this).html();
+      
+                    event.pageX = $(this).offset().left + $(this).width() - 50;
+                    event.pageY = $(this).offset().top + $(this).height() + 5;
+  
+                    clickTimer = setTimeout(function() { 
+                        _this.contextMenuShow(event, path, type, html);
+                        $(this)
+                            .addClass('context-menu-active');
+                    }, 500); 
+                })
+                .on('touchend', function() {
+                    if(clickTimer) {
+                        clearTimeout(clickTimer);
+                    }
+                });
 
             $('#file-manager span')
                 .live('click', function() { // Open or Expand
