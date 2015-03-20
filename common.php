@@ -282,6 +282,14 @@
         public static function isAbsPath( $path ) {
             return ($path[0] === '/' || $path[1] === ':')?true:false;
         }
+        
+        //////////////////////////////////////////////////////////////////
+        // Check If WIN based system
+        //////////////////////////////////////////////////////////////////
+
+        public static function isWINOS( ) {
+            return (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN');
+        }
 
     }
 
