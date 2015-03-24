@@ -30,7 +30,6 @@
                     $('input[autofocus]')
                         .blur();
                 } else {
-                    alert('FOCUS');
                     $('input[autofocus="autofocus"]')
                         .focus();
                 }
