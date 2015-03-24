@@ -1081,10 +1081,10 @@
         
         //////////////////////////////////////////////////////////////////
         //
-        // Set trigger for opening the right sidebar
+        // Set last position of modal to be saved
         //
         // Parameters:
-        //   t - {Boolean} (false for Hover, true for Click)
+        //   t - {Boolean} (false for Automatic Position, true for Last Position)
         //   i - {Editor}  (If omitted, Defaults to all editors)
         //
         //////////////////////////////////////////////////////////////////
