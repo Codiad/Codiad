@@ -31,6 +31,18 @@
     
     <tr>
     
+        <td><?php i18n("Persistent Modal"); ?></td>
+        <td>
+            <select class="setting" data-setting="codiad.editor.persistentModal">
+                <option value="true" default><?php i18n("Yes") ?></option>
+                <option value="false"><?php i18n("No") ?></option>
+            </select>
+        </td>
+
+    </tr>
+    
+    <tr>
+    
         <td><?php i18n("Sync system settings on all devices"); ?></td>
         <td>
             <select class="setting" data-setting="codiad.settings.system.sync">
