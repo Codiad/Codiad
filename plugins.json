@@ -237,6 +237,36 @@
     "description" : "Makes links in Markdown files active to be opened directly",
     "url" : "https://github.com/glitchassassin/Codiad-Active-Markdown-Links"
   },
+  { "author" : "Andr3as",
+    "name" : "JSHint",
+    "description" : "Lint your javascript code with JSHint",
+    "image": "https://raw.githubusercontent.com/Andr3as/Codiad-JSHint/master/screen.png",
+    "url" : "https://github.com/Andr3as/Codiad-JSHint"
+  },
+  { "author" : "Andr3as",
+    "name" : "AutoPrefixer",
+    "description" : "Parse CSS and add vendor prefixes to rules",
+    "image": "https://raw.githubusercontent.com/Andr3as/Codiad-AutoPrefixer/master/screen.jpg",
+    "url" : "https://github.com/Andr3as/Codiad-AutoPrefixer"
+  },
+  { "author" : "Andr3as",
+    "name" : "Iconbar",
+    "description" : "Reach some commands directly from the rightbar",
+    "image": "https://raw.githubusercontent.com/Andr3as/Codiad-Iconbar/master/screen.png",
+    "url" : "https://github.com/Andr3as/Codiad-Iconbar"
+  },
+  { "author" : "Andr3as",
+    "name" : "Minimap",
+    "description" : "Small minimap to get an overview",
+    "image": "https://raw.githubusercontent.com/Andr3as/Codiad-Minimap/master/screen.png",
+    "url" : "https://github.com/Andr3as/Codiad-Minimap"
+  },
+  { "author" : "Andr3as",
+    "name" : "CSSLint",
+    "description" : "Lint your css code with CSSLint",
+    "image": "https://raw.githubusercontent.com/Andr3as/Codiad-CSSLint/master/screen.png",
+    "url" : "https://github.com/Andr3as/Codiad-CSSLint"
+  },
   { "author" : "Smartlug",
     "name" : "Outline",
     "description" : "Parses function and class tags to be displayed in editor",
