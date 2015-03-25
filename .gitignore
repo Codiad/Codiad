@@ -13,3 +13,5 @@ themes/*
 .buildpath
 .settings/
 .svn/
+vendor/
+composer.lock
