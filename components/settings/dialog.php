@@ -118,6 +118,10 @@
                                     var bool_val = (val == "true");
                                     codiad.editor.setFileManagerTrigger(bool_val);
                                     break;    
+                                case 'codiad.editor.persistentModal':
+                                    var bool_val = (val == "true");
+                                    codiad.editor.setPersistentModal(bool_val);
+                                    break;      
                                 case "codiad.editor.softTabs":
                                     var bool_val = (val == "true");
                                     codiad.editor.setSoftTabs(bool_val);

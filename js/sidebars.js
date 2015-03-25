@@ -37,12 +37,6 @@
                     $('#lock-right-sidebar').trigger('click');
                     _this.openRightSidebar();
                 }
-
-                var rightSidebarTrigger = (localStorage.getItem('codiad.editor.rightSidebarTrigger') === "true");
-                codiad.editor.setRightSidebarTrigger(rightSidebarTrigger);
-
-                var fileManagerTrigger = (localStorage.getItem('codiad.editor.fileManagerTrigger') === "true");
-                codiad.editor.setFileManagerTrigger(fileManagerTrigger);
             });
 
             $('#lock-left-sidebar')
