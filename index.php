@@ -291,6 +291,32 @@ if(isset($_SESSION['theme'])) {
                 <a id="split" class="ico-wrapper"><span class="icon-layout"></span><?php i18n("Split"); ?></a>
                 <div class="divider"></div>
                 <a id="current-mode"><span class="icon-layout"></span></a>
+                
+                <?php
+
+                    ////////////////////////////////////////////////////////////
+                    // Load Plugins
+                    ////////////////////////////////////////////////////////////
+                    
+                    foreach ($plugins as $plugin){
+                         if(file_exists(PLUGINS . "/" . $plugin . "/plugin.json")) {
+                            $pdata = file_get_contents(PLUGINS . "/" . $plugin . "/plugin.json");
+                            $pdata = json_decode($pdata,true);
+                            if(isset($pdata[0]['bottombar'])) {
+                                foreach($pdata[0]['bottombar'] as $bottommenu) {
+                                    if((!isset($bottommenu['admin']) || ($bottommenu['admin']) && checkAccess()) || !$bottommenu['admin']){
+                                        if(isset($bottommenu['action']) && isset($bottommenu['icon']) && isset($bottommenu['title'])) {
+                                            echo('<div class="divider"></div>');
+                                            echo('<a onclick="'.$bottommenu['action'].'"><span class="'.$bottommenu['icon'].'"></span>'.$bottommenu['title'].'</a>');
+                                        }
+                                    }
+                                }
+                            }
+                         }
+                    }
+
+                ?>
+                
                 <div class="divider"></div>
                 <div id="current-file"></div>
             </div>
