@@ -287,10 +287,6 @@ if(isset($_SESSION['theme'])) {
 
             <div id="editor-bottom-bar">
                 <a id="settings" class="ico-wrapper"><span class="icon-doc-text"></span><?php i18n("Settings"); ?></a>
-                <div class="divider"></div>
-                <a id="split" class="ico-wrapper"><span class="icon-layout"></span><?php i18n("Split"); ?></a>
-                <div class="divider"></div>
-                <a id="current-mode"><span class="icon-layout"></span></a>
                 
                 <?php
 
@@ -317,6 +313,10 @@ if(isset($_SESSION['theme'])) {
 
                 ?>
                 
+                <div class="divider"></div>
+                <a id="split" class="ico-wrapper"><span class="icon-layout"></span><?php i18n("Split"); ?></a>
+                <div class="divider"></div>
+                <a id="current-mode"><span class="icon-layout"></span></a>                
                 <div class="divider"></div>
                 <div id="current-file"></div>
             </div>
