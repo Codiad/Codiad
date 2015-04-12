@@ -153,10 +153,16 @@
             if (top > $(window).height() - $('#context-menu').height()) {
                 top -= $('#context-menu').height();
             }
+            if (top < 10) {
+                top = 10;
+            }
+            var max = $(window).height() - top - 10;
+            
             $('#context-menu')
                 .css({
                     'top': top + 'px',
-                    'left': e.pageX + 'px'
+                    'left': e.pageX + 'px',
+                    'max-height': max + 'px'
                 })
                 .fadeIn(200)
                 .attr('data-path', path)
