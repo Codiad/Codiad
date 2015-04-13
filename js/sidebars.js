@@ -200,9 +200,10 @@
 
         closeRightSidebar: function() {
 			var _this = this;
+            var sbarWidthR = $("#sb-right").width();
 			$('#sb-right')
                 .animate({
-                    'right': '-190px'
+                    'right': '-'+(sbarWidthR-10)+'px'
                 }, 300, 'easeOutQuart');
             var sbarWidthL = $("#sb-left")
                 .width(),
