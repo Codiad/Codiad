@@ -267,9 +267,9 @@
     "image": "https://raw.githubusercontent.com/Andr3as/Codiad-CSSLint/master/screen.png",
     "url" : "https://github.com/Andr3as/Codiad-CSSLint"
   },
-  { "author" : "Smartlug",
+  { "author" : "SmartBlug",
     "name" : "Outline",
     "description" : "Parses function and class tags to be displayed in editor",
-    "url" : "https://github.com/Smartlug/Codiad-Outline"
+    "url" : "https://github.com/SmartBlug/Codiad-Outline"
   }
 ]
