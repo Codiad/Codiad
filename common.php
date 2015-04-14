@@ -30,7 +30,7 @@
         //////////////////////////////////////////////////////////////////
 
         public static function construct(){
-            global $cookie_lifetime;
+            global $cookie_lifetime, $lang;
             $path = str_replace("index.php", "", $_SERVER['SCRIPT_FILENAME']);
             foreach (array("components","plugins") as $folder) {
                 if(strpos($_SERVER['SCRIPT_FILENAME'], $folder)) {
