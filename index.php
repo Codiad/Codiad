@@ -26,7 +26,7 @@ if(isset($_SESSION['theme'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>CODIAD</title>
+    <title><?php i18n("CODIAD"); ?></title>
     <?php
     // Load System CSS Files
     $stylesheets = array("jquery.toastmessage.css","reset.css","fonts.css","screen.css");
@@ -69,7 +69,7 @@ if(isset($_SESSION['theme'])) {
         }
     }
     ?>
-    <link rel="icon"       href="favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
 </head>
 
 <body>
@@ -124,16 +124,16 @@ if(isset($_SESSION['theme'])) {
 
             <form id="login" method="post" style="position: fixed; width: 350px; top: 30%; left: 50%; margin-left: -175px; padding: 35px;">
 
-                <label><span class="icon-user login-icon"></span> Username</label>
+                <label><span class="icon-user login-icon"></span> <?php i18n("Username"); ?></label>
                 <input type="text" name="username" autofocus="autofocus" autocomplete="off">
 
-                <label><span class="icon-lock login-icon"></span> Password</label>
+                <label><span class="icon-lock login-icon"></span> <?php i18n("Password"); ?></label>
                 <input type="password" name="password">
                 
                 <div class="language-selector">
-                    <label><span class="icon-picture login-icon"></span> Theme</label>
+                    <label><span class="icon-picture login-icon"></span> <?php i18n("Theme"); ?></label>
                     <select name="theme" id="theme">
-                        <option value="default">Default</option>
+                        <option value="default"><?php i18n("Default"); ?></option>
                         <?php
                         include 'languages/code.php';
                         foreach($themes as $theme): 
@@ -144,7 +144,7 @@ if(isset($_SESSION['theme'])) {
                             <option value="<?php echo $theme; ?>" <?php if($theme == THEME) { echo "selected"; } ?>><?php if($data[0]['name'] != '') { echo $data[0]['name']; } else { echo $theme; } ?></option>
                         <?php } endforeach; ?>
                     </select>
-                    <label><span class="icon-language login-icon"></span> Language</label>
+                    <label><span class="icon-language login-icon"></span> <?php i18n("Language"); ?></label>
                     <select name="language" id="language">
                         <?php
                         include 'languages/code.php';
@@ -158,9 +158,9 @@ if(isset($_SESSION['theme'])) {
                     </select>
                 </div>
                 
-                <button>Login</button>
+                <button><?php i18n("Login"); ?></button>
 
-                <a class="show-language-selector">More</a>
+                <a class="show-language-selector"><?php i18n("More"); ?></a>
 
             </form>
 
@@ -268,7 +268,7 @@ if(isset($_SESSION['theme'])) {
 
         </div>
 
-        <div id="cursor-position">Ln: 0 &middot; Col: 0</div>
+        <div id="cursor-position"><?php i18n("Ln"); ?>: 0 &middot; <?php i18n("Col"); ?>: 0</div>
 
         <div id="editor-region">
             <div id="editor-top-bar">
