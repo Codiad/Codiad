@@ -53,7 +53,7 @@
             <?php } ?>
             <br><?php
                 if($vars[0]['data']['currentversion'] != $vars[0]['data']['remoteversion']) {
-                    echo '<button class="btn-left" onclick="codiad.update.download();return false;"><?php i18n("Download Codiad"); ?></button>&nbsp;';
+                    echo '<button class="btn-left" onclick="codiad.update.download();return false;">.get_i18n("Download Codiad").'</button>&nbsp;';
                 }
             ?><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Cancel"); ?></button>
             <form>
