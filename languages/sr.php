@@ -5,6 +5,7 @@ $lang = array(
    "Account Modified"                                    => "Налог је измењен",
    "Account:"                                            => "Налог:",
    "Active Project Cannot Be Removed"                    => "Неможете да уклоните активни пројекат",
+   "Administration"                                      => "Администрација",
    "All"                                                 => "Све",
    "Are You Sure You Wish To Delete The Following:"      => "Да ли сте сигурни да желите да избришете:",
    "At Least One Project Must Be Selected"               => "Морате изабрати бар један пројекат",
