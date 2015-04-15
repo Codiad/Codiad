@@ -49,11 +49,11 @@
             <em><?php i18n("Last update was done by "); ?><?php echo $vars[0]['data']['name']; ?>.</em>
             <?php } } ?>
             <?php if($vars[0]['data']['nightly']) { ?>
-            <br><em class="note">Note: Your installation is a nightly build. Codiad might be unstable.</em><br>
+            <br><em class="note"><?php i18n("Note: Your installation is a nightly build. Codiad might be unstable."); ?></em><br>
             <?php } ?>
             <br><?php
                 if($vars[0]['data']['currentversion'] != $vars[0]['data']['remoteversion']) {
-                    echo '<button class="btn-left" onclick="codiad.update.download();return false;">Download Codiad</button>&nbsp;';
+                    echo '<button class="btn-left" onclick="codiad.update.download();return false;"><?php i18n("Download Codiad"); ?></button>&nbsp;';
                 }
             ?><button class="btn-right" onclick="codiad.modal.unload();return false;"><?php i18n("Cancel"); ?></button>
             <form>
