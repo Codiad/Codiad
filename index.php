@@ -366,7 +366,7 @@ if(isset($_SESSION['theme'])) {
                                         foreach($pdata[0]['rightbar'] as $rightbar) {
                                             if((!isset($rightbar['admin']) || ($rightbar['admin']) && checkAccess()) || !$rightbar['admin']){
                                                 if(isset($rightbar['action']) && isset($rightbar['icon']) && isset($rightbar['title'])) {
-                                                    echo('<a onclick="'.$rightbar['action'].'"><span class="'.$rightbar['icon'].'"></span>'.$rightbar['title'].'</a>');
+                                                    echo('<a onclick="'.$rightbar['action'].'"><span class="'.$rightbar['icon'].'"></span>'.get_i18n($rightbar['title']).'</a>');
                                                 }
                                             }
                                         }
