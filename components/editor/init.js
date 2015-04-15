@@ -1307,9 +1307,9 @@
             clearInterval(codiad._cursorPoll);
             codiad._cursorPoll = setInterval(function() {
                 $('#cursor-position')
-                    .html('Ln: '
+                    .html(i18n('Ln') + ': '
                           + (i.getCursorPosition().row + 1)
-                          + ' &middot; Col: '
+                          + ' &middot; ' + i18n('Col') + ': '
                           + i.getCursorPosition().column
                          );
             }, 100);
