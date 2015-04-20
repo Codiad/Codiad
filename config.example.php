@@ -46,7 +46,7 @@ define("WORKSPACE", BASE_PATH . "/workspace");
 define("WSURL", BASE_URL . "/workspace");
 
 // Default language
-define("LANGUAGE", "en);
+define("LANGUAGE", "en");
 
 // Marketplace
 //define("MARKETURL", "http://market.codiad.com/json");
