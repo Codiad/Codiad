@@ -89,15 +89,14 @@
             }
 
             global $lang;
-            if (isset($_SESSION['lang']) && $_SESSION['lang'] != '') {
-                $lang = $_SESSION['lang'];
-                include BASE_PATH."/languages/{$_SESSION['lang']}.php";
-            } else {
-                if (!isset($lang) || $lang == "") {
-                    $lang = "en";
+            if (!isset($_SESSION['lang'])) {
+                if (defined('LANGUAGE')) {
+                    $_SESSION['lang'] = LANGUAGE;
+                } else {
+                    $_SESSION['lang'] = 'en';
                 }
-                include BASE_PATH."/languages/".$lang.".php";
             }
+            include BASE_PATH."/languages/{$_SESSION['lang']}.php";
         }
 
         //////////////////////////////////////////////////////////////////
