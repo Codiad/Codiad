@@ -30,9 +30,7 @@
                     .focus();
             });
             // If a plugin has provided a custom load animation
-            if(typeof codiad.modal.onLoadAnimation == "function") {
-                codiad.modal.onLoadAnimation();
-            } else {
+            if(amplify.publish('modal.onLoad')) {
                 $('#modal, #modal-overlay')
                     .fadeIn(200);
             }
@@ -51,9 +49,7 @@
             // If a plugin has provided a custom unload animation (note
             // that the custom animation function is responsible for removing
             // the HTML from the modal)
-            if(typeof codiad.modal.onUnloadAnimation == "function") {
-                codiad.modal.onUnloadAnimation();
-            } else {
+            if(amplify.publish('modal.onUnload')) {
                 $('#modal, #modal-overlay')
                     .fadeOut(200);
                 $('#modal-content')
