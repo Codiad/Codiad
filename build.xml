@@ -6,7 +6,11 @@
 	</fileset>
 
 	<target name="phpcs">
-		<phpcodesniffer standard="PSR2">
+		<phpcodesniffer
+			standard="PSR2"
+			showSniffs="false"
+			showWarnings="true"
+		 haltonerror="${build.haltonanalysiserror}">
 			<fileset refid="components" />
 			<formatter type="full" usefile="false" />
 		</phpcodesniffer>
