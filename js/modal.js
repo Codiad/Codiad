@@ -29,7 +29,7 @@
                 $('input[autofocus="autofocus"]')
                     .focus();
             });
-            // If a plugin has provided a custom load animation
+            // If no plugin has provided a custom load animation
             if(amplify.publish('modal.onLoad')) {
                 $('#modal, #modal-overlay')
                     .fadeIn(200);
@@ -46,9 +46,7 @@
             this._setBounds();
             $('#modal-content form')
                 .die('submit'); // Prevent form bubbling
-            // If a plugin has provided a custom unload animation (note
-            // that the custom animation function is responsible for removing
-            // the HTML from the modal)
+            // If no plugin has provided a custom unload animation
             if(amplify.publish('modal.onUnload')) {
                 $('#modal, #modal-overlay')
                     .fadeOut(200);
