@@ -64,6 +64,10 @@
             if(!defined('THEME')){
                 define("THEME", "default");
             }
+            
+            if(!defined('LANGUAGE')){
+                define("LANGUAGE", "en");
+            }
         }
 
         //////////////////////////////////////////////////////////////////
@@ -89,14 +93,11 @@
             }
 
             global $lang;
-            if (!isset($_SESSION['lang'])) {
-                if (defined('LANGUAGE')) {
-                    $_SESSION['lang'] = LANGUAGE;
-                } else {
-                    $_SESSION['lang'] = 'en';
-                }
+            if (isset($_SESSION['lang'])) {
+                include BASE_PATH."/languages/{$_SESSION['lang']}.php";
+            } else {
+                include BASE_PATH."/languages/".LANGUAGE.".php";
             }
-            include BASE_PATH."/languages/{$_SESSION['lang']}.php";
         }
 
         //////////////////////////////////////////////////////////////////
