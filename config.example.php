@@ -28,6 +28,9 @@ $cookie_lifetime = "0";
 // TIMEZONE
 date_default_timezone_set("America/Chicago");
 
+// Allows to overwrite the default language
+//define("LANGUAGE", "en");
+
 // External Authentification
 //define("AUTH_PATH", "/path/to/customauth.php");
 
@@ -44,9 +47,6 @@ define("WORKSPACE", BASE_PATH . "/workspace");
 
 // URLS
 define("WSURL", BASE_URL . "/workspace");
-
-// Default language
-define("LANGUAGE", "en");
 
 // Marketplace
 //define("MARKETURL", "http://market.codiad.com/json");
