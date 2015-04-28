@@ -64,6 +64,10 @@
             if(!defined('THEME')){
                 define("THEME", "default");
             }
+            
+            if(!defined('LANGUAGE')){
+                define("LANGUAGE", "en");
+            }
         }
 
         //////////////////////////////////////////////////////////////////
@@ -92,7 +96,7 @@
             if (isset($_SESSION['lang'])) {
                 include BASE_PATH."/languages/{$_SESSION['lang']}.php";
             } else {
-                include BASE_PATH."/languages/en.php";
+                include BASE_PATH."/languages/".LANGUAGE.".php";
             }
         }
 
@@ -281,6 +285,14 @@
 
         public static function isAbsPath( $path ) {
             return ($path[0] === '/' || $path[1] === ':')?true:false;
+        }
+        
+        //////////////////////////////////////////////////////////////////
+        // Check If WIN based system
+        //////////////////////////////////////////////////////////////////
+
+        public static function isWINOS( ) {
+            return (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
         }
 
     }

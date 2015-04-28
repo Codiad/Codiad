@@ -25,6 +25,11 @@ if(ini_get('register_globals') == 1) {
     $register = false;
 }
 
+if(ini_get('newrelic.enabled') == 1) {
+    $newrelic = true;
+} else {
+    $newrelic = false;
+}
 
 $query = $_SERVER['QUERY_STRING'];
 
@@ -47,7 +52,7 @@ if (!empty($query)) {
 	}
 }
 
-if(!$workspace || !$data || !$config || $register){
+if(!$workspace || !$data || !$config || $register || $newrelic){
     ?>
     <h1>Installation Error</h1>
     <p>Please make sure the following exist and are writeable:</p>
@@ -58,10 +63,11 @@ if(!$workspace || !$data || !$config || $register){
         <p>[SYSTEM]/themes - <?php if($themes) { echo '<font style="color:green">PASSED</font>'; } else { echo '<font style="color:red">ERROR</font>'; } ?></p>
         <p>[SYSTEM]/data - <?php if($data) { echo '<font style="color:green">PASSED</font>'; } else { echo '<font style="color:red">ERROR</font>'; } ?></p> 
     </div>
-    <?php if($register) { ?>
+    <?php if($register || $newrelic) { ?>
     <p>Please make sure these environmental variables are set:</p>
     <div class="install_issues">
-        <?php if($register) { echo '<p>register_globals: Off</p>'; } ?>
+        <?php if($register) { echo '<p>register_globals: Off</p>'; }
+              if($newrelic) { echo '<p>newrelic.enabled: Off</p>'; } ?>
     </div>
     <?php } ?>
     <button onclick="window.location.reload();">Re-Test</button>

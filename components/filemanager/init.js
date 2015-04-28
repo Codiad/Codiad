@@ -153,10 +153,16 @@
             if (top > $(window).height() - $('#context-menu').height()) {
                 top -= $('#context-menu').height();
             }
+            if (top < 10) {
+                top = 10;
+            }
+            var max = $(window).height() - top - 10;
+            
             $('#context-menu')
                 .css({
                     'top': top + 'px',
-                    'left': e.pageX + 'px'
+                    'left': e.pageX + 'px',
+                    'max-height': max + 'px'
                 })
                 .fadeIn(200)
                 .attr('data-path', path)
@@ -495,6 +501,9 @@
                             codiad.modal.unload();
                             // Add new element to filemanager screen
                             codiad.filemanager.createObject(path, createPath, type);
+                            if(type == 'file') {
+                                codiad.filemanager.openFile(createPath, true);
+                            }
                             /* Notify listeners. */
                             amplify.publish('filemanager.onCreate', {createPath: createPath, path: path, shortName: shortName, type: type});
                         }

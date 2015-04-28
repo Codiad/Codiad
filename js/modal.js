@@ -58,6 +58,7 @@
                         'margin-left': '10px'
                 }, 300, 'easeOutQuart');
             }
+            codiad.editor.focus();
         },
 
         _setBounds: function(bounds) {
@@ -76,7 +77,7 @@
         },
 
         _getBounds: function(width) {
-            if (localStorage.getItem("codiad.modal.top") !== null && localStorage.getItem("codiad.modal.left") !== null) {
+            if (localStorage.getItem("codiad.modal.top") !== null && localStorage.getItem("codiad.modal.left") !== null && codiad.editor.settings.persistentModal) {
                 var top     = parseInt(localStorage.getItem('codiad.modal.top'), 10),
                     left    = parseInt(localStorage.getItem('codiad.modal.left'), 10);
                 //Check if modal is out of window

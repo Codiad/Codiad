@@ -92,13 +92,17 @@ a:hover,a:active {;
 /* ICONS */
 
 [class^="icon-"], [class*=" icon-"] {
-  font-family: entypo;
-  font-style: normal;
-  font-size: 75%;
-  display: inline-block;
-  margin-right: 8px;
-  text-align: center;
-  vertical-align: top;
+    font-family: entypo;
+    font-style: normal;
+    font-size: 75%;
+    display: inline-block;
+    margin-right: 8px;
+    text-align: center;
+    vertical-align: top;
+}
+
+.sb-right-content [class^="icon-"], .sb-right-content [class*=" icon-"] {
+    width: 16px;
 }
 
 /* Useful size modifiers for icons. */

@@ -373,6 +373,9 @@
             indentGuides: true,
             wrapMode: false,
             softTabs: false,
+            persistentModal: true,
+            rightSidebarTrigger: false,
+            fileManagerTrigger: false,
             tabSize: 4
         },
    
@@ -417,14 +420,14 @@
 
             var _this = this;
 
-            $.each(['theme', 'fontSize', "tabSize"], function(idx, key) {
+            $.each(['theme', 'fontSize', 'tabSize'], function(idx, key) {
                 var localValue = localStorage.getItem('codiad.editor.' + key);
                 if (localValue !== null) {
                     _this.settings[key] = localValue;
                 }
             });
 
-            $.each(['printMargin', 'highlightLine', 'indentGuides', 'wrapMode', 'rightSidebarTrigger', 'fileManagerTrigger', "softTabs"],
+            $.each(['printMargin', 'highlightLine', 'indentGuides', 'wrapMode', 'rightSidebarTrigger', 'fileManagerTrigger', 'softTabs', 'persistentModal'],
                    function(idx, key) {
                        var localValue =
                            localStorage.getItem('codiad.editor.' + key);
@@ -1075,6 +1078,22 @@
             // LocalStorage
             localStorage.setItem('codiad.editor.wrapMode', w);
         },
+        
+        //////////////////////////////////////////////////////////////////
+        //
+        // Set last position of modal to be saved
+        //
+        // Parameters:
+        //   t - {Boolean} (false for Automatic Position, true for Last Position)
+        //   i - {Editor}  (If omitted, Defaults to all editors)
+        //
+        //////////////////////////////////////////////////////////////////
+
+        setPersistentModal: function(t, i) {
+            this.settings.persistentModal = t;
+            // LocalStorage
+            localStorage.setItem('codiad.editor.persistentModal', t);
+        },
 
         //////////////////////////////////////////////////////////////////
         //
@@ -1288,9 +1307,9 @@
             clearInterval(codiad._cursorPoll);
             codiad._cursorPoll = setInterval(function() {
                 $('#cursor-position')
-                    .html('Ln: '
+                    .html(i18n('Ln') + ': '
                           + (i.getCursorPosition().row + 1)
-                          + ' &middot; Col: '
+                          + ' &middot; ' + i18n('Col') + ': '
                           + i.getCursorPosition().column
                          );
             }, 100);

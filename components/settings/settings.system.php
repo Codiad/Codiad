@@ -21,9 +21,21 @@
     
         <td><?php i18n("Filemanager Trigger"); ?></td>
         <td>
-            <select class="setting" data-setting="codiad.editor.filemanager-trigger">
+            <select class="setting" data-setting="codiad.editor.fileManagerTrigger">
                 <option value="false" default><?php i18n("Double Click") ?></option>
                 <option value="true"><?php i18n("Single Click") ?></option>
+            </select>
+        </td>
+
+    </tr>
+    
+    <tr>
+    
+        <td><?php i18n("Persistent Modal"); ?></td>
+        <td>
+            <select class="setting" data-setting="codiad.editor.persistentModal">
+                <option value="true" default><?php i18n("Yes") ?></option>
+                <option value="false"><?php i18n("No") ?></option>
             </select>
         </td>
 

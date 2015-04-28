@@ -27,16 +27,16 @@
                     <div class="panels-components">
                         <ul>
                             <li name="editor-settings" data-file="components/settings/settings.editor.php" data-name="editor" class="active">
-                                <a><span class="icon-home bigger-icon"></span>Editor</a>
+                                <a><span class="icon-home bigger-icon"></span><?php i18n("Editor"); ?></a>
                             </li>
                             <li name="system-settings" data-file="components/settings/settings.system.php" data-name="system">
-                                <a><span class="icon-doc-text bigger-icon"></span>System</a>
+                                <a><span class="icon-doc-text bigger-icon"></span><?php i18n("System"); ?></a>
                             </li>
                             <?php
                                 if (COMMON::checkAccess()) {
                                     ?>
                                     <li name="extension-settings" data-file="components/fileext_textmode/dialog.php?action=fileextension_textmode_form" data-name="fileext_textmode">
-                                        <a><span class="icon-pencil bigger-icon"></span>Extensions</a>
+                                        <a><span class="icon-pencil bigger-icon"></span><?php i18n("Extensions"); ?></a>
                                     </li>
                                     <?php
                                 }
@@ -72,8 +72,8 @@
                     </div>
                 </div>
             </div>
-            <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Close"); ?></button>
             <button class="btn-right" onclick="save(); return false;"><?php i18n("Save"); ?></button>
+            <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Close"); ?></button>
             <script>
                 $('.settings-view .config-menu li').click(function(){
                     codiad.settings._showTab($(this).attr('data-file'));
@@ -118,6 +118,10 @@
                                     var bool_val = (val == "true");
                                     codiad.editor.setFileManagerTrigger(bool_val);
                                     break;    
+                                case 'codiad.editor.persistentModal':
+                                    var bool_val = (val == "true");
+                                    codiad.editor.setPersistentModal(bool_val);
+                                    break;      
                                 case "codiad.editor.softTabs":
                                     var bool_val = (val == "true");
                                     codiad.editor.setSoftTabs(bool_val);

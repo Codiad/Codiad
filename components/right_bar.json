@@ -84,6 +84,12 @@
         "onclick": null
     },
     {
+        "title": "Help",
+        "admin": false,
+        "icon": "icon-help",
+        "onclick": "window.open('https://github.com/Codiad/Codiad/wiki');"
+    },
+    {
         "title": "Logout",
         "admin": false,
         "icon": "icon-logout",

@@ -68,6 +68,12 @@ class Market extends Common {
         // get current and last market cache to establish array
         $this->old = json_decode(file_get_contents(DATA.'/cache/market.last'),true);
         $this->remote = json_decode(file_get_contents(DATA.'/cache/market.current'),true);
+        
+        // internet connection could not be established
+        if($this->remote == '') {
+          $this->remote = array();
+        }
+        
         // check old cache for new ones
         $this->tmp = array();
         foreach($this->remote as $key=>$data) {
@@ -167,7 +173,19 @@ class Market extends Common {
           // extension exists locally, so load its metadata
           if(isset($data['folder'])) {
               $local = json_decode(file_get_contents(BASE_PATH.'/'.$data['type'].'/'.$data['folder'].'/'.rtrim($data['type'],'s').'.json'),true);
-              $remote = json_decode(file_get_contents(str_replace('github.com','raw.github.com',$data['url']).'/master/'.rtrim($data['type'],'s').'.json'),true);
+              
+              $remoteurl = str_replace('github.com','raw.github.com',$data['url']).'/master/'.rtrim($data['type'],'s').'.json';
+              
+              if(!file_exists(DATA.'/cache/'.$data['folder'].'.current')) {
+                file_put_contents(DATA.'/cache/'.$data['folder'].'.current', file_get_contents($remoteurl));
+              } else {
+                if (time()-filemtime(DATA.'/cache/'.$data['folder'].'.current') > 24 * 3600) {
+                  file_put_contents(DATA.'/cache/'.$data['folder'].'.current', file_get_contents($remoteurl));
+                }
+              }
+              
+              $remote = json_decode(file_get_contents(DATA.'/cache/'.$data['folder'].'.current'),true);
+              
               $data['version'] = $local[0]['version'];
               if($remote[0]['version'] != $local[0]['version']) {
                 $data['update'] = $remote[0]['version'];
@@ -202,7 +220,8 @@ class Market extends Common {
               }
           }
         } else {
-            $tmp = file_get_contents($this->url.'/?t='.rtrim($type, "s").'&i='.str_replace("-master","", array_pop(explode('/', $repo))));
+            $reponame = explode('/', $repo);
+            $tmp = file_get_contents($this->url.'/?t='.rtrim($type, "s").'&i='.str_replace("-master","", $reponame[sizeof($repo)-1]));
         }
         if(file_put_contents(BASE_PATH.'/'.$type.'/'.$name.'.zip', fopen($repo.'/archive/master.zip', 'r'))) {
             $zip = new ZipArchive;

@@ -37,12 +37,6 @@
                     $('#lock-right-sidebar').trigger('click');
                     _this.openRightSidebar();
                 }
-
-                var rightSidebarTrigger = (localStorage.getItem('codiad.editor.rightSidebarTrigger') === "true");
-                codiad.editor.setRightSidebarTrigger(rightSidebarTrigger);
-
-                var fileManagerTrigger = (localStorage.getItem('codiad.editor.fileManagerTrigger') === "true");
-                codiad.editor.setFileManagerTrigger(fileManagerTrigger);
             });
 
             $('#lock-left-sidebar')
@@ -206,9 +200,10 @@
 
         closeRightSidebar: function() {
 			var _this = this;
+            var sbarWidthR = $("#sb-right").width();
 			$('#sb-right')
                 .animate({
-                    'right': '-190px'
+                    'right': '-'+(sbarWidthR-10)+'px'
                 }, 300, 'easeOutQuart');
             var sbarWidthL = $("#sb-left")
                 .width(),
