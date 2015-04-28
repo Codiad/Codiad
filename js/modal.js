@@ -29,8 +29,10 @@
                 $('input[autofocus="autofocus"]')
                     .focus();
             });
+            var event = {animationPerformed: false};
+            amplify.publish('modal.onLoad', event);            
             // If no plugin has provided a custom load animation
-            if(amplify.publish('modal.onLoad')) {
+            if(!event.animationPerformed) {
                 $('#modal, #modal-overlay')
                     .fadeIn(200);
             }
@@ -46,8 +48,10 @@
             this._setBounds();
             $('#modal-content form')
                 .die('submit'); // Prevent form bubbling
+            var event = { animationPerformed : false };
+            amplify.publish('modal.onUnload', event);
             // If no plugin has provided a custom unload animation
-            if(amplify.publish('modal.onUnload')) {
+            if(!event.animationPerformed) {
                 $('#modal, #modal-overlay')
                     .fadeOut(200);
                 $('#modal-content')
