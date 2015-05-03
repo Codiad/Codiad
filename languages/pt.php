@@ -164,6 +164,10 @@ $lang = array(
    "Inline Preview"                                      => "Visualizador",
    "You Can Not Access The Marketplace"                  => "Você não pode acessar a loja",
    "Install "                                            => "Instalar ",
+   "System Settings"                                     => "Configurações do Sistema",
+   "Sync System Settings On All Devices"                 => "Sincronizar configurações do sistema em todos os dipositivos",
+   "Sync Plugin Settings On All Devices"                 => "Sincronizar configurações das extensões em todos os dispositivos",
+   "Persistent Modal"                                    => "Diálogos persistentes",
    "Would You Like To Overwrite Or Duplicate The Following:" => "Você gostaria de sobrescrever ou duplicar o seguinte arquivo:",
    "Note: This Will Only Work If Your Git Repo Does Not Require Interactive Authentication And Your Server Has Git Installed." => "Nota: Este funcionará apenas se seu repositório Git não requer autenticação interativa e seu servidor tem o git instalado."
 );
