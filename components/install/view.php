@@ -78,6 +78,17 @@ if(!$workspace || !$data || !$config || $register || $newrelic){
     <form id="install">
     <h1>Initial Setup</h1>
 
+		<label>Dependencies</label>
+		<div id="dependencies">
+			<?php foreach(["ZIP", "OpenSSL", "MBString"] as $dep) {
+				if(extension_loaded(strtolower($dep))) { ?>
+					<div class="success"><span class="icon-check"></span> <?=$dep?></div>
+				<?php } else { ?>
+					<div class="error"><span class="icon-cancel"></span> <?=$dep?></div>
+				<?php }
+			} ?>
+		</div>
+
     <input type="hidden" name="path" value="<?php echo($path); ?>">
 
     <label>New Username</label>

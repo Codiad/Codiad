@@ -20,7 +20,7 @@
     background-color: #999;
 }
 
-::-webkit-scrollbar-thumb:horizontal {
+::-webkit-scrollbar-thumb:horizontal {i
     width: 5px;
     background-color: #666;
     -webkit-border-radius: 3px;
@@ -147,7 +147,8 @@ label .icon {
     display: none;
 }
 
-input, textarea, select, button {
+
+#dependencies, input, textarea, select, button {
     display: block;
     width: 100%;
     padding: 7px 10px;
@@ -158,6 +159,14 @@ input, textarea, select, button {
     color: #fff;
     border-radius: 2px;
     line-height: normal;
+}
+
+#dependencies .error {
+	color: red;
+}
+
+#dependencies .success {
+	color: green;
 }
 
 select option { background: #242424; }
