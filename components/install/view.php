@@ -80,7 +80,7 @@ if(!$workspace || !$data || !$config || $register || $newrelic){
 
 		<label>Dependencies</label>
 		<div id="dependencies">
-			<?php foreach(["ZIP", "OpenSSL", "MBString"] as $dep) {
+			<?php foreach(array("ZIP", "OpenSSL", "MBString") as $dep) {
 				if(extension_loaded(strtolower($dep))) { ?>
 					<div class="success"><span class="icon-check"></span> <?=$dep?></div>
 				<?php } else { ?>
