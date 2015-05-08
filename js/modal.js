@@ -63,6 +63,7 @@
                         'margin-left': '10px'
                 }, 300, 'easeOutQuart');
             }
+            codiad.editor.focus();
         },
 
         _setBounds: function(bounds) {

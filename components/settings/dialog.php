@@ -72,8 +72,8 @@
                     </div>
                 </div>
             </div>
-            <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Close"); ?></button>
             <button class="btn-right" onclick="save(); return false;"><?php i18n("Save"); ?></button>
+            <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Close"); ?></button>
             <script>
                 $('.settings-view .config-menu li').click(function(){
                     codiad.settings._showTab($(this).attr('data-file'));
