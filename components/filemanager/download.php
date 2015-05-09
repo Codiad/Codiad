@@ -7,6 +7,7 @@
     */
 
     require_once('../../common.php');
+    require('Archive/Tar.php');
 
     //////////////////////////////////////////////////////////////////
     // Verify Session or Key
@@ -40,14 +41,15 @@
         	exit('<script>parent.codiad.message.error("Directory not found.")</script>');
         }
 
-        //////////////////////////////////////////////////////////////////
-        // Check system() command and a non windows OS
-        //////////////////////////////////////////////////////////////////
-        if(isAvailable('system') && stripos(PHP_OS, 'win') === false){
-          # Execute the tar command and save file
+        // Check if Archive_Tar is available
+        if(class_exists('Archive_Tar', false)){
           $filename .= '.tar.gz';
 
-          system("tar -pczf ".escapeshellarg($targetPath.$filename)." -C ".escapeshellarg(WORKSPACE)." ".escapeshellarg($_GET['path']));
+		  $files = indexesDir($dir);
+
+          $archive = new Archive_Tar($targetPath.$filename, true);
+		  $archive->createModify($files, '', WORKSPACE);
+
           $download_file = $targetPath.$filename;
         }elseif(extension_loaded('zip')){ //Check if zip-Extension is availiable
           //build zipfile
@@ -79,4 +81,4 @@
     // Remove temp tarball
     if($_GET['type']=='directory' || $_GET['type']=='root'){ unlink($download_file); }
 
-?>
+?>c

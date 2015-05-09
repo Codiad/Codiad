@@ -80,11 +80,24 @@ if(!$workspace || !$data || !$config || $register || $newrelic){
 
 		<label>Dependencies</label>
 		<div id="dependencies">
-			<?php foreach(["ZIP", "OpenSSL", "MBString"] as $dep) {
+			<?php
+			$deps = array(
+				"ZIP" => "",
+				"OpenSSL" => "",
+				"MBString" => "",
+				"Archive_Tar" => "pear install Archive_Tar"
+			);
+			foreach($deps as $dep => $desc) {
 				if(extension_loaded(strtolower($dep))) { ?>
+				<div class="item">
 					<div class="success"><span class="icon-check"></span> <?=$dep?></div>
+					<p><?=$desc?></p>
+				</div>
 				<?php } else { ?>
+				<div class="item">
 					<div class="error"><span class="icon-cancel"></span> <?=$dep?></div>
+					<p><?=$desc?></p>
+				</div>
 				<?php }
 			} ?>
 		</div>

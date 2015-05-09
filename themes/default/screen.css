@@ -161,6 +161,14 @@ label .icon {
     line-height: normal;
 }
 
+#dependencies .item {
+	color: #dfdfdf;
+}
+
+#dependencies .item p {
+	padding-left: 16px;
+}
+
 #dependencies .error {
 	color: red;
 }
