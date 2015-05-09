@@ -1,7 +1,6 @@
 {
   "name": "codiad/codiad",
   "type": "application",
-  "description": "Web Based IDE",
   "keywords": ["ide","development","environment","editor"],
   "homepage": "http://www.codiad.com",
   "license": "MIT",
@@ -41,6 +40,11 @@
   "require":
   {
     "php": ">=5.2.0"
+  },
+  "require-dev":
+  {
+  	"phing/phing": "2.*",
+    "squizlabs/php_codesniffer": "*"
   },
   "extra":
   {

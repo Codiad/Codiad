@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Codiad" basedir="." default="phpcs">
+
+	<fileset id="components" dir="./components">
+		<include name="**/*.php" />
+	</fileset>
+
+	<target name="phpcs">
+		<phpcodesniffer
+			standard="PSR2"
+			showSniffs="false"
+			showWarnings="true"
+		 haltonerror="${build.haltonanalysiserror}">
+			<fileset refid="components" />
+			<formatter type="full" usefile="false" />
+		</phpcodesniffer>
+	</target>
+
+</project>

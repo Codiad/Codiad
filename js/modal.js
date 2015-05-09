@@ -29,8 +29,13 @@
                 $('input[autofocus="autofocus"]')
                     .focus();
             });
-            $('#modal, #modal-overlay')
-                .fadeIn(200);
+            var event = {animationPerformed: false};
+            amplify.publish('modal.onLoad', event);            
+            // If no plugin has provided a custom load animation
+            if(!event.animationPerformed) {
+                $('#modal, #modal-overlay')
+                    .fadeIn(200);
+            }
             codiad.sidebars.modalLock = true;
         },
 
@@ -43,10 +48,15 @@
             this._setBounds();
             $('#modal-content form')
                 .die('submit'); // Prevent form bubbling
-            $('#modal, #modal-overlay')
-                .fadeOut(200);
-            $('#modal-content')
-                .html('');
+            var event = { animationPerformed : false };
+            amplify.publish('modal.onUnload', event);
+            // If no plugin has provided a custom unload animation
+            if(!event.animationPerformed) {
+                $('#modal, #modal-overlay')
+                    .fadeOut(200);
+                $('#modal-content')
+                    .html('');
+            }
             codiad.sidebars.modalLock = false;
             if (!codiad.sidebars.leftLock) { // Slide sidebar back
                 $('#sb-left')
