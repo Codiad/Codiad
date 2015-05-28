@@ -6,8 +6,8 @@
     *  [root]/license.txt for more. This information must remain intact.
     */
 
+	require_once('../../lib/archive_tar.php');
     require_once('../../common.php');
-    require('Archive/Tar.php');
 
     //////////////////////////////////////////////////////////////////
     // Verify Session or Key

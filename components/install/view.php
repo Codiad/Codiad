@@ -84,8 +84,7 @@ if(!$workspace || !$data || !$config || $register || $newrelic){
 			$deps = array(
 				"ZIP" => "",
 				"OpenSSL" => "",
-				"MBString" => "",
-				"Archive_Tar" => "pear install Archive_Tar"
+				"MBString" => ""
 			);
 			foreach($deps as $dep => $desc) {
 				if(extension_loaded(strtolower($dep))) { ?>
