@@ -1,4 +1,7 @@
 .settings-view {
+    display: -webkit-flex;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
 }
 
