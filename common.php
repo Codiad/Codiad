@@ -295,6 +295,30 @@
             return (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
         }
 
+		//////////////////////////////////////////////////////////////////
+        // Indexes Directory
+        //////////////////////////////////////////////////////////////////
+
+		public static function indexesDir($dir) {
+			$tmp = array();
+			$it = new DirectoryIterator($dir);
+			foreach($it as $path) {
+				if($path->isDot()) continue;
+
+				if($path->isDir()) {
+					$tmpf = Common::indexesDir($path->getPathName());
+					if(sizeof($tmpf) == 0) {
+						$tmp[] = $path->getPathName();
+					} else {
+						$tmp = array_merge($tmp, $tmpf);
+					}
+				} else {
+					$tmp[] = $path->getPathName();
+				}
+			}
+			return $tmp;
+		}
+
     }
 
     //////////////////////////////////////////////////////////////////
@@ -311,4 +335,5 @@
     function checkAccess() { return Common::checkAccess(); }
     function checkPath($path) { return Common::checkPath($path); }
     function isAvailable($func) { return Common::isAvailable($func); }
+    function indexesDir($dir) { return Common::indexesDir($dir); }
 ?>
