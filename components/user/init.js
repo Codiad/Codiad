@@ -82,6 +82,10 @@
                 forcelogout = confirm(i18n('You have unsaved files.'));
             }
             if(forcelogout) {
+				//close all files
+                codiad.active.removeAll(true);
+				codiad.modal.unload();
+                //logout function
                 $('#list-active-files li.changed').each(function () { $(this).removeClass('changed')});
                 amplify.publish('user.logout', {});
                 codiad.settings.save();
