@@ -193,7 +193,7 @@
             $("#sb-left-title").addClass('active');
             $("#tree-search")
                 .removeClass('icon-search')
-                .addClass('icon-cancel-squared active');
+                .addClass('icon-cancel active');
         },
 
         // Contract the finder box
@@ -207,7 +207,7 @@
             $("#finder-quick").show();
             $("#sb-left-title").removeClass('active');
             $("#tree-search")
-                .removeClass('icon-cancel-squared active')
+                .removeClass('icon-cancel active')
                 .addClass('icon-search');
         },
 

@@ -27,7 +27,7 @@ switch($_GET['action']){
     ?>
     <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">
     <input type="hidden" name="type" value="<?php echo($_GET['type']); ?>">
-    <label><span class="icon-pencil"></span><?php echo i18n((ucfirst($_GET['type']))); ?></label>
+    <label><span class="icon-new-file"></span><?php echo i18n((ucfirst($_GET['type']))); ?></label>
     <input type="text" name="object_name" autofocus="autofocus" autocomplete="off">
     <button class="btn-left"><?php i18n("Create"); ?></button>
     <button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Cancel"); ?></button>
@@ -41,7 +41,7 @@ switch($_GET['action']){
     ?>
     <input type="hidden" name="path" value="<?php echo($_GET['path']); ?>">
     <input type="hidden" name="type" value="<?php echo($_GET['type']); ?>">
-    <label><span class="icon-pencil"></span> <?php i18n("Rename"); ?> <?php echo i18n((ucfirst($_GET['type']))); ?></label>
+    <label><span class="icon-rename"></span> <?php i18n("Rename"); ?> <?php echo i18n((ucfirst($_GET['type']))); ?></label>
     <input type="text" name="object_name" autofocus="autofocus" autocomplete="off" value="<?php echo($_GET['short_name']); ?>">
     <button class="btn-left"><?php i18n("Rename"); ?></button>
 	<button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Cancel"); ?></button>

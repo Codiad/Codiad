@@ -127,11 +127,11 @@ if(isset($_SESSION['theme'])) {
                 <label><span class="icon-user login-icon"></span> <?php i18n("Username"); ?></label>
                 <input type="text" name="username" autofocus="autofocus" autocomplete="off">
 
-                <label><span class="icon-lock login-icon"></span> <?php i18n("Password"); ?></label>
+                <label><span class="icon-password login-icon"></span> <?php i18n("Password"); ?></label>
                 <input type="password" name="password">
                 
                 <div class="language-selector">
-                    <label><span class="icon-picture login-icon"></span> <?php i18n("Theme"); ?></label>
+                    <label><span class="icon-theme login-icon"></span> <?php i18n("Theme"); ?></label>
                     <select name="theme" id="theme">
                         <option value="default"><?php i18n("Default"); ?></option>
                         <?php
@@ -183,7 +183,7 @@ if(isset($_SESSION['theme'])) {
             <div id="sb-left-title">
                 <a id="lock-left-sidebar" class="icon-lock icon"></a>
                 <?php if (!common::isWINOS()) { ?>
-                <a id="finder-quick" class="icon icon-archive"></a>
+                <a id="finder-quick" class="icon icon-project"></a>
                 <a id="tree-search" class="icon-search icon"></a>
                 <h2 id="finder-label"> <?php i18n("Explore"); ?> </h2>
                 <div id="finder-wrapper">
@@ -254,7 +254,7 @@ if(isset($_SESSION['theme'])) {
                         <h2><?php i18n("Projects"); ?></h2>
                         <a id="projects-collapse" class="icon-down-dir icon" alt="<?php i18n("Collapse"); ?>"></a>
                         <?php if(checkAccess()) { ?>
-                        <a id="projects-manage" class="icon-archive icon"></a>
+                        <a id="projects-manage" class="icon-project icon"></a>
                         <a id="projects-create" class="icon-plus icon" alt="<?php i18n("Create Project"); ?>"></a>
                         <?php } ?>
                     </div>
@@ -277,7 +277,7 @@ if(isset($_SESSION['theme'])) {
                     <a id="tab-dropdown-button" class="icon-down-open"></a>
                 </div>
                 <div id="tab-close">
-                    <a id="tab-close-button" class="icon-cancel-circled" title="<?php i18n("Close All") ?>"></a>
+                    <a id="tab-close-button" class="icon-cancel" title="<?php i18n("Close All") ?>"></a>
                 </div>
                 <ul id="dropdown-list-active-files"></ul>
                 <div class="bar"></div>
@@ -286,7 +286,7 @@ if(isset($_SESSION['theme'])) {
             <div id="root-editor-wrapper"></div>
 
             <div id="editor-bottom-bar">
-                <a id="settings" class="ico-wrapper"><span class="icon-doc-text"></span><?php i18n("Settings"); ?></a>
+                <a id="settings" class="ico-wrapper"><span class="icon-setting"></span><?php i18n("Settings"); ?></a>
                 
                 <?php
 
@@ -314,9 +314,9 @@ if(isset($_SESSION['theme'])) {
                 ?>
                 
                 <div class="divider"></div>
-                <a id="split" class="ico-wrapper"><span class="icon-layout"></span><?php i18n("Split"); ?></a>
+                <a id="split" class="ico-wrapper"><span class="icon-split"></span><?php i18n("Split"); ?></a>
                 <div class="divider"></div>
-                <a id="current-mode"><span class="icon-layout"></span></a>                
+                <a id="current-mode"><span class="icon-mode"></span></a>                
                 <div class="divider"></div>
                 <div id="current-file"></div>
             </div>

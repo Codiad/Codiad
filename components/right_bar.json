@@ -2,13 +2,13 @@
     {
         "title": "Save",
         "admin": false,
-        "icon": "icon-install",
+        "icon": "icon-save",
         "onclick": "codiad.active.save();"
     },
     {
         "title": "Save All",
         "admin": false,
-        "icon": "icon-install",
+        "icon": "icon-save-all",
         "onclick": "codiad.active.saveAll();"
     },
     {
@@ -32,13 +32,13 @@
     {
         "title": "Projects",
         "admin": true,
-        "icon": "icon-archive",
+        "icon": "icon-project",
         "onclick": "codiad.project.list();"
     },
     {
         "title": "Users",
         "admin": true,
-        "icon": "icon-users",
+        "icon": "icon-user",
         "onclick": "codiad.user.list();"
     },
     {
@@ -50,13 +50,13 @@
     {
         "title": "Marketplace",
         "admin": true,
-        "icon": "icon-cloud",
+        "icon": "icon-marketplace",
         "onclick": "codiad.market.list();"
     },
     {
         "title": "Update Check",
         "admin": true,
-        "icon": "icon-share",
+        "icon": "icon-update",
         "onclick": "codiad.update.check();"
     },
     {
@@ -68,13 +68,13 @@
     {
         "title": "Settings",
         "admin": false,
-        "icon": "icon-doc-text",
+        "icon": "icon-setting",
         "onclick": "codiad.settings.show();"
     },
     {
         "title": "Password",
         "admin": false,
-        "icon": "icon-flashlight",
+        "icon": "icon-password",
         "onclick": "codiad.user.password();"
     },
     {

@@ -41,7 +41,7 @@ switch($_GET['action']){
 			die(json_encode(array('status' => 'error', 'msg' => 'Internal PHP error.') ));
 		}
 		?>
-        <label><span class="icon-pencil big-icon"></span><?php i18n("Extensions"); ?></label>
+        <label><span class="icon-extension big-icon"></span><?php i18n("Extensions"); ?></label>
         <table id="FileExtModeHeader">
             <thead>
 				<tr>
