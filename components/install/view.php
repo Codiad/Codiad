@@ -82,9 +82,9 @@ if(!$workspace || !$data || !$config || $register || $newrelic){
 		<div id="dependencies">
 			<?php foreach(array("ZIP", "OpenSSL", "MBString") as $dep) {
 				if(extension_loaded(strtolower($dep))) { ?>
-					<div class="success"><span class="icon-check"></span> <?=$dep?></div>
+					<div class="success"><span class="icon-passed"></span> <?=$dep?></div>
 				<?php } else { ?>
-					<div class="error"><span class="icon-cancel"></span> <?=$dep?></div>
+					<div class="error"><span class="icon-failed"></span> <?=$dep?></div>
 				<?php }
 			} ?>
 		</div>

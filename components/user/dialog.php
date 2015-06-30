@@ -49,16 +49,16 @@
             ?>
             <tr>
                 <td width="150"><?php echo($data['username']); ?></td>
-                <td width="85"><a onclick="codiad.user.password('<?php echo($data['username']); ?>');" class="icon-flashlight bigger-icon"></a></td>
-                <td width="75"><a onclick="codiad.user.projects('<?php echo($data['username']); ?>');" class="icon-archive bigger-icon"></a></td>
+                <td width="85"><a onclick="codiad.user.password('<?php echo($data['username']); ?>');" class="icon-password bigger-icon"></a></td>
+                <td width="75"><a onclick="codiad.user.projects('<?php echo($data['username']); ?>');" class="icon-project bigger-icon"></a></td>
                 <?php
                     if($_SESSION['user'] == $data['username']){
                     ?>
-                    <td width="75"><a onclick="codiad.message.error('You Cannot Delete Your Own Account');" class="icon-block bigger-icon"></a></td>
+                    <td width="75"><a onclick="codiad.message.error('You Cannot Delete Your Own Account');" class="icon-denied bigger-icon"></a></td>
                     <?php
                     }else{
                     ?>
-                    <td width="70"><a onclick="codiad.user.delete('<?php echo($data['username']); ?>');" class="icon-cancel-circled bigger-icon"></a></td>
+                    <td width="70"><a onclick="codiad.user.delete('<?php echo($data['username']); ?>');" class="icon-delete bigger-icon"></a></td>
                     <?php
                     }
                     ?>

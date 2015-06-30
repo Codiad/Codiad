@@ -43,12 +43,12 @@
                 if($show){
                   if($_GET['trigger'] == 'true') {
                 ?>
-                <li onclick="codiad.project.open('<?php echo($data['path']); ?>');"><div class="icon-archive icon"></div><?php echo($data['name']); ?></li>
+                <li onclick="codiad.project.open('<?php echo($data['path']); ?>');"><div class="icon-project icon"></div><?php echo($data['name']); ?></li>
                 
                 <?php
                 } else {
                 ?>
-                <li ondblclick="codiad.project.open('<?php echo($data['path']); ?>');"><div class="icon-archive icon"></div><?php echo($data['name']); ?></li>
+                <li ondblclick="codiad.project.open('<?php echo($data['path']); ?>');"><div class="icon-project icon"></div><?php echo($data['name']); ?></li>
                 
                 <?php
                 }
@@ -105,11 +105,11 @@
                         if(checkAccess()){
                             if($_SESSION['project'] == $data['path']){
                             ?>
-                            <td width="70"><a onclick="codiad.message.error(i18n('Active Project Cannot Be Removed'));" class="icon-block bigger-icon"></a></td>
+                            <td width="70"><a onclick="codiad.message.error(i18n('Active Project Cannot Be Removed'));" class="icon-denied bigger-icon"></a></td>
                             <?php
                             }else{
                             ?>
-                            <td width="70"><a onclick="codiad.project.delete('<?php echo($data['name']); ?>','<?php echo($data['path']); ?>');" class="icon-cancel-circled bigger-icon"></a></td>
+                            <td width="70"><a onclick="codiad.project.delete('<?php echo($data['name']); ?>','<?php echo($data['path']); ?>');" class="icon-delete bigger-icon"></a></td>
                             <?php
                             }
                         }
@@ -180,7 +180,7 @@
         ?>
         <form>
         <input type="hidden" name="project_path" value="<?php echo($_GET['path']); ?>">
-        <label><span class="icon-pencil"></span><?php i18n("Rename Project"); ?></label>    
+        <label><span class="icon-rename"></span><?php i18n("Rename Project"); ?></label>    
         <input type="text" name="project_name" autofocus="autofocus" autocomplete="off" value="<?php echo($_GET['name']); ?>">  
         <button class="btn-left"><?php i18n("Rename"); ?></button>&nbsp;<button class="btn-right" onclick="codiad.modal.unload(); return false;"><?php i18n("Cancel"); ?></button>
         <form>
