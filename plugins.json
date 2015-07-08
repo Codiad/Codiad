@@ -271,5 +271,10 @@
     "name" : "Outline",
     "description" : "Parses function and class tags to be displayed in editor",
     "url" : "https://github.com/SmartBlug/Codiad-Outline"
+  },
+  { "author" : "rafasashi",
+    "name" : "Archives",
+    "description" : "Extracts archives to given folder",
+    "url" : "https://github.com/rafasashi/Codiad-Archives"
   }
 ]
