@@ -103,7 +103,7 @@ class Filemanager extends Common {
                 while (false !== ($object = readdir($handle))) {
                     if ($object != "." && $object != ".." && $object != $this->controller) {
                         if(is_dir($this->path.'/'.$object)){ $type = "directory"; $size=count(glob($this->path.'/'.$object.'/*')); }
-                        else{ $type = "file"; $size=filesize($this->path.'/'.$object); }
+                        else{ $type = "file"; $size=@filesize($this->path.'/'.$object); }
                         $index[] = array(
                             "name"=>$this->rel_path . $object,
                             "type"=>$type,
