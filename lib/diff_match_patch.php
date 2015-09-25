@@ -30,6 +30,9 @@
  * Class containing the diff, match and patch methods.
  * @constructor
  */
+ 
+mb_internal_encoding('UTF-8'); // Add UTF-8 support
+
 class diff_match_patch {
 
 	// Defaults.
