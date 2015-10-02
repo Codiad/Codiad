@@ -15,6 +15,7 @@ $languages = array(
     "cz" => "česky",
     "sk" => "slovak",
     "sr" => "српски",
-    "bg" => "Български"
+    "bg" => "Български",
+    "tr" => "Türkçe",
 );
 ?>
