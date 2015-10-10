@@ -276,5 +276,11 @@
     "name" : "Archives",
     "description" : "Extracts archives to given folder",
     "url" : "https://github.com/rafasashi/Codiad-Archives"
-  }
+  },
+  { "author" : "Andr3as",
+    "name" : "SassCompiler",
+    "description" : "Sass/Scss Compiler for Codiad",
+    "image": "https://raw.githubusercontent.com/Andr3as/Codiad-SassCompiler/master/screen.png",
+    "url" : "https://github.com/Andr3as/Codiad-SassCompiler"
+  },
 ]
