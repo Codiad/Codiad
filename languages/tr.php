@@ -18,8 +18,8 @@ $lang = array(
  "Cancel" => "Vazgeç",
  "Cannot Paste Directory Into Itself" => "Klasör Kendi İçerisine Kopyalanamaz",
  "Change" => "Değiştir",
- "Change %{username}%&apos;s Password" => "%{username}%'a ait şifreyi değiştir",
- "Changes On Codiad" => "Codiad değişiklikler",
+ "Change %{username}%&apos;s Password" => "%{username}%&apos;ın şifresini değiştir",
+ "Changes On Codiad" => "Codiaddaki değişiklikler",
  "Click" => "Tıklayınca",
  "Close Unsaved File?" => "Kaydedilmemiş Dosya Kapansın Mı?",
  "Close Uploader" => "Yükleyiciyi Kapat",
@@ -193,6 +193,6 @@ $lang = array(
  "You can not edit the user list" => "Kullanıcı listesini düzenleyemezsiniz",
  "You have unsaved files." => "Kaydedilmeyen dosyalarınız var.",
  "You Must Choose A Value" => "Bir değer seçmelisiniz",
- "Your Version" => "Kullandığınız Versiyon",
+ "Your Version" => "Kullandığınız Versiyon"
 );
 ?>
