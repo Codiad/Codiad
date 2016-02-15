@@ -33,10 +33,12 @@
 
         checkAuth: function() {
 
-            // Run controller to check session (also acts as keep-alive) & Check user
+            // Run controller to check session (also acts as keep-alive) & Check user & retrieve CSRF token
             $.get(codiad.user.controller + '?action=verify', function(data) {
                 if (data == 'false') {
                     codiad.user.logout();
+                } else {
+                    window.csrf_token = data;
                 }
             });
 
