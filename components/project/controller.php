@@ -55,7 +55,7 @@
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='create'){
-        if(checkAccess()) {
+        if(checkAccess() && checkCSRFToken()) {
             $Project->name = $_GET['project_name'];
             if($_GET['project_path'] != '') {
                 $Project->path = $_GET['project_path'];
@@ -70,7 +70,7 @@
             $Project->Create();
         }
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Rename Project
     //////////////////////////////////////////////////////////////////
@@ -88,7 +88,7 @@
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='delete'){
-        if(checkAccess()) {
+        if(checkAccess() && checkCSRFToken()) {
             $Project->path = $_GET['project_path'];
             $Project->Delete();
         }

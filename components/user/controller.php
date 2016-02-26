@@ -12,7 +12,7 @@
     if(!isset($_GET['action'])){
     	die(formatJSEND("error","Missing parameter"));
     }
-    
+
     //////////////////////////////////////////////////////////////////
     // Verify Session or Key
     //////////////////////////////////////////////////////////////////
@@ -29,7 +29,7 @@
     	if(!isset($_POST['username']) || !isset($_POST['password'])){
     		die(formatJSEND("error","Missing username or password"));
     	}
-    	
+
         $User->username = $_POST['username'];
         $User->password = $_POST['password'];
 
@@ -59,11 +59,11 @@
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='create'){
-        if(checkAccess()) {
+        if(checkAccess() && checkCSRFToken()) {
         	if(!isset($_POST['username']) || !isset($_POST['password'])){
         		die(formatJSEND("error","Missing username or password"));
         	}
-        	
+
             $User->username = User::CleanUsername( $_POST['username'] );
             $User->password = $_POST['password'];
             $User->Create();
@@ -75,11 +75,11 @@
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='delete'){
-        if(checkAccess()) {
+        if(checkAccess() && checkCSRFToken()) {
         	if(!isset($_GET['username'])){
         		die(formatJSEND("error","Missing username"));
         	}
-        	
+
             $User->username = $_GET['username'];
             $User->Delete();
         }
@@ -90,12 +90,12 @@
     //////////////////////////////////////////////////////////////////
 
     if($_GET['action']=='project_access'){
-        if(checkAccess()) {
+        if(checkAccess() && checkCSRFToken()) {
         	if(!isset($_GET['username'])){
         		die(formatJSEND("error","Missing username"));
         	}
             $User->username = $_GET['username'];
-            
+
             //No project selected
             if(isset($_POST['projects'])){
             	$User->projects = $_POST['projects'];
@@ -114,8 +114,8 @@
     	if(!isset($_POST['username']) || !isset($_POST['password'])){
     		die(formatJSEND("error","Missing username or password"));
     	}
-    	
-        if(checkAccess() || $_POST['username'] == $_SESSION['user']) {
+
+        if((checkAccess()|| $_POST['username'] == $_SESSION['user']) && checkCSRFToken()){
             $User->username = $_POST['username'];
             $User->password = $_POST['password'];
             $User->Password();
@@ -130,7 +130,7 @@
     	if(!isset($_GET['project'])){
     		die(formatJSEND("error","Missing project"));
     	}
-    	
+
         $User->username = $_SESSION['user'];
         $User->project  = $_GET['project'];
         $User->Project();
