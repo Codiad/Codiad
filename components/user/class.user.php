@@ -187,13 +187,7 @@ class User {
         $pass = 'false';
         foreach($this->users as $user=>$data){
             if($this->username==$data['username']){
-                if(isset($_SERVER["HTTP_X_CSRFTOKEN"])) {
-                    if($_SESSION['token'] == $_SERVER["HTTP_X_CSRFTOKEN"]) {
-                        $token = sha1(uniqid(rand(), TRUE));
-                        $_SESSION['token'] = $token;
-                        $pass = $token;
-                    }
-                }
+                $pass = 'true';
             }
         }
         echo($pass);

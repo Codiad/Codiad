@@ -57,21 +57,15 @@
         if (typeof(console) === 'undefined') {
             console = {}
             console.log = console.error = console.info = console.debug = console.warn = console.trace = console.dir = console.dirxml = console.group = console.groupEnd = console.time = console.timeEnd = console.assert = console.profile = function () {};
-        }
-
+        }        
+        
         // Sliding sidebars
         codiad.sidebars.init();
         var handleWidth = 10;
-
+        
         // Messages
         codiad.message.init();
 
-        // CSRF protection
-        // Override jQuery .get in order to avoid changing all callings
-        $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
-            options.headers = { 'X-CSRFToken': window.csrf_token };
-        });
-        
         $(window)
             .on('load resize', function() {
 
@@ -105,3 +99,4 @@
     });
 
 })(this, jQuery);
+
