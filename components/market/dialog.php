@@ -129,6 +129,7 @@
             ?>
             </table></div>
             </div>
+            <?php } ?>
             <table width="100%">
                 <tr>
                     <th valign="middle" align="center" width="40px"><?php
@@ -143,7 +144,6 @@
                 </tr>
              </table>
             <?php
-            }
             }            
             break;
              
