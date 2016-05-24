@@ -389,6 +389,7 @@
             theme: 'twilight',
             fontSize: '13px',
             printMargin: false,
+            printMarginColumn: 80,
             highlightLine: true,
             indentGuides: true,
             wrapMode: false,
@@ -456,6 +457,15 @@
                        }
                        _this.settings[key] = (localValue == 'true');
                    });
+            $.each(['printMarginColumn'],
+               function(idx, key) {
+                   var localValue =
+                       localStorage.getItem('codiad.editor.' + key);
+                   if (localValue == null) {
+                       return;
+                   }
+                   _this.settings[key] = localValue;
+               });
         },
 
         /////////////////////////////////////////////////////////////////
@@ -474,6 +484,7 @@
             // Apply the current configuration settings:
             i.setTheme('ace/theme/' + this.settings.theme);
             i.setFontSize(this.settings.fontSize);
+            i.setPrintMarginColumn(this.settings.printMarginColumn);
             i.setShowPrintMargin(this.settings.printMargin);
             i.setHighlightActiveLine(this.settings.highlightLine);
             i.setDisplayIndentGuides(this.settings.indentGuides);
@@ -609,7 +620,7 @@
             $.each(availableTextModes, function(i){
                 modeOptions.push('<li><a>'+availableTextModes[i]+'</a></li>');     
             });
-                       
+
             var html = '<table><tr>';
             while(true) {
                 html += '<td><ul>';
@@ -628,7 +639,7 @@
                     break;
                 }
             }
-            
+
             html += '</tr></table>';
             _thisMenu.html(html);
 
@@ -822,7 +833,7 @@
                 }
             }
             this.applySettings(i);
-            
+
             this.setActive(i);
         },
 
@@ -840,7 +851,7 @@
                 return 'text';
             }
             e = e.toLowerCase();
-            
+
             if(e in this.fileExtensionTextMode){
                 return this.fileExtensionTextMode[e];
             }else{
@@ -857,7 +868,7 @@
         // mode - {String} TextMode for this extension
         //
         /////////////////////////////////////////////////////////////////
-        
+
         addFileExtensionTextMode: function(extension, mode){
             if(typeof(extension) != 'string' || typeof(mode) != 'string'){
                 if (console){
@@ -868,17 +879,17 @@
             mode = mode.toLowerCase();
             this.fileExtensionTextMode[extension] = mode;
         },
-        
+
         /////////////////////////////////////////////////////////////////
         //
         // clear all extension-text mode joins
         //
         /////////////////////////////////////////////////////////////////
-        
+
         clearFileExtensionTextMode: function(){
             this.fileExtensionTextMode = {};
         },
-        
+
         /////////////////////////////////////////////////////////////////
         //
         // Set the editor mode
@@ -1036,6 +1047,29 @@
 
         //////////////////////////////////////////////////////////////////
         //
+        // Set print margin column
+        //
+        // Parameters:
+        //   p - {Number} print margin column
+        //   i - {Editor}  (If omitted, Defaults to all editors)
+        //
+        //////////////////////////////////////////////////////////////////
+
+        setPrintMarginColumn: function(p, i) {
+            if (i) {
+                i.setPrintMarginColumn(p);
+            } else {
+                this.settings.printMarginColumn = p;
+                this.forEach(function(i) {
+                    i.setPrintMarginColumn(p);
+                });
+            }
+            // LocalStorage
+            localStorage.setItem('codiad.editor.printMarginColumn', p);
+        },
+
+        //////////////////////////////////////////////////////////////////
+        //
         // Show/Hide indent guides
         //
         // Parameters:
@@ -1098,7 +1132,7 @@
             // LocalStorage
             localStorage.setItem('codiad.editor.wrapMode', w);
         },
-        
+
         //////////////////////////////////////////////////////////////////
         //
         // Set last position of modal to be saved
@@ -1130,7 +1164,7 @@
             // LocalStorage
             localStorage.setItem('codiad.editor.rightSidebarTrigger', t);
         },
-        
+
         //////////////////////////////////////////////////////////////////
         //
         // Set trigger for clicking on the filemanager
@@ -1147,8 +1181,8 @@
             localStorage.setItem('codiad.editor.fileManagerTrigger', t);
             codiad.project.loadSide();
         },
-        
-        
+
+
         //////////////////////////////////////////////////////////////////
         //
         // set Tab Size
@@ -1169,9 +1203,9 @@
             }
             // LocalStorage
             localStorage.setItem('codiad.editor.tabSize', s);
-            
+
         },
-        
+
         //////////////////////////////////////////////////////////////////
         //
         // Enable or disable Soft Tabs
@@ -1192,9 +1226,9 @@
             }
             // LocalStorage
             localStorage.setItem('codiad.editor.softTabs', t);
-            
+
         },
-        
+
         //////////////////////////////////////////////////////////////////
         //
         // Get content from editor
@@ -1472,7 +1506,7 @@
 
                 break;
             }
-        } 
+        }
 
     };
 

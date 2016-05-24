@@ -47,7 +47,7 @@
                     <div class="panels-plugins">
                         <?php
                             $plugins = Common::readDirectory(PLUGINS);
-                            
+
                             foreach($plugins as $plugin){
                                 if(file_exists(PLUGINS . "/" . $plugin . "/plugin.json")){
                                     $datas = json_decode(file_get_contents(PLUGINS . "/" . $plugin . "/plugin.json"), true);
@@ -78,7 +78,7 @@
                 $('.settings-view .config-menu li').click(function(){
                     codiad.settings._showTab($(this).attr('data-file'));
                 });
-            
+
                 function save() {
                     $('.setting').each(function(){
                         var setting = $(this).data('setting');
@@ -106,6 +106,12 @@
                                     var bool_val = (val == "true");
                                     codiad.editor.setPrintMargin(bool_val);
                                     break;
+                                case 'codiad.editor.printMarginColumn':
+                                    var int_val = (!isNaN(parseFloat(val)) && isFinite(val))
+                                        ? parseInt(val, 10)
+                                        : 80;
+                                    codiad.editor.setPrintMarginColumn(int_val);
+                                    break;
                                 case 'codiad.editor.wrapMode':
                                     var bool_val = (val == "true");
                                     codiad.editor.setWrapMode(bool_val);
@@ -117,11 +123,11 @@
                                 case 'codiad.editor.fileManagerTrigger':
                                     var bool_val = (val == "true");
                                     codiad.editor.setFileManagerTrigger(bool_val);
-                                    break;    
+                                    break;
                                 case 'codiad.editor.persistentModal':
                                     var bool_val = (val == "true");
                                     codiad.editor.setPersistentModal(bool_val);
-                                    break;      
+                                    break;
                                 case "codiad.editor.softTabs":
                                     var bool_val = (val == "true");
                                     codiad.editor.setSoftTabs(bool_val);
