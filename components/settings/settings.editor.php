@@ -111,6 +111,26 @@
     </tr>
     <tr>
     
+        <td><?php i18n("Print Margin Column"); ?></td>
+        <td>
+        
+        <select class="setting" data-setting="codiad.editor.printMarginColumn">
+            <option value="80" selected>80</option>
+            <option value="85">85</option>
+            <option value="90">90</option>
+            <option value="95">95</option>
+            <option value="100">100</option>
+            <option value="105">105</option>
+            <option value="110">110</option>
+            <option value="115">115</option>
+            <option value="120">120</option>
+        </select>
+        
+        </td>
+        
+    </tr>
+    <tr>
+    
         <td><?php i18n("Wrap Lines"); ?></td>
         <td>
         

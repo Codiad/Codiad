@@ -106,6 +106,12 @@
                                     var bool_val = (val == "true");
                                     codiad.editor.setPrintMargin(bool_val);
                                     break;
+                                case 'codiad.editor.printMarginColumn':
+                                    var int_val = (!isNaN(parseFloat(val)) && isFinite(val))
+                                        ? parseInt(val, 10)
+                                        : 80;
+                                    codiad.editor.setPrintMarginColumn(int_val);
+                                    break;
                                 case 'codiad.editor.wrapMode':
                                     var bool_val = (val == "true");
                                     codiad.editor.setWrapMode(bool_val);
