@@ -259,15 +259,7 @@
                     $.each(listResponse, function(index, data) {
                         codiad.filemanager.openFile(data.path, data.focused);
                     });
-                    // Run resize command to fix render issues
-                    codiad.editor.resize();
                 }
-            });
-
-            // Run resize on window resize
-            $(window).resize(function() {
-                codiad.editor.resize();
-                _this.updateTabDropdownVisibility();
             });
 
             // Prompt if a user tries to close window without saving all filess
