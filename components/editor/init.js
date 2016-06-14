@@ -389,6 +389,7 @@
             theme: 'twilight',
             fontSize: '13px',
             printMargin: false,
+            printMarginColumn: 80,
             highlightLine: true,
             indentGuides: true,
             wrapMode: false,
@@ -456,6 +457,15 @@
                        }
                        _this.settings[key] = (localValue == 'true');
                    });
+            $.each(['printMarginColumn'],
+                function(idx, key) {
+                    var localValue =
+                        localStorage.getItem('codiad.editor.' + key);
+                    if (localValue === null) {
+                        return;
+                    }
+                    _this.settings[key] = localValue;
+                });
         },
 
         /////////////////////////////////////////////////////////////////
@@ -474,6 +484,7 @@
             // Apply the current configuration settings:
             i.setTheme('ace/theme/' + this.settings.theme);
             i.setFontSize(this.settings.fontSize);
+            i.setPrintMarginColumn(this.settings.printMarginColumn);
             i.setShowPrintMargin(this.settings.printMargin);
             i.setHighlightActiveLine(this.settings.highlightLine);
             i.setDisplayIndentGuides(this.settings.indentGuides);
@@ -1032,6 +1043,29 @@
             }
             // LocalStorage
             localStorage.setItem('codiad.editor.printMargin', p);
+        },
+
+        //////////////////////////////////////////////////////////////////
+        //
+        // Set print margin column
+        //
+        // Parameters:
+        //   p - {Number} print margin column
+        //   i - {Editor}  (If omitted, Defaults to all editors)
+        //
+        //////////////////////////////////////////////////////////////////
+
+        setPrintMarginColumn: function(p, i) {
+            if (i) {
+                i.setPrintMarginColumn(p);
+            } else {
+                this.settings.printMarginColumn = p;
+                this.forEach(function(i) {
+                    i.setPrintMarginColumn(p);
+                });
+            }
+            // LocalStorage
+            localStorage.setItem('codiad.editor.printMarginColumn', p);
         },
 
         //////////////////////////////////////////////////////////////////
