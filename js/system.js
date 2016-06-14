@@ -91,6 +91,9 @@
                     .outerHeight() - 60) + 'px' // TODO Adjust '75' in function of the final tabs height.
             });
 
+            // Run resize command to fix render issues
+            codiad.editor.resize();
+            codiad.active.updateTabDropdownVisibility();
         });
 
         $('#settings').click(function(){
