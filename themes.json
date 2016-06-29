@@ -14,5 +14,10 @@
     "name" : "Atom",
     "description" : "Theme for Codiad IDE based on atom seti ui",
     "url" : "https://github.com/mohsen-shafiee/codiad-ap-theme-ui"
+  },
+  { "author" : "nexusgx",
+    "name" : "GrayLight",
+    "description" : "A lighter take on the default theme",
+    "url" : "https://github.com/nexusgx/Codiad-Theme-Gray-And-Light"
   }
 ]
