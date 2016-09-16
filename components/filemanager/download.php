@@ -73,7 +73,8 @@
     header('Cache-Control: must-revalidate');
     header('Pragma: public');
     header('Content-Length: ' . filesize($download_file));
-    ob_clean();
+    if (ob_get_contents()) 
+        ob_end_clean();
     flush();
     readfile($download_file);
     // Remove temp tarball
