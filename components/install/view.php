@@ -54,8 +54,8 @@ if (!empty($query)) {
 
 if(!$workspace || !$data || !$config || $register || $newrelic){
     ?>
-    <h1>Installation Error</h1>
-    <p>Please make sure the following exist and are writeable:</p>
+    <h1><?php i18n("Installation Error"); ?></h1>
+    <p><?php i18n("Please make sure the following exist and are writeable:"); ?></p>
     <div class="install_issues">
         <p>[SYSTEM]/config.php - <?php if($config) { echo '<font style="color:green">PASSED</font>'; } else { echo '<font style="color:red">ERROR</font>'; } ?></p>
         <p>[SYSTEM]/workspace - <?php if($workspace) { echo '<font style="color:green">PASSED</font>'; } else { echo '<font style="color:red">ERROR</font>'; } ?></p>
@@ -64,7 +64,7 @@ if(!$workspace || !$data || !$config || $register || $newrelic){
         <p>[SYSTEM]/data - <?php if($data) { echo '<font style="color:green">PASSED</font>'; } else { echo '<font style="color:red">ERROR</font>'; } ?></p> 
     </div>
     <?php if($register || $newrelic) { ?>
-    <p>Please make sure these environmental variables are set:</p>
+    <p><?php i18n("Please make sure these environmental variables are set:"); ?></p>
     <div class="install_issues">
         <?php if($register) { echo '<p>register_globals: Off</p>'; }
               if($newrelic) { echo '<p>newrelic.enabled: Off</p>'; } ?>
@@ -76,9 +76,9 @@ if(!$workspace || !$data || !$config || $register || $newrelic){
 }else{
     ?>
     <form id="install">
-    <h1>Initial Setup</h1>
+    <h1><?php i18n("Initial Setup"); ?></h1>
 
-		<label>Dependencies</label>
+		<label><?php i18n("Dependencies"); ?></label>
 		<div id="dependencies">
 			<?php foreach(array("ZIP", "OpenSSL", "MBString") as $dep) {
 				if(extension_loaded(strtolower($dep))) { ?>
@@ -91,19 +91,19 @@ if(!$workspace || !$data || !$config || $register || $newrelic){
 
     <input type="hidden" name="path" value="<?php echo($path); ?>">
 
-    <label>New Username</label>
+            <label><?php i18n("New Username"); ?></label>
     <input type="text" name="username" autofocus="autofocus"  value="<?php echo($autocomplete['username']); ?>">
 
     <div style="float:left; width: 48%; margin-right: 4%;">
 
-        <label>Password</label>
+        <label><?php i18n("Password"); ?></label>
         <input type="password" name="password" value="<?php echo($autocomplete['password']); ?>">
 
     </div>
 
     <div style="float:left; width: 48%;">
 
-        <label>Confirm Password</label>
+        <label><?php i18n("Confirm Password"); ?></label>
         <input type="password" name="password_confirm" value="<?php echo($autocomplete['password_confirm']); ?>">
 
     </div>
@@ -112,9 +112,9 @@ if(!$workspace || !$data || !$config || $register || $newrelic){
 
     <hr>
 
-    <label>New Project Name</label>
+    <label><?php i18n("New Project Name"); ?></label>
     <input type="text" name="project_name" value="<?php echo($autocomplete['project_name']); ?>">
-    <label>Folder Name or Absolute Path</label>
+    <label><?php i18n("Folder Name or Absolute Path"); ?></label>
     <input type="text" name="project_path" value="<?php echo($autocomplete['project_path']); ?>">
     <hr>
       <?php
@@ -212,7 +212,7 @@ if(!$workspace || !$data || !$config || $register || $newrelic){
         );
       ?>
 
-    <label>Timezone</label>
+    <label><?php i18n("Timezone"); ?></label>
     <select name="timezone">
       <?php
       foreach ($location as $key => $city) {
@@ -227,7 +227,7 @@ if(!$workspace || !$data || !$config || $register || $newrelic){
       ?>
     </select>
 
-    <button>Install</button>
+    <button><?php i18n("Install"); ?></button>
     </form>
     <?php
 }
