@@ -29,6 +29,7 @@ class fileextension_textmode{
 			'php5' => 'php',
 			'phtml' => 'php',
 			'json' => 'json',
+			'java' => 'java',
 			'xml' => 'xml',
 			'sql' => 'sql',
 			'md' => 'markdown',
