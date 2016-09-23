@@ -19,10 +19,10 @@ checkSession();
 //////////////////////////////////////////////////////////////////
 //TODO check if the User is allowed to access the project
 if(!isset($_GET['path']) 
-		|| preg_match('#^[\\\/]?$#i', trim($_GET['path'])) // download all Projects
-		|| preg_match('#[\:*?\"<>\|]#i', $_GET['path']) //illegal chars in filenames
-		|| substr_count($_GET['path'], './') > 0) { // change directory up to escape Workspace
-	exit('<script>parent.codiad.message.error("Wrong data send")</script>');
+   || preg_match('#^[\\\/]?$#i', trim($_GET['path'])) // download all Projects
+   || preg_match('#[\:*?\"<>\|]#i', $_GET['path']) //illegal chars in filenames
+   || substr_count($_GET['path'], './') > 0) { // change directory up to escape Workspace
+    exit('<script>parent.codiad.message.error("Wrong data send")</script>');
 }
 
 //////////////////////////////////////////////////////////////////
@@ -37,7 +37,7 @@ if(isset($_GET['type']) && ($_GET['type']=='directory' || $_GET['type']=='root')
     $targetPath = DATA . '/';
     $dir = WORKSPACE . '/' . $_GET['path'];
     if(!is_dir($dir)){
-    	exit('<script>parent.codiad.message.error("Directory not found.")</script>');
+        exit('<script>parent.codiad.message.error("Directory not found.")</script>');
     }
 
     //////////////////////////////////////////////////////////////////
