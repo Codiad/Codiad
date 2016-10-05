@@ -35,6 +35,7 @@ class fileextension_textmode{
 			'md' => 'markdown',
 			'c' => 'c_cpp',
 			'cpp' => 'c_cpp',
+			'd' => 'd',
 			'h' => 'c_cpp',
 			'hpp' => 'c_cpp',
 			'py' => 'python',
