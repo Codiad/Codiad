@@ -22,28 +22,26 @@
     // Set Initial Version
     //////////////////////////////////////////////////////////////////
 
-    if($_GET['action']=='init'){
-        $update->Init();
-    }
+if ($_GET['action']=='init') {
+    $update->Init();
+}
     
     //////////////////////////////////////////////////////////////////
     // Clear Version
     //////////////////////////////////////////////////////////////////
 
-    if($_GET['action']=='clear'){
-        if(checkAccess()) {
-            $update->Clear();
-        }
+if ($_GET['action']=='clear') {
+    if (checkAccess()) {
+        $update->Clear();
     }
+}
     
     //////////////////////////////////////////////////////////////////
     // OptOut
     //////////////////////////////////////////////////////////////////
 
-    if($_GET['action']=='optout'){
-        if(checkAccess()) {
-            $update->OptOut();
-        }
+if ($_GET['action']=='optout') {
+    if (checkAccess()) {
+        $update->OptOut();
     }
-
-?>
+}

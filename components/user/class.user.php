@@ -6,7 +6,8 @@
 *  [root]/license.txt for more. This information must remain intact.
 */
 
-class User {
+class User
+{
 
     //////////////////////////////////////////////////////////////////
     // PROPERTIES
@@ -31,7 +32,8 @@ class User {
     // Construct
     //////////////////////////////////////////////////////////////////
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->users = getJSON('users.php');
         $this->actives = getJSON('active.php');
     }
@@ -40,38 +42,45 @@ class User {
     // Authenticate
     //////////////////////////////////////////////////////////////////
 
-    public function Authenticate(){
+    public function Authenticate()
+    {
 
         $pass = false;
         $this->EncryptPassword();
         $users = getJSON('users.php');
-        foreach($users as $user){
-            if($user['username']==$this->username && $user['password']==$this->password){
+        foreach ($users as $user) {
+            if ($user['username']==$this->username && $user['password']==$this->password) {
                 $pass = true;
                 $_SESSION['user'] = $this->username;
                 $_SESSION['lang'] = $this->lang;
                 $_SESSION['theme'] = $this->theme;
-                if($user['project']!=''){ $_SESSION['project'] = $user['project']; }
+                if ($user['project']!='') {
+                    $_SESSION['project'] = $user['project'];
+                }
             }
         }
 
-        if($pass){ echo formatJSEND("success",array("username"=>$this->username)); }
-        else{ echo formatJSEND("error","Incorrect Username or Password"); }
+        if ($pass) {
+            echo formatJSEND("success", array("username"=>$this->username));
+        } else {
+            echo formatJSEND("error", "Incorrect Username or Password");
+        }
     }
 
     //////////////////////////////////////////////////////////////////
     // Create Account
     //////////////////////////////////////////////////////////////////
 
-    public function Create(){
+    public function Create()
+    {
         $this->EncryptPassword();
         $pass = $this->checkDuplicate();
-        if($pass){
+        if ($pass) {
             $this->users[] = array("username"=>$this->username,"password"=>$this->password,"project"=>"");
-            saveJSON('users.php',$this->users);
-            echo formatJSEND("success",array("username"=>$this->username));
-        }else{
-            echo formatJSEND("error","The Username is Already Taken");
+            saveJSON('users.php', $this->users);
+            echo formatJSEND("success", array("username"=>$this->username));
+        } else {
+            echo formatJSEND("error", "The Username is Already Taken");
         }
     }
 
@@ -79,100 +88,105 @@ class User {
     // Delete Account
     //////////////////////////////////////////////////////////////////
 
-    public function Delete(){
+    public function Delete()
+    {
         // Remove User
         $revised_array = array();
-        foreach($this->users as $user=>$data){
-            if($data['username']!=$this->username){
+        foreach ($this->users as $user => $data) {
+            if ($data['username']!=$this->username) {
                 $revised_array[] = array("username"=>$data['username'],"password"=>$data['password'],"project"=>$data['project']);
             }
         }
         // Save array back to JSON
-        saveJSON('users.php',$revised_array);
+        saveJSON('users.php', $revised_array);
 
         // Remove any active files
-        foreach($this->actives as $active=>$data){
-            if($this->username==$data['username']){
+        foreach ($this->actives as $active => $data) {
+            if ($this->username==$data['username']) {
                 unset($this->actives[$active]);
             }
         }
-        saveJSON('active.php',$this->actives);
+        saveJSON('active.php', $this->actives);
 
         // Remove access control list (if exists)
-        if(file_exists(BASE_PATH . "/data/" . $this->username . '_acl.php')){
+        if (file_exists(BASE_PATH . "/data/" . $this->username . '_acl.php')) {
             unlink(BASE_PATH . "/data/" . $this->username . '_acl.php');
         }
 
         // Response
-        echo formatJSEND("success",null);
+        echo formatJSEND("success", null);
     }
 
     //////////////////////////////////////////////////////////////////
     // Change Password
     //////////////////////////////////////////////////////////////////
 
-    public function Password(){
+    public function Password()
+    {
         $this->EncryptPassword();
         $revised_array = array();
-        foreach($this->users as $user=>$data){
-            if($data['username']==$this->username){
+        foreach ($this->users as $user => $data) {
+            if ($data['username']==$this->username) {
                 $revised_array[] = array("username"=>$data['username'],"password"=>$this->password,"project"=>$data['project']);
-            }else{
+            } else {
                 $revised_array[] = array("username"=>$data['username'],"password"=>$data['password'],"project"=>$data['project']);
             }
         }
         // Save array back to JSON
-        saveJSON('users.php',$revised_array);
+        saveJSON('users.php', $revised_array);
         // Response
-        echo formatJSEND("success",null);
+        echo formatJSEND("success", null);
     }
 
     //////////////////////////////////////////////////////////////////
     // Set Project Access
     //////////////////////////////////////////////////////////////////
 
-    public function Project_Access(){
+    public function Project_Access()
+    {
         // Access set to all projects
-        if($this->projects==0){
-            if(file_exists(BASE_PATH . "/data/" . $this->username . '_acl.php')){
+        if ($this->projects==0) {
+            if (file_exists(BASE_PATH . "/data/" . $this->username . '_acl.php')) {
                 unlink(BASE_PATH . "/data/" . $this->username . '_acl.php');
             }
         // Access set to restricted list
-        }else{
+        } else {
             // Save array back to JSON
-            saveJSON($this->username . '_acl.php',$this->projects);
+            saveJSON($this->username . '_acl.php', $this->projects);
         }
         // Response
-        echo formatJSEND("success",null);
+        echo formatJSEND("success", null);
     }
 
     //////////////////////////////////////////////////////////////////
     // Set Current Project
     //////////////////////////////////////////////////////////////////
 
-    public function Project(){
+    public function Project()
+    {
         $revised_array = array();
-        foreach($this->users as $user=>$data){
-            if($this->username==$data['username']){
+        foreach ($this->users as $user => $data) {
+            if ($this->username==$data['username']) {
                 $revised_array[] = array("username"=>$data['username'],"password"=>$data['password'],"project"=>$this->project);
-            }else{
+            } else {
                 $revised_array[] = array("username"=>$data['username'],"password"=>$data['password'],"project"=>$data['project']);
             }
         }
         // Save array back to JSON
-        saveJSON('users.php',$revised_array);
+        saveJSON('users.php', $revised_array);
         // Response
-        echo formatJSEND("success",null);
+        echo formatJSEND("success", null);
     }
 
     //////////////////////////////////////////////////////////////////
     // Check Duplicate
     //////////////////////////////////////////////////////////////////
 
-    public function CheckDuplicate(){
+    public function CheckDuplicate()
+    {
         $pass = true;
-        foreach($this->users as $user=>$data){
-            if($data['username']==$this->username){
+        foreach ($this->users as $user => $data) {
+            if ($data['username']==$this->username) {
                 $pass = false;
             }
         }
@@ -183,10 +197,11 @@ class User {
     // Verify Account Exists
     //////////////////////////////////////////////////////////////////
 
-    public function Verify(){
+    public function Verify()
+    {
         $pass = 'false';
-        foreach($this->users as $user=>$data){
-            if($this->username==$data['username']){
+        foreach ($this->users as $user => $data) {
+            if ($this->username==$data['username']) {
                 $pass = 'true';
             }
         }
@@ -197,7 +212,8 @@ class User {
     // Encrypt Password
     //////////////////////////////////////////////////////////////////
 
-    private function EncryptPassword(){
+    private function EncryptPassword()
+    {
         $this->password = sha1(md5($this->password));
     }
 
@@ -205,8 +221,8 @@ class User {
     // Clean username
     //////////////////////////////////////////////////////////////////
 
-    public static function CleanUsername( $username ){
-        return preg_replace('#[^A-Za-z0-9'.preg_quote('-_@. ').']#','', $username);
+    public static function CleanUsername($username)
+    {
+        return preg_replace('#[^A-Za-z0-9'.preg_quote('-_@. ').']#', '', $username);
     }
-
 }

@@ -1,4 +1,4 @@
-<?php 
+<?php
     require_once('../../common.php');
 ?>
 <label><span class="icon-doc-text big-icon"></span><?php i18n("System Settings"); ?></label>

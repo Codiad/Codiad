@@ -5,13 +5,23 @@ php:
   - 5.4
   - 5.5
   - 5.6
+  - 7.0
 
 env:
-  - RUN=vendor/bin/phing
+  global:
+    # Naming conventions and Namespace are not compatible current and LineLength
+    - CS_EXCLUDE: "PSR1.Classes.ClassDeclaration,PSR1.Methods.CamelCapsMethodName,Squiz.Classes.ValidClassName,Generic.NamingConventions.UpperCaseConstantName,Generic.Files.LineLength,PSR1.Files.SideEffects"
+    - CS_INGNORE: "dialog.php"
 
-script: ${RUN}
-
-before_script:
-  - composer selfupdate
-  - composer --version
+#install dependence
+install:
   - composer install --prefer-dist --verbose
+
+# check formatting and Syntax
+script:
+  - ./vendor/bin/phpcs components
+      --standard=PSR2
+      --exclude="$CS_EXCLUDE"
+      --ignore="$CS_INGNORE"
+      --colors
+      --extensions=php

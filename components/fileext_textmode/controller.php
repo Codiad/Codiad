@@ -13,5 +13,3 @@ $fileExTM = new fileextension_textmode();
 
 
 echo $fileExTM->processForms();
-
-?>

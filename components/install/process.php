@@ -24,47 +24,53 @@
 // Functions
 //////////////////////////////////////////////////////////////////////
 
-    function saveFile($file,$data){
-        $write = fopen($file, 'w') or die("can't open file");
-        fwrite($write, $data);
-        fclose($write);
+function saveFile($file, $data)
+{
+    $write = fopen($file, 'w') or die("can't open file");
+    fwrite($write, $data);
+    fclose($write);
+}
+
+function saveJSON($file, $data)
+{
+    $data = "<?php/*|" . json_encode($data) . "|*/?>";
+    saveFile($file, $data);
+}
+
+function encryptPassword($p)
+{
+    return sha1(md5($p));
+}
+
+function cleanUsername($username)
+{
+    return preg_replace('#[^A-Za-z0-9'.preg_quote('-_@. ').']#', '', $username);
+}
+
+function isAbsPath($path)
+{
+    return $path[0] === '/';
+}
+
+function cleanPath($path)
+{
+
+    // prevent Poison Null Byte injections
+    $path = str_replace(chr(0), '', $path);
+
+    // prevent go out of the workspace
+    while (strpos($path, '../') !== false) {
+        $path = str_replace('../', '', $path);
     }
 
-    function saveJSON($file,$data){
-        $data = "<?php/*|" . json_encode($data) . "|*/?>";
-        saveFile($file,$data);
-    }
-
-    function encryptPassword($p){
-        return sha1(md5($p));
-    }
-
-    function cleanUsername($username){
-        return preg_replace('#[^A-Za-z0-9'.preg_quote('-_@. ').']#','', $username);
-    }
-
-    function isAbsPath( $path ) {
-        return $path[0] === '/';
-    }
-
-    function cleanPath( $path ){
-
-        // prevent Poison Null Byte injections
-        $path = str_replace(chr(0), '', $path );
-
-        // prevent go out of the workspace
-        while (strpos($path , '../') !== false)
-            $path = str_replace( '../', '', $path );
-
-        return $path;
-    }
+    return $path;
+}
 
 //////////////////////////////////////////////////////////////////////
 // Verify no overwrites
 //////////////////////////////////////////////////////////////////////
 
-if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
-
+if (!file_exists($users) && !file_exists($projects) && !file_exists($active)) {
     //////////////////////////////////////////////////////////////////
     // Get POST responses
     //////////////////////////////////////////////////////////////////
@@ -72,7 +78,7 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
     $username = cleanUsername($_POST['username']);
     $password = encryptPassword($_POST['password']);
     $project_name = $_POST['project_name'];
-    if(isset($_POST['project_path'])) {
+    if (isset($_POST['project_path'])) {
         $project_path = $_POST['project_path'];
     } else {
         $project_path = $project_name;
@@ -85,27 +91,27 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
 
     $project_path = cleanPath($project_path);
 
-    if(!isAbsPath($project_path)) {
-        $project_path = str_replace(" ","_",preg_replace('/[^\w-\.]/', '', $project_path));
+    if (!isAbsPath($project_path)) {
+        $project_path = str_replace(" ", "_", preg_replace('/[^\w-\.]/', '', $project_path));
         mkdir($workspace . "/" . $project_path);
     } else {
         $project_path = cleanPath($project_path);
-        if(substr($project_path, -1) == '/') {
-            $project_path = substr($project_path,0, strlen($project_path)-1);
+        if (substr($project_path, -1) == '/') {
+            $project_path = substr($project_path, 0, strlen($project_path)-1);
         }
-        if(!file_exists($project_path)) {
-            if(!mkdir($project_path.'/', 0755, true)) {
+        if (!file_exists($project_path)) {
+            if (!mkdir($project_path.'/', 0755, true)) {
                 die("Unable to create Absolute Path");
             }
         } else {
-            if(!is_writable($project_path) || !is_readable($project_path)) {
+            if (!is_writable($project_path) || !is_readable($project_path)) {
                 die("No Read/Write Permission");
             }
         }
     }
     $project_data = array("name"=>$project_name,"path"=>$project_path);
 
-    saveJSON($projects,array($project_data));
+    saveJSON($projects, array($project_data));
 
     //////////////////////////////////////////////////////////////////
     // Create Users file
@@ -113,13 +119,13 @@ if(!file_exists($users) && !file_exists($projects) && !file_exists($active)){
 
     $user_data = array("username"=>$username,"password"=>$password,"project"=>$project_path);
 
-    saveJSON($users,array($user_data));
+    saveJSON($users, array($user_data));
 
     //////////////////////////////////////////////////////////////////
     // Create Active file
     //////////////////////////////////////////////////////////////////
 
-    saveJSON($active,array(''));
+    saveJSON($active, array(''));
     
     //////////////////////////////////////////////////////////////////
     // Create Config
@@ -182,10 +188,7 @@ define("WSURL", BASE_URL . "/workspace");
 //define("COMMITURL", "https://api.github.com/repos/Codiad/Codiad/commits");
 ';
 
-    saveFile($config,$config_data);
+    saveFile($config, $config_data);
 
     echo("success");
-
 }
-
-?>
