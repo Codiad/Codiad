@@ -6,7 +6,8 @@
 *  [root]/license.txt for more. This information must remain intact.
 */
 
-class Settings {
+class Settings
+{
 
     //////////////////////////////////////////////////////////////////
     // PROPERTIES
@@ -25,13 +26,16 @@ class Settings {
     // Construct
     //////////////////////////////////////////////////////////////////
 
-    public function __construct(){}
+    public function __construct()
+    {
+    }
 
     //////////////////////////////////////////////////////////////////
     // Save User Settings
     //////////////////////////////////////////////////////////////////
 
-    public function Save(){
+    public function Save()
+    {
         if (!file_exists(DATA . "/settings.php")) {
             saveJSON('settings.php', array($this->username => array('codiad.username' => $this->username)));
         }
@@ -47,12 +51,12 @@ class Settings {
     // Load User Settings
     //////////////////////////////////////////////////////////////////
 
-    public function Load(){
+    public function Load()
+    {
         if (!file_exists(DATA . "/settings.php")) {
             saveJSON('settings.php', array($this->username => array('codiad.username' => $this->username)));
         }
         $settings = getJSON('settings.php');
         echo formatJSEND("success", $settings[$this->username]);
     }
-
 }

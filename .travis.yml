@@ -1,17 +1,52 @@
-language: php
+language: php 
 
 php:
   - 5.3
   - 5.4
   - 5.5
   - 5.6
+  - 7.0
 
 env:
-  - RUN=vendor/bin/phing
+  global:
+    # PHP Code Sniffer special rules
+    - R_CLASS="Squiz.Classes.ValidClassName" # must use CamleClasName    
+    - R_CONST="Generic.NamingConventions.UpperCaseConstantName" # const must UPPERCASE
+    - R_FILE="PSR1.Files.SideEffects" # a file declare , or executes logic, not both 
+    - R_LINE="Generic.Files.LineLength" #
+    - R_METHOD="PSR1.Methods.CamelCapsMethodName" # must use camleMethodName
+    - R_NS="PSR1.Classes.ClassDeclaration" # class must use Namespace
+    - CS_INGNORE=""    # ingore Files
+  matrix:
+    #strict mode to check formatting
+    - STRICT=true 
+    # exclude some special or unsupported conventions
+    - STRICT=false CS_INGNORE="dialog.php"
 
-script: ${RUN}
+#allow failures
+matrix:
+  allow_failures:
+    - env: STRICT=true
 
-before_script:
-  - composer selfupdate
-  - composer --version
+#install dependence
+install:
   - composer install --prefer-dist --verbose
+
+#init the env to exclude
+before_script:
+  # STRICT mode only exclude Namespace and LineLength
+  - if [[ "$STRICT" == "true" ]];then
+      export CS_EXCLUDE="$R_LINE,$R_NS";
+    else
+      export CS_EXCLUDE="$R_CLASS,$R_CONST,$R_FILE,$R_LINE,$R_METHOD,$R_NS";
+    fi
+  - echo $CS_EXCLUDE
+
+# check formatting and Syntax
+script:
+  - ./vendor/bin/phpcs components
+      --standard=PSR2
+      --exclude="$CS_EXCLUDE"
+      --ignore="$CS_INGNORE"
+      --colors
+      --extensions=php

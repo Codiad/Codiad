@@ -11,9 +11,9 @@
         <td>
         
         <select class="setting" data-setting="codiad.editor.theme">
-			<option value="ambiance">Ambiance</option>
+            <option value="ambiance">Ambiance</option>
             <option value="chaos">Chaos</option>
-			<option value="chrome">Chrome</option>
+            <option value="chrome">Chrome</option>
             <option value="clouds">Clouds</option>
             <option value="clouds_midnight">Clouds - Midnight</option>
             <option value="cobalt">Cobalt</option>
@@ -23,10 +23,10 @@
             <option value="eclipse">Eclipse</option>
             <option value="github">GitHub</option>
             <option value="idle_fingers">Idle Fingers</option>
-			<option value="iplastic">IPlastic</option>
+            <option value="iplastic">IPlastic</option>
             <option value="katzenmilch">Katzenmilch</option>
             <option value="kuroir">Kuroir</option>
-			<option value="kr_theme">krTheme</option>
+            <option value="kr_theme">krTheme</option>
             <option value="merbivore">Merbivore</option>
             <option value="merbivore_soft">Merbivore Soft</option>
             <option value="mono_industrial">Mono Industrial</option>
@@ -34,7 +34,7 @@
             <option value="pastel_on_dark">Pastel On Dark</option>
             <option value="solarized_dark">Solarized Dark</option>
             <option value="solarized_light">Solarized Light</option>
-			<option value="sqlserver">SQL Server</option>
+            <option value="sqlserver">SQL Server</option>
             <option value="terminal">Terminal</option>
             <option value="textmate">Textmate</option>
             <option value="tomorrow">Tomorrow</option>
@@ -44,7 +44,7 @@
             <option value="tomorrow_night_eighties">Tomorrow Night Eighties</option>
             <option value="twilight" selected>Twilight</option>
             <option value="vibrant_ink">Vibrant Ink</option>
-			<option value="xcode">XCode</option>
+            <option value="xcode">XCode</option>
         </select>
         
         </td>
