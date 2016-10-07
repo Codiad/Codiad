@@ -23,3 +23,9 @@ Stick to the conventions defined in other components as closely as possible.
 In order to maintain a consistant code structure to the code across the application please run any changes through JSBeautifier (http://jsbeautifier.org/) with the default settings.
 
 If you have questions, please ask. Submit an issue or [contact us directly](mailto:dev@codiad.com). 
+
+**PHP Formatting**
+
+In order to maintain a consistant code structure we are using travis CI to validate a proper formatting.
+
+[![Build Status](https://travis-ci.org/Codiad/Codiad.svg?branch=master)](https://travis-ci.org/Codiad/Codiad)
