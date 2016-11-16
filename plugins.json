@@ -282,5 +282,11 @@
     "description" : "Sass/Scss Compiler for Codiad",
     "image": "https://raw.githubusercontent.com/Andr3as/Codiad-SassCompiler/master/screen.png",
     "url" : "https://github.com/Andr3as/Codiad-SassCompiler"
+  },
+  { "author" : "olivierauverlot",
+    "name" : "ChromeToolkit",
+    "description" : "ChromeToolkit for Codiad",
+    "image": "https://raw.githubusercontent.com/olivierauverlot/Codiad-ChromeToolkit/master/screen.png",
+    "url" : "https://github.com/olivierauverlot/Codiad-ChromeToolkit"
   }
 ]
