@@ -36,12 +36,12 @@
         //////////////////////////////////////////////////////////////////
         // Listen for dbclick events on nodes
         //////////////////////////////////////////////////////////////////
-
+        
         nodeListener: function() {
             var _this = this;
             
             $('#file-manager').on('selectstart', false);
-
+            
             $('#file-manager span')
                 .live('click', function() { // Open or Expand
                     if ($(this).parent().children("a").attr('data-type') == 'directory') {
@@ -61,48 +61,25 @@
                         }
                     }
                 });
+            
             $('#file-manager a')
                 .live('dblclick', function() { // Open or Expand
                     if (!codiad.editor.settings.fileManagerTrigger) {
-                      if ($(this)
-                          .hasClass('directory')) {
-                          _this.index($(this)
-                              .attr('data-path'));
-                      } else {
-                          _this.openFile($(this)
-                              .attr('data-path'));
-                      }
-                      if (!$(this).parent().children("span").hasClass('none')) {
-                          if ($(this).parent().children("span").hasClass('plus')) {
-                              $(this).parent().children("span").removeClass('plus')
-                              $(this).parent().children("span").addClass('minus');
-                          } else {
-                              $(this).parent().children("span").removeClass('minus')
-                              $(this).parent().children("span").addClass('plus');
-                          }
-                      }
+                      _this.expandOrOpen($(this));
                     }
                 })
-                .live('click', function() { // Open or Expand
-                    if (codiad.editor.settings.fileManagerTrigger) {
-                      if ($(this)
-                          .hasClass('directory')) {
-                          _this.index($(this)
-                              .attr('data-path'));
-                      } else {
-                          _this.openFile($(this)
-                              .attr('data-path'));
-                      }
-                      if (!$(this).parent().children("span").hasClass('none')) {
-                          if ($(this).parent().children("span").hasClass('plus')) {
-                              $(this).parent().children("span").removeClass('plus')
-                              $(this).parent().children("span").addClass('minus');
-                          } else {
-                              $(this).parent().children("span").removeClass('minus')
-                              $(this).parent().children("span").addClass('plus');
-                          }
-                      }
-                    }
+                .live('touchstart click', function(e) { // Open or Expand
+	                e.stopPropagation();
+					e.preventDefault();
+					if(event.handled !== true) {
+						// this fires once on all devices
+						if (codiad.editor.settings.fileManagerTrigger) {
+	                      _this.expandOrOpen($(this));
+	                    }
+			            event.handled = true;
+			        } else {
+			            return false;
+			        }
                 })
                 .live("contextmenu", function(e) { // Context Menu
                     e.preventDefault();
@@ -114,6 +91,28 @@
                         .addClass('context-menu-active');
                 });
         },
+        
+        
+        //////////////////////////////////////////////////////////////////
+        //Expend or Open the file/folder
+        //////////////////////////////////////////////////////////////////
+        expandOrOpen: function(elem){
+	        var _this = this;
+			if (elem.hasClass('directory')) {
+				_this.index(elem.attr('data-path'));
+			} else {
+				_this.openFile(elem.attr('data-path'));
+			}
+			if (!elem.parent().children("span").hasClass('none')) {
+				if (elem.parent().children("span").hasClass('plus')) {
+					elem.parent().children("span").removeClass('plus')
+					elem.parent().children("span").addClass('minus');
+				} else {
+					elem.parent().children("span").removeClass('minus')
+					elem.parent().children("span").addClass('plus');
+				}
+			}     
+		},
 
         //////////////////////////////////////////////////////////////////
         // Context Menu
