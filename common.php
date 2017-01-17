@@ -180,6 +180,7 @@
             }
 
             $json = file_get_contents($path . $file);
+            $json = str_replace(["\n\r", "\r", "\n"], "", $json);
             $json = str_replace("|*/?>","",str_replace("<?php/*|","",$json));
             $json = json_decode($json,true);
             return $json;
@@ -197,7 +198,7 @@
                 if(!is_dir($path)) mkdir($path);
             }
 
-            $data = "<?php/*|" . json_encode($data) . "|*/?>";
+            $data = "<?php\r\n/*|" . json_encode($data) . "|*/\r\n?>";
             $write = fopen($path . $file, 'w') or die("can't open file ".$path.$file);
             fwrite($write, $data);
             fclose($write);
