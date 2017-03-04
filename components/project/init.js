@@ -169,7 +169,7 @@
 
         rename: function(path,name) {
             var _this = this;
-            codiad.modal.load(500, this.dialog + '?action=rename&path=' + escape(path) + '&name='+name);
+            codiad.modal.load(500, this.dialog + '?action=rename&path=' + encodeURIComponent(path) + '&name='+name);
             $('#modal-content form')
                 .live('submit', function(e) {
                 e.preventDefault();
@@ -197,7 +197,7 @@
 
         delete: function(name, path) {
             var _this = this;
-            codiad.modal.load(500, this.dialog + '?action=delete&name=' + escape(name) + '&path=' + escape(path));
+            codiad.modal.load(500, this.dialog + '?action=delete&name=' + encodeURIComponent(name) + '&path=' + encodeURIComponent(path));
             $('#modal-content form')
                 .live('submit', function(e) {
                 e.preventDefault();
