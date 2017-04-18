@@ -282,7 +282,7 @@
                 });
             } else {
                 node.addClass('loading');
-                $.get(this.controller + '?action=index&path=' + path, function(data) {
+                $.get(this.controller + '?action=index&path=' + encodeURIComponent(path), function(data) {
                     node.addClass('open');
                     var objectsResponse = codiad.jsend.parse(data);
                     if (objectsResponse != 'error') {
@@ -371,7 +371,7 @@
             var ext = this.getExtension(path);
             if ($.inArray(ext.toLowerCase(), this.noOpen) < 0) {
                 node.addClass('loading');
-                $.get(this.controller + '?action=open&path=' + path, function(data) {
+                $.get(this.controller + '?action=open&path=' + encodeURIComponent(path), function(data) {
                     var openResponse = codiad.jsend.parse(data);
                     if (openResponse != 'error') {
                         node.removeClass('loading');
@@ -397,7 +397,7 @@
 
         openInBrowser: function(path) {
             $.ajax({
-                url: this.controller + '?action=open_in_browser&path=' + path,
+                url: this.controller + '?action=open_in_browser&path=' + encodeURIComponent(path),
                 success: function(data) {
                     var openIBResponse = codiad.jsend.parse(data);
                     if (openIBResponse != 'error') {
@@ -423,7 +423,7 @@
                     callbacks.error.apply(context, [data]);
                 }
             }
-            $.post(this.controller + '?action=modify&path='+path, data, function(resp){
+            $.post(this.controller + '?action=modify&path=' + encodeURIComponent(path), data, function(resp){
                 resp = $.parseJSON(resp);
                 if (resp.status == 'success') {
                     codiad.message.success(i18n('File saved'));
@@ -493,7 +493,7 @@
                     var type = $('#modal-content form input[name="type"]')
                         .val();
                     var createPath = path + '/' + shortName;
-                    $.get(codiad.filemanager.controller + '?action=create&path=' + createPath + '&type=' + type, function(data) {
+                    $.get(codiad.filemanager.controller + '?action=create&path=' + encodeURIComponent(createPath) + '&type=' + type, function(data) {
                         var createResponse = codiad.jsend.parse(data);
                         if (createResponse != 'error') {
                             codiad.message.success(type.charAt(0)
@@ -561,8 +561,8 @@
                 shortName = "copy_of_"+shortName;
             }
             $.get(this.controller + '?action=duplicate&path=' +
-                this.clipboard + '&destination=' +
-                path + '/' + shortName, function(data) {
+                encodeURIComponent(this.clipboard) + '&destination=' +
+                encodeURIComponent(path + '/' + shortName), function(data) {
                     var pasteResponse = codiad.jsend.parse(data);
                     if (pasteResponse != 'error') {
                         _this.createObject(path, path + '/' + shortName, type);
@@ -647,7 +647,7 @@
             $('#modal-content form')
                 .live('submit', function(e) {
                 e.preventDefault();
-                $.get(_this.controller + '?action=delete&path=' + path, function(data) {
+                $.get(_this.controller + '?action=delete&path=' + encodeURIComponent(path), function(data) {
                     var deleteResponse = codiad.jsend.parse(data);
                     if (deleteResponse != 'error') {
                         var node = $('#file-manager a[data-path="' + path + '"]');
@@ -706,7 +706,7 @@
                 }
                 searchType = $('#modal-content form select[name="search_type"]')
                     .val();
-                $.post(_this.controller + '?action=search&path=' + path + '&type=' + searchType, {
+                $.post(_this.controller + '?action=search&path=' + encodeURIComponent(path) + '&type=' + searchType, {
                     search_string: searchString,
                     search_file_type: searchFileType
                 }, function(data) {
@@ -763,7 +763,7 @@
         download: function(path) {
             var type = this.getType(path);
             $('#download')
-                .attr('src', 'components/filemanager/download.php?path=' + path + '&type=' + type);
+                .attr('src', 'components/filemanager/download.php?path=' + encodeURIComponent(path) + '&type=' + type);
         }
     };
 

@@ -65,7 +65,7 @@
         open: function(path) {
             var _this = this;
             codiad.finder.contractFinder();
-            $.get(this.controller + '?action=open&path=' + path, function(data) {
+            $.get(this.controller + '?action=open&path=' + encodeURIComponent(path), function(data) {
                 var projectInfo = codiad.jsend.parse(data);
                 if (projectInfo != 'error') {
                     _this.loadCurrent();
@@ -149,7 +149,7 @@
                         create = confirm('Do you really want to create project with absolute path "' + projectPath + '"?');
                     }
                 if(create) {    
-                    $.get(_this.controller + '?action=create&project_name=' + projectName + '&project_path=' + projectPath + '&git_repo=' + gitRepo + '&git_branch=' + gitBranch, function(data) {
+                    $.get(_this.controller + '?action=create&project_name=' + encodeURIComponent(projectName) + '&project_path=' + encodeURIComponent(projectPath) + '&git_repo=' + gitRepo + '&git_branch=' + gitBranch, function(data) {
                         createResponse = codiad.jsend.parse(data);
                         if (createResponse != 'error') {
                             _this.open(createResponse.path);
@@ -169,7 +169,7 @@
 
         rename: function(path,name) {
             var _this = this;
-            codiad.modal.load(500, this.dialog + '?action=rename&path=' + escape(path) + '&name='+name);
+            codiad.modal.load(500, this.dialog + '?action=rename&path=' + encodeURIComponent(path) + '&name='+name);
             $('#modal-content form')
                 .live('submit', function(e) {
                 e.preventDefault();
@@ -177,7 +177,7 @@
                     .val();
                 var projectName = $('#modal-content form input[name="project_name"]')
                     .val();    
-                $.get(_this.controller + '?action=rename&project_path=' + projectPath + '&project_name=' + projectName, function(data) {
+                $.get(_this.controller + '?action=rename&project_path=' + encodeURIComponent(projectPath) + '&project_name=' + encodeURIComponent(projectName), function(data) {
                    renameResponse = codiad.jsend.parse(data);
                     if (renameResponse != 'error') {
                         codiad.message.success(i18n('Project renamed'));
@@ -197,7 +197,7 @@
 
         delete: function(name, path) {
             var _this = this;
-            codiad.modal.load(500, this.dialog + '?action=delete&name=' + escape(name) + '&path=' + escape(path));
+            codiad.modal.load(500, this.dialog + '?action=delete&name=' + encodeURIComponent(name) + '&path=' + encodeURIComponent(path));
             $('#modal-content form')
                 .live('submit', function(e) {
                 e.preventDefault();
@@ -208,13 +208,13 @@
                 var action = '?action=delete';
                 if( typeof deletefiles !== 'undefined' ) {
                     if( typeof followlinks !== 'undefined' ) {
-                        action += '&follow=true&path=' + projectPath;
+                        action += '&follow=true&path=' + encodeURIComponent(projectPath);
                     } else {
-                        action += '&path=' + projectPath;
+                        action += '&path=' + encodeURIComponent(projectPath);
                     }
                 }
                 $.get(codiad.filemanager.controller + action, function(d) {
-                    $.get(_this.controller + '?action=delete&project_path=' + projectPath, function(data) {
+                    $.get(_this.controller + '?action=delete&project_path=' + encodeURIComponent(projectPath), function(data) {
                         deleteResponse = codiad.jsend.parse(data);
                         if (deleteResponse != 'error') {
                             codiad.message.success(i18n('Project Deleted'));
