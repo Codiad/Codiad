@@ -8,6 +8,9 @@
     height: 100%;
     color: #fff;
 }
+.ace_editor {
+    position: absolute !important;
+}
 .ace_content {
     padding: 0;
     margin: 0;
