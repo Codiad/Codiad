@@ -33,7 +33,7 @@ function saveFile($file, $data)
 
 function saveJSON($file, $data)
 {
-    $data = "<?php/*|" . json_encode($data) . "|*/?>";
+    $data = "<?php/*|\r\n" . json_encode($data) . "\r\n|*/?>";
     saveFile($file, $data);
 }
 
