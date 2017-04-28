@@ -214,7 +214,7 @@ class User
 
     private function EncryptPassword()
     {
-        $this->password = sha1(md5($this->password));
+        $this->password = password_hash($this->password);
     }
 
     //////////////////////////////////////////////////////////////////
