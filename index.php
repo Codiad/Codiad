@@ -17,8 +17,8 @@ $themes = Common::readDirectory(THEMES);
 
 // Theme
 $theme = THEME;
-if(isset($_SESSION['theme'])) {
-  $theme = $_SESSION['theme'];
+if(isset($_SESSION['THEME'])) {
+  $theme = $_SESSION['THEME'];
 }
 
 ?>
