@@ -26,6 +26,7 @@ if(isset($_SESSION['theme'])) {
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?php i18n("CODIAD"); ?></title>
     <?php
     // Load System CSS Files
