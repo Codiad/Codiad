@@ -84,7 +84,7 @@
                               usort($subdata, 'sort_name');
                               foreach($subdata as $addon){
                                 if(isset($_GET['query']) && (strpos(strtolower(trim($addon['name'])), strtolower(trim($_GET['query']))) === false)) {
-                                  break;
+                                  continue;
                                 }
                                 echo '<tr><td><div style="position:relative;height:100px">';
                                 $left = 0;
