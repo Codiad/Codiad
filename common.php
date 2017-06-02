@@ -172,7 +172,21 @@
         // Get JSON
         //////////////////////////////////////////////////////////////////
 
-        public static function getJSON($file,$namespace=""){
+        public static function getJSON($file,$namespace="",$callback=null){
+            $is_callback_arg = Common::isVarPassedAsArg(get_defined_vars(), func_num_args(), "callback");
+            $callback = is_callable($callback) ? $callback : !$is_callback_arg && defined("GET_FUNC_NAME") && is_callable(GET_FUNC_NAME) ? GET_FUNC_NAME : null;
+            if ($callback) {
+                return call_user_func($callback,$file,$namespace);
+            } else {
+                return Common::readJSON($file,$namespace);
+            }
+        }
+
+        //////////////////////////////////////////////////////////////////
+        // Read JSON
+        //////////////////////////////////////////////////////////////////
+
+        public static function readJSON($file,$namespace=""){
             $path = DATA . "/";
             if($namespace != ""){
                 $path = $path . $namespace . "/";
@@ -190,7 +204,21 @@
         // Save JSON
         //////////////////////////////////////////////////////////////////
 
-        public static function saveJSON($file,$data,$namespace=""){
+        public static function saveJSON($file,$data,$namespace="",$callback=null){
+            $is_callback_arg = Common::isVarPassedAsArg(get_defined_vars(), func_num_args(), "callback");
+            $callback = is_callable($callback) ? $callback : !$is_callback_arg && defined("SAVE_FUNC_NAME") && is_callable(SAVE_FUNC_NAME) ? SAVE_FUNC_NAME : null;
+            if ($callback) {
+                call_user_func($callback,$file,$data,$namespace);
+            } else {
+                Common::writeJSON($file,$data,$namespace);
+            }
+        }
+
+        //////////////////////////////////////////////////////////////////
+        // Write JSON
+        //////////////////////////////////////////////////////////////////
+
+        public static function writeJSON($file,$data,$namespace=""){
             $path = DATA . "/";
             if($namespace != ""){
                 $path = $path . $namespace . "/";
@@ -296,6 +324,20 @@
             return (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
         }
 
+        //////////////////////////////////////////////////////////////////
+        // Check if a variable is passed as an argument to a function
+        //////////////////////////////////////////////////////////////////
+
+        public static function isVarPassedAsArg($func_args, $func_num_args, $arg_name) {
+            $func_args = array_keys($func_args);
+            for ($i = 0; $i < $func_num_args; $i++) {
+                if ($arg_name == $func_args[$i]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
     }
 
     //////////////////////////////////////////////////////////////////
@@ -306,8 +348,20 @@
     function i18n($key, $args = array()) { echo Common::i18n($key, $args); }
     function get_i18n($key, $args = array()) { return Common::get_i18n($key, $args); }
     function checkSession(){ Common::checkSession(); }
-    function getJSON($file,$namespace=""){ return Common::getJSON($file,$namespace); }
-    function saveJSON($file,$data,$namespace=""){ Common::saveJSON($file,$data,$namespace); }
+    function getJSON($file,$namespace="",$callback=null){
+        if (Common::isVarPassedAsArg(get_defined_vars(), func_num_args(), "callback")) {
+            return Common::getJSON($file,$namespace,$callback);
+        } else {
+            return Common::getJSON($file,$namespace);
+        }
+    }
+    function saveJSON($file,$data,$namespace="",$callback=null){
+        if (Common::isVarPassedAsArg(get_defined_vars(), func_num_args(), "callback")) {
+            Common::saveJSON($file,$data,$namespace,$callback);
+        } else {
+            Common::saveJSON($file,$data,$namespace);
+        }
+    }
     function formatJSEND($status,$data=false){ return Common::formatJSEND($status,$data); }
     function checkAccess() { return Common::checkAccess(); }
     function checkPath($path) { return Common::checkPath($path); }
