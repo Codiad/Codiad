@@ -57,7 +57,7 @@ class Filemanager extends Common
             $this->rel_path .= "/";
         }
         if (!empty($get['query'])) {
-            $this->query = escapeshellarg($get['query']);
+            $this->query = $get['query'];
         }
         if (!empty($get['options'])) {
             $this->foptions = $get['options'];
@@ -175,22 +175,22 @@ class Filemanager extends Common
         } else {
             chdir($this->path);
             $input = str_replace('"', '', $this->query);
-            $vinput = preg_quote($input);
             $cmd = 'find -L ';
+            $strategy = '';
             if ($this->foptions && $this->foptions['strategy']) {
-                switch ($this->f_options['strategy']) {
-                    case 'left_prefix':
-                        $cmd = "$cmd -iname \"$vinput*\"";
-                        break;
-                    case 'substring':
-                        $cmd = "$cmd -iname \"*$vinput*\"";
-                        break;
-                    case 'regexp':
-                        $cmd = "$cmd -regex \"$input\"";
-                        break;
-                }
-            } else {
-                $cmd = 'find -L -iname "' . $input . '*"';
+                $strategy = $this->foptions['strategy'];
+            }
+            switch ($strategy) {
+                case 'substring':
+                    $cmd = "$cmd -iname ".escapeshellarg('*'.$input.'*');
+                    break;
+                case 'regexp':
+                    $cmd = "$cmd -regex ".escapeshellarg($input);
+                    break;
+                case 'left_prefix':
+                default:
+                    $cmd = "$cmd -iname ".escapeshellarg($input.'*');
+                    break;
             }
             $cmd = "$cmd  -printf \"%h/%f %y\n\"";
             $output = shell_exec($cmd);
