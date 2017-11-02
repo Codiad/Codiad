@@ -71,10 +71,10 @@ class Filemanager extends Common
         }
         // Search
         if (!empty($post['search_string'])) {
-            $this->search_string = escapeshellarg($post['search_string']);
+            $this->search_string = ($post['search_string']);
         }
         if (!empty($post['search_file_type'])) {
-            $this->search_file_type = escapeshellarg($post['search_file_type']);
+            $this->search_file_type = ($post['search_file_type']);
         }
         // Create
         if (!empty($get['type'])) {
@@ -238,11 +238,12 @@ class Filemanager extends Common
             if ($_GET['type'] == 1) {
                 $this->path = WORKSPACE;
             }
-            $input = str_replace('"', '', $this->search_string);
-            $input = preg_quote($input);
-            $output = shell_exec('find -L ' . $this->path . ' -iregex  ".*' . $this->search_file_type  . '" -type f | xargs grep -i -I -n -R -H "' . $input . '"');
-            $output_arr = explode("\n", $output);
             $return = array();
+
+            $input = str_replace('"', '', $this->search_string);
+            $cmd = 'find -L ' . escapeshellarg($this->path) . ' -iregex  '.escapeshellarg('.*' . $this->search_file_type ).' -type f | xargs grep -i -I -n -R -H ' . escapeshellarg($input) . '';
+            $output = shell_exec($cmd);
+            $output_arr = explode("\n", $output);
             foreach ($output_arr as $line) {
                 $data = explode(":", $line);
                 $da = array();
