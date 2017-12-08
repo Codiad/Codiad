@@ -549,7 +549,7 @@ class Filemanager extends Common
         } else {
             // Handle upload
             $info = array();
-            while (list($key,$value) = each($_FILES['upload']['name'])) {
+            foreach( $_FILES['upload']['name'] as $key=>$value) {
                 if (!empty($value)) {
                     $filename = $value;
                     $add = $this->path."/$filename";
