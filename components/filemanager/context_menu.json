@@ -40,6 +40,11 @@
         "icon": "icon-eye",
         "applies-to" : "both no-external",
         "onclick": "codiad.filemanager.openInBrowser($('#context-menu').attr('data-path'));"
+    {
+        "title": "Preview in Editor",
+        "icon": "icon-eye",
+        "applies-to" : "both no-external",
+        "onclick": "codiad.filemanager.openPreviewTab($('#context-menu').attr('data-path'));"
     },
     {
         "title": "Break",
