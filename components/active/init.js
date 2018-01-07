@@ -421,7 +421,6 @@
         //////////////////////////////////////////////////////////////////
 
         focus: function(path, moveToTabList) {
-            console.log("active-Focus: "+path);
             if (moveToTabList === undefined) {
                 moveToTabList = true;
             }
@@ -429,8 +428,6 @@
             this.highlightEntry(path, moveToTabList);
             
             if(path != this.getPath()) {
-                console.log("active-Focus-set-session: "+this.sessions[path]);
-                console.dir(this.sessions[path]);
                 codiad.editor.setSession(this.sessions[path]);
                 this.history.push(path);
                 $.get(this.controller, {'action':'focused', 'path':path});

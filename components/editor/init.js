@@ -507,8 +507,6 @@
             var chType, chArr = [], sc = null, chIdx = null;
             var _this = this;
 
-            console.log("addInstance: ");
-            console.dir(this.instances);
             if (this.instances.length == 0) {
                 // el.appendTo($('#editor-region'));
                 el.appendTo($('#root-editor-wrapper'));
@@ -750,9 +748,7 @@
 
         removeWithoutReplaceSession: function(session) {
             var indexToRemove = -1;
-            console.log("s: "+session.path);
             for (var k = 0; k < this.instances.length; k++) {
-            console.log("ss: "+this.instances[k].getSession().path);
                 if (this.instances[k].getSession().path === session.path) {
                     indexToRemove = k;
                 }
@@ -765,8 +761,6 @@
                 $('#current-file').text('');
             }
 
-            console.log("removeWithoutReplace: ");
-            console.dir(this.instances);
         },
 
         isOpen: function(session){
@@ -816,10 +810,7 @@
         /////////////////////////////////////////////////////////////////
 
         setActive: function(i) {
-            console.log("start here");
             if (! i) return;
-            console.log("setActive: ");
-            console.dir(i);
             if (this.activeInstance) {
                 delete this.activeInstance;
             }
@@ -840,24 +831,19 @@
 
         setSession: function(session, i) {
             i = i || this.getActive();
-            console.log("set session - start");
             if (! this.isOpen(session)) {
                 if (! i) {
                     i = this.addInstance(session);
                 } else {
                     if (i && i.type != "ace" && session.type === "ace") {
-                console.log("set session - lost session - need recreate");
                         i = this.addInstance(session);
                     }
-                    console.log("set session - try ? recurse");
                     if (session.type === 'ace') {
-                        console.log("set session - ace - recurse");
                         $('.editor').show();
                         i.setSession(session);
                     }
                 }
             } else {
-                console.log("proxy session");
                 // Proxy session is required because scroll-position and
                 // cursor position etc. are shared among sessions.
 
@@ -875,13 +861,11 @@
                 }
             }
 
-            console.log("set session");
             if (session.type === 'iframe') {
                 $('#non-editor').html(session.content);
                 $('#non-editor').css('height', '100%');
                 $('.editor').hide();
                 $('#non-editor').show();
-                console.log("set session iframe - " + session.path);
                 $('.editor').remove();
                 $('.editor-wrapper').remove();
                 this.removeWithoutReplaceSession(i.getSession());
@@ -890,8 +874,6 @@
                 $('#non-editor').hide();
                 $('.editor').show();
                 this.applySettings(i);
-                console.log("set session ace - " + i.getSession().path);
-                //console.dir(i.getSession());
                 this.setActive(i);
             }
         },
@@ -1398,10 +1380,8 @@
 
         focus: function(i) {
             i = i || this.getActive();
-            console.log("focus: "+i.getSession().path);
             this.setActive(i);
             if (! i) return;
-            console.log("focus still here ");
             i.focus();
             codiad.active.focus(i.getSession().path);
             this.cursorTracking(i);
