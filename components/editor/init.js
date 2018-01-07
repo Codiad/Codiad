@@ -878,6 +878,7 @@
             console.log("set session");
             if (session.type === 'iframe') {
                 $('#non-editor').html(session.content);
+                $('#non-editor').css('height', '100%');
                 $('.editor').hide();
                 $('#non-editor').show();
                 console.log("set session iframe - " + session.path);

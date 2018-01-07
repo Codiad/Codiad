@@ -103,7 +103,7 @@
             var session = {};
             session.type = 'iframe';
             session.path = path;
-            session.content = content;
+            session.content = '<iframe src="' + content + '" style="height: 100%; width: 100%; background-color: white;">';
             session.tabThumb = 1;
             session.getRange = function() {
                 return 0;
@@ -142,6 +142,9 @@
                 return 0;
             };
             session.setUseSoftTabs = function() {
+                return 0;
+            };
+            session.resize = function() {
                 return 0;
             };
             _this.sessions[path] = session;
