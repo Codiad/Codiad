@@ -396,7 +396,11 @@
         //////////////////////////////////////////////////////////////////
 
         openPreviewTab: function(path, focus) {
-            codiad.active.open('preview', '<h3>Hello from js</h3>', 12, false, true);
+            $.get(this.controller + '?action=open_in_browser&path=' + encodeURIComponent(path), function(data) {
+                var openIBResponse = codiad.jsend.parse(data);
+		// Error handling needs to be added back in
+                codiad.active.openPreview('Preview: ' + path, openIBResponse.url, 12, false, focus);
+            });
         },
 
         //////////////////////////////////////////////////////////////////

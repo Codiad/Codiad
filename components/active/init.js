@@ -80,6 +80,7 @@
                 session.setUndoManager(new UndoManager());
 
                 session.path = path;
+                session.type = 'ace';
                 session.serverMTime = mtime;
                 _this.sessions[path] = session;
                 session.untainted = content.slice(0);
@@ -94,6 +95,57 @@
             // Assuming the mode file has no dependencies
             $.loadScript('components/editor/ace-editor/mode-' + mode + '.js',
             fn);
+        },
+
+        openPreview: function(path, content, mtime, inBackground, focus) {
+            var _this = this;
+
+            var session = {};
+            session.type = 'iframe';
+            session.path = path;
+            session.content = content;
+            session.tabThumb = 1;
+            session.getRange = function() {
+                return 0;
+            };
+            session.getMode = function() {
+                return 0;
+            };
+            session.setSession = function() {
+                return 0;
+            };
+            session.getSession = function() {
+                return this;
+            };
+            session.setTheme = function() {
+                return 0;
+            };
+            session.setFontSize = function() {
+                return 0;
+            };
+            session.setPrintMarginColumn = function() {
+                return 0;
+            };
+            session.setShowPrintMargin = function() {
+                return 0;
+            };
+            session.setHighlightActiveLine = function() {
+                return 0;
+            };
+            session.setDisplayIndentGuides = function() {
+                return 0;
+            };
+            session.setUseWrapMode = function() {
+                return 0;
+            };
+            session.setTabSize = function() {
+                return 0;
+            };
+            session.setUseSoftTabs = function() {
+                return 0;
+            };
+            _this.sessions[path] = session;
+            _this.add(path, session, focus);
         },
 
         init: function() {
@@ -366,6 +418,7 @@
         //////////////////////////////////////////////////////////////////
 
         focus: function(path, moveToTabList) {
+            console.log("active-Focus: "+path);
             if (moveToTabList === undefined) {
                 moveToTabList = true;
             }
@@ -373,6 +426,8 @@
             this.highlightEntry(path, moveToTabList);
             
             if(path != this.getPath()) {
+                console.log("active-Focus-set-session: "+this.sessions[path]);
+                console.dir(this.sessions[path]);
                 codiad.editor.setSession(this.sessions[path]);
                 this.history.push(path);
                 $.get(this.controller, {'action':'focused', 'path':path});

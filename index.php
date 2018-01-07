@@ -284,7 +284,9 @@ if(isset($_SESSION['theme'])) {
                 <div class="bar"></div>
             </div>
 
-            <div id="root-editor-wrapper"></div>
+	    <div id="root-editor-wrapper">
+                <div id="non-editor"></div>
+            </div>
 
             <div id="editor-bottom-bar">
                 <a id="settings" class="ico-wrapper"><span class="icon-doc-text"></span><?php i18n("Settings"); ?></a>

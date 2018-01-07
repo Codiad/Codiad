@@ -507,6 +507,8 @@
             var chType, chArr = [], sc = null, chIdx = null;
             var _this = this;
 
+            console.log("addInstance: ");
+            console.dir(this.instances);
             if (this.instances.length == 0) {
                 // el.appendTo($('#editor-region'));
                 el.appendTo($('#root-editor-wrapper'));
@@ -538,6 +540,7 @@
             }
 
             var i = ace.edit(el[0]);
+            i.type = 'ace';
             var resizeEditor = function(){
                 i.resize();
             };
@@ -745,6 +748,27 @@
             this.setModeDisplay(replacementSession);
         },
 
+        removeWithoutReplaceSession: function(session) {
+            var indexToRemove = -1;
+            console.log("s: "+session.path);
+            for (var k = 0; k < this.instances.length; k++) {
+	        console.log("ss: "+this.instances[k].getSession().path);
+                if (this.instances[k].getSession().path === session.path) {
+                    indexToRemove = k;
+                }
+            }
+            if (indexToRemove >= 0) {
+                this.instances.splice(indexToRemove, 1);
+	    }
+
+            if ($('#current-file').text() === session.path) {
+                $('#current-file').text('');
+            }
+
+            console.log("removeWithoutReplace: ");
+            console.dir(this.instances);
+        },
+
         isOpen: function(session){
             for (var k = 0; k < this.instances.length; k++) {
                 if (this.instances[k].getSession().path === session.path) {
@@ -792,7 +816,13 @@
         /////////////////////////////////////////////////////////////////
 
         setActive: function(i) {
+            console.log("start here");
             if (! i) return;
+            console.log("setActive: ");
+            console.dir(i);
+            if (this.activeInstance) {
+                delete this.activeInstance;
+            }
             this.activeInstance = i;
             $('#current-file').text(i.getSession().path);
             this.setModeDisplay(i.getSession());
@@ -810,11 +840,20 @@
 
         setSession: function(session, i) {
             i = i || this.getActive();
+            console.log("set session - start");
+            if (i && i.type != "ace" && session.type === "ace") {
+		console.log("set session - lost session - need recreate");
+                i = this.addInstance(session);
+            }
             if (! this.isOpen(session)) {
                 if (! i) {
                     i = this.addInstance(session);
                 } else {
-                    i.setSession(session);
+                    console.log("set session - try ? recurse");
+                    if (session.type === 'ace') {
+                        console.log("set session - ace - recurse");
+                        i.setSession(session);
+                    }
                 }
             } else {
                 // Proxy session is required because scroll-position and
@@ -832,9 +871,23 @@
                     i.setSession(proxySession);
                 }
             }
-            this.applySettings(i);
-            
-            this.setActive(i);
+
+            console.log("set session");
+            if (session.type === 'iframe') {
+                $('#non-editor').html(session.content);
+                $('.editor').hide();
+                $('#non-editor').show();
+                console.log("set session iframe - " + session.path);
+                this.removeWithoutReplaceSession(i.getSession());
+                this.setActive(session);
+            } else if (session.type === 'ace') {
+                $('#non-editor').hide();
+                $('.editor').show();
+                this.applySettings(i);
+                console.log("set session ace - " + i.getSession().path);
+                //console.dir(i.getSession());
+                this.setActive(i);
+            }
         },
 
         /////////////////////////////////////////////////////////////////
@@ -1339,8 +1392,10 @@
 
         focus: function(i) {
             i = i || this.getActive();
+            console.log("focus: "+i.getSession().path);
             this.setActive(i);
             if (! i) return;
+            console.log("focus still here ");
             i.focus();
             codiad.active.focus(i.getSession().path);
             this.cursorTracking(i);
