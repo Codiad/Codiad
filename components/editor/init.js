@@ -27,7 +27,7 @@
     // modes available for selecting
     var availableTextModes = new Array(
         'abap',
-		'abc',
+        'abc',
         'actionscript',
         'ada',
         'apache_conf',
@@ -52,18 +52,18 @@
         'django',
         'dockerfile',
         'dot',
-		'eiffel',
+        'eiffel',
         'ejs',
-		'elixir',
-		'elm',
+        'elixir',
+        'elm',
         'erlang',
         'forth',
         'ftl',
-		'gcode',
+        'gcode',
         'gherkin',
         'gitignore',
         'glsl',
-		'gobstones',
+        'gobstones',
         'golang',
         'groovy',
         'haml',
@@ -71,10 +71,10 @@
         'haskell',
         'haxe',
         'html',
-		'html_elixir',
+        'html_elixir',
         'html_ruby',
         'ini',
-		'io',
+        'io',
         'jack',
         'jade',
         'java',
@@ -85,7 +85,7 @@
         'jsx',
         'julia',
         'latex',
-		'lean',
+        'lean',
         'less',
         'liquid',
         'lisp',
@@ -97,15 +97,15 @@
         'lucene',
         'makefile',
         'markdown',
-		'mask',
-		'matlab',
-		'maze',
+        'mask',
+        'matlab',
+        'maze',
         'mel',
-		'mips_assembler',
+        'mips_assembler',
         'mushcode',
         'mysql',
         'nix',
-		'nsis',
+        'nsis',
         'objectivec',
         'ocaml',
         'pascal',
@@ -114,15 +114,15 @@
         'php',
         'plain_text',
         'powershell',
-		'praat',
+        'praat',
         'prolog',
         'protobuf',
         'python',
         'r',
-		'razor',
+        'razor',
         'rdoc',
         'rhtml',
-		'rst',
+        'rst',
         'ruby',
         'rust',
         'sass',
@@ -137,24 +137,24 @@
         'soy_template',
         'space',
         'sql',
-		'sqlserver',
+        'sqlserver',
         'stylus',
         'svg',
-		'swift',
-		'swig',
+        'swift',
+        'swig',
         'tcl',
         'tex',
         'text',
         'textile',
         'toml',
         'twig',
-		'typescript',
+        'typescript',
         'vala',
         'vbscript',
         'velocity',
         'verilog',
         'vhdl',
-		'wollok',
+        'wollok',
         'xml',
         'xquery',
         'yaml'
@@ -752,14 +752,14 @@
             var indexToRemove = -1;
             console.log("s: "+session.path);
             for (var k = 0; k < this.instances.length; k++) {
-	        console.log("ss: "+this.instances[k].getSession().path);
+            console.log("ss: "+this.instances[k].getSession().path);
                 if (this.instances[k].getSession().path === session.path) {
                     indexToRemove = k;
                 }
             }
             if (indexToRemove >= 0) {
                 this.instances.splice(indexToRemove, 1);
-	    }
+        }
 
             if ($('#current-file').text() === session.path) {
                 $('#current-file').text('');
@@ -841,21 +841,23 @@
         setSession: function(session, i) {
             i = i || this.getActive();
             console.log("set session - start");
-            if (i && i.type != "ace" && session.type === "ace") {
-		console.log("set session - lost session - need recreate");
-                i = this.addInstance(session);
-            }
             if (! this.isOpen(session)) {
                 if (! i) {
                     i = this.addInstance(session);
                 } else {
+                    if (i && i.type != "ace" && session.type === "ace") {
+                console.log("set session - lost session - need recreate");
+                        i = this.addInstance(session);
+                    }
                     console.log("set session - try ? recurse");
                     if (session.type === 'ace') {
                         console.log("set session - ace - recurse");
+                        $('.editor').show();
                         i.setSession(session);
                     }
                 }
             } else {
+                console.log("proxy session");
                 // Proxy session is required because scroll-position and
                 // cursor position etc. are shared among sessions.
 
@@ -865,6 +867,7 @@
                 proxySession.path = session.path;
                 proxySession.listThumb = session.listThumb;
                 proxySession.tabThumb = session.tabThumb;
+                $('.editor').show();
                 if (! i) {
                     i = this.addInstance(proxySession);
                 } else {
@@ -878,6 +881,8 @@
                 $('.editor').hide();
                 $('#non-editor').show();
                 console.log("set session iframe - " + session.path);
+                $('.editor').remove();
+                $('.editor-wrapper').remove();
                 this.removeWithoutReplaceSession(i.getSession());
                 this.setActive(session);
             } else if (session.type === 'ace') {
