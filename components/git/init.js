@@ -31,7 +31,11 @@
             $('#diff-window').text("");
             $.get(codiad.git.controller + '?action=diff', function(data) {
                 var obj = JSON.parse(data);
-                $('#diff-window').text(obj.data.diff);
+                if (obj.data.diff != null) {
+                    $('#diff-window').text(obj.data.diff);
+                } else {
+                    $('#diff-window').text("No Changes Saved");
+                }
             });
 
         },
