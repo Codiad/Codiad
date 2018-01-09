@@ -97,13 +97,19 @@
             fn);
         },
 
+        openGitConsole: function() {
+            var _this = this;
+
+            this.openPreview('View Changes', 'index.php?page=gitConsole', 12, false, true);
+	},
+
         openPreview: function(path, content, mtime, inBackground, focus) {
             var _this = this;
 
             var session = {};
             session.type = 'iframe';
             session.path = path;
-            session.content = '<iframe src="' + content + '" style="height: 100%; width: 100%; background-color: white;">';
+            session.content = '<iframe src="' + content + '" style="height: 100%; width: 100%;">';
             session.tabThumb = 1;
             session.getRange = function() {
                 return 0;
@@ -429,6 +435,7 @@
             
             if(path != this.getPath()) {
                 codiad.editor.setSession(this.sessions[path]);
+                $('iframe').css('background-color', 'white');
                 this.history.push(path);
                 $.get(this.controller, {'action':'focused', 'path':path});
             }

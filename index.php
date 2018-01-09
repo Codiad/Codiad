@@ -171,11 +171,31 @@ if(isset($_SESSION['theme'])) {
         }
 
     //////////////////////////////////////////////////////////////////
+    // AUTHENTICATED + PAGE => GIT CONSOLE
+    //////////////////////////////////////////////////////////////////
+
+    }elseif ($_REQUEST['page'] && $_REQUEST['page'] == 'gitConsole') {
+
+    ?>
+
+    <script src="components/git/init.js"></script>
+    <div id="workspace">
+	<h1>Change Console</h1>
+	<button onclick="alert('hi')">Push Changes</button>
+	<button onclick="codiad.git.diff();">Refresh</button>
+	<button onclick="if(confirm('Delete All Changes')){codiad.git.stash()}">Remove Changes</button>
+	<div style="height: 80%; width: 80%">
+	    <pre id="diff-window" style="height:100%; width:100%;"></pre>
+	</div>
+    </div>
+    <script>codiad.git.diff();</script>
+
+    <?php
+    //////////////////////////////////////////////////////////////////
     // AUTHENTICATED
     //////////////////////////////////////////////////////////////////
 
-    }else{
-
+    }else {
     ?>
 
     <div id="workspace">

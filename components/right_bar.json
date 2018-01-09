@@ -12,6 +12,12 @@
         "onclick": "codiad.active.saveAll();"
     },
     {
+        "title": "View Changes",
+        "admin": false,
+        "icon": "icon-install",
+        "onclick": "codiad.active.openGitConsole();"
+    },
+    {
         "title": "Plugins",
         "admin": false,
         "icon": null,
