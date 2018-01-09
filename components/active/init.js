@@ -100,7 +100,8 @@
         openGitConsole: function() {
             var _this = this;
 
-            this.openPreview('View Changes', 'index.php?page=gitConsole', 12, false, true);
+            var ts = (new Date()).getTime();
+            this.openPreview('View Changes', 'index.php?page=gitConsole&c=' + ts, 12, false, true);
 	},
 
         openPreview: function(path, content, mtime, inBackground, focus) {
