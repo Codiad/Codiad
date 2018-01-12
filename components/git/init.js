@@ -55,13 +55,26 @@
         stash: function() {
 
             var _this = this;
+            var fn = function(sessions, path) {
+                return function(data) {
+                    var openResponse = codiad.jsend.parse(data);
+                    if (openResponse != 'error') {
+                        //TODO: remove green hihglighting of tabs
+                        sessions[path].getDocument().setValue(openResponse.content);
+                    }
+                }
+            }
 
             $.get(codiad.git.controller + '?action=stash', function(data) {
                 var obj = JSON.parse(data);
                 console.log(obj.data.stash);
                 codiad.git.diff();
 
-                //codiad.active.sessions['WebClub2018/index.html'].getDocument().setValue('asdfas\nsdfsa');
+                for (var path in codiad.active.sessions) {
+                    if (codiad.active.sessions[path].type === 'ace') {
+                        $.get(codiad.filemanager.controller + '?action=open&path=' + encodeURIComponent(path), fn(codiad.active.sessions, path));
+		    }
+                }
             });
         },
 
