@@ -861,7 +861,7 @@
                 }
             }
 
-            if (session.type === 'iframe') {
+            if (session.type === 'iframe' || session.type === 'gitconsole') {
                 $('#non-editor').html(session.content);
                 $('#non-editor').css('height', '100%');
                 $('.editor').hide();

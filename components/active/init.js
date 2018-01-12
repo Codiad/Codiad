@@ -97,20 +97,8 @@
             fn);
         },
 
-        openGitConsole: function() {
-            var _this = this;
-
-            var ts = (new Date()).getTime();
-            this.openPreview('View Changes', 'index.php?page=gitConsole&c=' + ts, 12, false, true);
-	},
-
-        openPreview: function(path, content, mtime, inBackground, focus) {
-            var _this = this;
-
+        getFakeSession: function() {
             var session = {};
-            session.type = 'iframe';
-            session.path = path;
-            session.content = '<iframe src="' + content + '" style="height: 100%; width: 100%;">';
             session.tabThumb = 1;
             session.getRange = function() {
                 return 0;
@@ -154,9 +142,45 @@
             session.resize = function() {
                 return 0;
             };
+
+            return session;
+        },
+
+        openPreview: function(path, content, mtime, inBackground, focus) {
+
+            var _this = this;
+
+            var session = _this.getFakeSession();
+            session.type = 'iframe';
+            session.path = path;
+            session.content = '<iframe src="' + content + '" style="height: 100%; width: 100%;">';
+
             _this.sessions[path] = session;
             _this.add(path, session, focus);
         },
+
+        openGitConsole: function() {
+            var _this = this;
+
+            var path = 'Change Console';
+            var session = _this.getFakeSession();
+            session.type = 'gitconsole';
+            session.path = path;
+            session.content = '\
+                <div id="workspace">\
+                    <h1>Change Console</h1>\
+                    <button onclick="if(confirm(\'Submit Changes\')){codiad.git.submit()}">Submit Changes</button>\
+                    <button onclick="codiad.git.diff();">Refresh</button>\
+                    <button onclick="if(confirm(\'Delete All Changes\')){codiad.git.stash()}">Remove Changes</button>\
+                    <div style="height: 80%; width: 80%">\
+                        <pre id="diff-window" style="height:100%; width:100%;"></pre>\
+                    </div>\
+                </div>\
+                <script>codiad.git.diff();</script>';
+
+            _this.sessions[path] = session;
+            _this.add(path, session, true);
+	},
 
         init: function() {
 

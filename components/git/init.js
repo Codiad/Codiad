@@ -24,6 +24,18 @@
 
         controller: 'components/git/controller.php',
 
+        submit: function() {
+
+            var _this = this;
+
+            $.get(codiad.git.controller + '?action=submit', function(data) {
+                var obj = JSON.parse(data);
+                console.log(obj.data.submit);
+                codiad.git.stash();
+            });
+
+        },
+
         diff: function() {
 
             var _this = this;
@@ -45,21 +57,16 @@
             var _this = this;
 
             $.get(codiad.git.controller + '?action=stash', function(data) {
+                var obj = JSON.parse(data);
+                console.log(obj.data.stash);
                 codiad.git.diff();
-            });
 
+                //codiad.active.sessions['WebClub2018/index.html'].getDocument().setValue('asdfas\nsdfsa');
+            });
         },
 
         init: function() {
 
-            var _this = this;
-
-            // Focus from list.
-            $('#list-active-files a')
-                .live('click', function(e) {
-                    e.stopPropagation();
-                    _this.focus($(this).parent('li').attr('data-path'));
-            });
 
         },
 
