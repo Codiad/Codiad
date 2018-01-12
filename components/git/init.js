@@ -55,6 +55,16 @@
         stash: function() {
 
             var _this = this;
+
+            $.get(codiad.git.controller + '?action=stash', function(data) {
+                var obj = JSON.parse(data);
+                console.log(obj.data.stash);
+                codiad.git.diff();
+                codiad.git.forceReloadTabs();
+            });
+        },
+
+        forceReloadTabs: function(sessions, path) {
             var fn = function(sessions, path) {
                 return function(data) {
                     var openResponse = codiad.jsend.parse(data);
@@ -65,17 +75,11 @@
                 }
             }
 
-            $.get(codiad.git.controller + '?action=stash', function(data) {
-                var obj = JSON.parse(data);
-                console.log(obj.data.stash);
-                codiad.git.diff();
-
-                for (var path in codiad.active.sessions) {
-                    if (codiad.active.sessions[path].type === 'ace') {
-                        $.get(codiad.filemanager.controller + '?action=open&path=' + encodeURIComponent(path), fn(codiad.active.sessions, path));
-		    }
+            for (var path in codiad.active.sessions) {
+                if (codiad.active.sessions[path].type === 'ace') {
+                    $.get(codiad.filemanager.controller + '?action=open&path=' + encodeURIComponent(path), fn(codiad.active.sessions, path));
                 }
-            });
+            }
         },
 
         init: function() {
