@@ -116,7 +116,7 @@ class Filemanager extends Common
             $index = array();
             if (is_dir($this->path) && $handle = opendir($this->path)) {
                 while (false !== ($object = readdir($handle))) {
-                    if ($object != "." && $object != ".." && $object != $this->controller) {
+                    if ($object != "." && $object != ".." && $object != '.git' && $object != $this->controller) {
                         if (is_dir($this->path.'/'.$object)) {
                             $type = "directory";
                             $size=count(glob($this->path.'/'.$object.'/*'));
