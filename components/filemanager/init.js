@@ -398,9 +398,8 @@
         openPreviewTab: function(path, focus) {
             $.get(this.controller + '?action=open_in_browser&path=' + encodeURIComponent(path), function(data) {
                 var openIBResponse = codiad.jsend.parse(data);
-                var ts = (new Date()).getTime();
 		// Error handling needs to be added back in
-                codiad.active.openPreview('Preview: ' + path, openIBResponse.url + '?c=' + ts, 12, false, focus);
+                codiad.active.openPreview('Preview: ' + path, openIBResponse.url, 12, false, focus);
             });
         },
 
