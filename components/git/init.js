@@ -65,6 +65,10 @@
         },
 
         forceReloadTabs: function(sessions, path) {
+            // Too many bugs at this point ... just refresh the screen
+            location.reload();
+            return;
+
             var fn = function(sessions, path) {
                 return function(data) {
                     var openResponse = codiad.jsend.parse(data);
