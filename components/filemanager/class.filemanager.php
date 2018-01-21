@@ -303,10 +303,16 @@ class Filemanager extends Common
     public function openinbrowser()
     {
         $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-	$domainName = $_SERVER['HTTP_HOST'];
-	// I need this to work with dynamic IPs
-	// Obviously the hardcoded string should be replaced by a config value or something
-        $url =  $protocol.$domainName.'/Codiad/workspace/'.$this->rel_path;
+        $domainName = $_SERVER['HTTP_HOST'];
+        $headers = getallheaders();
+        $developer = 'Codiad';
+        if (isset($headers['X-Developer'])) {
+            $developer = $headers['X-Developer'];
+        }
+        // I need this to work with dynamic IPs
+        // Obviously the hardcoded string should be replaced by a config value or something
+        $developer = preg_replace('/\/.*$/', '', $developer);
+        $url =  'https://'.$domainName.'/'.$developer.'/workspace/'.$this->rel_path;
         $this->status = "success";
         $this->data = '"url":' . json_encode(rtrim($url, "/"));
         $this->respond();
