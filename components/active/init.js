@@ -173,7 +173,11 @@
                     <button onclick="codiad.git.diff();">Refresh</button>\
                     <button onclick="if(confirm(\'Delete All Changes\')){codiad.git.stash()}">Remove Changes</button>\
                     <div style="height: 80%; width: 80%">\
-                        <pre id="diff-window" style="height:100%; width:100%;"></pre>\
+                        <link rel="stylesheet" type="text/css" href="themes/default/diff2html/diff2html.min.css">\
+                        <script type="text/javascript" src="js/diff2html.min.js"></script>\
+                        <script type="text/javascript" src="js/diff2html-ui.min.js"></script>\
+\
+                        <div id="diff-window" style="height:100%; width:100%; color:black; background-color:white; overflow:scroll;"></div>\
                     </div>\
                 </div>\
                 <script>codiad.git.diff();</script>';

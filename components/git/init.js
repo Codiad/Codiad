@@ -44,7 +44,12 @@
             $.get(codiad.git.controller + '?action=diff', function(data) {
                 var obj = JSON.parse(data);
                 if (obj.data.diff != null) {
-                    $('#diff-window').text(obj.data.diff);
+                    var diff2htmlUi = new Diff2HtmlUI({diff: obj.data.diff});
+                    diff2htmlUi.draw('#diff-window', {inputFormat: 'json', synchronisedScroll: true, matching: 'lines'});
+                    $('.line-num1').css('width','20px');
+                    $('.line-num2').css('width','20px');
+                    $('.d2h-code-linenumber').css('position','relative');
+                    $('.d2h-file-diff').css('overflow','none');
                 } else {
                     $('#diff-window').text("No Changes Saved");
                 }
