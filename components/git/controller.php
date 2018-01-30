@@ -42,7 +42,8 @@ if ($_GET['action']=='stash') {
         $date = new DateTime();
 	$ts = $date->getTimestamp();
         $branch_name = $_SESSION['user'].'_'.$ts;
-        $stash = shell_exec("cd ../../workspace/$project_path ; git stash ; git fetch ; git checkout origin/master ; git checkout -D ".$branch_name." ; git checkout origin/master ; git checkout -b ".$branch_name." ; git merge origin/master");
+        $stash = shell_exec("cd ../../workspace/$project_path ; eval $(ssh-agent -s) ; ssh-add /etc/apache2/private/id_rsa ; git stash ; git fetch ; git checkout origin/master ; git branch -D ".$branch_name." ; git checkout origin/master ; git checkout -b ".$branch_name." ; git merge origin/master");
+error_log($stash);
     }
 
     //preg_replace('/\n/','<br>',$diff);
