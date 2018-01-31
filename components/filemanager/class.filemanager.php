@@ -8,6 +8,7 @@
 
 require_once('../../lib/diff_match_patch.php');
 require_once('../../common.php');
+require_once('../git/class.git.php');
 
 class Filemanager extends Common
 {
@@ -480,6 +481,7 @@ class Filemanager extends Common
                         }
     
                         fclose($file);
+                        Git::save_wip();
                     } else {
                         $this->status = "error";
                         $this->message = "Cannot Write to File";
@@ -491,8 +493,9 @@ class Filemanager extends Common
             } else {
                 $file = fopen($this->path, 'w');
                 fclose($file);
+                Git::save_wip();
                 $this->data = '"mtime":'.filemtime($this->path);
-                $this->status = "success";
+		$this->status = "success";
             }
         }
 
