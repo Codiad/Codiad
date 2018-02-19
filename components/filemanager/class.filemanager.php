@@ -333,6 +333,8 @@ class Filemanager extends Common
                     // Write content
                     if ($this->content) {
                         fwrite($file, $this->content);
+                    } else {
+                        touch($this->path);
                     }
                     $this->data = '"mtime":'.filemtime($this->path);
                     fclose($file);
