@@ -54,7 +54,7 @@ if ($_GET['action']=='diff') {
     $project_path = $_SESSION['project'];
     $diff = "";
     if (preg_match('/[a-zA-Z\-_\/~]+/', $project_path) && isset($_SESSION['user'])) {
-        $diff = shell_exec("cd ../../workspace/$project_path ; git diff");
+        $diff = shell_exec("cd ../../workspace/$project_path ; git diff HEAD~1");
     }
 
     //preg_replace('/\n/','<br>',$diff);
