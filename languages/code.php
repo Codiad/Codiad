@@ -18,6 +18,6 @@ $languages = array(
     "bg" => "Български",
     "tr" => "Türkçe",
     "ja" => "日本語",
-    "nl" => "Dutch"
+    "nl" => "Nederlands"
 );
 ?>
