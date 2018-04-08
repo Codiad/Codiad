@@ -42,7 +42,8 @@ if ($_GET['action']=='stash') {
         $date = new DateTime();
 	$ts = $date->getTimestamp();
         $branch_name = $_SESSION['user'].'_'.$ts;
-        $stash = shell_exec("cd ../../workspace/$project_path ; eval $(ssh-agent -s) ; ssh-add /etc/apache2/private/id_rsa ; git stash ; git fetch ; git checkout origin/master ; git branch -D ".$branch_name." ; git checkout origin/master ; git checkout -b ".$branch_name." ; git merge origin/master");
+        $wip_start = $_SESSION['user']."_wip_start";
+        $stash = shell_exec("cd ../../workspace/$project_path ; eval $(ssh-agent -s) ; ssh-add /etc/apache2/private/id_rsa ; git stash ; git fetch ; git checkout origin/master ; git branch -D ".$branch_name." ; git checkout origin/master ; git checkout -b ".$branch_name." ; git merge origin/master ; git checkout -b ".$wip_start." ; git push origin ".$wip_start);
 error_log($stash);
     }
 
@@ -53,8 +54,9 @@ error_log($stash);
 if ($_GET['action']=='diff') {
     $project_path = $_SESSION['project'];
     $diff = "";
+    $wip_start = $_SESSION['user']."_wip_start";
     if (preg_match('/[a-zA-Z\-_\/~]+/', $project_path) && isset($_SESSION['user'])) {
-        $diff = shell_exec("cd ../../workspace/$project_path ; git diff HEAD~1");
+        $diff = shell_exec("cd ../../workspace/$project_path ; git diff ".$wip_start);
     }
 
     //preg_replace('/\n/','<br>',$diff);
