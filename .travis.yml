@@ -18,7 +18,7 @@ env:
     #strict mode to check formatting
     - STRICT=true 
     # exclude some special or unsupported conventions
-    - STRICT=false CS_INGNORE="dialog.php"
+    - STRICT=false
 
 #allow failures
 matrix:
