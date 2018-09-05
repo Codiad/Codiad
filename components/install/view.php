@@ -89,7 +89,7 @@
             echo '<font style="color:green">PASSED</font>';
         } else {
             echo '<font style="color:red">ERROR</font>';
-} ?>
+        } ?>
         </p>
         <p>[SYSTEM]/data -
         <?php
