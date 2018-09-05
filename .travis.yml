@@ -13,7 +13,7 @@ env:
     - R_LINE="Generic.Files.LineLength" #
     - R_METHOD="PSR1.Methods.CamelCapsMethodName" # must use camleMethodName
     - R_NS="PSR1.Classes.ClassDeclaration" # class must use Namespace
-    - CS_INGNORE=""    # ingore Files
+    - CS_INGNORE="components/install/view.php"    # ingore Files
   matrix:
     #strict mode to check formatting
     - STRICT=true 
