@@ -95,9 +95,11 @@ if(isset($_SESSION['theme'])) {
     <script src="js/amplify.min.js"></script>
     <script src="js/localstorage.js"></script>
     <script src="js/jquery.hoverIntent.min.js"></script>
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
     <script src="js/system.js"></script>
     <script src="js/sidebars.js"></script>
     <script src="js/modal.js"></script>
+    <script src="js/mobile.js"></script>
     <script src="js/message.js"></script>
     <script src="js/jsend.js"></script>
     <script src="js/instance.js?v=<?php echo time(); ?>"></script>

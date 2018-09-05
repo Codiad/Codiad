@@ -26,8 +26,13 @@
             this.load_process = $.get(url, data, function(data) {
                 $('#modal-content').html(data);
                 // Fix for Firefox autofocus goofiness
-                $('input[autofocus="autofocus"]')
-                    .focus();
+                if(codiad.mobile.isTouchDevice) {
+                    $('input[autofocus]')
+                        .blur();
+                } else {
+                    $('input[autofocus="autofocus"]')
+                        .focus();
+                }
             });
             var event = {animationPerformed: false};
             amplify.publish('modal.onLoad', event);            
