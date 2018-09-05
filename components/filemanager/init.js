@@ -392,6 +392,18 @@
         },
 
         //////////////////////////////////////////////////////////////////
+        // Open Preview Tab
+        //////////////////////////////////////////////////////////////////
+
+        openPreviewTab: function(path, focus) {
+            $.get(this.controller + '?action=open_in_browser&path=' + encodeURIComponent(path), function(data) {
+                var openIBResponse = codiad.jsend.parse(data);
+		// Error handling needs to be added back in
+                codiad.active.openPreview('Preview: ' + path, openIBResponse.url, 12, false, focus);
+            });
+        },
+
+        //////////////////////////////////////////////////////////////////
         // Open in browser
         //////////////////////////////////////////////////////////////////
 

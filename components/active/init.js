@@ -80,6 +80,7 @@
                 session.setUndoManager(new UndoManager());
 
                 session.path = path;
+                session.type = 'ace';
                 session.serverMTime = mtime;
                 _this.sessions[path] = session;
                 session.untainted = content.slice(0);
@@ -95,6 +96,95 @@
             $.loadScript('components/editor/ace-editor/mode-' + mode + '.js',
             fn);
         },
+
+        getFakeSession: function() {
+            var session = {};
+            session.tabThumb = 1;
+            session.getRange = function() {
+                return 0;
+            };
+            session.getMode = function() {
+                return 0;
+            };
+            session.setSession = function() {
+                return 0;
+            };
+            session.getSession = function() {
+                return this;
+            };
+            session.setTheme = function() {
+                return 0;
+            };
+            session.setFontSize = function() {
+                return 0;
+            };
+            session.setPrintMarginColumn = function() {
+                return 0;
+            };
+            session.setShowPrintMargin = function() {
+                return 0;
+            };
+            session.setHighlightActiveLine = function() {
+                return 0;
+            };
+            session.setDisplayIndentGuides = function() {
+                return 0;
+            };
+            session.setUseWrapMode = function() {
+                return 0;
+            };
+            session.setTabSize = function() {
+                return 0;
+            };
+            session.setUseSoftTabs = function() {
+                return 0;
+            };
+            session.resize = function() {
+                return 0;
+            };
+
+            return session;
+        },
+
+        openPreview: function(path, content, mtime, inBackground, focus) {
+
+            var _this = this;
+
+            var session = _this.getFakeSession();
+            session.type = 'iframe';
+            session.path = path;
+            session.content = '<iframe src="' + content + '" style="height: 100%; width: 100%;">';
+
+            _this.sessions[path] = session;
+            _this.add(path, session, focus);
+        },
+
+        openGitConsole: function() {
+            var _this = this;
+
+            var path = 'Change Console';
+            var session = _this.getFakeSession();
+            session.type = 'gitconsole';
+            session.path = path;
+            session.content = '\
+                <div id="workspace">\
+                    <h1>Change Console</h1>\
+                    <button onclick="if(confirm(\'Submit Changes\')){codiad.git.submit()}">Submit Changes</button>\
+                    <button onclick="codiad.git.diff();">Refresh</button>\
+                    <button onclick="if(confirm(\'Delete All Changes\')){codiad.git.stash()}">Remove Changes</button>\
+                    <div style="height: 80%; width: 80%">\
+                        <link rel="stylesheet" type="text/css" href="themes/default/diff2html/diff2html.min.css">\
+                        <script type="text/javascript" src="js/diff2html.min.js"></script>\
+                        <script type="text/javascript" src="js/diff2html-ui.min.js"></script>\
+\
+                        <div id="diff-window" style="height:100%; width:100%; color:black; background-color:white; overflow:scroll;"></div>\
+                    </div>\
+                </div>\
+                <script>codiad.git.diff();</script>';
+
+            _this.sessions[path] = session;
+            _this.add(path, session, true);
+	},
 
         init: function() {
 
@@ -374,6 +464,7 @@
             
             if(path != this.getPath()) {
                 codiad.editor.setSession(this.sessions[path]);
+                $('iframe').css('background-color', 'white');
                 this.history.push(path);
                 $.get(this.controller, {'action':'focused', 'path':path});
             }

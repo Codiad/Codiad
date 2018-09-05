@@ -8,6 +8,7 @@
 
 require_once('../../lib/diff_match_patch.php');
 require_once('../../common.php');
+require_once('../git/class.git.php');
 
 class Filemanager extends Common
 {
@@ -116,7 +117,7 @@ class Filemanager extends Common
             $index = array();
             if (is_dir($this->path) && $handle = opendir($this->path)) {
                 while (false !== ($object = readdir($handle))) {
-                    if ($object != "." && $object != ".." && $object != $this->controller) {
+                    if ($object != "." && $object != ".." && $object != '.git' && $object != $this->controller) {
                         if (is_dir($this->path.'/'.$object)) {
                             $type = "directory";
                             $size=count(glob($this->path.'/'.$object.'/*'));
@@ -304,7 +305,15 @@ class Filemanager extends Common
     {
         $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         $domainName = $_SERVER['HTTP_HOST'];
-        $url =  $protocol.WSURL.'/'.$this->rel_path;
+        $headers = getallheaders();
+        $developer = 'Codiad';
+        if (isset($headers['X-Developer'])) {
+            $developer = $headers['X-Developer'];
+        }
+        // I need this to work with dynamic IPs
+        // Obviously the hardcoded string should be replaced by a config value or something
+        $developer = preg_replace('/\/.*$/', '', $developer);
+        $url =  'https://'.$domainName.'/'.$developer.'/workspace/'.$this->rel_path;
         $this->status = "success";
         $this->data = '"url":' . json_encode(rtrim($url, "/"));
         $this->respond();
@@ -324,6 +333,8 @@ class Filemanager extends Common
                     // Write content
                     if ($this->content) {
                         fwrite($file, $this->content);
+                    } else {
+                        touch($this->path);
                     }
                     $this->data = '"mtime":'.filemtime($this->path);
                     fclose($file);
@@ -472,6 +483,7 @@ class Filemanager extends Common
                         }
     
                         fclose($file);
+                        Git::save_wip();
                     } else {
                         $this->status = "error";
                         $this->message = "Cannot Write to File";
@@ -483,8 +495,9 @@ class Filemanager extends Common
             } else {
                 $file = fopen($this->path, 'w');
                 fclose($file);
+                Git::save_wip();
                 $this->data = '"mtime":'.filemtime($this->path);
-                $this->status = "success";
+		$this->status = "success";
             }
         }
 

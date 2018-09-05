@@ -174,8 +174,7 @@ if(isset($_SESSION['theme'])) {
     // AUTHENTICATED
     //////////////////////////////////////////////////////////////////
 
-    }else{
-
+    }else {
     ?>
 
     <div id="workspace">
@@ -284,7 +283,9 @@ if(isset($_SESSION['theme'])) {
                 <div class="bar"></div>
             </div>
 
-            <div id="root-editor-wrapper"></div>
+	    <div id="root-editor-wrapper">
+                <div id="non-editor"></div>
+            </div>
 
             <div id="editor-bottom-bar">
                 <a id="settings" class="ico-wrapper"><span class="icon-doc-text"></span><?php i18n("Settings"); ?></a>
@@ -412,13 +413,13 @@ if(isset($_SESSION['theme'])) {
         // JS
         foreach($components as $component){
             if(file_exists(COMPONENTS . "/" . $component . "/init.js")){
-                echo('<script src="components/'.$component.'/init.js"></script>"');
+                echo('<script src="components/'.$component.'/init.js"></script>');
             }
         }
         
         foreach($plugins as $plugin){
             if(file_exists(PLUGINS . "/" . $plugin . "/init.js")){
-                echo('<script src="plugins/'.$plugin.'/init.js"></script>"');
+                echo('<script src="plugins/'.$plugin.'/init.js"></script>');
             }
         }
 
