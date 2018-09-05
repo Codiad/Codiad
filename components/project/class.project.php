@@ -271,16 +271,13 @@ class Project extends Common
             ob_start();
             system($this->command_exec);
             ob_end_clean();
-        } //passthru
-        elseif (function_exists('passthru')) {
+        } elseif (function_exists('passthru')) {
             ob_start();
             passthru($this->command_exec);
             ob_end_clean();
-        } //exec
-        elseif (function_exists('exec')) {
+        } elseif (function_exists('exec')) {
             exec($this->command_exec, $this->output);
-        } //shell_exec
-        elseif (function_exists('shell_exec')) {
+        } elseif (function_exists('shell_exec')) {
             shell_exec($this->command_exec);
         }
     }
