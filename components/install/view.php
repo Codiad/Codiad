@@ -58,25 +58,31 @@
       <p><?php i18n("Please make sure the following exist and are writeable:"); ?></p>
       <div class="install_issues">
         <p>[SYSTEM]/config.php -
-        <?php if ($config) {
-            echo '<font style="color:green">PASSED</font>';
-        } else {
-            echo '<font style="color:red">ERROR</font>';
-        } ?>
+        <?php
+            if ($config) {
+                echo '<font style="color:green">PASSED</font>';
+            } else {
+                echo '<font style="color:red">ERROR</font>';
+            }
+        ?>
         </p>
         <p>[SYSTEM]/workspace -
-        <?php if ($workspace) {
-            echo '<font style="color:green">PASSED</font>';
-        } else {
-            echo '<font style="color:red">ERROR</font>';
-        } ?>
+        <?php
+            if ($workspace) {
+                echo '<font style="color:green">PASSED</font>';
+            } else {
+                echo '<font style="color:red">ERROR</font>';
+            }
+        ?>
         </p>
         <p>[SYSTEM]/plugins -
-        <?php if ($plugins) {
-            echo '<font style="color:green">PASSED</font>';
-        } else {
-            echo '<font style="color:red">ERROR</font>';
-        } ?>
+        <?php
+            if ($plugins) {
+                echo '<font style="color:green">PASSED</font>';
+            } else {
+                echo '<font style="color:red">ERROR</font>';
+            }
+        ?>
         </p>
         <p>[SYSTEM]/themes -
         <?php if ($themes) {
@@ -86,25 +92,28 @@
         } ?>
         </p>
         <p>[SYSTEM]/data -
-        <?php if ($data) {
-            echo '<font style="color:green">PASSED</font>';
-        } else {
-            echo '<font style="color:red">ERROR</font>';
-        } ?></p>
+        <?php
+            if ($data) {
+                echo '<font style="color:green">PASSED</font>';
+            } else {
+                echo '<font style="color:red">ERROR</font>';
+            }
+        ?></p>
       </div>
         <?php if ($register || $newrelic) { ?>
         <p><?php i18n("Please make sure these environmental variables are set:"); ?></p>
         <div class="install_issues">
-        <?php if ($register) {
-            echo '<p>register_globals: Off</p>';
-        }
-        if ($newrelic) {
-            echo '<p>newrelic.enabled: Off</p>';
-        } ?>
+        <?php
+            if ($register) {
+                echo '<p>register_globals: Off</p>';
+            }
+            if ($newrelic) {
+                echo '<p>newrelic.enabled: Off</p>';
+            }
+        ?>
         </div>
         <?php } ?>
       <button onclick="window.location.reload();">Re-Test</button>
-
         <?php
     } else {
         ?>
@@ -113,15 +122,17 @@
 
         <label><?php i18n("Dependencies"); ?></label>
         <div id="dependencies">
-        <?php foreach (array("ZIP", "OpenSSL", "MBString") as $dep) {
-            if (extension_loaded(strtolower($dep))) { ?>
-              <div class="success"><span class="icon-check"></span> <?= $dep ?></div>
-                <?php
-            } else { ?>
-              <div class="error"><span class="icon-cancel"></span> <?= $dep ?></div>
-                <?php
+        <?php
+            foreach (array("ZIP", "OpenSSL", "MBString") as $dep) {
+                if (extension_loaded(strtolower($dep))) { ?>
+                  <div class="success"><span class="icon-check"></span> <?= $dep ?></div>
+                    <?php
+                } else { ?>
+                  <div class="error"><span class="icon-cancel"></span> <?= $dep ?></div>
+                    <?php
+                }
             }
-        } ?>
+        ?>
         </div>
 
         <input type="hidden" name="path" value="<?php echo($path); ?>">
