@@ -87,7 +87,7 @@
         <p>[SYSTEM]/themes -
         <?php if ($themes) {
             echo '<font style="color:green">PASSED</font>';
-} else {
+        } else {
             echo '<font style="color:red">ERROR</font>';
 } ?>
         </p>
@@ -103,7 +103,7 @@
         <?php if ($register || $newrelic) { ?>
         <p><?php i18n("Please make sure these environmental variables are set:"); ?></p>
         <div class="install_issues">
-        <?php
+            <?php
             if ($register) {
                 echo '<p>register_globals: Off</p>';
             }
