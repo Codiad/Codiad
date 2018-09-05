@@ -59,45 +59,45 @@
       <div class="install_issues">
         <p>[SYSTEM]/config.php -
         <?php
-            if ($config) {
+        if ($config) {
                 echo '<font style="color:green">PASSED</font>';
-            } else {
+        } else {
                 echo '<font style="color:red">ERROR</font>';
-            }
+        }
         ?>
         </p>
         <p>[SYSTEM]/workspace -
         <?php
-            if ($workspace) {
+        if ($workspace) {
                 echo '<font style="color:green">PASSED</font>';
-            } else {
+        } else {
                 echo '<font style="color:red">ERROR</font>';
-            }
+        }
         ?>
         </p>
         <p>[SYSTEM]/plugins -
         <?php
-            if ($plugins) {
+        if ($plugins) {
                 echo '<font style="color:green">PASSED</font>';
-            } else {
+        } else {
                 echo '<font style="color:red">ERROR</font>';
-            }
+        }
         ?>
         </p>
         <p>[SYSTEM]/themes -
         <?php if ($themes) {
             echo '<font style="color:green">PASSED</font>';
-        } else {
+} else {
             echo '<font style="color:red">ERROR</font>';
-        } ?>
+} ?>
         </p>
         <p>[SYSTEM]/data -
         <?php
-            if ($data) {
+        if ($data) {
                 echo '<font style="color:green">PASSED</font>';
-            } else {
+        } else {
                 echo '<font style="color:red">ERROR</font>';
-            }
+        }
         ?></p>
       </div>
         <?php if ($register || $newrelic) { ?>
@@ -110,7 +110,7 @@
             if ($newrelic) {
                 echo '<p>newrelic.enabled: Off</p>';
             }
-        ?>
+            ?>
         </div>
         <?php } ?>
       <button onclick="window.location.reload();">Re-Test</button>
@@ -123,15 +123,15 @@
         <label><?php i18n("Dependencies"); ?></label>
         <div id="dependencies">
         <?php
-            foreach (array("ZIP", "OpenSSL", "MBString") as $dep) {
-                if (extension_loaded(strtolower($dep))) { ?>
+        foreach (array("ZIP", "OpenSSL", "MBString") as $dep) {
+            if (extension_loaded(strtolower($dep))) { ?>
                   <div class="success"><span class="icon-check"></span> <?= $dep ?></div>
                     <?php
-                } else { ?>
+            } else { ?>
                   <div class="error"><span class="icon-cancel"></span> <?= $dep ?></div>
                     <?php
-                }
             }
+        }
         ?>
         </div>
 
