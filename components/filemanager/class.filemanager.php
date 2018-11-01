@@ -57,7 +57,7 @@ class Filemanager extends Common
             $this->rel_path .= "/";
         }
         if (!empty($get['query'])) {
-            $this->query = escapeshellarg($get['query']);
+            $this->query = $get['query'];
         }
         if (!empty($get['options'])) {
             $this->foptions = $get['options'];
@@ -71,10 +71,10 @@ class Filemanager extends Common
         }
         // Search
         if (!empty($post['search_string'])) {
-            $this->search_string = escapeshellarg($post['search_string']);
+            $this->search_string = ($post['search_string']);
         }
         if (!empty($post['search_file_type'])) {
-            $this->search_file_type = escapeshellarg($post['search_file_type']);
+            $this->search_file_type = ($post['search_file_type']);
         }
         // Create
         if (!empty($get['type'])) {
@@ -175,22 +175,22 @@ class Filemanager extends Common
         } else {
             chdir($this->path);
             $input = str_replace('"', '', $this->query);
-            $vinput = preg_quote($input);
             $cmd = 'find -L ';
+            $strategy = '';
             if ($this->foptions && $this->foptions['strategy']) {
-                switch ($this->f_options['strategy']) {
-                    case 'left_prefix':
-                        $cmd = "$cmd -iname \"$vinput*\"";
-                        break;
-                    case 'substring':
-                        $cmd = "$cmd -iname \"*$vinput*\"";
-                        break;
-                    case 'regexp':
-                        $cmd = "$cmd -regex \"$input\"";
-                        break;
-                }
-            } else {
-                $cmd = 'find -L -iname "' . $input . '*"';
+                $strategy = $this->foptions['strategy'];
+            }
+            switch ($strategy) {
+                case 'substring':
+                    $cmd = "$cmd -iname ".escapeshellarg('*'.$input.'*');
+                    break;
+                case 'regexp':
+                    $cmd = "$cmd -regex ".escapeshellarg($input);
+                    break;
+                case 'left_prefix':
+                default:
+                    $cmd = "$cmd -iname ".escapeshellarg($input.'*');
+                    break;
             }
             $cmd = "$cmd  -printf \"%h/%f %y\n\"";
             $output = shell_exec($cmd);
@@ -238,11 +238,12 @@ class Filemanager extends Common
             if ($_GET['type'] == 1) {
                 $this->path = WORKSPACE;
             }
-            $input = str_replace('"', '', $this->search_string);
-            $input = preg_quote($input);
-            $output = shell_exec('find -L ' . $this->path . ' -iregex  ".*' . $this->search_file_type  . '" -type f | xargs grep -i -I -n -R -H "' . $input . '"');
-            $output_arr = explode("\n", $output);
             $return = array();
+
+            $input = str_replace('"', '', $this->search_string);
+            $cmd = 'find -L ' . escapeshellarg($this->path) . ' -iregex  '.escapeshellarg('.*' . $this->search_file_type ).' -type f | xargs grep -i -I -n -R -H ' . escapeshellarg($input) . '';
+            $output = shell_exec($cmd);
+            $output_arr = explode("\n", $output);
             foreach ($output_arr as $line) {
                 $data = explode(":", $line);
                 $da = array();
@@ -548,7 +549,7 @@ class Filemanager extends Common
         } else {
             // Handle upload
             $info = array();
-            while (list($key,$value) = each($_FILES['upload']['name'])) {
+            foreach( $_FILES['upload']['name'] as $key=>$value) {
                 if (!empty($value)) {
                     $filename = $value;
                     $add = $this->path."/$filename";
