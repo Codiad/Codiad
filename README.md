@@ -7,7 +7,8 @@ Codiad was built with simplicity in mind, allowing for fast, interactive develop
 For more information on the project please check out the **[check out the Wiki](https://github.com/Codiad/Codiad/wiki)** or **[the Codiad Website](http://www.codiad.com)**
 
 ## Todo
-issues: with PHP 7.2 introducing md_* function as php functions
+issues: with PHP 7.2 introducing md_* function as php functions.
+
 -> first todo: add a prefix to codiad functions (i.e.: function co_mb_chr() )
 
 ## Unmaintained Status
