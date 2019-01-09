@@ -1,9 +1,9 @@
 [ { "author" : "daeks",
     "name" : "PullTester",
     "description" : "Util to view and pull requests from Codiad core",
-    "image": "https://raw.github.com/daeks/Codiad-PullTester/master/screen.png",
+    "image": "https://raw.github.com/daeks-archive/Codiad-PullTester/master/screen.png",
     "category" : "Development",
-    "url" : "https://github.com/daeks/Codiad-PullTester"
+    "url" : "https://github.com/daeks-archive/Codiad-PullTester"
   },
   { "author" : "Fluidbyte",
     "name" : "ColorPicker",
@@ -23,14 +23,14 @@
   { "author" : "daeks",
     "name" : "DiffViewer",
     "description" : "Allows user to compare 2 files and to see all changes made in it",
-    "image": "https://raw.github.com/daeks/Codiad-DiffViewer/master/screen.png",
-    "url" : "https://github.com/daeks/Codiad-DiffViewer"
+    "image": "https://raw.github.com/daeks-archive/Codiad-DiffViewer/master/screen.png",
+    "url" : "https://github.com/daeks-archive/Codiad-DiffViewer"
   },
   { "author" : "daeks",
     "name" : "AutoUpdate",
     "description" : "Hooks into the Codiad updater to allow for automatic update",
-    "image": "https://raw.github.com/daeks/Codiad-AutoUpdate/master/screen.png",
-    "url" : "https://github.com/daeks/Codiad-AutoUpdate"
+    "image": "https://raw.github.com/daeks-archive/Codiad-AutoUpdate/master/screen.png",
+    "url" : "https://github.com/daeks-archive/Codiad-AutoUpdate"
   },
   { "author" : "Andr3as",
     "name" : "Compress",
@@ -105,8 +105,8 @@
   { "author" : "daeks",
     "name" : "GitAdmin",
     "description" : "Allows for pulling repos into your current project",
-    "image": "https://raw.github.com/daeks/Codiad-GitAdmin/master/screen.png",
-    "url" : "https://github.com/daeks/Codiad-GitAdmin"
+    "image": "https://raw.github.com/daeks-archive/Codiad-GitAdmin/master/screen.png",
+    "url" : "https://github.com/daeks-archive/Codiad-GitAdmin"
   },
   { "author" : "Codiad",
     "name" : "PluginTemplate",
@@ -117,8 +117,8 @@
   { "author" : "daeks",
     "name" : "Macro",
     "description" : "Allows custom predefined shell commands",
-    "image": "https://raw.github.com/daeks/Codiad-Macro/master/screen.png",
-    "url" : "https://github.com/daeks/Codiad-Macro"
+    "image": "https://raw.github.com/daeks-archive/Codiad-Macro/master/screen.png",
+    "url" : "https://github.com/daeks-archive/Codiad-Macro"
   },
   { "author" : "Andr3as",
     "name" : "CodeTransfer",
@@ -171,8 +171,8 @@
     "name" : "Together",
     "description" : "Audio and Chat Support for Codiad. Not compatible with IE.",
     "category" : "Collaboration",
-    "image": "https://raw.githubusercontent.com/daeks/Codiad-Together/master/screen.png",
-    "url" : "https://github.com/daeks/Codiad-Together"
+    "image": "https://raw.githubusercontent.com/daeks-archive/Codiad-Together/master/screen.png",
+    "url" : "https://github.com/daeks-archive/Codiad-Together"
   },
   { "author" : "LRancez",
     "name" : "DeepLinking",
