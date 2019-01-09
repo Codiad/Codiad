@@ -86,6 +86,8 @@ if(isset($_SESSION['theme'])) {
         }
     })(<?php echo json_encode($lang); ?>)
     </script>
+    <!- 中国用户建议修改为国内cdn --!>
+    <!--<script src="//cdn.bootcss.com/jquery/1.7.1/jquery.min.js"></script>-->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script>!window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.7.2.min.js"%3E%3C/script%3E'));</script>
     <script src="js/jquery-ui-1.8.23.custom.min.js"></script>
