@@ -1,6 +1,12 @@
 <?php
 
 $lang = array(
+   "Initial Setup"                                       =>"初始化安装",
+   "Dependencies"                                        =>"扩展检查",
+   "New Username"                                        =>"初始用户名",
+   "New Project Name"                                    =>"初始项目名",
+   "Timezone"                                            =>"时区",
+   "Install"                                             =>"安装",
    "Note: This Will Only Work If Your Git Repo Does Not Require Interactive Authentication And Your Server Has Git Installed." => "注意: 只有你的 Git repo 不需要认证,并且服务器安装了 Git 才可用.",
    "Would You Like To Overwrite Or Duplicate The Following:" => "以下文件或文件夹已存在,选择操作:",
    "Prefix"                                              => "前缀",
@@ -179,7 +185,7 @@ $lang = array(
    "Authentication Error"                                => "身份验证错误",
    "Project "                                            => "项目 ",
    "Project %{projectName}% Loaded"                      => "项目 %{projectName}% 已加载",
-   "Login"                                               => "用户名",
+   "Login"                                               => "登录",
    "Account Modified"                                    => "账号已更新",
    "Active Project Cannot Be Removed"                    => "不能删除已打开的项目",
    "Directory Renamed"                                   => "文件夹已重命名",
