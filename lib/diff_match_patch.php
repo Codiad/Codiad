@@ -33,6 +33,11 @@
  
 mb_internal_encoding('UTF-8'); // Add UTF-8 support
 
+// 如果确认使用7.2.0及以上版本PHP 可以直接删除下面一行代码及mb_fun.php文件
+// If you confirm that you are using version 7.2.0 and above, you can 
+// directly delete the following line of code and the mb_fun.php file.
+if(intfloat(substr(PHP_VERSION,0,3))<7.2)require_once 'mb_fun.php';
+
 class diff_match_patch {
 
 	// Defaults.
@@ -2070,15 +2075,6 @@ define('Match_MaxBits', PHP_INT_SIZE * 8);
 
 function charCodeAt($str, $pos) {
 	return mb_ord(mb_substr($str, $pos, 1));
-}
-function mb_ord($v) {
-	$k = mb_convert_encoding($v, 'UCS-2LE', 'UTF-8'); 
-	$k1 = ord(substr($k, 0, 1)); 
-	$k2 = ord(substr($k, 1, 1)); 
-	return $k2 * 256 + $k1; 
-}
-function mb_chr($num){
-	return mb_convert_encoding('&#'.intval($num).';', 'UTF-8', 'HTML-ENTITIES');
 }
 
 /**
