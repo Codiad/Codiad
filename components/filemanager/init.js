@@ -240,10 +240,14 @@
                     if (type == 'directory') {
                         var appendage = '<li><span class="none"></span><a class="directory" data-type="directory" data-path="' + path + '">' + shortName + '</a></li>';
                     } else {
-                        var appendage = '<li><span class="none"></span><a class="file ext-' +
+                        // var appendage = '<li><span class="none"></span><a class="file ext-' +
+                        //     this.getExtension(shortName) +
+                        //     '" data-type="file" data-path="' +
+                        //     path + '">' + shortName + '</a></li>';
+                        var appendage = '<li><span class="none"></span><a class="fiv-sqo fiv-icon-' +
                             this.getExtension(shortName) +
                             '" data-type="file" data-path="' +
-                            path + '">' + shortName + '</a></li>';
+                            path + '">' + shortName + '</a></li>';                            
                     }
                     if (parentNode.siblings('ul')
                         .length) { // UL exists, other children to play with

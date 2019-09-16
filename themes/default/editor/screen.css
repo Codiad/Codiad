@@ -17,9 +17,9 @@
 }
 .ace_gutter-layer {
     padding: 0;
-    -webkit-box-shadow: inset -3px 0px 10px 0px rgba(0, 0, 0, .5);
-    -moz-box-shadow: inset -3px 0px 10px 0px rgba(0, 0, 0, .5);
-    box-shadow: inset -3px 0px 10px 0px rgba(0, 0, 0, .5);
+    /*-webkit-box-shadow: inset -3px 0px 10px 0px rgba(0, 0, 0, .5);*/
+    /*-moz-box-shadow: inset -3px 0px 10px 0px rgba(0, 0, 0, .5);*/
+    /*box-shadow: inset -3px 0px 10px 0px rgba(0, 0, 0, .5);*/
     background: url(gutter-bg.jpg);
     color: #ccc;
 }

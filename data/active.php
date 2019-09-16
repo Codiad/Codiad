@@ -1,0 +1,3 @@
+<?php
+/*|[{"username":"liam","path":"\/var\/www\/html\/dev\/codiad\/themes\/default\/filemanager\/screen.scss","focused":false},{"username":"liam","path":"\/var\/www\/html\/dev\/codiad\/themes\/default\/screen.scss","focused":false},{"username":"liam","path":"\/var\/www\/html\/dev\/codiad\/components\/editor\/init.js","focused":true},{"username":"liam","path":"\/var\/www\/html\/dev\/codiad\/themes\/default\/editor\/screen.css","focused":false},{"username":"liam","path":"\/var\/www\/html\/dev\/codiad\/components\/editor\/ace-editor\/ace.js","focused":false}]|*/
+?>

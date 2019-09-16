@@ -1,0 +1,33 @@
+#dragdrop {
+    box-shadow: 0 0 5px 5px #111;
+    display: none;
+    float: left;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+#dragdrop div {
+    background-color: rgb(40,40,40);
+    background-color: rgba(40,40,40,0.25);
+    float: left;
+    width: 50%;
+}
+
+#dragdrop #drag_append {
+    border-right: 2px solid black;
+}
+
+#dragdrop label {
+    margin: 10px;
+    padding: 0;
+    text-align: center;
+}
+
+.ui-draggable-dragging {
+    min-width: 0 !important;
+}
+
+.drop_over {
+    background-color: #333333 !important;
+}
