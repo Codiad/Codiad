@@ -1,0 +1,46 @@
+/* Autocomplete */
+
+#autocomplete {
+    display: none;
+    position: absolute;
+    max-height: 200px;
+    background-color: #2E2E2E;
+    border: 2px solid #666666;
+    padding: 1px;
+    z-index: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+    box-shadow: 3px 3px 8px 0px rgba(0, 0, 0, 0.45);
+}
+
+#autocomplete li {
+    padding: 0 14px 0 4px;
+    cursor: pointer;
+}
+
+#autocomplete li.active-suggestion {
+    background-color: #6B6B6B;
+}
+
+#autocomplete .matched {
+    font-weight: bold;
+    color: #45A4B6;
+}
+
+/************************
+ * Webkit Scrollbar
+ ************************/
+ 
+#autocomplete::-webkit-scrollbar {
+    width: 10px;
+}
+ 
+#autocomplete::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+ 
+#autocomplete::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+}
+
+

@@ -1,3 +1,3 @@
-<?php/*|
-[{"name":"test","path":"\/var\/www\/html\/dev"}]
-|*/?>
+<?php
+/*|[{"name":"Root","path":"\/var\/www\/html"},{"name":"Codiad","path":"codiad"}]|*/
+?>

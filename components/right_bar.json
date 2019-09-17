@@ -1,17 +1,5 @@
 [
     {
-        "title": "Save",
-        "admin": false,
-        "icon": "icon-install",
-        "onclick": "codiad.active.save();"
-    },
-    {
-        "title": "Save All",
-        "admin": false,
-        "icon": "icon-install",
-        "onclick": "codiad.active.saveAll();"
-    },
-    {
         "title": "Plugins",
         "admin": false,
         "icon": null,
@@ -19,6 +7,12 @@
     },
     {
         "title": "pluginbar",
+        "admin": false,
+        "icon": null,
+        "onclick": null
+    },
+    {
+        "title": "break",
         "admin": false,
         "icon": null,
         "onclick": null
@@ -42,6 +36,12 @@
         "onclick": "codiad.user.list();"
     },
     {
+        "title": "break",
+        "admin": false,
+        "icon": null,
+        "onclick": null
+    },    
+    {
         "title": "System",
         "admin": true,
         "icon": null,
@@ -50,15 +50,21 @@
     {
         "title": "Marketplace",
         "admin": true,
-        "icon": "icon-cloud",
+        "icon": "icon-market",
         "onclick": "codiad.market.list();"
     },
     {
         "title": "Update Check",
         "admin": true,
-        "icon": "icon-share",
+        "icon": "icon-sync",
         "onclick": "codiad.update.check();"
     },
+    {
+        "title": "break",
+        "admin": false,
+        "icon": null,
+        "onclick": null
+    },    
     {
         "title": "Account",
         "admin": false,
@@ -68,13 +74,13 @@
     {
         "title": "Settings",
         "admin": false,
-        "icon": "icon-doc-text",
+        "icon": "icon-cogs",
         "onclick": "codiad.settings.show();"
     },
     {
         "title": "Password",
         "admin": false,
-        "icon": "icon-flashlight",
+        "icon": "icon-key",
         "onclick": "codiad.user.password();"
     },
     {
@@ -83,6 +89,12 @@
         "icon": null,
         "onclick": null
     },
+    {
+        "title": "Save All",
+        "admin": false,
+        "icon": "icon-install",
+        "onclick": "codiad.active.saveAll();"
+    },    
     {
         "title": "Help",
         "admin": false,

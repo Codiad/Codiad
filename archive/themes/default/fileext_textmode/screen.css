@@ -1,0 +1,44 @@
+/*Copyright @ccvca 2013*/
+
+#FileExtTextModeDiv{
+	width: 100%;
+    border-bottom: 1px solid #454445;
+}
+
+#FileExtModeHeader {
+    margin-top: 10px;
+    border-bottom: 2px solid #1a1a1a;
+}
+
+#FileExtModeHeader th {
+  width: 50%;
+}
+
+#FileExtTextModeDiv table{
+	margin-top: 0px;
+}
+
+#FileExtTextModeDiv tbody td.firstLine{
+	height: 30px;
+}
+
+
+#FileExtTextModeDiv tbody td{
+	width: 50%;
+    padding: 0;
+	padding-left: 8px;
+	padding-right: 8px;
+    line-height: 100%;
+}
+
+#FileExtTextModeDiv input{
+	display: inline;
+}
+
+#FileExtTextModeDiv input.FileExtension{
+	/*width: 80px;*/
+}
+
+#FileExtTextModeDiv input.textMode{
+	/*width: 120px;*/
+}

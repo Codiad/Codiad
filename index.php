@@ -31,30 +31,35 @@ if(isset($_SESSION['theme'])) {
     <title>Elsenova IDE</title>
     <?php
     // Load System CSS Files
-    $stylesheets = array("jquery.toastmessage.css","reset.css","fonts.css","screen.css");
+    // $stylesheets = array("jquery.toastmessage.css","reset.css","fonts.css","screen.css");
    
-    foreach($stylesheets as $sheet){
-        if(file_exists(THEMES . "/". $theme . "/".$sheet)){
-            echo('<link rel="stylesheet" href="themes/'.$theme.'/'.$sheet.'">');
-        } else {
-            echo('<link rel="stylesheet" href="themes/default/'.$sheet.'">');
-        }
-    }
+    // foreach($stylesheets as $sheet){
+    //     if(file_exists(THEMES . "/". $theme . "/".$sheet)){
+    //         echo('<link rel="stylesheet" href="themes/'.$theme.'/'.$sheet.'">');
+    //     } else {
+    //         echo('<link rel="stylesheet" href="themes/default/'.$sheet.'">');
+    //     }
+    // }
     
     // Load Component CSS Files    
-    foreach($components as $component){
-        if(file_exists(THEMES . "/". $theme . "/" . $component . "/screen.css")){
-            echo('<link rel="stylesheet" href="themes/'.$theme.'/'.$component.'/screen.css">');
-        } else {
-            if(file_exists("themes/default/" . $component . "/screen.css")){
-                echo('<link rel="stylesheet" href="themes/default/'.$component.'/screen.css">');
-            } else {
-                if(file_exists(COMPONENTS . "/" . $component . "/screen.css")){
-                    echo('<link rel="stylesheet" href="components/'.$component.'/screen.css">');
-                }
-            }
-        }
-    }
+    // foreach($components as $component){
+    //     if(file_exists(THEMES . "/". $theme . "/" . $component . "/screen.css")){
+    //         echo('<link rel="stylesheet" href="themes/'.$theme.'/'.$component.'/screen.css">');
+    //     } else {
+    //         if(file_exists("themes/default/" . $component . "/screen.css")){
+    //             echo('<link rel="stylesheet" href="themes/default/'.$component.'/screen.css">');
+    //         } else {
+    //             if(file_exists(COMPONENTS . "/" . $component . "/screen.css")){
+    //                 echo('<link rel="stylesheet" href="components/'.$component.'/screen.css">');
+    //             }
+    //         }
+    //     }
+    // }
+    echo('<link rel="stylesheet" href="themes/default/reset.css">');
+    echo('<link rel="stylesheet" href="themes/default/jquery.toastmessage.css">');
+    echo('<link rel="stylesheet" href="themes/default/main.css">');
+    echo('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.css">');
+    
     
     // Load Plugin CSS Files    
     foreach($plugins as $plugin){
@@ -195,11 +200,11 @@ if(isset($_SESSION['theme'])) {
 
         <div id="sb-left" class="sidebar">
             <div id="sb-left-title">
-                <a id="lock-left-sidebar" class="icon-lock icon"></a>
+                <!--<a id="lock-left-sidebar" class="icon-lock icon"></a>-->
                 <?php if (!common::isWINOS()) { ?>
-                <a id="finder-quick" class="icon icon-archive"></a>
+                <a id="finder-quick" class="icon icon-search"></a>
                 <a id="tree-search" class="icon-search icon"></a>
-                <h2 id="finder-label"> <?php i18n("Explore"); ?> </h2>
+                <h2 id="finder-label"> <?php i18n("Search"); ?> </h2>
                 <div id="finder-wrapper">
                    <a id="finder-options" class="icon icon-cog"></a>
                    <div id="finder-inner-wrapper">
@@ -347,7 +352,7 @@ if(isset($_SESSION['theme'])) {
 
             <div class="sidebar-handle"><span><a class="icon-menu"></a></span></div>
             <div id="sb-right-title">
-                <span id="lock-right-sidebar" class="icon-switch icon"></span>
+                <span id="lock-right-sidebar" class="icon-lock-open icon"></span>
             </div>
 
             <div class="sb-right-content">
@@ -368,7 +373,7 @@ if(isset($_SESSION['theme'])) {
                         }
                     }else if($data['title']!='break' && $data['title']!='pluginbar' && $data['onclick'] == ''){
                         if(!$data['admin'] || $data['admin'] && checkAccess()) {
-                            echo("<hr><div class='sb-right-category'>".get_i18n($data['title'])."</div>");
+                            echo("<div class='sb-right-category'>".get_i18n($data['title'])."</div>");
                         }
                     }else if ($data['title']=='pluginbar'){
                         if(!$data['admin'] || $data['admin'] && checkAccess()) {
@@ -406,7 +411,7 @@ if(isset($_SESSION['theme'])) {
     </div>
 
     <div id="modal-overlay"></div>
-    <div id="modal"><div id="close-handle" class="icon-cancel" onclick="codiad.modal.unload();"></div><div id="drag-handle" class="icon-location"></div><div id="modal-content"></div></div>
+    <div id="modal"><div id="close-handle" class="icon-cancel" onclick="codiad.modal.unload();"></div><div id="drag-handle" class="icon-drag"></div><div id="modal-content"></div></div>
 
     <iframe id="download"></iframe>
 

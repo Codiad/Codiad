@@ -1,0 +1,90 @@
+#project-list {
+    max-height: 50vh;
+    overflow: auto;
+    margin: 15px 0;
+}
+
+.project-wrapper {
+  width: 100%; 
+}
+
+.project-list-title {
+    position: absolute;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    right: 0px;
+    height: 35px;
+    background-color: #303030;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.898) inset;
+    border-top: 2px solid #141414;
+    overflow:hidden;
+}
+
+.project-list-title h2 {
+    float: left;
+    font-size: 15px;
+    font-weight: 500;
+    color: #666;
+    display: block;
+    margin: 10px;    
+}
+
+.project-list-title .icon {
+    display: block;
+    font-size: 15px;
+    color: #666;
+    z-index: 99999;
+    cursor: pointer;
+    margin: 5px;
+    padding: 5px;
+    float: right;
+}
+
+.project-list-title .icon:hover {
+    color: #fff;
+}
+
+.sb-project-list {
+    max-height:276px !important;
+    margin:0 0 !important;
+    overflow: auto !important;
+}
+
+.sb-projects-content {
+    height:100%;
+    width:100%;
+    overflow: auto;
+    position: absolute;
+    padding: 15px;
+}
+
+.sb-projects-content li:hover {
+    background-color: #333;
+    cursor: pointer;
+}
+
+.sb-projects-content ul {
+    height:100%;
+    display:block;
+    padding-top:35px;
+}
+
+.sb-projects-content ul li {
+    padding: 5px;
+    white-space: nowrap;
+    border-radius: 3px;
+}
+
+.sb-projects-content ul li .icon {
+    font-size: 12px;
+}
+
+.sb-projects-content div {
+    padding-top: 2px;
+}
+
+#git-clone { border: none; }
+#git-clone td { border: none; padding: 0; margin: 0; }
+
+.note { padding: 10px 0; color: #a8a6a8; }

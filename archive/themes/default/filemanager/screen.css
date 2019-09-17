@@ -1,0 +1,423 @@
+#file-manager {
+    width: 100%;
+    height: 100%;
+    float: left;
+    margin: 0;
+    padding: 15px;
+    overflow: auto;
+}
+#file-manager ul {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+#file-manager li {
+    display: block;
+    margin: 0;
+    padding: 2px 0;
+    list-style: none;
+}
+#file-manager ul ul li {
+    margin-left: 20px;
+    white-space: nowrap;
+}
+#file-manager a {
+    display: inline-block;
+    min-width: 100%;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 3px;
+}
+#file-manager a:hover, #file-manager a.context-menu-active {
+    background-color: #333;
+}
+#file-manager span {
+    width:10px;
+    height:10px;
+    display: inline-block;
+    margin-left:-6px;
+    padding-top: 0;
+    line-height: 6px;
+}
+#file-manager .plus:before {
+    display: block;
+    content: "\25b8";
+    padding: 5px;
+    margin-left: -10px;
+    font-size: 16px;
+}
+#file-manager .plus {
+    color: gray;
+    font-family: entypo;
+    font-style: normal;
+    display: inline-block;
+}
+#file-manager .none {
+    background: none;
+}
+#file-manager .minus:before {
+    display: block;
+    content: "\25be";
+    padding: 5px;
+    margin-left: -10px;
+    font-size: 16px;
+}
+#file-manager .minus {
+    color: gray;
+    font-family: entypo;
+    font-style: normal;
+    display: inline-block;
+}
+#file-manager .plus:hover {
+    cursor: pointer;
+    color: #fff;
+}
+#file-manager .minus:hover {
+    cursor: pointer;
+    color: #fff;
+}
+/* CONTEXT MENU */
+
+#context-menu {
+    display: none;
+    top: 0;
+    left: 0;
+    position: fixed;
+    width: 140px;
+    padding: 0;
+    background: #333;
+    z-index: 9999999;
+    background-clip: content-box;
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .9);
+    border-radius: 3px;
+    overflow-y: auto;
+}
+#context-menu a {
+    display: block;
+    padding: 5px 5px 7px 5px;
+    margin: 0;
+}
+#context-menu .icon {
+    padding-right: 5px;
+}
+#context-menu a:hover {
+    background-color: #4a4a4a;
+}
+#context-menu hr {
+    height: 0;
+    border: none;
+    border-top: 1px solid #292929;
+    margin: 5px;
+}
+.disabled {
+    color: #999;
+    font-style: italic;
+}
+/* SEARCH */
+
+#filemanager-search-results {
+    display: none;
+    height: 250px;
+    overflow: scroll !important;
+    border: 1px solid #262626;
+}
+#filemanager-search-results div {
+    padding: 4px 6px 3px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
+}
+#filemanager-search-results div:hover {
+    background-image: linear-gradient(left , rgb(26, 26, 26) 1%, rgba(26, 26, 26, 0.0) 100%);
+    background-image: -o-linear-gradient(left , rgb(26, 26, 26) 1%, rgba(26, 26, 26, 0.0) 100%);
+    background-image: -moz-linear-gradient(left , rgb(26, 26, 26) 1%, rgba(26, 26, 26, 0.0) 100%);
+    background-image: -webkit-linear-gradient(left , rgb(26, 26, 26) 1%, rgba(26, 26, 26, 0.0) 100%);
+    background-image: -ms-linear-gradient(left , rgb(26, 26, 26) 1%, rgba(26, 26, 26, 0.0) 100%);
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(0.01, rgb(26, 26, 26)), color-stop(1.00, rgba(26, 26, 26, 0.0)));
+}
+#filemanager-search-processing {
+    display: none;
+    margin: 10px 0 0 0;
+    width: 32px;
+    height: 32px;
+    float: right;
+    background: url(../loading.gif) no-repeat;
+}
+/* UPLOADER */
+
+#upload-drop-zone {
+    height: 200px;
+    padding-top: 60px;
+    border: 1px solid #666;
+    border-radius: 5px;
+    margin: 10px 0;
+    box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, .5);
+    text-align: center;
+    font-size: 25px;
+    color: #999;
+}
+.upload-drag-over {
+    border: 1px solid #fff;
+}
+#upload-wrapper {
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+}
+#upload-clicker {
+    background: #333;
+    color: #999;
+    cursor: pointer;
+    display: inline-block;
+}
+#upload-wrapper:hover #upload-clicker {
+    color: #fff;
+}
+#upload-wrapper input {
+    cursor: pointer;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0.0;
+}
+#upload-progress {
+    width: 75%;
+    margin: 10px auto;
+    height: 20px;
+    border: 1px solid #666;
+    background: #262626;
+    border-radius: 5px;
+    overflow: hidden;
+}
+#upload-progress .bar {
+    width: 0;
+    height: 20px;
+    background-image: url(images/progress_bar.png);
+}
+#upload-complete {
+    display: none;
+    font-size: 18px;
+    margin: 10px 0;
+    color: #fff;
+}
+
+
+/* SEARCH */
+
+.file-search-table tr td {
+    border: none;
+    padding: 0;
+}
+
+
+/* ICONS */
+
+#file-manager a {
+    background-repeat: no-repeat;
+    background-position: 4px 4px;
+    text-indent: 22px;
+    padding-top: 5px;
+}
+#file-manager .directory {
+    background-image: url(images/directory.png);
+}
+#file-manager .directory.open {
+    background-image: url(images/directory_open.png);
+}
+#file-manager .file {
+    background-image: url(images/file.png);
+}
+
+/* EXTENSIONS */
+#file-manager .ext-htaccess {
+    background-image: url(images/config.png);
+}
+#file-manager .ext-conf {
+    background-image: url(images/config.png);
+}
+#file-manager .ext-ini {
+    background-image: url(images/config.png);
+}
+#file-manager .ext-3gp {
+    background-image: url(images/film.png);
+}
+#file-manager .ext-afp {
+    background-image: url(images/code.png);
+}
+#file-manager .ext-afpa {
+    background-image: url(images/code.png);
+}
+#file-manager .ext-asp {
+    background-image: url(images/code.png);
+}
+#file-manager .ext-aspx {
+    background-image: url(images/code.png);
+}
+#file-manager .ext-avi {
+    background-image: url(images/film.png);
+}
+#file-manager .ext-bat {
+    background-image: url(images/application.png);
+}
+#file-manager .ext-bmp {
+    background-image: url(images/picture.png);
+}
+#file-manager .ext-c {
+    background-image: url(images/code.png);
+}
+#file-manager .ext-cfm {
+    background-image: url(images/code.png);
+}
+#file-manager .ext-cgi {
+    background-image: url(images/code.png);
+}
+#file-manager .ext-com {
+    background-image: url(images/application.png);
+}
+#file-manager .ext-cpp {
+    background-image: url(images/code.png);
+}
+#file-manager .ext-css {
+    background-image: url(images/css.png);
+}
+#file-manager .ext-doc {
+    background-image: url(images/doc.png);
+}
+#file-manager .ext-exe {
+    background-image: url(images/application.png);
+}
+#file-manager .ext-gif {
+    background-image: url(images/picture.png);
+}
+#file-manager .ext-fla {
+    background-image: url(images/flash.png);
+}
+#file-manager .ext-h {
+    background-image: url(images/code.png);
+}
+#file-manager .ext-htm {
+    background-image: url(images/html.png);
+}
+#file-manager .ext-html {
+    background-image: url(images/html.png);
+}
+#file-manager .ext-jar {
+    background-image: url(images/java.png);
+}
+#file-manager .ext-jpg {
+    background-image: url(images/picture.png);
+}
+#file-manager .ext-jpeg {
+    background-image: url(images/picture.png);
+}
+#file-manager .ext-js {
+    background-image: url(images/script.png);
+}
+#file-manager .ext-json {
+    background-image: url(images/script.png);
+}
+#file-manager .ext-lasso {
+    background-image: url(images/code.png);
+}
+#file-manager .ext-log {
+    background-image: url(images/text-plain.png);
+}
+#file-manager .ext-m4p {
+    background-image: url(images/music.png);
+}
+#file-manager .ext-mov {
+    background-image: url(images/film.png);
+}
+#file-manager .ext-mp3 {
+    background-image: url(images/music.png);
+}
+#file-manager .ext-mp4 {
+    background-image: url(images/film.png);
+}
+#file-manager .ext-mpg {
+    background-image: url(images/film.png);
+}
+#file-manager .ext-mpeg {
+    background-image: url(images/film.png);
+}
+#file-manager .ext-ogg {
+    background-image: url(images/music.png);
+}
+#file-manager .ext-pcx {
+    background-image: url(images/picture.png);
+}
+#file-manager .ext-pdf {
+    background-image: url(images/pdf.png);
+}
+#file-manager .ext-php {
+    background-image: url(images/php.png);
+}
+#file-manager .ext-png {
+    background-image: url(images/picture.png);
+}
+#file-manager .ext-ppt {
+    background-image: url(images/ppt.png);
+}
+#file-manager .ext-psd {
+    background-image: url(images/psd.png);
+}
+#file-manager .ext-pl {
+    background-image: url(images/script.png);
+}
+#file-manager .ext-py {
+    background-image: url(images/script.png);
+}
+#file-manager .ext-rb {
+    background-image: url(images/ruby.png);
+}
+#file-manager .ext-rbx {
+    background-image: url(images/ruby.png);
+}
+#file-manager .ext-rhtml {
+    background-image: url(images/ruby.png);
+}
+#file-manager .ext-rpm {
+    background-image: url(images/linux.png);
+}
+#file-manager .ext-ruby {
+    background-image: url(images/ruby.png);
+}
+#file-manager .ext-sql {
+    background-image: url(images/db.png);
+}
+#file-manager .ext-swf {
+    background-image: url(images/flash.png);
+}
+#file-manager .ext-tif {
+    background-image: url(images/picture.png);
+}
+#file-manager .ext-tiff {
+    background-image: url(images/picture.png);
+}
+#file-manager .ext-txt {
+    background-image: url(images/file.png);
+}
+#file-manager .ext-vb {
+    background-image: url(images/code.png);
+}
+#file-manager .ext-wav {
+    background-image: url(images/music.png);
+}
+#file-manager .ext-wmv {
+    background-image: url(images/film.png);
+}
+#file-manager .ext-xls {
+    background-image: url(images/xls.png);
+}
+#file-manager .ext-xml {
+    background-image: url(images/code.png);
+}
+#file-manager .ext-zip {
+    background-image: url(images/zip.png);
+}
+
+#file-manager .loading {
+    background-image: url(images/spinner.gif);
+}

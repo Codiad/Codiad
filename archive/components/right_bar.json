@@ -1,0 +1,98 @@
+[
+    {
+        "title": "Save",
+        "admin": false,
+        "icon": "icon-install",
+        "onclick": "codiad.active.save();"
+    },
+    {
+        "title": "Save All",
+        "admin": false,
+        "icon": "icon-install",
+        "onclick": "codiad.active.saveAll();"
+    },
+    {
+        "title": "Plugins",
+        "admin": false,
+        "icon": null,
+        "onclick": null
+    },
+    {
+        "title": "pluginbar",
+        "admin": false,
+        "icon": null,
+        "onclick": null
+    },
+    {
+        "title": "Administration",
+        "admin": true,
+        "icon": null,
+        "onclick": null
+    },
+    {
+        "title": "Projects",
+        "admin": true,
+        "icon": "icon-archive",
+        "onclick": "codiad.project.list();"
+    },
+    {
+        "title": "Users",
+        "admin": true,
+        "icon": "icon-users",
+        "onclick": "codiad.user.list();"
+    },
+    {
+        "title": "System",
+        "admin": true,
+        "icon": null,
+        "onclick": null
+    },
+    {
+        "title": "Marketplace",
+        "admin": true,
+        "icon": "icon-cloud",
+        "onclick": "codiad.market.list();"
+    },
+    {
+        "title": "Update Check",
+        "admin": true,
+        "icon": "icon-share",
+        "onclick": "codiad.update.check();"
+    },
+    {
+        "title": "Account",
+        "admin": false,
+        "icon": null,
+        "onclick": null
+    },
+    {
+        "title": "Settings",
+        "admin": false,
+        "icon": "icon-doc-text",
+        "onclick": "codiad.settings.show();"
+    },
+    {
+        "title": "Password",
+        "admin": false,
+        "icon": "icon-flashlight",
+        "onclick": "codiad.user.password();"
+    },
+    {
+        "title": "break",
+        "admin": false,
+        "icon": null,
+        "onclick": null
+    },
+    {
+        "title": "Help",
+        "admin": false,
+        "icon": "icon-help",
+        "onclick": "window.open('https://github.com/Codiad/Codiad/wiki');"
+    },
+    {
+        "title": "Logout",
+        "admin": false,
+        "icon": "icon-logout",
+        "onclick": "codiad.user.logout();"
+    }
+]

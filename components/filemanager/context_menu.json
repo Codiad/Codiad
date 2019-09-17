@@ -1,7 +1,7 @@
 [
     {
         "title": "New File",
-        "icon": "icon-doc-text",
+        "icon": "icon-plus-circled",
         "applies-to" : "directory-only",
         "onclick": "codiad.filemanager.createNode($('#context-menu').attr('data-path'),'file');"
     },
@@ -115,7 +115,7 @@
     },
     {
         "title": "Rescan",
-        "icon": "icon-arrows-ccw",
+        "icon": "icon-sync",
         "applies-to" : "directory-only",
         "onclick": "codiad.filemanager.rescan($('#context-menu').attr('data-path'));"
     }
