@@ -1,3 +1,0 @@
-<?php
-/*|{"liam":{"codiad.editor.indentGuides":"true","codiad.editor.highlightLine":"true","codiad.language":"en","codiad.editor.persistentModal":"true","codiad.modal.top":"145","codiad.modal.left":"396","codiad.settings.plugin.sync":true,"codiad.editor.softTabs":"false","codiad.editor.printMarginColumn":"80","codiad.username":"liam","codiad.theme":"modern","codiad.editor.rightSidebarTrigger":"false","codiad.editor.wrapMode":"false","codiad.editor.theme":"clouds_midnight","codiad.settings.system.sync":true,"codiad.editor.printMargin":"false","codiad.editor.tabSize":"4","codiad.editor.fileManagerTrigger":"true","codiad.editor.fontSize":"13px","username":"liam"}}|*/
-?>

@@ -11,23 +11,25 @@
 //////////////////////////////////////////////////////////////////
 
 // PATH TO CODIAD
-define("BASE_PATH", "/var/www/codiad");
+define("BASE_PATH", "/var/www/html/Axiom");
 
 // BASE URL TO CODIAD (without trailing slash)
-define("BASE_URL", "code.teagey.com");
+define("BASE_URL", "192.168.1.2/Axiom");
 
 // THEME : default, modern or clear (look at /themes)
-// define("THEME", "default");
-define("THEME", "modern");
+define("THEME", "default");
 
-// ABSOLUTE PATH
+// ABSOLUTE PATH, this is used as whitelist for absolute path projects 
 define("WHITEPATHS", BASE_PATH . ",/home");
 
 // SESSIONS (e.g. 7200)
 $cookie_lifetime = "0";
 
 // TIMEZONE
-date_default_timezone_set("America/New_York");
+date_default_timezone_set("America/Chicago");
+
+// Allows to overwrite the default language
+//define("LANGUAGE", "en");
 
 // External Authentification
 //define("AUTH_PATH", "/path/to/customauth.php");
@@ -53,3 +55,5 @@ define("WSURL", BASE_URL . "/workspace");
 //define("UPDATEURL", "http://update.codiad.com/?v={VER}&o={OS}&p={PHP}&w={WEB}&a={ACT}");
 //define("ARCHIVEURL", "https://github.com/Codiad/Codiad/archive/master.zip");
 //define("COMMITURL", "https://api.github.com/repos/Codiad/Codiad/commits");
+
+?>
