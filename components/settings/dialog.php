@@ -78,18 +78,6 @@
                 $('.settings-view .config-menu li').click(function(){
                     codiad.settings._showTab($(this).attr('data-file'));
                 });
-                
-                $('select[data-setting="codiad.editor.theme"]').change(function() {
-                	var val     = $(this).val();
-                	if(val !== null) {
-                		codiad.editor.setTheme(val);
-                		localStorage.setItem('codiad.editor.theme', val);
-                    /* Notify listeners */
-                    amplify.publish('settings.dialog.save',{});
-                    // codiad.modal.unload();
-                    codiad.settings.save();                		
-                	}
-                });
             
                 function save() {
                     $('.setting').each(function(){

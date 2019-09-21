@@ -1,0 +1,10 @@
+[ { "author" : "Fluidbyte",
+    "version": "1.0",
+    "name" : "Color Tool",
+    "url" : "https://github.com/Fluidbyte/Codiad-ColorPicker.git",
+    "rightbar" : [{
+        "action" : "codiad.colorPicker.open();",
+        "icon" : "icon-palette",
+        "title" : "Color Tool"
+        }]
+  } ]

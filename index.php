@@ -4,11 +4,11 @@ require_once('common.php');
 
 // Context Menu
 $context_menu = file_get_contents(COMPONENTS . "/filemanager/context_menu.json");
-$context_menu = json_decode($context_menu,true);
+$context_menu = json_decode($context_menu, true);
 
 // Right Bar
 $right_bar = file_get_contents(COMPONENTS . "/right_bar.json");
-$right_bar = json_decode($right_bar,true);
+$right_bar = json_decode($right_bar, true);
 
 // Read Components, Plugins, Themes
 $components = Common::readDirectory(COMPONENTS);
@@ -17,8 +17,8 @@ $themes = Common::readDirectory(THEMES);
 
 // Theme
 $theme = THEME;
-if(isset($_SESSION['theme'])) {
-  $theme = $_SESSION['theme'];
+if (isset($_SESSION['theme'])) {
+    $theme = $_SESSION['theme'];
 }
 
 ?>
@@ -27,68 +27,42 @@ if(isset($_SESSION['theme'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--<title><?php i18n("CODIAD"); ?></title>-->
     <title>Elsenova IDE</title>
     <?php
     // Load System CSS Files
-    // $stylesheets = array("jquery.toastmessage.css","reset.css","fonts.css","screen.css");
-   
-    // foreach($stylesheets as $sheet){
-    //     if(file_exists(THEMES . "/". $theme . "/".$sheet)){
-    //         echo('<link rel="stylesheet" href="themes/'.$theme.'/'.$sheet.'">');
-    //     } else {
-    //         echo('<link rel="stylesheet" href="themes/default/'.$sheet.'">');
-    //     }
-    // }
-    
-    // Load Component CSS Files    
-    // foreach($components as $component){
-    //     if(file_exists(THEMES . "/". $theme . "/" . $component . "/screen.css")){
-    //         echo('<link rel="stylesheet" href="themes/'.$theme.'/'.$component.'/screen.css">');
-    //     } else {
-    //         if(file_exists("themes/default/" . $component . "/screen.css")){
-    //             echo('<link rel="stylesheet" href="themes/default/'.$component.'/screen.css">');
-    //         } else {
-    //             if(file_exists(COMPONENTS . "/" . $component . "/screen.css")){
-    //                 echo('<link rel="stylesheet" href="components/'.$component.'/screen.css">');
-    //             }
-    //         }
-    //     }
-    // }
-    echo('<link rel="stylesheet" href="themes/default/reset.css">');
-    echo('<link rel="stylesheet" href="themes/default/jquery.toastmessage.css">');
-    echo('<link rel="stylesheet" href="themes/default/main.css">');
-    echo('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.css">');
-    
-    
-    // Load Plugin CSS Files    
-    foreach($plugins as $plugin){
-        if(file_exists(THEMES . "/". $theme . "/" . $plugin . "/screen.css")){
+
+    echo('<link rel="stylesheet" href="themes/' . $theme . '/main.css">');
+    echo('<link rel="stylesheet" href="themes/' . $theme . '/fonts/fontawesome/css/all.min.css">');
+    // echo('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.css">');
+
+    // Load Plugin CSS Files
+    foreach ($plugins as $plugin) {
+        if (file_exists(THEMES . "/". $theme . "/" . $plugin . "/screen.css")) {
             echo('<link rel="stylesheet" href="themes/'.$theme.'/'.$plugin.'/screen.css">');
         } else {
-            if(file_exists("themes/default/" . $plugin . "/screen.css")){
+            if (file_exists("themes/default/" . $plugin . "/screen.css")) {
                 echo('<link rel="stylesheet" href="themes/default/'.$plugin.'/screen.css">');
             } else {
-                if(file_exists(PLUGINS . "/" . $plugin . "/screen.css")){
+                if (file_exists(PLUGINS . "/" . $plugin . "/screen.css")) {
                     echo('<link rel="stylesheet" href="plugins/'.$plugin.'/screen.css">');
                 }
             }
         }
     }
-    ?>
-    
-    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/file-icon-vectors@1.0.0/dist/file-icon-square-o.min.css" />-->
 
-    <!--<link rel="icon" href="favicon.ico" type="image/x-icon" />-->
-	<link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
-	<link rel="manifest" href="favicons/site.webmanifest">
-	<link rel="mask-icon" href="favicons/safari-pinned-tab.svg" color="#000713">
-	<link rel="shortcut icon" href="favicons/favicon.ico">
-	<meta name="msapplication-TileColor" content="#2b5797">
-	<meta name="msapplication-config" content="favicons/browserconfig.xml">
-	<meta name="theme-color" content="#ffffff">
+    echo('<link rel="apple-touch-icon" sizes="180x180" href="themes/' . $theme . '/favicons/apple-touch-icon.png">');
+    echo('<link rel="icon" type="image/png" sizes="32x32" href="themes/' . $theme . '/favicons/favicon-32x32.png">');
+    echo('<link rel="icon" type="image/png" sizes="16x16" href="themes/' . $theme . '/favicons/favicon-16x16.png">');
+    echo('<link rel="manifest" href="themes/' . $theme . '/favicons/site.webmanifest">');
+    echo('<link rel="mask-icon" href="themes/' . $theme . '/favicons/safari-pinned-tab.svg" color="#000713">');
+    echo('<link rel="shortcut icon" href="themes/' . $theme . '/favicons/favicon.ico">');
+    echo('<meta name="msapplication-TileColor" content="#2b5797">');
+    echo('<meta name="msapplication-config" content="themes/' . $theme . '/favicons/browserconfig.xml">');
+    echo('<meta name="theme-color" content="#ffffff">');
+
+    ?>
+
+
 </head>
 
 <body>
@@ -98,7 +72,7 @@ if(isset($_SESSION['theme'])) {
             var x;
             var returnw = (word in lang) ? lang[word] : word;
             for(x in args){
-                returnw=returnw.replace("%{"+x+"}%",args[x]);   
+                returnw=returnw.replace("%{"+x+"}%",args[x]);
             }
             return returnw;
         }
@@ -106,13 +80,28 @@ if(isset($_SESSION['theme'])) {
     </script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script>!window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.7.2.min.js"%3E%3C/script%3E'));</script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+
     <script src="js/jquery-ui-1.8.23.custom.min.js"></script>
+    <!-- <script src="">https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js</script> -->
+
     <script src="js/jquery.css3.min.js"></script>
+
     <script src="js/jquery.easing.js"></script>
+    <!-- <script src="js/jquery.easing.newnew.js"></script> -->
+    <!-- <script src="">https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js</script> -->
+
     <script src="js/jquery.toastmessage.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script> -->
+
     <script src="js/amplify.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/amplifyjs/1.1.2/amplify.min.js"></script> -->
     <script src="js/localstorage.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/localStorage/2.0.1/localStorage.min.js"></script> -->
+
     <script src="js/jquery.hoverIntent.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.hoverintent/1.10.0/jquery.hoverIntent.min.js"></script> -->
+
     <script src="js/system.js"></script>
     <script src="js/sidebars.js"></script>
     <script src="js/modal.js"></script>
@@ -126,20 +115,18 @@ if(isset($_SESSION['theme'])) {
     // NOT LOGGED IN
     //////////////////////////////////////////////////////////////////
 
-    if(!isset($_SESSION['user'])){
-
-        $path = rtrim(str_replace("index.php", "", $_SERVER['SCRIPT_FILENAME']),"/");
+    if (!isset($_SESSION['user'])) {
+        $path = rtrim(str_replace("index.php", "", $_SERVER['SCRIPT_FILENAME']), "/");
 
         $users = file_exists($path . "/data/users.php");
         $projects = file_exists($path . "/data/projects.php");
         $active = file_exists($path . "/data/active.php");
 
-        if(!$users && !$projects && !$active){
+        if (!$users && !$projects && !$active) {
             // Installer
             require_once('components/install/view.php');
-        }else{
-            // Login form
-            ?>
+        } else {
+            // Login form?>
 
             <form id="login" method="post" style="position: fixed; width: 350px; top: 30%; left: 50%; margin-left: -175px; padding: 35px;">
 
@@ -148,35 +135,45 @@ if(isset($_SESSION['theme'])) {
 
                 <label><span class="icon-lock login-icon"></span> <?php i18n("Password"); ?></label>
                 <input type="password" name="password">
-                
+
                 <div class="language-selector">
                     <label><span class="icon-picture login-icon"></span> <?php i18n("Theme"); ?></label>
                     <select name="theme" id="theme">
                         <option value="default"><?php i18n("Default"); ?></option>
                         <?php
                         include 'languages/code.php';
-                        foreach($themes as $theme): 
-                            if(file_exists(THEMES."/" . $theme . "/theme.json")) {
+            foreach ($themes as $theme):
+                            if (file_exists(THEMES."/" . $theme . "/theme.json")) {
                                 $data = file_get_contents(THEMES."/" . $theme . "/theme.json");
-                                $data = json_decode($data,true);
-                            ?>
-                            <option value="<?php echo $theme; ?>" <?php if($theme == THEME) { echo "selected"; } ?>><?php if($data[0]['name'] != '') { echo $data[0]['name']; } else { echo $theme; } ?></option>
-                        <?php } endforeach; ?>
+                                $data = json_decode($data, true); ?>
+                            <option value="<?php echo $theme; ?>" <?php if ($theme == THEME) {
+                                    echo "selected";
+                                } ?>><?php if ($data[0]['name'] != '') {
+                                    echo $data[0]['name'];
+                                } else {
+                                    echo $theme;
+                                } ?></option>
+                        <?php
+                            }
+            endforeach; ?>
                     </select>
                     <label><span class="icon-language login-icon"></span> <?php i18n("Language"); ?></label>
                     <select name="language" id="language">
                         <?php
                         include 'languages/code.php';
-                        foreach(glob("languages/*.php") as $filename): 
+            foreach (glob("languages/*.php") as $filename):
                             $lang_code = str_replace(array("languages/", ".php"), "", $filename);
-                            if(!isset($languages[$lang_code])) continue;
-                            $lang_disp = ucfirst(strtolower($languages[$lang_code]));
-                            ?>
-                            <option value="<?php echo $lang_code; ?>" <?php if ($lang_code == "en"){echo "selected";}?>><?php echo $lang_disp; ?></option>
+            if (!isset($languages[$lang_code])) {
+                continue;
+            }
+            $lang_disp = ucfirst(strtolower($languages[$lang_code])); ?>
+                            <option value="<?php echo $lang_code; ?>" <?php if ($lang_code == "en") {
+                echo "selected";
+            } ?>><?php echo $lang_disp; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
-                
+
                 <button><?php i18n("Login"); ?></button>
 
                 <a class="show-language-selector"><?php i18n("More"); ?></a>
@@ -185,26 +182,23 @@ if(isset($_SESSION['theme'])) {
 
             <script src="components/user/init.js"></script>
             <?php
-
         }
 
-    //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
     // AUTHENTICATED
     //////////////////////////////////////////////////////////////////
-
-    }else{
-
-    ?>
+    } else {
+        ?>
 
     <div id="workspace">
 
         <div id="sb-left" class="sidebar">
             <div id="sb-left-title">
-                <!--<a id="lock-left-sidebar" class="icon-lock icon"></a>-->
+                <a id="lock-left-sidebar" class="icon-lock icon"></a>
                 <?php if (!common::isWINOS()) { ?>
-                <a id="finder-quick" class="icon icon-search"></a>
+                <a id="finder-quick" class="icon icon-archive"></a>
                 <a id="tree-search" class="icon-search icon"></a>
-                <h2 id="finder-label"> <?php i18n("Search"); ?> </h2>
+                <h2 id="finder-label"> <?php i18n("Explore"); ?> </h2>
                 <div id="finder-wrapper">
                    <a id="finder-options" class="icon icon-cog"></a>
                    <div id="finder-inner-wrapper">
@@ -229,34 +223,30 @@ if(isset($_SESSION['theme'])) {
                         // Load Context Menu
                         ////////////////////////////////////////////////////////////
 
-                        foreach($context_menu as $menu_item=>$data){
-
-                            if($data['title']=='Break'){
+                        foreach ($context_menu as $menu_item=>$data) {
+                            if ($data['title']=='Break') {
                                 echo('<hr class="'.$data['applies-to'].'">');
-                            } else{
+                            } else {
                                 echo('<a class="'.$data['applies-to'].'" onclick="'.$data['onclick'].'"><span class="'.$data['icon'].'"></span>'.get_i18n($data['title']).'</a>');
                             }
-
-                        }
-                        
-                        foreach ($plugins as $plugin){
-                             if(file_exists(PLUGINS . "/" . $plugin . "/plugin.json")) {
-                                $pdata = file_get_contents(PLUGINS . "/" . $plugin . "/plugin.json");
-                                $pdata = json_decode($pdata,true);
-                                if(isset($pdata[0]['contextmenu'])) {
-                                    foreach($pdata[0]['contextmenu'] as $contextmenu) {
-                                        if((!isset($contextmenu['admin']) || ($contextmenu['admin']) && checkAccess()) || !$contextmenu['admin']){
-                                            if(isset($contextmenu['applies-to']) && isset($contextmenu['action']) && isset($contextmenu['icon']) && isset($contextmenu['title'])) {
-                                                echo('<hr class="'.$contextmenu['applies-to'].'">');
-                                                echo('<a class="'.$contextmenu['applies-to'].'" onclick="'.$contextmenu['action'].'"><span class="'.$contextmenu['icon'].'"></span>'.$contextmenu['title'].'</a>');
-                                            }
-                                        }
-                                    }
-                                }
-                             }
                         }
 
-                ?>
+        foreach ($plugins as $plugin) {
+            if (file_exists(PLUGINS . "/" . $plugin . "/plugin.json")) {
+                $pdata = file_get_contents(PLUGINS . "/" . $plugin . "/plugin.json");
+                $pdata = json_decode($pdata, true);
+                if (isset($pdata[0]['contextmenu'])) {
+                    foreach ($pdata[0]['contextmenu'] as $contextmenu) {
+                        if ((!isset($contextmenu['admin']) || ($contextmenu['admin']) && checkAccess()) || !$contextmenu['admin']) {
+                            if (isset($contextmenu['applies-to']) && isset($contextmenu['action']) && isset($contextmenu['icon']) && isset($contextmenu['title'])) {
+                                echo('<hr class="'.$contextmenu['applies-to'].'">');
+                                echo('<a class="'.$contextmenu['applies-to'].'" onclick="'.$contextmenu['action'].'"><span class="'.$contextmenu['icon'].'"></span>'.$contextmenu['title'].'</a>');
+                            }
+                        }
+                    }
+                }
+            }
+        } ?>
 
                 </div>
 
@@ -265,21 +255,21 @@ if(isset($_SESSION['theme'])) {
                 <ul id="list-active-files"></ul>
 
             </div>
-            
+
             <div id="side-projects" class="sb-left-projects">
                 <div id="project-list" class="sb-project-list">
-                
+
                     <div class="project-list-title">
                         <h2><?php i18n("Projects"); ?></h2>
                         <a id="projects-collapse" class="icon-down-dir icon" alt="<?php i18n("Collapse"); ?>"></a>
-                        <?php if(checkAccess()) { ?>
+                        <?php if (checkAccess()) { ?>
                         <a id="projects-manage" class="icon-archive icon"></a>
                         <a id="projects-create" class="icon-plus icon" alt="<?php i18n("Create Project"); ?>"></a>
                         <?php } ?>
                     </div>
-                    
+
                     <div class="sb-projects-content"></div>
-                    
+
                 </div>
             </div>
 
@@ -305,37 +295,35 @@ if(isset($_SESSION['theme'])) {
             <div id="root-editor-wrapper"></div>
 
             <div id="editor-bottom-bar">
-                <a id="settings" class="ico-wrapper"><span class="icon-doc-text"></span><?php i18n("Settings"); ?></a>
-                
+                <a id="settings" class="ico-wrapper"><span class="icon-cog"></span><?php i18n("Settings"); ?></a>
+
                 <?php
 
                     ////////////////////////////////////////////////////////////
                     // Load Plugins
                     ////////////////////////////////////////////////////////////
-                    
-                    foreach ($plugins as $plugin){
-                         if(file_exists(PLUGINS . "/" . $plugin . "/plugin.json")) {
+
+                    foreach ($plugins as $plugin) {
+                        if (file_exists(PLUGINS . "/" . $plugin . "/plugin.json")) {
                             $pdata = file_get_contents(PLUGINS . "/" . $plugin . "/plugin.json");
-                            $pdata = json_decode($pdata,true);
-                            if(isset($pdata[0]['bottombar'])) {
-                                foreach($pdata[0]['bottombar'] as $bottommenu) {
-                                    if((!isset($bottommenu['admin']) || ($bottommenu['admin']) && checkAccess()) || !$bottommenu['admin']){
-                                        if(isset($bottommenu['action']) && isset($bottommenu['icon']) && isset($bottommenu['title'])) {
+                            $pdata = json_decode($pdata, true);
+                            if (isset($pdata[0]['bottombar'])) {
+                                foreach ($pdata[0]['bottombar'] as $bottommenu) {
+                                    if ((!isset($bottommenu['admin']) || ($bottommenu['admin']) && checkAccess()) || !$bottommenu['admin']) {
+                                        if (isset($bottommenu['action']) && isset($bottommenu['icon']) && isset($bottommenu['title'])) {
                                             echo('<div class="divider"></div>');
                                             echo('<a onclick="'.$bottommenu['action'].'"><span class="'.$bottommenu['icon'].'"></span>'.$bottommenu['title'].'</a>');
                                         }
                                     }
                                 }
                             }
-                         }
-                    }
+                        }
+                    } ?>
 
-                ?>
-                
                 <div class="divider"></div>
                 <a id="split" class="ico-wrapper"><span class="icon-layout"></span><?php i18n("Split"); ?></a>
                 <div class="divider"></div>
-                <a id="current-mode"><span class="icon-layout"></span></a>                
+                <a id="current-mode"><span class="icon-layout"></span></a>
                 <div class="divider"></div>
                 <div id="current-file"></div>
             </div>
@@ -352,57 +340,54 @@ if(isset($_SESSION['theme'])) {
 
             <div class="sidebar-handle"><span><a class="icon-menu"></a></span></div>
             <div id="sb-right-title">
-                <span id="lock-right-sidebar" class="icon-lock-open icon"></span>
+                <span id="lock-right-sidebar" class="icon-switch icon"></span>
             </div>
 
             <div class="sb-right-content">
 
-                <?php
+              <?php
 
-                ////////////////////////////////////////////////////////////
-                // Load Right Bar
-                ////////////////////////////////////////////////////////////
+              ////////////////////////////////////////////////////////////
+              // Load Right Bar
+              ////////////////////////////////////////////////////////////
 
-                foreach($right_bar as $item_rb=>$data){
-                    if(!isset($data['admin'])) {
+              foreach ($right_bar as $item_rb=>$data) {
+                  if (!isset($data['admin'])) {
                       $data['admin'] = false;
-                    }
-                    if($data['title']=='break'){
-                        if(!$data['admin'] || $data['admin'] && checkAccess()) {
-                            echo("<hr>");
-                        }
-                    }else if($data['title']!='break' && $data['title']!='pluginbar' && $data['onclick'] == ''){
-                        if(!$data['admin'] || $data['admin'] && checkAccess()) {
-                            echo("<div class='sb-right-category'>".get_i18n($data['title'])."</div>");
-                        }
-                    }else if ($data['title']=='pluginbar'){
-                        if(!$data['admin'] || $data['admin'] && checkAccess()) {
-                            foreach ($plugins as $plugin){
-                                 if(file_exists(PLUGINS . "/" . $plugin . "/plugin.json")) {
-                                    $pdata = file_get_contents(PLUGINS . "/" . $plugin . "/plugin.json");
-                                    $pdata = json_decode($pdata,true);
-                                    if(isset($pdata[0]['rightbar'])) {
-                                        foreach($pdata[0]['rightbar'] as $rightbar) {
-                                            if((!isset($rightbar['admin']) || ($rightbar['admin']) && checkAccess()) || !$rightbar['admin']){
-                                                if(isset($rightbar['action']) && isset($rightbar['icon']) && isset($rightbar['title'])) {
-                                                    echo('<a onclick="'.$rightbar['action'].'"><span class="'.$rightbar['icon'].'"></span>'.get_i18n($rightbar['title']).'</a>');
-                                                }
-                                            }
-                                        }
-                                        //echo("<hr>");
-                                    }
-                                 }
-                            }
-                        }
-                    } else{
-                        if(!$data['admin'] || $data['admin'] && checkAccess()) {
-                            echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].' bigger-icon"></span>'.get_i18n($data['title']).'</a>');
-                        }
-                    }
-
-                }
-
-                ?>
+                  }
+                  if ($data['title']=='break') {
+                      if (!$data['admin'] || $data['admin'] && checkAccess()) {
+                          echo("<hr>");
+                      }
+                  } elseif ($data['title']!='break' && $data['title']!='pluginbar' && $data['onclick'] == '') {
+                      if (!$data['admin'] || $data['admin'] && checkAccess()) {
+                          echo("<div class='sb-right-category'>".get_i18n($data['title'])."</div>");
+                      }
+                  } elseif ($data['title']=='pluginbar') {
+                      if (!$data['admin'] || $data['admin'] && checkAccess()) {
+                          foreach ($plugins as $plugin) {
+                              if (file_exists(PLUGINS . "/" . $plugin . "/plugin.json")) {
+                                  $pdata = file_get_contents(PLUGINS . "/" . $plugin . "/plugin.json");
+                                  $pdata = json_decode($pdata, true);
+                                  if (isset($pdata[0]['rightbar'])) {
+                                      foreach ($pdata[0]['rightbar'] as $rightbar) {
+                                          if ((!isset($rightbar['admin']) || ($rightbar['admin']) && checkAccess()) || !$rightbar['admin']) {
+                                              if (isset($rightbar['action']) && isset($rightbar['icon']) && isset($rightbar['title'])) {
+                                                  echo('<a onclick="'.$rightbar['action'].'"><span class="'.$rightbar['icon'].'"></span>'.get_i18n($rightbar['title']).'</a>');
+                                              }
+                                          }
+                                      }
+                                      //echo("<hr>");
+                                  }
+                              }
+                          }
+                      }
+                  } else {
+                      if (!$data['admin'] || $data['admin'] && checkAccess()) {
+                          echo('<a onclick="'.$data['onclick'].'"><span class="'.$data['icon'].' bigger-icon"></span>'.get_i18n($data['title']).'</a>');
+                      }
+                  }
+              } ?>
 
             </div>
 
@@ -411,7 +396,7 @@ if(isset($_SESSION['theme'])) {
     </div>
 
     <div id="modal-overlay"></div>
-    <div id="modal"><div id="close-handle" class="icon-cancel" onclick="codiad.modal.unload();"></div><div id="drag-handle" class="icon-drag"></div><div id="modal-content"></div></div>
+    <div id="modal"><div id="close-handle" class="icon-cancel" onclick="codiad.modal.unload();"></div><div id="drag-handle" class="icon-location"></div><div id="modal-content"></div></div>
 
     <iframe id="download"></iframe>
 
@@ -428,18 +413,17 @@ if(isset($_SESSION['theme'])) {
         //////////////////////////////////////////////////////////////////
 
         // JS
-        foreach($components as $component){
-            if(file_exists(COMPONENTS . "/" . $component . "/init.js")){
+        foreach ($components as $component) {
+            if (file_exists(COMPONENTS . "/" . $component . "/init.js")) {
                 echo('<script src="components/'.$component.'/init.js"></script>"');
             }
         }
-        
-        foreach($plugins as $plugin){
-            if(file_exists(PLUGINS . "/" . $plugin . "/init.js")){
+
+        foreach ($plugins as $plugin) {
+            if (file_exists(PLUGINS . "/" . $plugin . "/init.js")) {
                 echo('<script src="plugins/'.$plugin.'/init.js"></script>"');
             }
         }
-
     }
 
     ?>

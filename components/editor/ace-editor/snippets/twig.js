@@ -1,5 +1,5 @@
-define("ace/snippets/twig",["require","exports","module"],function(e,t,n){"use strict";t.snippetText=undefined,t.scope="twig"});                (function() {
-                    window.require(["ace/snippets/twig"], function(m) {
+ace.define("ace/snippets/twig",["require","exports","module"],function(e,t,n){"use strict";t.snippetText=undefined,t.scope="twig"});                (function() {
+                    ace.require(["ace/snippets/twig"], function(m) {
                         if (typeof module == "object" && typeof exports == "object" && module) {
                             module.exports = m;
                         }

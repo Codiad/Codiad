@@ -989,7 +989,7 @@
             split = this.splitDirectoryAndFileName(path);
             return $('<li class="tab-item" data-path="' + path + '"><a class="label" title="' + path + '">' 
                     + split.directory + '<span class="file-name">' + split.fileName + '</span>' 
-                    + '</a><a class="close">x</a></li>');
+                    + '</a><a class="close"></a></li>');
         },
 
         createMenuItemThumb: function(path) {

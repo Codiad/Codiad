@@ -17,7 +17,8 @@ define("BASE_PATH", "/var/www/codiad");
 define("BASE_URL", "code.teagey.com");
 
 // THEME : default, modern or clear (look at /themes)
-define("THEME", "default");
+// define("THEME", "default");
+define("THEME", "modern");
 
 // ABSOLUTE PATH
 define("WHITEPATHS", BASE_PATH . ",/home");

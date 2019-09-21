@@ -1,0 +1,4 @@
+Options -Indexes
+<Files ~ "^.*\.(txt|yml|md|xml|json)">
+  Require all denied
+</Files>
