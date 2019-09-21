@@ -1,4 +1,7 @@
-# Codiad Web IDE
+# Axiom Web IDE, updated from [Codiad](http://codiad.com/)
+
+![Screenshot: Codiad VS Axiom](/docs/axiom-codiad.png?raw=true "Axiom compared to Codiad")
+
 
 Codiad is a web-based IDE framework with a small footprint and minimal requirements. 
 
