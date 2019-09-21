@@ -4,10 +4,11 @@
 config.php
 data/
 workspace/
-plugins/*
+!plugins/*
 !plugins/README.md
 themes/*
 !themes/default/
+!themes/modern/
 !themes/README.md
 .project
 .buildpath
