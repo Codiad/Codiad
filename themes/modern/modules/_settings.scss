@@ -1,0 +1,51 @@
+.settings-view {
+    display: -webkit-flex;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.settings-view .big-icon{
+    font-size: 140%;
+    margin-right: 12px;
+}
+
+.settings-view .config-menu {
+    max-height: 55vh;
+    overflow: auto;
+    width: 200px;
+}
+
+.settings-view .config-menu li {
+    box-sizing: border-box;
+    display: block;
+    margin-left: 0;
+    margin-top: 2px;
+    position: relative;
+}
+
+.settings-view .config-menu li a {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    
+    /* User select */
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    
+    /* No support for these yet, use at own risk */
+    -o-user-select: none;
+    user-select: none;
+}
+
+.settings-view .config-menu .active {
+    background-color: rgb(60, 118, 221);
+}
+
+.settings-view .panels {
+    max-height: 58vh;
+    padding: 5px 20px 20px;
+    overflow: auto;
+    width: 600px;
+}

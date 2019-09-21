@@ -1,0 +1,85 @@
+/* Tabbed Styles */
+#editor-top-bar {
+  //width: 80%;
+  //min-width: 400px;
+  //margin: 0 auto;
+  //margin-bottom: 68px;
+  //border-bottom: 4px solid #000;
+  //overflow: hidden;
+  transition: border 250ms ease;
+
+ ul {
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden;
+  //float: left;
+  padding-left: 18px;
+  list-style-type: none;
+  height: 33px;
+}
+ ul * {
+  margin: 0px;
+  padding: 0px;
+}
+ ul li {
+  display: block;
+  //float: right;
+  //padding: 10px 24px 8px;
+  position: relative;
+  padding: 5px 10px 5px;
+    margin-top: 10px;
+  //background-color: #FFF;
+  background-color: darken($tab-color, 30%);;
+  margin-right: 28px;
+  z-index: 2;
+  position: relative;
+  cursor: pointer;
+  //color: #777;
+
+  //text-transform: uppercase;
+  //transition: all 250ms ease;
+}
+ ul li:before,
+ ul li:after {
+  display: block;
+  content: " ";
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 44px;  
+  background-color: inherit;
+  //transition: all 250ms ease;
+  z-index: -1;
+}
+ ul li:before {
+  right: -18px;
+  transform: skew(30deg, 0deg);
+  box-shadow: rgba(0,0,0,.1) 3px 2px 5px, inset rgba(255,255,255,.09) -1px 0;
+}
+ ul li:after {
+  left: -10px;
+  transform: skew(-30deg, 0deg);
+  box-shadow: rgba(0,0,0,.1) -3px 2px 5px, inset rgba(255,255,255,.09) 1px 0;
+}
+ ul li:hover,
+ ul li:hover:before,
+ ul li:hover:after {
+  //background-color: #F4F7F9;
+  background-color: darken($tab-color, 15%);;
+  //color: #444;
+}
+ ul li.active {
+  z-index: 3;
+}
+ ul li.active,
+ ul li.active:before,
+ ul li.active:after {
+  background-color: #3E50B4;
+  color: #fff;
+}
+ ul li.changed,
+ ul li.changed:before,
+ ul li.changed:after {
+  background-color: #3BA628;
+}
+}

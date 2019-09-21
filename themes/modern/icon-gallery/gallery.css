@@ -1,0 +1,127 @@
+#icon-gallery {
+	margin: 3rem auto;
+	box-sizing: border-box;
+	padding: 0.5rem;
+	height: 36rem;
+	width: 30rem;
+	transition: background-color 30ms, color .3s;
+	background: #456fff;
+	background-image: linear-gradient(to bottom right, rgba(255, 255, 255, .4), rgba(0, 0, 0, .4));
+	background-blend-mode: overlay;	
+}
+
+.icon-grid {
+    height: 90%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.inactive i {
+	pointer-events: none;
+	opacity: 0.25;
+}
+
+.locked i {
+	border-radius: 8px;
+	background-color: #1347f9;
+	padding: 0.1em;
+	margin:-0.6em !important;
+}
+
+.icon {
+    width: 6.25%;
+    max-width: 30px;
+    position: relative;
+    transform: translate3d(0, 0, 0);
+    font-size: 24px;
+}
+.icon i {
+	transition: all .3s, background-color .8s;
+	/*fill: #fff;*/
+	/*pointer-events: none;*/
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 1em;
+	height: 1em;
+	margin: -.5em;
+	line-height: 1;
+	display: block;
+	/*transform: translate3d(-.1px, .5px, 0)		*/
+
+}
+
+.icon i:before {
+	font-family:'typicons' ;
+	vertical-align: bottom;
+}
+
+.icon:hover i {
+	position: absolute;
+	font-size: 4em;
+	padding: .1em;
+	margin: -.6em;
+	opacity: 1;
+	/*transform: scale(1) translate3d(0, 0, 0);	*/
+	pointer-events: none;
+	border-radius: 8px;
+	background-color: #1347f9	
+}
+
+.icon:hover {
+	z-index: 10
+}
+#icon-search-bar {
+	height: 10%;
+	margin-top: 1rem;
+	max-height: 30px;
+	border: 1px solid;
+	color: #fff
+}
+
+#icon-search-bar input {
+	font: inherit;
+	border: none;
+	width: 100px;
+	height: 31px;
+	background: #fff;
+	padding: 0 .5em;
+	margin: 0;
+	-webkit-appearance: none;
+	float: left;
+	outline: 0;
+}
+
+#icon-search-bar label {
+	display: block;
+	height: 32px;
+	line-height: 30px;
+	padding: 0 .5em;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden	
+}
+
+/*#icon-search-bar label i {*/
+/*	width: 1.5em;*/
+/*	height: 1.5em;*/
+/*	margin-top: -.25em;*/
+/*	display: inline-block;*/
+/*	vertical-align: middle*/
+/*}*/
+
+#icon-search-bar label i {
+	border-right: 1px solid #ffffff;
+	padding: 1px 6px 1px 0;
+	font-size: 24px;
+}
+
+/*#icon-search-bar label .icon-name {*/
+/*	margin: 0 .33em*/
+/*}*/
+
+#icon-search-bar label small {
+	float: right;
+}
