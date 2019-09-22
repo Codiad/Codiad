@@ -30,7 +30,7 @@
                                 <a><span class="icon-home bigger-icon"></span><?php i18n("Editor"); ?></a>
                             </li>
                             <li name="system-settings" data-file="components/settings/settings.system.php" data-name="system">
-                                <a><span class="icon-doc-text bigger-icon"></span><?php i18n("System"); ?></a>
+                                <a><span class="icon-cog bigger-icon"></span><?php i18n("System"); ?></a>
                             </li>
                             <?php
                                 if (COMMON::checkAccess()) {
