@@ -62,7 +62,7 @@
             }
 
             if(!defined('THEME')){
-                define("THEME", "default");
+                define("THEME", "modern");
             }
             
             if(!defined('LANGUAGE')){
