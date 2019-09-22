@@ -177,10 +177,19 @@
                     .removeClass('disabled');
             }
             // Hide menu
-            $('#file-manager, #editor-region')
-                .on('mouseover', function() {
-                    _this.contextMenuHide();
-                });
+            // $('#file-manager, #editor-region')
+            //     .on('mouseover', function() {
+            //         _this.contextMenuHide();
+            //     });
+            var hideContextMenu;
+            $('#context-menu')
+            	.on('mouseleave', function() {
+            		hideContextMenu = setTimeout(function() {_this.contextMenuHide();	}, 1000);
+            	});
+            $('#context-menu')
+            	.on('mouseover', function() {
+            		if(hideContextMenu) clearTimeout(hideContextMenu);
+            	});            	
             /* Notify listeners. */
             amplify.publish('context-menu.onShow', {e: e, path: path, type: type});
             // Hide on click
