@@ -223,6 +223,7 @@ class User
 
     public static function CleanUsername($username)
     {
-        return preg_replace('#[^A-Za-z0-9'.preg_quote('-_@. ').']#', '', $username);
+        // return preg_replace('#[^A-Za-z0-9'.preg_quote('-_@. ').']#', '', $username);
+        return strtolower( preg_replace( '#[^A-Za-z0-9' . preg_quote( '-_@. ').']#', '', $username ) );
     }
 }

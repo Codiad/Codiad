@@ -32,7 +32,8 @@ if ($_GET['action']=='authenticate') {
         die(formatJSEND("error", "Missing username or password"));
     }
         
-    $User->username = $_POST['username'];
+    // $User->username = $_POST['username'];
+    $User->username = User::CleanUsername($_POST['username']);
     $User->password = $_POST['password'];
 
     // check if the asked languages exist and is registered in languages/code.php
@@ -85,7 +86,8 @@ if ($_GET['action']=='delete') {
             die(formatJSEND("error", "Missing username"));
         }
             
-        $User->username = $_GET['username'];
+        // $User->username = $_GET['username'];
+    	$User->username = User::CleanUsername($_GET['username']);
         $User->Delete();
     }
 }
@@ -99,7 +101,8 @@ if ($_GET['action']=='project_access') {
         if (!isset($_GET['username'])) {
             die(formatJSEND("error", "Missing username"));
         }
-        $User->username = $_GET['username'];
+        // $User->username = $_GET['username'];
+    	$User->username = User::CleanUsername($_GET['username']);
             
         //No project selected
         if (isset($_POST['projects'])) {
