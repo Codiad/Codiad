@@ -2067,7 +2067,7 @@ define('DIFF_EQUAL', 0);
 
 define('Match_MaxBits', PHP_INT_SIZE * 8);
 
-/* PHP7 Includes these functions
+
 function charCodeAt($str, $pos) {
 	return mb_ord(mb_substr($str, $pos, 1));
 }
@@ -2080,7 +2080,6 @@ function mb_ord($v) {
 function mb_chr($num){
 	return mb_convert_encoding('&#'.intval($num).';', 'UTF-8', 'HTML-ENTITIES');
 }
-*/
 
 /**
  * as in javascript encodeURI() following the MDN description
