@@ -1,6 +1,6 @@
-/*! sass.js - v0.11.0 (cee0666) - built 2019-05-19
-  providing libsass 3.6.0 (8d220b74)
-  via emscripten 1.38.31 (040e49a)
+/*! sass.js - v0.9.2 (e355668) - built 2015-06-14
+  providing libsass 3.2.5 (0e6b4a2)
+  via emscripten 1.33.1 (ae2f801)
  */
 
 (function (root, factory) {
@@ -24,8 +24,7 @@ var SASSJS_RELATIVE_PATH = (function() {
   'use strict';
 
   // in Node things are rather simple
-  var hasDir = typeof __dirname !== 'undefined';
-  if (hasDir) {
+  if (typeof __dirname !== 'undefined') {
     return __dirname;
   }
 

@@ -42,10 +42,10 @@
             });
         },
         
-        compile: function(scss, callback) {
+        compile: function(scss, path, callback) {
             var _this = this;
             setTimeout(function(){
-                _this.setSettings();
+                _this.setSettings(path);
                 _this.sass.compile(scss, function(result) {
                     callback(result);
                 });
@@ -123,9 +123,12 @@
                 if (json.status == "success") {
                     $.getJSON(_this.path + 'controller.php?action=getFileTree&path=' + path, function(tree){
                         _this.tree = tree.tree;
-                        _this.compile(json.content, function(result){
+                        console.log(_this);
+                        _this.compile(json.content, path, function(result){
                             //Catch errors
                             if (result.status === 0) {
+                            	console.log(result);
+                            	console.log(_this.path + " | " + path);
                                 $.post(_this.path + 'controller.php?action=saveContent&path=' + path, {content: result.text}, function(response){
                                     response = JSON.parse(response);
                                     if (response.status == "success") {
@@ -134,6 +137,7 @@
                                     codiad.message[response.status](response.message);
                                 });
                             } else {
+                            	console.log(result);
                                 codiad.message.error(result.message + " on Line " + result.line + " Column " + result.column);
                             }
                         });
@@ -144,11 +148,19 @@
             });
         },
         
-        setSettings: function() {
+        setSettings: function(path) {
             var _this = this;
             this.sass.options({
-                style: Sass.style.expanded,
-                indent: _this.getIndentation()
+                // style: Sass.style.expanded,
+                style: Sass.style.compressed,
+                indent: _this.getIndentation(),
+                // sourceMap: true,
+                // sourceMapFile: path + '.map',
+                // sourceMapContents: false,
+                // sourceMapEmbed: false,
+                // sourceMapOmitUrl: false,
+                // inputPath: 'stdin',
+                // outputPath: 'stdout'
             }, function(){});
         },
         

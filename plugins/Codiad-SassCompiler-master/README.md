@@ -8,4 +8,4 @@ Compile sass/scss to css directly within Codiad.
 
 ##Credits
 
-[Sass.js - Version 0.9.2](https://github.com/medialize/sass.js) - MIT License
+[Sass.js - Version 0.11.3](https://github.com/medialize/sass.js) - MIT License
