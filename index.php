@@ -135,6 +135,7 @@ if (isset($_SESSION['theme'])) {
 
                 <label><span class="icon-lock login-icon"></span> <?php i18n("Password"); ?></label>
                 <input type="password" name="password">
+                <!--<span class="icon-eye in-field-icon-right" id="display_password">-->
 
                 <div class="language-selector">
                     <label><span class="icon-picture login-icon"></span> <?php i18n("Theme"); ?></label>
