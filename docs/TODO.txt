@@ -1,0 +1,4 @@
+Show/Hide password button on login field: https://github.com/basilgohar/codiad-1/commit/494675a9a05894d171035b65171cad87b84b001b
+
+
+Invalid directory/file names: https://github.com/basilgohar/codiad-1/commit/6f6e2d0fb6dbdbc0d6d31e3f121defab47411b21
