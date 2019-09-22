@@ -65,7 +65,7 @@
                     $('#context-menu').append('<hr class="directory-only code_git">');
                     if ($(obj.e.target).hasClass('repo')) {
                         $('#context-menu').append('<a class="directory-only code_git" onclick="codiad.CodeGit.showDialog(\'overview\', $(\'#context-menu\').attr(\'data-path\'));"><span class="icon-flow-branch"></span>Open CodeGit</a>');
-                        $('#context-menu').append('<a class="directory-only code_git" onclick="codiad.CodeGit.submoduleDialog(\'' + path + '\', $(\'#context-menu\').attr(\'data-path\'));"><span class="icon-flow-branch"></span>Add Submodule</a>');
+                        // $('#context-menu').append('<a class="directory-only code_git" onclick="codiad.CodeGit.submoduleDialog(\'' + path + '\', $(\'#context-menu\').attr(\'data-path\'));"><span class="icon-flow-branch"></span>Add Submodule</a>');
                     } else {
                         $('#context-menu').append('<a class="directory-only code_git" onclick="codiad.CodeGit.gitInit($(\'#context-menu\').attr(\'data-path\'));"><span class="icon-flow-branch"></span>Git Init</a>');
                         $('#context-menu').append('<a class="directory-only code_git" onclick="codiad.CodeGit.clone($(\'#context-menu\').attr(\'data-path\'));"><span class="icon-flow-branch"></span>Git Clone</a>');
@@ -87,8 +87,8 @@
                         path = _this.dirname(path);
                         if ($('.directory[data-path="' + path + '"]').hasClass('repo')) {
                             $('#context-menu').append('<hr class="file-only code_git">');
-                            $('#context-menu').append('<a class="file-only code_git" onclick="codiad.CodeGit.contextMenuDiff($(\'#context-menu\').attr(\'data-path\'), \''+path+'\');"><span class="icon-flow-branch"></span>Git Diff</a>');
-                            $('#context-menu').append('<a class="file-only code_git" onclick="codiad.CodeGit.blame($(\'#context-menu\').attr(\'data-path\'), \''+path+'\');"><span class="icon-flow-branch"></span>Git Blame</a>');
+                            // $('#context-menu').append('<a class="file-only code_git" onclick="codiad.CodeGit.contextMenuDiff($(\'#context-menu\').attr(\'data-path\'), \''+path+'\');"><span class="icon-flow-branch"></span>Git Diff</a>');
+                            // $('#context-menu').append('<a class="file-only code_git" onclick="codiad.CodeGit.blame($(\'#context-menu\').attr(\'data-path\'), \''+path+'\');"><span class="icon-flow-branch"></span>Git Blame</a>');
                             $('#context-menu').append('<a class="file-only code_git" onclick="codiad.CodeGit.history($(\'#context-menu\').attr(\'data-path\'), \''+path+'\');"><span class="icon-flow-branch"></span>Git History</a>');
                             //Git rename
                             $('#context-menu a[onclick="codiad.filemanager.renameNode($(\'#context-menu\').attr(\'data-path\'));"]')

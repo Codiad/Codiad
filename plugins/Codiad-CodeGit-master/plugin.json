@@ -4,12 +4,12 @@
     "url" : "https://github.com/Andr3as/Codiad-CodeGit",
     "rightbar": [{
         "action": "codiad.CodeGit.showSidebarDialog();",
-        "icon": "icon-flow-branch",
+        "icon": "icon-git",
         "title": "CodeGit"
     }],
     "config": [{
         "file": "dialog.php?action=settings",
-        "icon": "icon-flow-branch",
+        "icon": "icon-git",
         "title": "CodeGit"
     }]
 }]
