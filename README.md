@@ -23,7 +23,7 @@ Axiom is Codiad to its core, however Axiom will be updated to use all the latest
 ## Planned features / Goals:
 01. Update JQuery Libraries, & Eventually decouple JQuery all together
 02. Package all JS files into 1 application
-03. Add In-Browser Theme support (Change file icon colors, Etc.)
+03. Add In-Browser Theme support (Change file icon colors, Etc.) (Fonts)
 04. Address open issues on Original Codiad Repo
 05. Update/Create plugins for SCSS, LESS, TypeScript & Python
 06. Address slow market place loading for plugins
