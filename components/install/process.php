@@ -39,7 +39,8 @@ function saveJSON($file, $data)
 
 function encryptPassword($p)
 {
-    return sha1(md5($p));
+    // return sha1(md5($p));
+    return password_hash($p, PASSWORD_DEFAULT);
 }
 
 function cleanUsername($username)

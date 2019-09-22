@@ -46,10 +46,11 @@ class User
     {
 
         $pass = false;
-        $this->EncryptPassword();
+        // $this->EncryptPassword();
         $users = getJSON('users.php');
         foreach ($users as $user) {
-            if ($user['username']==$this->username && $user['password']==$this->password) {
+            // if ($user['username']==$this->username && $user['password']==$this->password) {
+            if ($user['username']==$this->username && password_verify($this->password, $user['password'])) {
                 $pass = true;
                 $_SESSION['user'] = $this->username;
                 $_SESSION['lang'] = $this->lang;
@@ -93,7 +94,7 @@ class User
         // Remove User
         $revised_array = array();
         foreach ($this->users as $user => $data) {
-            if ($data['username']!=$this->username) {
+            if ($data['username']!==$this->username) {
                 $revised_array[] = array("username"=>$data['username'],"password"=>$data['password'],"project"=>$data['project']);
             }
         }
@@ -126,7 +127,7 @@ class User
         $this->EncryptPassword();
         $revised_array = array();
         foreach ($this->users as $user => $data) {
-            if ($data['username']==$this->username) {
+            if ($this->username===$data['username']) {
                 $revised_array[] = array("username"=>$data['username'],"password"=>$this->password,"project"=>$data['project']);
             } else {
                 $revised_array[] = array("username"=>$data['username'],"password"=>$data['password'],"project"=>$data['project']);
@@ -166,7 +167,7 @@ class User
     {
         $revised_array = array();
         foreach ($this->users as $user => $data) {
-            if ($this->username==$data['username']) {
+            if ($this->username===$data['username']) {
                 $revised_array[] = array("username"=>$data['username'],"password"=>$data['password'],"project"=>$this->project);
             } else {
                 $revised_array[] = array("username"=>$data['username'],"password"=>$data['password'],"project"=>$data['project']);
@@ -186,7 +187,7 @@ class User
     {
         $pass = true;
         foreach ($this->users as $user => $data) {
-            if ($data['username']==$this->username) {
+            if ($data['username']===$this->username) {
                 $pass = false;
             }
         }
@@ -214,7 +215,8 @@ class User
 
     private function EncryptPassword()
     {
-        $this->password = sha1(md5($this->password));
+        // $this->password = sha1(md5($this->password));
+        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
     }
 
     //////////////////////////////////////////////////////////////////
