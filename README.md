@@ -27,5 +27,6 @@ Axiom is Codiad to its core, however Axiom will be updated to use all the latest
 4. Address open issues on Original Codiad Repo
 5. Update/Create plugins for SCSS, LESS, TypeScript & Python
 6. Address slow market place loading for plugins
+7. Update default theme to match modern requirements (SCSS, File locations, Favicons)
 
 Distributed under the MIT-Style License. See `LICENSE.txt` file for more information.
