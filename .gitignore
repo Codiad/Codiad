@@ -3,6 +3,7 @@
 *.swp
 config.php
 data/
+!data/.htaccess
 workspace/
 !plugins/*
 !plugins/README.md
