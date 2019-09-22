@@ -1,0 +1,15 @@
+<div class="git_checkout_remote_area">
+    <div class="content">
+        <label>Checkout <span id="git_remote"></span></label>
+        Remote branches: <select id="git_remote_branches" onchange="onChangeCombobox();"></select>
+        New branch: <input type="text" id="git_new_branch">
+    </div>
+    <footer>
+        <button onclick="codiad.CodeGit.checkoutRemote(); return false;">Checkout</button>
+        <button onclick="codiad.CodeGit.showDialog('overview', codiad.CodeGit.location); return false;">Close</button>
+    </footer>
+    <script>
+        codiad.CodeGit.getRemoteBranches();
+        $('#git_remote_branches').focus();
+    </script>
+</div>

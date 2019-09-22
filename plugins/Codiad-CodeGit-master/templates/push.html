@@ -1,0 +1,24 @@
+<div class="git_push_area">
+    <div class="content">
+        <label>Pull/Push</label>
+        <table>
+            <tr>
+                <td>Remote:</td>
+                <td><select id="git_remotes"></select></td>
+            </tr>
+            <tr>
+                <td>Branch:</td>
+                <td><select id="git_branches"></select></td>
+            </tr>
+        </table>
+    </div>
+    <footer>
+        <button onclick="codiad.CodeGit.showDialog('overview', codiad.CodeGit.location); return false;">Close</button>
+        <button onclick="codiad.CodeGit.push(); return false;">Push</button>
+        <button onclick="codiad.CodeGit.pull(); return false;">Pull</button>
+    </footer>
+    <script>
+        codiad.CodeGit.getRemotes();
+        codiad.CodeGit.getBranches();
+    </script>
+</div>

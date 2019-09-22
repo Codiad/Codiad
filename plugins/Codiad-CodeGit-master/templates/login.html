@@ -1,0 +1,16 @@
+<div class="git_login_area">
+    <div class="content">
+        <label>Login</label>
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password">
+    </div>
+    <footer>
+        <button onclick="codiad.CodeGit.login(); return false;">Login</button>
+        <button onclick="codiad.modal.unload(); return false;">Close</button>
+    </footer>
+    <script>
+        $('#username').focus();
+    </script>
+</div>

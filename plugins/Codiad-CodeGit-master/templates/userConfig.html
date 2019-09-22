@@ -1,0 +1,36 @@
+<div class="git_settings_area">
+    <div class="content">
+        <h2>User config</h2>
+        <hr>
+        <h3>Global<span> - Global for all repositories</span></h3>
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username">
+        <label for="email">E-Mail</label>
+        <input type="text" name="email" id="email">
+        <hr>
+        <h3><input type="checkbox" id="box_local" class="no_setting" checked style="display: inline;"/> Local<span> - Local for current repository</span></h3>
+        <br>
+        <div id="local">
+            <label for="local_username">Username</label>
+            <input type="text" name="local_username" id="local_username" class="local">
+            <label for="local_email">E-Mail</label>
+            <input type="text" name="local_email" id="local_email" class="local">
+        </div>
+    </div>
+    <footer>
+        <button onclick="codiad.CodeGit.setSettings(); return false;">Close</button>
+    </footer>
+    <script>
+        codiad.CodeGit.getSettings();
+        var checked = true;
+        $('#box_local').click(function(){
+            checked = !checked;
+            if (checked) {
+                $('#local').show();
+            } else {
+                $('#local').hide();
+                $('.local').val("");
+            }
+        });
+    </script>
+</div>

@@ -1,0 +1,24 @@
+<div class="git_submodule_area">
+    <label>Git Submodule</label>
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <span>Repository</span>
+                    <input id="git_submodule_repo" placeholder="Submodule url">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Directory name</span>
+                    <input id="git_submodule_dir" placeholder="Directory name">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <button onclick="codiad.CodeGit.submodule(codiad.CodeGit.location, $('#git_submodule_dir').val(), $('#git_submodule_repo').val()); return false;">Add submodule</button>
+    <button onclick="codiad.modal.unload(); return false;">Cancel</button>
+    <script>
+        $('#git_submodule_repo').focus();
+    </script>
+</div>

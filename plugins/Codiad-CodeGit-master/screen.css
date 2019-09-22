@@ -1,0 +1,232 @@
+/*
+ * Copyright (c) Codiad & Andr3as, distributed
+ * as-is and without warranty under the MIT License.
+ * See http://opensource.org/licenses/MIT for more information. 
+ * This information must remain intact.
+ */
+ 
+/* Global */
+h1,h2,h3,h4,h5,h6 {
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+h1>span,h2>span,h3>span,h4>span,h5>span,h6>span {
+    font-size: 13px;
+}
+
+h1 {
+    font-size: 20px;
+}
+
+h2 {
+    font-size: 16px;
+}
+
+h3 {
+    font-size: 15px;
+}
+
+/* Git status */
+.git_area table th, .git_area table td {
+    padding: 0;
+    font-weight: 100;
+}
+.git_area header input {
+    display: inline;
+}
+.git_area #check_all {
+    margin-left: 5px;
+}
+.git_area > div {
+    max-height: 45vh;
+    overflow-y: scroll;
+}
+.git_list td {
+    padding-left: 5px;
+}
+.git_area .col_1 {
+    width: 30px;
+}
+.git_area .col_2 {
+    width: 70px;
+}
+.git_area .col_3 {
+    width: 400px;
+}
+.git_area .col_4 {
+    width: 160px;
+}
+.git_area input[type="checkbox"] {
+    margin: auto;
+}
+.git_button {
+    border-radius: 3px;
+    font-size: 12px;
+    line-height: 1em;
+    padding: 5px;
+    margin: 2px 0;
+}
+.git_area .right {
+    position: relative;
+    left: 5px;
+    top: 15px;
+}
+.git_area .modified, .git_area .untracked, .git_area .deleted {
+    color: red;
+}
+.git_area .added, .git_area .renamed {
+    color: green;
+}
+
+/* Git log */
+.git_log_area .git_log {
+    max-height: 55vh;
+    max-width: 60vw;
+    overflow: auto;
+}
+
+/* Commit hash */
+.commit_hash {
+    color: yellow;
+    cursor: pointer;
+    margin-top: 5px;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+         -o-user-select: none;
+            user-select: none;
+}
+
+.commit_hash:hover {
+    text-decoration: underline;
+}
+
+.commit_hash:hover:after {
+    content: "\e74c";
+    font-family: entypo;
+    font-style: normal;
+    font-size: 75%;
+    display: inline-block;
+    margin-right: 8px;
+    text-align: center;
+    vertical-align: top;
+}
+
+.git_network_area .content {
+    max-height: 40vh;
+    overflow: auto;
+}
+
+/* Show commit */
+/* Git diff */
+.git_diff, .git_show_commit_area .content {
+    max-height: 40vh;
+    max-width: 800px;
+    overflow: auto;
+}
+
+/* Git Blame */
+.git_blame_area .content {
+    max-height: 40vh;
+    overflow-y: auto;
+}
+.git_blame_area table td:nth-of-type(1) {
+    width: 250px;
+}
+.git_blame_area table td:nth-of-type(2) {
+    width: 90px;
+}
+.git_blame_area table td:nth-of-type(3) {
+    max-width: 500px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* Git changes */
+[class^="git_"] .file-info, [class*=" git_"] .file-info {
+    background: #3b3b3b;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 10px 0 0 0;
+    padding: 5px;
+}
+[class^="git_"] .wrapper, [class*=" git_"] .wrapper {
+    background-color: rgba(60, 118, 221, 0.5);
+}
+[class^="git_"] .plus, [class*=" git_"] .plus {
+    color: green;
+}
+[class^="git_"] .minus, [class*=" git_"] .minus {
+    color: red;
+}
+
+/* Git remotes */
+/* Git branches */
+#git_remotes, #git_branches {
+    display: inline;
+    margin-left: 10px;
+    width: 400px;
+}
+
+/* Git clone */
+.git_clone_area table td, .git_clone_area table th {
+    border: none;
+}
+
+/* Git pull/push */
+.git_push_area table td, .git_push_area table th {
+    border: none;
+    padding: 0;
+}
+
+/* Git stats */
+.git-stat {
+    color: rgb(255, 152, 45);
+    color: rgba(255, 152, 45, 0.7);
+}
+
+/* Editor Botom Bar */
+
+#git-stat {
+    float: left;
+}
+
+#git-repo-stat-wrapper {
+	margin: 5px 0px 0px 0px;
+	padding: 2px 10px 2px 10px;
+	cursor: pointer;
+}
+
+.git-repo-stat-valid {
+	background-color: green;
+}
+.git-repo-stat-invalid {
+	background-color: red;
+}
+.git-repo-stat-untracked {
+	background-color: blue;
+}
+.git-repo-icon-valid {
+	color: green;
+}
+.git-repo-icon-invalid {
+	color: red;
+}
+.git-repo-icon-untracked {
+	color: blue;
+}
+
+.hidden {
+	display: none;
+}
+
+#file-manager span.uncommit:before {
+	content: "\25cf";
+  font-size: 1.9em;
+}
+#file-manager span.uncommit {
+	float: left;
+	padding-top: 8px;
+}

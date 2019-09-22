@@ -1,0 +1,15 @@
+[{ "author" : "Andr3as",
+    "version": "0.7.6",
+    "name" : "CodeGit",
+    "url" : "https://github.com/Andr3as/Codiad-CodeGit",
+    "rightbar": [{
+        "action": "codiad.CodeGit.showSidebarDialog();",
+        "icon": "icon-flow-branch",
+        "title": "CodeGit"
+    }],
+    "config": [{
+        "file": "dialog.php?action=settings",
+        "icon": "icon-flow-branch",
+        "title": "CodeGit"
+    }]
+}]

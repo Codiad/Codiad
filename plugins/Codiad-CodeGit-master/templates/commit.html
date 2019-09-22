@@ -1,0 +1,22 @@
+<div class="git_commit_area">
+	<div class="content">
+		<label>Commit</label>
+		<ul class="git_diff"></ul>
+		<input type="text" id="commit_msg" placeholder="Enter commit message here...">
+	</div>
+	<footer>
+		<button onclick="codiad.CodeGit.commit(codiad.CodeGit.location, $('#commit_msg').val()); return false;">Commit</button>
+		<button onclick="codiad.CodeGit.showDialog('overview', codiad.CodeGit.location); return false;">Close</button>
+	</footer>
+	<script>
+		if (codiad.CodeGit.files.length === 0) {
+			codiad.message.error("Nothing to commit!");
+			codiad.CodeGit.showDialog('overview', codiad.CodeGit.location);
+		} else {
+			if (!codiad.CodeGit.suppressCommitDiff()) {
+				codiad.CodeGit.filesDiff();
+			}
+			$('.git_commit_area #commit_msg').focus();
+		}
+	</script>
+</div>

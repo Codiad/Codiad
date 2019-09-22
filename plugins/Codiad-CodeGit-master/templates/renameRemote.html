@@ -1,0 +1,14 @@
+<div class="git_rename_remote_area">
+    <div class="content">
+        <label>Rename <span id="git_remote"></span></label>
+        <input type="text" id="git_new_name" placeholder="New name">
+    </div>
+    <footer>
+        <button onclick="codiad.CodeGit.renameRemote(); return false;">Rename</button>
+        <button onclick="codiad.CodeGit.showDialog('overview', codiad.CodeGit.location); return false;">Close</button>
+    </footer>
+    <script>
+        $('#git_new_name').focus();
+        $('#git_remote').text(codiad.CodeGit.name);
+    </script>
+</div>

@@ -1,0 +1,21 @@
+<div class="git_branch_area">
+    <div class="content">
+        <label>Branches</label>
+        Current branches: <select id="git_branches"></select>
+    </div>
+    <footer>
+        <button onclick="codiad.CodeGit.showDialog('overview', codiad.CodeGit.location); return false;">Close</button>
+        <button onclick="codiad.CodeGit.merge(codiad.CodeGit.location); return false;">Merge</button>
+        <button onclick="codiad.CodeGit.checkoutBranch(codiad.CodeGit.location); return false;">Checkout</button>
+        <button onclick="codiad.CodeGit.showDialog('newBranch', codiad.CodeGit.location); return false;">New</button>
+        <button onclick="renameBranch(); return false;">Rename</button>
+        <button onclick="codiad.CodeGit.deleteBranch(); return false;">Delete</button>
+    </footer>
+    <script>
+        codiad.CodeGit.getBranches();
+        function renameBranch() {
+            codiad.CodeGit.name = $('#git_branches').val();
+            codiad.CodeGit.showDialog('renameBranch', codiad.CodeGit.location);
+        }
+    </script>
+</div>

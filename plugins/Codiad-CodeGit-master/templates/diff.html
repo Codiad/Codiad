@@ -1,0 +1,13 @@
+<div class="git_diff_area">
+    <div class="content">
+        <label>Diff</label>
+        <ul class="git_diff"></ul>
+    </div>
+    <footer>
+        <button onclick="codiad.CodeGit.showDialog('overview', codiad.CodeGit.location); return false;">Close</button>
+        <button class="git_undo">Undo changes</button>
+    </footer>
+    <script>
+        codiad.CodeGit.filesDiff();
+    </script>
+</div>
