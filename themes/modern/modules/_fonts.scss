@@ -1148,7 +1148,7 @@
 }
 
 .icon-flow-branch:before {
-  content    : '\e791';
+  content    : '\f126';
   font-weight: 900;
 }
 
@@ -1237,14 +1237,19 @@
   font-weight: 900;
 }
 
-.icon-github:before {
-  content    : '\f300';
-  font-weight: 900;
+.icon-git:before {
+	content: '\f1d2';
+	font-weight: 400;
+}
+
+.icon-github-square:before {
+  content    : '\f092';
+  font-weight: 400;
 }
 
 .icon-github-circled:before {
-  content    : '\f301';
-  font-weight: 900;
+  content    : '\f09b';
+  font-weight: 400;
 }
 
 .icon-flickr:before {
