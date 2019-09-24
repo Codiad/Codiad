@@ -33,7 +33,7 @@
             $.getScript(this.path+"libs/beautify-css.js");
             $.getScript(this.path+"libs/beautify-html.js");
             $.getScript(this.path+"libs/beautify.js");
-            $.getScript(this.path+"libs/ext-beautify.js", function() {
+            $.getScript(this.path+"libs/ext-beautify.new.js", function() {
 				_this.beautifyPhp = ace.require("ace/ext/beautify");
 			});
             //Load settings
