@@ -1,0 +1,11 @@
+[{
+    "author": "Andr3as",
+    "version": "0.5.0",
+    "name": "Compress",
+    "url": "https://github.com/Andr3as/Codiad-Compress.git",
+    "config": [{
+		"file": "dialog.php",
+		"icon": "icon-brush",
+		"title": "Compress"
+    }]
+}]
