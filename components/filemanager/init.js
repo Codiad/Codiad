@@ -184,7 +184,7 @@
             var hideContextMenu;
             $('#context-menu')
             	.on('mouseleave', function() {
-            		hideContextMenu = setTimeout(function() {_this.contextMenuHide();	}, 1000);
+            		hideContextMenu = setTimeout(function() {_this.contextMenuHide();	}, 500);
             	});
             $('#context-menu')
             	.on('mouseover', function() {
