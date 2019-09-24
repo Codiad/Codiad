@@ -1,0 +1,85 @@
+#project-list {
+    max-height: 50vh;
+    overflow: auto;
+    margin: 15px 0;
+}
+
+.project-wrapper {
+  width: 100%; 
+}
+
+.project-list-title {
+	border-bottom: 1px solid #dbdcdd;
+	border-top: 1px solid #dbdcdd;
+    position: absolute;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    right: 0px;
+    height: 33px;
+    background-color: #eff0f1;
+    overflow: hidden;
+}
+
+.project-list-title h2 {
+    float: left;
+    font-size: 15px;
+    font-weight: normal;
+    color: #304050;
+    display: block;
+    margin: 6.5px 10px;
+}
+
+.project-list-title .icon {
+    display: block;
+    font-size: 15px;
+    color: #304050;
+    z-index: 99999;
+    cursor: pointer;
+    margin: 8px 10px 0 5px;
+    float: right;
+}
+
+.project-list-title .icon:hover {
+    color: #d00030;
+}
+
+.sb-project-list {
+    max-height: 276px !important;
+    margin: 0 0 !important;
+    overflow: auto !important;
+}
+
+.sb-projects-content {
+    height: 243px;
+    width: 100%;
+    overflow: auto;
+    position: absolute;
+	top: 33px;
+    padding: 11px 11px 11px 11px;
+}
+
+.sb-projects-content li:hover {
+    background-color: #d00030;
+	color: #f9fafb;
+    cursor: pointer;
+}
+
+.sb-projects-content ul {
+    display: block;
+}
+
+.sb-projects-content ul li {
+    padding: 4px;
+    white-space: nowrap;
+    border-radius: 2px;
+}
+
+.sb-projects-content ul li .icon {
+    font-size: 13px;
+}
+
+#git-clone { border: none; }
+#git-clone td { border: none; padding: 0; margin: 0; }
+
+.note { padding: 10px 0; color: #a8a6a8; }

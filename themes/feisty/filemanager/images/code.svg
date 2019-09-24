@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="16px" height="16px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<path id="paper" d="M14.667,1.333c0,-0.552 -0.448,-1 -1,-1l-11.334,0c-0.552,0 -1,0.448 -1,1l0,13.334c0,0.552 0.448,1 1,1l11.334,0c0.552,0 1,-0.448 1,-1l0,-13.334Z" style="fill: #fff; stroke: #cfd0d1; stroke-width: 0.67px;" />
+	<path d="M5.892,10.558l0,-1.13l-2.253,-1.411l0,-0.034l2.253,-1.411l0,-1.13l-3.281,2.125l0,0.866l3.281,2.125Z" style="fill: #304050;" />
+	<path d="M10.108,10.558l3.281,-2.125l0,-0.867l-3.281,-2.125l0,1.131l2.252,1.411l0,0.034l-2.252,1.411l0,1.13Z" style="fill: #304050;" />
+	<path d="M6.079,11.698l1.046,0l2.796,-7.396l-1.046,0l-2.796,7.396Z" style="fill: #304050;" />
+</svg>

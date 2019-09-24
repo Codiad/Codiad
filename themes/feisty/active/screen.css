@@ -1,0 +1,277 @@
+/* Current Files */
+
+.bar {
+	z-index: 2;
+	position: relative;
+	height: 1px;
+	width: 100%;
+}
+
+.active-sort-placeholder {
+	border: 1px dashed #333;
+	border-radius: 5px;
+}
+
+/*
+ * Tab list
+ */
+
+#tab-list-active-files {
+	list-style-type: none;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+}
+ 
+#tab-list-active-files li {
+	background: #eff0f1;
+	border-right: 1px solid #dbdcdd;
+	padding-left: 10px;
+	width: auto;
+	max-width: 200px;
+	position: relative;
+	float: left;
+}
+
+#tab-list-active-files li.active {
+	border-top: 2px solid #d00030;
+	background: #f9fafb;
+}
+
+#tab-list-active-files li a.label {
+	display: block;
+	float: left;
+	text-align: left;
+	width: 140px;
+	line-height: 31px;
+	padding-right: 10px;
+	color: rgba(48, 64, 80, 0.5);
+	overflow: hidden;
+	text-decoration: none;
+	direction: rtl;
+	white-space: nowrap;
+}
+
+#tab-list-active-files li .file-name {
+	color: #304050;
+}
+
+#tab-list-active-files li.active .file-name {
+	color: #d00030;
+}
+
+#tab-list-active-files li.changed .file-name {
+	font-weight: 600;
+}
+
+#tab-list-active-files li a.close {
+	border: 1px solid #dbdcdd;
+	display: block;
+	float: right;
+	margin: 7px 7px 0 0;
+	padding: 1px 4.5px 2.5px 4.5px;
+	color: #304050;
+	background: #eff0f1;
+	border-radius: 2px;
+	line-height: 100%;
+}
+
+#tab-list-active-files li a.close:hover {
+	border-color: transparent;
+	background-color: #d00030;
+	color: #fff;
+}
+
+/* Clear Fix took from HTML 5 Boilerplate. */
+.clearfix:before, .clearfix:after { content: ""; display: table; }
+.clearfix:after { clear: both; }
+.clearfix { zoom: 1; }
+
+/* Close button */
+
+#tab-close {
+	/* Adjust this size depending on the final editor-top-bar height. */
+	position: fixed;
+	top: 7px;
+	right: 10px;
+}
+
+#tab-close-button {
+	font-size: 18px;
+	color: #304050;
+}
+
+#tab-close-button:hover {
+	color: #d00030;
+}
+
+/*
+ * Dropdown
+ */
+
+/* Tab button */
+
+#tab-dropdown {
+	/* Adjust this size depending on the final editor-top-bar height. */
+	position: fixed;
+	top: 10px;
+	right: 37px;
+}
+
+#tab-dropdown-button {
+	font-size: 18px;
+	color: #304050;
+}
+
+#tab-dropdown-button:hover {
+	color: #d00030;
+}
+
+/* Dropdown */
+
+#dropdown-list-active-files {
+	position: absolute;
+	z-index: 9999;
+	background-color: #eff0f1;
+	border: 1px solid #dbdcdd;
+	box-shadow: 0 0 16px rgba(0, 0, 0, 0.125);
+	display: none;
+	border-radius: 2px;
+}
+
+#dropdown-list-active-files li {
+	border-top: 1px solid #dbdcdd;
+}
+
+#dropdown-list-active-files li:first-child {
+	border-top: none;
+}
+
+#dropdown-list-active-files a {
+	display: block;
+	padding: 0 30px 0px 10px;
+	line-height: 28px;
+	font-size: 12px;
+	word-break: break-all;
+	overflow: hidden;
+	color: rgba(48, 64, 80, 0.5);;
+}
+
+#dropdown-list-active-files a .file-name {
+	color: #304050;
+}
+
+#dropdown-list-active-files a:hover,
+#dropdown-list-active-files a:hover .file-name,
+#dropdown-list-active-files li.active a,
+#dropdown-list-active-files li.active a .file-name {
+	background-color: #d00030;
+	color: #fff;
+}
+
+#dropdown-list-active-files li.changed a {
+	font-weight: bold;
+}
+
+#dropdown-list-active-files div {
+	white-space: nowrap;
+	direction: rtl;
+	overflow: hidden;
+}
+
+/* Close button */
+
+#dropdown-list-active-files a span.label {
+	display: block;
+	float: right;
+	margin: 5px -25px 0 -15px;
+	padding: 1px 4.5px 2.5px 4.5px;
+	color: transparent;
+	background: none;
+	border-radius: 2px;
+	line-height: 100%;
+}
+
+#dropdown-list-active-files a span.label:after {
+	content: 'x';
+}
+
+#dropdown-list-active-files a:hover span.label {
+	background: #d00030;
+	border: 1px solid #e88098;
+	color: #fff;
+
+}
+#dropdown-list-active-files a:hover span.label:hover {
+	background-color: #fff;
+	border-color: transparent;
+	color: #d00030;
+}
+
+/*
+ * List
+ */
+ 
+#list-active-files {
+	display: none;
+	width: 100%;
+	height: 40%;
+	margin: 0;
+	padding: 15px;
+	overflow: auto;
+	border-top: 2px solid #787878;
+}
+
+#list-active-files a {
+	display: block;
+	padding: 5px 30px 5px 10px;
+	margin: 5px 0;
+	border-radius: 3px;
+	line-height: 150%;
+	font-size: 12px;
+	word-break: break-all;
+	background-color: #262626;
+	height: 27px;
+	overflow: hidden;
+}
+
+#list-active-files a:hover,  #list-active-files li.active a {
+	background-color: #474747;
+}
+
+#list-active-files li.changed a {
+	border: 3px solid #3ba628;
+	border-top: 0;
+	border-bottom: 0;
+}
+
+#list-active-files div {
+	white-space: nowrap;
+	direction: rtl;
+	overflow: hidden;
+}
+
+#list-active-files a span {
+	display: block;
+	float: right;
+	margin: 1px -23px 0 -15px;
+	padding: 1px 4px 2px 4px;
+	color: transparent;
+	background: none;
+	border-radius: 5px;
+	line-height: 100%;
+}
+
+#list-active-files a span:after {
+	content: 'x';
+}
+
+#list-active-files a:hover span {
+	background: #1a1a1a;
+	color: #616161;
+}
+
+#list-active-files a:hover span:hover {
+	color: #fff;
+	background-color: #000;
+}

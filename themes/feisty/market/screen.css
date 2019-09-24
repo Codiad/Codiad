@@ -1,0 +1,56 @@
+#market-list > table th {
+	background: #f9fafb;
+}
+
+#market-list > table th button {
+	margin-right: 5px !important;
+}
+
+.market-wrapper a:hover {
+	color: #d00030 !important;
+}
+
+.market-wrapper {
+	height: 450px; 
+	width: 100%; 
+	overflow-y: auto; 
+	overflow-x: hidden;
+}
+
+.market-remote-title {
+	color: #304050;
+}
+
+.market-wrapper td {
+	padding: 15px 0;
+}
+
+.market-wrapper pre {
+	color: #304050 !important;
+	font-family: 'Source Sans Pro' !important;
+}
+
+
+.market-wrapper td > div > div a {
+	font-weight: 600 !important;
+}
+
+.market-wrapper td > div > div button[style*="color: red"] {
+	color: #d00030 !important;
+}
+
+.market-wrapper td > div > div button:hover {
+	background: #d00030;
+	color: #fff !important;
+}
+
+.market-wrapper td > div > div font[style*="color:green"] {
+	color: #00A040 !important;
+}
+
+.market-wrapper td > div > div  img {
+	border: 1px solid #dbdcdd;
+	border-radius: 2px;
+	background: #fff;
+	padding: 4px;
+}

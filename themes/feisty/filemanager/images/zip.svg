@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="16px" height="16px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<path id="box" d="M15,1c0,-0.552 -0.448,-1 -1,-1l-12,0c-0.552,0 -1,0.448 -1,1l0,14c0,0.552 0.448,1 1,1l12,0c0.552,0 1,-0.448 1,-1l0,-14Z" style="fill: #ff9000;" />
+	<rect x="1" y="7" width="1" height="1" style="fill: #506070;" />
+	<rect x="1" y="8" width="1" height="1" style="fill: #cfd0d1;" />
+	<g id="zipper">
+		<rect x="2" y="8" width="1" height="1" style="fill: #506070;" />
+		<rect x="2" y="7" width="1" height="1" style="fill: #cfd0d1;" />
+		<rect x="3" y="7" width="1" height="1" style="fill: #506070;" />
+		<rect x="3" y="8" width="1" height="1" style="fill: #cfd0d1;" />
+		<rect x="4" y="8" width="1" height="1" style="fill: #506070;" />
+		<rect x="4" y="7" width="1" height="1" style="fill: #cfd0d1;" />
+		<rect x="5" y="7" width="1" height="1" style="fill: #506070;" />
+		<rect x="5" y="8" width="1" height="1" style="fill: #cfd0d1;" />
+		<rect x="6" y="8" width="1" height="1" style="fill: #506070;" />
+		<rect x="6" y="7" width="1" height="1" style="fill: #cfd0d1;" />
+		<rect x="7" y="7" width="1" height="1" style="fill: #506070;" />
+		<rect x="7" y="8" width="1" height="1" style="fill: #cfd0d1;" />
+		<rect x="8" y="8" width="1" height="1" style="fill: #506070;" />
+		<rect x="8" y="7" width="1" height="1" style="fill: #cfd0d1;" />
+		<rect x="9" y="7" width="1" height="1" style="fill: #506070;" />
+		<rect x="9" y="8" width="1" height="1" style="fill: #cfd0d1;" />
+		<rect x="10" y="8" width="1" height="1" style="fill: #506070;" />
+		<rect x="10" y="7" width="1" height="1" style="fill: #cfd0d1;" />
+		<rect x="11" y="7" width="1" height="1" style="fill: #506070;" />
+		<rect x="11" y="8" width="1" height="1" style="fill: #cfd0d1;" />
+		<path d="M15,6l-1,0l-2,1l0,2l2,1l1,0l1,-1l0,-2l-1,-1Z" style="fill: #607080;" />
+		<circle cx="15" cy="9" r="1" style="fill: #607080;" />
+		<circle cx="15" cy="7" r="1" style="fill: #607080;" />
+		<rect x="14" y="7" width="1" height="2" style="fill: #ff9000;" />
+	</g>
+</svg>

@@ -1,0 +1,402 @@
+#file-manager {
+  width: 100%;
+  height: 100%;
+  float: left;
+  margin: 10;
+  overflow: auto;
+  color: #293134;
+  padding-right: 4px;
+}
+#file-manager #project-root {
+  padding: 10px;
+  font-weight: bold;
+}
+#file-manager #project-root:before {
+  padding-right: 8px;
+  content: "\e92e";
+}
+#file-manager ul {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+#file-manager ul ul li {
+  padding: 0px 0px 0px 19px;
+  white-space: nowrap;
+}
+#file-manager li {
+  display: block;
+  list-style: outside none none;
+}
+#file-manager a {
+  display: inline-block;
+  min-width: 100%;
+  cursor: pointer;
+  padding: 4px;
+}
+#file-manager a:before {
+  font-family: 'IcoMoon-Free';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+#file-manager span {
+  width: 5px;
+  height: 12px;
+  display: inline-block;
+  margin-left: -1px;
+  padding-top: 0px;
+  line-height: 0px;
+}
+#file-manager .plus:before {
+  display: block;
+  content: "\25b8";
+  padding: 5px;
+  margin-left: -10px;
+  font-size: 16px;
+}
+#file-manager .plus {
+  color: #293134;
+  font-family: entypo;
+  font-style: normal;
+  display: inline-block;
+}
+#file-manager .none {
+  background: none;
+}
+#file-manager .minus:before {
+  display: block;
+  content: "\25be";
+  padding: 5px;
+  margin-left: -10px;
+  font-size: 16px;
+}
+#file-manager .minus {
+  color: #293134;
+  font-family: entypo;
+  font-style: normal;
+  display: inline-block;
+}
+#file-manager .plus:hover {
+  cursor: pointer;
+  color: #bdbdbd;
+}
+#file-manager .minus:hover {
+  cursor: pointer;
+  color: #bdbdbd;
+}
+#file-manager .directory:before {
+  content: "\e92f";
+}
+#file-manager .directory.open:before {
+  content: "\e930";
+}
+#file-manager .file:before {
+  content: "\e924";
+}
+#file-manager a:hover,
+#file-manager #file-manager a.context-menu-active {
+  background-color: #ffffff;
+}
+#context-menu {
+  display: none;
+  position: fixed;
+  width: auto;
+  margin: 0px;
+  background: #f0f0f0;
+  z-index: 9999999;
+  background-clip: content-box;
+  border: 1px solid #d7d7d7;
+  border-bottom: 2px solid #678cb1;
+  overflow-y: auto;
+}
+#context-menu a {
+  display: block;
+  padding: 10px;
+  margin: 0;
+}
+#context-menu .icon {
+  padding-right: 5px;
+}
+#context-menu a:hover {
+  background-color: #ffffff;
+}
+#context-menu hr {
+  border-style: solid none none;
+  color: #d7d7d7;
+  margin: 0;
+  padding: 0;
+}
+.disabled {
+  color: #999;
+  font-style: italic;
+}
+#filemanager-search-results {
+  display: none;
+  height: 250px;
+  overflow: scroll !important;
+  border: 1px solid #262626;
+}
+#filemanager-search-results div {
+  padding: 4px 6px 3px 6px;
+  white-space: nowrap;
+}
+#filemanager-search-processing {
+  display: none;
+  margin: 10px 0 0 0;
+  width: 32px;
+  height: 32px;
+  float: right;
+  background: url(../spinner.gif) no-repeat;
+}
+#upload-drop-zone {
+  height: 200px;
+  padding-top: 60px;
+  border: 1px solid #bdbdbd;
+  margin: 10px 0;
+  text-align: center;
+  font-size: 25px;
+  color: #d7d7d7;
+}
+.upload-drag-over {
+  border: 1px solid #fff;
+}
+#upload-wrapper {
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+}
+#upload-wrapper input {
+  cursor: pointer;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  opacity: 0.0;
+}
+#upload-clicker {
+  color: #293134;
+  cursor: pointer;
+  display: inline-block;
+  padding: 10px;
+}
+#upload-progress {
+  width: 75%;
+  margin: 10px auto;
+  height: 20px;
+  border: 1px solid #bdbdbd;
+  background: #bdbdbd;
+  overflow: hidden;
+}
+#upload-progress .bar {
+  width: 0;
+  height: 20px;
+  background-image: url(images/progress_bar.png);
+  background-color: #f0f0f0;
+}
+#upload-complete {
+  display: none;
+  font-size: 18px;
+  margin: 10px 0;
+  color: #293134;
+}
+.file-search-table tr td {
+  border: none;
+  padding: 0;
+}
+#file-manager :before {
+  vertical-align: -8%;
+}
+/* EXTENSIONS */
+#file-manager .ext-htaccess:before {
+  content: "\e926";
+}
+#file-manager .ext-conf:before {
+  content: "\e926";
+}
+#file-manager .ext-ini:before {
+  content: "\e926";
+}
+#file-manager .ext-3gp:before {
+  content: "\e92a";
+}
+#file-manager .ext-afp:before {
+  content: "\e954";
+}
+#file-manager .ext-afpa:before {
+  content: "\e954";
+}
+#file-manager .ext-asp:before {
+  content: "\ea7f";
+}
+#file-manager .ext-aspx:before {
+  content: "\ea7f";
+}
+#file-manager .ext-avi:before {
+  content: "\e92a";
+}
+#file-manager .ext-bat:before {
+  content: "\ea81";
+}
+#file-manager .ext-bmp:before {
+  content: "\e927";
+}
+#file-manager .ext-c:before {
+  content: "\ea7f";
+}
+#file-manager .ext-cfm:before {
+  content: "\ea7f";
+}
+#file-manager .ext-cgi:before {
+  content: "\ea7f";
+}
+#file-manager .ext-com:before {
+  content: "\ea81";
+}
+#file-manager .ext-cpp:before {
+  content: "\ea7f";
+}
+#file-manager .ext-cs:before {
+  content: "\ea7f";
+}
+#file-manager .ext-css:before {
+  content: "\ea7f";
+}
+#file-manager .ext-doc:before {
+  content: "\eadc";
+}
+#file-manager .ext-exe:before {
+  content: "\ea81";
+}
+#file-manager .ext-gif:before {
+  content: "\e927";
+}
+#file-manager .ext-fla:before {
+  content: "\e912";
+}
+#file-manager .ext-h:before {
+  content: "\ea7f";
+}
+#file-manager .ext-htm:before {
+  content: "\ea7f";
+}
+#file-manager .ext-html:before {
+  content: "\ea7f";
+}
+#file-manager .ext-jar:before {
+  content: "\e912";
+}
+#file-manager .ext-java:before {
+  content: "\ea7f";
+}
+#file-manager .ext-jpg:before {
+  content: "\e927";
+}
+#file-manager .ext-jpeg:before {
+  content: "\e927";
+}
+#file-manager .ext-js:before {
+  content: "\ea7f";
+}
+#file-manager .ext-json:before {
+  content: "\ea7f";
+}
+#file-manager .ext-lasso:before {
+  content: "\ea7f";
+}
+#file-manager .ext-log:before {
+  content: "\e926";
+}
+#file-manager .ext-m4p:before {
+  content: "\e92a";
+}
+#file-manager .ext-mov:before {
+  content: "\e92a";
+}
+#file-manager .ext-mp3:before {
+  content: "\e928";
+}
+#file-manager .ext-mp4:before {
+  content: "\e92a";
+}
+#file-manager .ext-mpg:before {
+  content: "\e92a";
+}
+#file-manager .ext-mpeg:before {
+  content: "\e92a";
+}
+#file-manager .ext-ogg:before {
+  content: "\e928";
+}
+#file-manager .ext-pcx:before {
+  content: "\e927";
+}
+#file-manager .ext-pdf:before {
+  content: "\eada";
+}
+#file-manager .ext-php:before {
+  content: "\ea7f";
+}
+#file-manager .ext-png:before {
+  content: "\e927";
+}
+#file-manager .ext-pl:before {
+  content: "\ea7f";
+}
+#file-manager .ext-py:before {
+  content: "\ea7f";
+}
+#file-manager .ext-rb:before {
+  content: "\ea7f";
+}
+#file-manager .ext-rbx:before {
+  content: "\ea7f";
+}
+#file-manager .ext-rhtml:before {
+  content: "\ea7f";
+}
+#file-manager .ext-rpm:before {
+  content: "\ea7f";
+}
+#file-manager .ext-ruby:before {
+  content: "\ea7f";
+}
+#file-manager .ext-sql:before {
+  content: "\ea7f";
+}
+#file-manager .ext-swf:before {
+  content: "\e912";
+}
+#file-manager .ext-tif:before {
+  content: "\e927";
+}
+#file-manager .ext-tiff:before {
+  content: "\e927";
+}
+#file-manager .ext-txt:before {
+  content: "\e926";
+}
+#file-manager .ext-vb:before {
+  content: "\ea7f";
+}
+#file-manager .ext-wav:before {
+  content: "\e928";
+}
+#file-manager .ext-wmv:before {
+  content: "\e928";
+}
+#file-manager .ext-xls:before {
+  content: "\eadd";
+}
+#file-manager .ext-xml:before {
+  content: "\ea7f";
+}
+#file-manager .ext-zip:before {
+  content: "\e92b";
+}

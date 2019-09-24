@@ -1,0 +1,287 @@
+/* Current Files */
+
+.bar {
+    z-index: 2;
+    position: relative;
+    height: 10px;
+    width: 100%;
+    background: #FFF;
+ 
+}
+
+.active-sort-placeholder {
+    border: 1px dashed #FFF;
+    border-radius: 5px;
+}
+
+/************************
+ * Tab list
+ ************************/
+
+#tab-list-active-files {
+    list-style-type: none;
+    overflow: hidden;
+    height: 33px;
+    margin: 0;
+    padding: 0;
+    padding-left: 15px;
+}
+ 
+#tab-list-active-files li {
+    margin-top: 7px;
+    height: 60px;
+    width: auto;
+    max-width: 200px;
+    position: relative;
+    float: left;
+    border-top-right-radius: 20px 60px;
+    border-top-left-radius: 20px 60px;
+      border: 0.5px solid #999;
+
+    margin-left: -15px;
+    padding-left: 20px;
+    z-index: 1;
+}
+
+#tab-list-active-files li.active {
+    z-index: 3;
+      background-color: #ddd;
+}
+ 
+#tab-list-active-files li:first-child {
+    margin-left: 0;
+  
+}
+
+#tab-list-active-files li a.label {
+    display: block;
+    float: left;
+    text-align: left;
+    width: 140px;
+    line-height: 25px;
+    padding-top: 1px;
+    padding-right: 5px;
+    color: #336699;
+    overflow: hidden;
+    text-decoration: none;
+    direction: rtl;
+    white-space: nowrap;
+}
+
+#tab-list-active-files li.active a.label {
+    color: #336699;
+}
+
+#tab-list-active-files li .file-name {
+    color: #f00;
+}
+
+#tab-list-active-files li.active .file-name {
+    color: #f00;
+}
+
+#tab-list-active-files li.changed {
+    /*font-weight: bold;*/
+    border-top: 2px solid #3BA628;
+}
+
+#tab-list-active-files li a.close {
+    display: block;
+    float: right;
+    margin: 6px 17px 0 0;
+    padding: 1px 5px 2px 4px;
+    color: #616161;
+    background: #FFF;
+    border-radius: 5px;
+    line-height: 100%;
+}
+
+#tab-list-active-files li a.close:hover {
+    color: #F00;
+    background-color: #FFF;
+}
+
+/* Clear Fix took from HTML 5 Boilerplate. */
+.clearfix:before, .clearfix:after { content: ""; display: table; }
+.clearfix:after { clear: both; }
+.clearfix { zoom: 1; }
+
+
+
+/* Close button */
+
+#tab-close {
+    /* Adjust this size depending on the final editor-top-bar height. */
+    position: fixed;
+    top: 7px;
+    right: 8px;
+    height: 35px;
+}
+
+#tab-close-button {
+    font-size: 20px;
+    color: #666;
+}
+
+#tab-close-button:hover {
+    color: #F00;
+}
+
+/************************
+ * Dropdown
+ ************************/
+
+/* Tab button */
+
+#tab-dropdown {
+    /* Adjust this size depending on the final editor-top-bar height. */
+    position: fixed;
+    top: 7px;
+    right: 35px;
+    height: 35px;
+}
+
+#tab-dropdown-button {
+    font-size: 24px;
+    color: #666;
+}
+
+#tab-dropdown-button:hover {
+    color: #F00;
+}
+
+/* Dropdown */
+
+#dropdown-list-active-files {
+    position: absolute;
+    z-index: 9999;
+    background-color: #FFF;
+    border: 3px solid #666666;
+    display: none;
+    border-radius: 2px;
+    padding: 0 5px;
+}
+
+#dropdown-list-active-files a {
+    display: block;
+    padding: 5px 30px 5px 10px;
+    margin: 5px 0;
+    border-radius: 3px;
+    line-height: 150%;
+    font-size: 12px;
+    word-break: break-all;
+    background-color: transparent;
+    height: 27px;
+    overflow: hidden;
+    color: #A3A3A3;
+}
+
+#dropdown-list-active-files a .file-name {
+    color: #F00;
+}
+
+#dropdown-list-active-files a:hover, 
+#dropdown-list-active-files li.active a {
+    background-color: #eee;
+}
+
+#dropdown-list-active-files li.changed a {
+    border: 3px solid #3ba628;
+    border-top: 0;
+    border-bottom: 0;
+}
+
+#dropdown-list-active-files div {
+    white-space: nowrap;
+    direction: rtl;
+    overflow: hidden;
+}
+
+#dropdown-list-active-files a span.label {
+    display: block;
+    float: right;
+    margin: 1px -23px 0 -15px;
+    padding: 1px 4px 2px 4px;
+    color: transparent;
+    background: none;
+    border-radius: 5px;
+    line-height: 100%;
+}
+
+/* Close button */
+
+#dropdown-list-active-files a span.label:after {
+    content: 'x';
+    text-shadow: none;
+}
+#dropdown-list-active-files a:hover span.label {
+    background-color: #ccc;
+    color: #F00;
+  
+
+}
+#dropdown-list-active-files a:hover span.label:hover {
+    color: #F00;
+    background-color: #ccc;
+}  
+
+/************************
+ * List
+ ************************/
+ 
+ #list-active-files {
+    display: none;
+    width: 100%;
+    height: 40%;
+    margin: 0;
+    padding: 15px;
+    overflow: auto;
+    border-top: 2px solid #787878;
+}
+ #list-active-files a {
+    display: block;
+    padding: 5px 30px 5px 10px;
+    margin: 5px 0;
+    border-radius: 3px;
+    line-height: 150%;
+    font-size: 12px;
+    word-break: break-all;
+    background-color: #FFF;
+    height: 27px;
+    overflow: hidden;
+}
+ #list-active-files a:hover,  #list-active-files li.active a {
+    background-color: #FFF;
+}
+ #list-active-files li.changed a {
+    border: 3px solid #3ba628;
+    border-top: 0;
+    border-bottom: 0;
+}
+ #list-active-files div {
+    white-space: nowrap;
+    direction: rtl;
+    overflow: hidden;
+}
+ #list-active-files a span {
+    display: block;
+    float: right;
+    margin: 1px -23px 0 -15px;
+    padding: 1px 4px 2px 4px;
+    color: transparent;
+    background: none;
+    border-radius: 5px;
+    line-height: 100%;
+}
+ #list-active-files a span:after {
+    content: 'x';
+}
+ #list-active-files a:hover span {
+    background: red;
+    color: #616161;
+}
+ #list-active-files a:hover span:hover {
+    color: #000;
+    background-color: #FFF;
+}
+ 

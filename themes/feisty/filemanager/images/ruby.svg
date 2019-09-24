@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="16px" height="16px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <path id="paper" d="M14.667,1.333c0,-0.552 -0.448,-1 -1,-1l-11.334,0c-0.552,0 -1,0.448 -1,1l0,13.334c0,0.552 0.448,1 1,1l11.334,0c0.552,0 1,-0.448 1,-1l0,-13.334Z" style="fill: #fff; stroke: #cfd0d1; stroke-width: 0.67px;" />
+    <g id="ruby">
+        <path id="color" d="M8,12l-5,-5l2.5,-2.5l5,0l2.5,2.5l-5,5Z" style="fill: #d00030;" />
+        <path id="shadow" d="M8,12l5,-5l-10,0l5,5Z" style="fill: #000030; fill-opacity: 0.15;" />
+        <path id="light" d="M3,7l2.5,-2.5l5,0l2.5,2.5l-10,0Z" style="fill: #fff; fill-opacity: 0.15;" />
+        <path id="reflection" d="M8,12l-5,-5l10,0l-5,5l-2.5,-5l2.5,-2.5l2.5,2.5l-2.5,5Z" style="fill: #fff; fill-opacity: 0.4375;" />
+    </g>
+</svg>

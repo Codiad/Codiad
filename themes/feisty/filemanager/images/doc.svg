@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="16px" height="16px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<path id="paper" d="M14.667,1.333c0,-0.552 -0.448,-1 -1,-1l-11.334,0c-0.552,0 -1,0.448 -1,1l0,13.334c0,0.552 0.448,1 1,1l11.334,0c0.552,0 1,-0.448 1,-1l0,-13.334Z" style="fill: #fff; stroke: #cfd0d1; stroke-width: 0.67px;" />
+	<rect x="6" y="3" width="7" height="1" style="fill: #cfd0d1;" />
+	<rect x="6" y="6" width="7" height="1" style="fill: #cfd0d1;" />
+	<rect x="6" y="9" width="7" height="1" style="fill: #cfd0d1;" />
+	<rect x="6" y="12" width="7" height="1" style="fill: #cfd0d1;" />
+	<clipPath id="_clip1">
+		<rect x="-1" y="-1" width="5.5" height="18" />
+	</clipPath>
+	<g clip-path="url(#_clip1)">
+		<path d="M15,1.375c0,-0.759 -0.616,-1.375 -1.375,-1.375l-11.25,0c-0.759,0 -1.375,0.616 -1.375,1.375l0,13.25c0,0.759 0.616,1.375 1.375,1.375l11.25,0c0.759,0 1.375,-0.616 1.375,-1.375l0,-13.25Z" style="fill: #0060d0;" />
+	</g>
+</svg>

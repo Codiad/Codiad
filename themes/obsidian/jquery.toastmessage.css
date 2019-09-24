@@ -1,0 +1,142 @@
+.toast-container {
+  width: auto;
+  z-index: 99999;
+}
+* html .toast-container {
+  position: absolute;
+}
+.toast-item {
+  height: auto;
+  background: #f0f0f0;
+  color: #293134;
+  /*padding-top: 20px;
+      padding-bottom: 20px;
+      padding-left: 6px;
+      padding-right: 6px;*/
+  padding: 4px;
+  max-width: 400px;
+  font-size: 12px;
+  border: 1px solid #d7d7d7;
+  border-bottom: 2px solid #bdbdbd;
+  display: block;
+  position: relative;
+  margin: 0 0 12px 0;
+}
+.toast-item p {
+  text-align: left;
+  margin: 5px 38px;
+  font-family: "Courier New";
+}
+.toast-item-close:after {
+  content: "\ea0f";
+  font-family: IcoMoon-Free;
+  font-size: 6px;
+  line-height: 100%;
+  float: right;
+  padding: 3px;
+  color: #bdbdbd;
+}
+.toast-item-close:hover:after {
+  cursor: pointer;
+  color: #963a46;
+}
+.toast-item-image {
+  font-family: IcoMoon-Free;
+  width: auto;
+  height: 100%;
+  position: absolute;
+  left: 15px;
+  top: 8px;
+}
+.toast-item-image {
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.toast-item-image-notice:before {
+  content: "\ea08";
+  color: #678cb1;
+}
+.toast-item-image-success:before {
+  content: "\ea10";
+  color: #93c763;
+}
+.toast-item-image-warning:before {
+  content: "\ea07";
+  color: #ec7600;
+}
+.toast-item-image-error:before {
+  content: "\ea0f";
+  color: #963a46;
+}
+/**
+ * toast types
+ *
+ * pattern: toast-type-[value]
+ * where 'value' is the real value of the plugin option 'type'
+ *
+ */
+.toast-type-notice {
+  color: #293134;
+  border-bottom: 4px solid #678cb1;
+}
+.toast-type-success {
+  color: #293134;
+  border-bottom: 4px solid #93c763;
+}
+.toast-type-warning {
+  color: #293134;
+  border-bottom: 4px solid #ec7600;
+}
+.toast-type-error {
+  color: #293134;
+  border-color: #B32B2B;
+  border-bottom: 4px solid #963a46;
+}
+/**
+ * positions
+ *
+ * pattern: toast-position-[value]
+ * where 'value' is the real value of the plugin option 'position'
+ *
+ */
+.toast-position-top-left {
+  position: fixed;
+  left: 20px;
+  top: 20px;
+}
+.toast-position-top-center {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  margin-left: -140px;
+}
+.toast-position-top-right {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+}
+.toast-position-middle-left {
+  position: fixed;
+  left: 20px;
+  top: 50%;
+  margin-top: -40px;
+}
+.toast-position-middle-center {
+  position: fixed;
+  left: 50%;
+  margin-left: -140px;
+  margin-top: -40px;
+  top: 50%;
+}
+.toast-position-middle-right {
+  position: fixed;
+  right: 20px;
+  margin-left: -140px;
+  margin-top: -40px;
+  top: 50%;
+}
+.toast-position-bottom-right {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+}

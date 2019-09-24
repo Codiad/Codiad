@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+	<path d="M8,1.938l7,12.124l-14,0l7,-12.124Z" style="fill: #ff9000; stroke:#ff9000; stroke-width:2px;" />
+	<circle cx="8" cy="12.25" r="1.25" style="fill: #304050;" />
+	<path d="M9,4l-2,0l0.25,5.5l1.5,0l0.25,-5.5Z" style="fill: #304050;" />
+</svg>

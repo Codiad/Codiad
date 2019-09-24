@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="16px" height="16px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<path id="paper" d="M14.667,1.333c0,-0.552 -0.448,-1 -1,-1l-11.334,0c-0.552,0 -1,0.448 -1,1l0,13.334c0,0.552 0.448,1 1,1l11.334,0c0.552,0 1,-0.448 1,-1l0,-13.334Z" style="fill: #fff; stroke: #cfd0d1; stroke-width: 0.67px;" />
+	<g id="camera">
+		<path d="M13,6c0,-0.552 -0.448,-1 -1,-1l-8,0c-0.552,0 -1,0.448 -1,1l0,5c0,0.552 0.448,1 1,1l8,0c0.552,0 1,-0.448 1,-1l0,-5Z" style="fill: #d00030;" />
+		<circle cx="8" cy="8.5" r="2.5" style="fill: #fff;" />
+		<circle cx="8" cy="8.5" r="1.5" style="fill: #d00030;" />
+		<path d="M10,5l-4,0l0.25,-0.5c0.24,-0.492 0.495,-0.498 0.75,-0.5l2,0c0.255,0.002 0.51,0.008 0.75,0.5l0.25,0.5Z" style="fill: #d00030;" />
+	</g>
+</svg>

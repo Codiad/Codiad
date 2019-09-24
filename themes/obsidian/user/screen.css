@@ -1,0 +1,19 @@
+#project-selector {
+  background: #404040;
+  margin: 10px 0 5px 0;
+  overflow: auto;
+  max-height: 250px;
+}
+.user-wrapper {
+  max-height: 450px;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+#project-selector table td {
+  border: none;
+  border-bottom: 1px solid #666;
+}
+#project-selector table tr:last-child td {
+  border: none;
+}

@@ -1,0 +1,9 @@
+.market-wrapper {
+  height: 250px;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.market-remote-title {
+  color: #7F7F7F;
+}

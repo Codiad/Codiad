@@ -1,0 +1,25 @@
+#FileExtTextModeDiv {
+  width: 100%;
+}
+#FileExtTextModeDiv table {
+  margin-top: 0px;
+}
+#FileExtTextModeDiv tbody td.firstLine {
+  height: 30px;
+}
+#FileExtTextModeDiv tbody td {
+  width: 50%;
+  padding: 0;
+  padding-left: 8px;
+  padding-right: 8px;
+  line-height: 100%;
+  border: 0;
+  border-bottom: 1px solid #d7d7d7;
+}
+#FileExtTextModeDiv input {
+  line-height: 18px;
+  display: inline;
+}
+#FileExtModeHeader {
+  display: none;
+}

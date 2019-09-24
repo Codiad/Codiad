@@ -1,0 +1,28 @@
+#autocomplete {
+  display: none;
+  position: absolute;
+  max-height: 200px;
+  background-color: #f0f0f0;
+  padding: 1px;
+  z-index: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-bottom: 2px solid #678cb1;
+}
+#autocomplete li {
+  padding: 0 14px 0 4px;
+  cursor: pointer;
+}
+#autocomplete li.active-suggestion {
+  background-color: #ffffff;
+}
+#autocomplete .suggestion .matched {
+  color: #ec7600;
+}
+#autocomplete .matched {
+  font-weight: bold;
+  color: #45A4B6;
+}
+#autocomplete::-webkit-scrollbar {
+  width: 10px;
+}
