@@ -1,0 +1,7 @@
+.ignore_display {
+    overflow-y: scroll;
+}
+
+#ignore_list td {
+    vertical-align: middle;
+}

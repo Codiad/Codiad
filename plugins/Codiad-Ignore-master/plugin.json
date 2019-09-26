@@ -1,0 +1,17 @@
+[{ "author" : "Andr3as",
+    "version": "0.3.1",
+    "name" : "Ignore",
+    "url" : "https://github.com/Andr3as/Codiad-Ignore",
+    "exclude" : "",
+    "contextmenu" : [{
+        "action" : "codiad.Ignore.ignore($('#context-menu').attr('data-path'));",
+        "icon" : "icon-target",
+        "applies-to" : "both",
+        "title" : "Ignore"
+    }],
+	"config": [{
+		"file": "dialog.php?action=log",
+		"icon": "icon-target",
+		"title": "Ignore"
+	}]
+}]
