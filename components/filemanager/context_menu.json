@@ -97,13 +97,13 @@
   {
     "title": "Break",
     "icon": null,
-    "applies-to": "both no-external",
+    "applies-to": "both",
     "onclick": null
   },
   {
     "title": "Download",
     "icon": "icon-download",
-    "applies-to": "both no-external",
+    "applies-to": "both",
     "onclick": "codiad.filemanager.download($('#context-menu').attr('data-path'));"
   },
   {

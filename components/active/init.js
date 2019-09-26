@@ -241,8 +241,8 @@
                 },
                 stop: function(e, ui) {
                     // Reset css
-                    ui.item.css('z-index', '')
-                    ui.item.css('position', '')
+                    ui.item.css('z-index', '');
+                    ui.item.css('position', '');
                 }
             });
             /* Woaw, so tricky! At initialization, the tab-list is empty, so

@@ -56,14 +56,14 @@
                             $(this).removeClass('plus')
                             $(this).addClass('minus');
                         } else {
-                            $(this).removeClass('minus')
+                            $(this).removeClass('minus');
                             $(this).addClass('plus');
                         }
                     }
                 });
             $('#file-manager a')
                 .live('dblclick', function() { // Open or Expand
-                    if (!codiad.editor.settings.fileManagerTrigger) {
+                    if (codiad.editor.settings.fileManagerTrigger) {
                       if ($(this)
                           .hasClass('directory')) {
                           _this.index($(this)
@@ -84,7 +84,7 @@
                     }
                 })
                 .live('click', function() { // Open or Expand
-                    if (codiad.editor.settings.fileManagerTrigger) {
+                    if (!codiad.editor.settings.fileManagerTrigger) {
                       if ($(this)
                           .hasClass('directory')) {
                           _this.index($(this)

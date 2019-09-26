@@ -1321,6 +1321,16 @@
         //   i - {Editor} Editor instance
         //
         //////////////////////////////////////////////////////////////////
+        
+        promptLine: function() {
+            if (codiad.editor.getActive() !== null) {
+                var line = parseInt(prompt("Enter line number:"), 10);
+                if (!isNaN(line)) {
+                    codiad.editor.gotoLine(line);
+                    codiad.editor.focus();
+                }
+            }
+        },
 
         gotoLine: function(line, i) {
             i = i || this.getActive();

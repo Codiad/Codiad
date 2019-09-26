@@ -89,6 +89,12 @@
     "onclick": null
   },
   {
+    "title": "Goto Line",
+    "admin": false,
+    "icon": "icon-gotoline",
+    "onclick": "codiad.editor.promptLine();"
+  },  
+  {
     "title": "Save All",
     "admin": false,
     "icon": "icon-install",
@@ -98,7 +104,7 @@
     "title": "Help",
     "admin": false,
     "icon": "icon-help",
-    "onclick": "window.open('https://github.com/Codiad/Codiad/wiki');"
+    "onclick": "window.open('https://github.com/HLSiira/Axiom/wiki');"
   },
   {
     "title": "Logout",
