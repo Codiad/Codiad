@@ -43,12 +43,11 @@
         },
         
         compile: function(scss, path, callback) {
+        	console.log(scss);
             var _this = this;
             setTimeout(function(){
                 _this.setSettings(path);
-                _this.sass.compile(scss, function(result) {
-                    callback(result);
-                });
+                _this.sass.compile(scss, callback);
             }, 0);
         },
         

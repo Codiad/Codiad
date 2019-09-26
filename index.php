@@ -101,7 +101,8 @@ if (isset($_SESSION['theme'])) {
 
     <script src="js/jquery.hoverIntent.min.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.hoverintent/1.10.0/jquery.hoverIntent.min.js"></script> -->
-
+    <script src="js/events.js"></script>
+    <script src="js/bioflux.js"></script>
     <script src="js/system.js"></script>
     <script src="js/sidebars.js"></script>
     <script src="js/modal.js"></script>
@@ -341,7 +342,7 @@ if (isset($_SESSION['theme'])) {
 
             <div class="sidebar-handle"><span><a class="icon-menu"></a></span></div>
             <div id="sb-right-title">
-                <span id="lock-right-sidebar" class="icon-switch icon"></span>
+                <span id="lock-right-sidebar" class="icon-lock icon"></span>
             </div>
 
             <div class="sb-right-content">
@@ -397,7 +398,7 @@ if (isset($_SESSION['theme'])) {
     </div>
 
     <div id="modal-overlay"></div>
-    <div id="modal"><div id="close-handle" class="icon-cancel" onclick="codiad.modal.unload();"></div><div id="drag-handle" class="icon-location"></div><div id="modal-content"></div></div>
+    <div id="modal"><div id="close-handle" class="icon-cancel" onclick="codiad.modal.unload();"></div><div id="drag-handle" class="icon-arrows"></div><div id="modal-content"></div></div>
 
     <iframe id="download"></iframe>
 
