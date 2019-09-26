@@ -7,7 +7,7 @@ data/
 workspace/
 !plugins/*
 !plugins/README.md
-themes/*
+!themes/*
 !themes/default/
 !themes/modern/
 !themes/README.md

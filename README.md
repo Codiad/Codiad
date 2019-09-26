@@ -37,9 +37,9 @@ Axiom is Codiad to its core, however Axiom will be updated to use all the latest
 | 01 | Closing tabs sometimes has issues, only way is to refresh |
 |----|-----------------------------------------------------------|
 | 02 | Marketplace gets mad if something is missing              |
-| 03 |                                                           |
-| 04 |                                                           |
-| 05 |                                                           |
+| 03 | Settings sometimes don't stick and have to be reset       |
+| 04 | Git Plugin seems to struggle with larger folders          |
+| 05 | Apache complains of an unknown filter: includes           |
 | 06 |                                                           |
 | 07 |                                                           |
 | 08 |                                                           |
