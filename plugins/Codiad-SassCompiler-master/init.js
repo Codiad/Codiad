@@ -43,7 +43,6 @@
         },
         
         compile: function(scss, path, callback) {
-        	console.log(scss);
             var _this = this;
             setTimeout(function(){
                 _this.setSettings(path);
@@ -122,12 +121,9 @@
                 if (json.status == "success") {
                     $.getJSON(_this.path + 'controller.php?action=getFileTree&path=' + path, function(tree){
                         _this.tree = tree.tree;
-                        console.log(_this);
                         _this.compile(json.content, path, function(result){
                             //Catch errors
                             if (result.status === 0) {
-                            	console.log(result);
-                            	console.log(_this.path + " | " + path);
                                 $.post(_this.path + 'controller.php?action=saveContent&path=' + path, {content: result.text}, function(response){
                                     response = JSON.parse(response);
                                     if (response.status == "success") {
@@ -136,7 +132,6 @@
                                     codiad.message[response.status](response.message);
                                 });
                             } else {
-                            	console.log(result);
                                 codiad.message.error(result.message + " on Line " + result.line + " Column " + result.column);
                             }
                         });
