@@ -43,25 +43,69 @@
 		return document.querySelectorAll(s);
 	};
 
-	publicAPIs.addClass = function(s, c) {
-		if (!s) {
-			return;
-		}
-		s = Array.isArray(s) ? s : [s];
-		for (let i = 0; i < s.length; i++) {
-			s[i].classList.add(cls);
+	publicAPIs.addClass = function(selector, cls) {
+		try {
+			if (!selector || !cls) {
+				throw "Required parameter missing";
+			}
+			selector = Array.isArray(selector) ? selector : [selector];
+			for (let i = 0; i < selector.length; i++) {
+				if (typeof selector === 'string') {
+					publicAPIs.queryO(selector[i]).classList.add(cls);
+				} else {
+					selector[i].classList.add(cls);
+				}
+			}
+		} catch (err) {
+			publicAPIs.log(err, 'error');
 		}
 	};
-	publicAPIs.removeClass = function(s, c) {
-		if (!s) {
-			return;
-		}
-		s = Array.isArray(s) ? s : [s];
-		for (let i = 0; i < s.length; i++) {
-			s[i].classList.remove(cls);
+	
+	publicAPIs.removeClass = function(selector, cls) {
+		try {
+			if (!selector || !cls) {
+				throw "Required parameter missing";
+			}
+			selector = Array.isArray(selector) ? selector : [selector];
+			for (let i = 0; i < selector.length; i++) {
+				if (typeof selector === 'string') {
+					publicAPIs.queryO(selector[i]).classList.remove(cls);
+				} else {
+					selector[i].classList.remove(cls);
+				}
+			}
+		} catch (err) {
+			publicAPIs.log(err, 'error');
 		}
 	};
 
+	publicAPIs.replaceClass = function(selector, cls, newcls) {
+		try {
+			if (!selector || !cls || !newcls) {
+				throw "Required parameter missing";
+			}
+			selector = Array.isArray(selector) ? selector : [selector];
+			for (let i = 0; i < selector.length; i++) {
+				if (typeof selector === 'string') {
+					publicAPIs.queryO(selector[i]).classList.remove(cls);
+					publicAPIs.queryO(selector[i]).classList.add(newcls);
+				} else {
+					selector[i].classList.remove(cls);
+					selector[i].classList.add(newcls);
+				}
+			}
+		} catch (err) {
+			publicAPIs.log(err, 'error');
+		}
+	};
+
+	publicAPIs.log = function(msg, type) {
+		if (type === 'error') {
+			console.error(msg);
+		} else {
+			console.log(msg);
+		}
+	};
 
 	publicAPIs.grapple = function(url, options) {
 		if (options && !options.method) {
@@ -118,6 +162,15 @@
 			}
 		});
 		return o;
+	};
+
+	publicAPIs.trigger = function(s, e) {
+		if (!e || !s) return;
+		if (s.nodeType === Node.ELEMENT_NODE) {
+			s.dispatchEvent(new Event(e));
+		} else if (typeof s === 'string') {
+			publicAPIs.queryO(s).dispatchEvent(new Event(e));
+		}
 	};
 
 	// Return public APIs

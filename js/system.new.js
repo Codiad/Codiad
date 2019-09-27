@@ -4,7 +4,12 @@
  *  [root]/license.txt for more. This information must remain intact.
  */
 
-(function(global, $){
+// (function(global, $){
+document.addEventListener("DOMContentLoaded", function() {
+	var global = this;
+	var $ = jQuery;
+	
+	console.log($);
 
     var codiad = global.codiad = {};
 
@@ -12,7 +17,7 @@
     // loadScript instead of getScript (checks and balances and shit...)
     //////////////////////////////////////////////////////////////////////
 
-    $.loadScript = function(url, arg1, arg2) {
+   codiad.helpers.loadScript = function(url, arg1, arg2) {
         var cache = true,
             callback = null;
         //arg1 and arg2 can be interchangable
@@ -51,14 +56,15 @@
     //////////////////////////////////////////////////////////////////////
     // Init
     //////////////////////////////////////////////////////////////////////
-	document.addEventListener("DOMContentLoaded", function() {
-    // $(function() {
+
+    $(function() {
     // $(document).ready(function () {
         // Console fix for IE
         if (typeof(console) === 'undefined') {
             console = {};
             console.log = console.error = console.info = console.debug = console.warn = console.trace = console.dir = console.dirxml = console.group = console.groupEnd = console.time = console.timeEnd = console.assert = console.profile = function () {};
         }        
+        
         // Sliding sidebars
         codiad.sidebars.init();
         var handleWidth = 10;
@@ -101,5 +107,5 @@
         });
     });
 
-})(this, jQuery);
+});
 

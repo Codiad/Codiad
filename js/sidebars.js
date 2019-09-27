@@ -1,3 +1,6 @@
+'use strict';
+
+
 (function(global, $){
 
     var codiad = global.codiad;

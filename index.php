@@ -32,7 +32,8 @@ if (isset($_SESSION['theme'])) {
     // Load System CSS Files
 
     echo('<link rel="stylesheet" href="themes/' . $theme . '/main.css">');
-    echo('<link rel="stylesheet" href="themes/' . $theme . '/fonts/fontawesome/css/all.min.css">');
+    // echo('<link rel="stylesheet" href="themes/' . $theme . '/fonts/fontawesome/css/all.min.css">');
+    echo('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"');
     // echo('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.css">');
 
     // Load Plugin CSS Files
@@ -102,7 +103,9 @@ if (isset($_SESSION['theme'])) {
     <script src="js/jquery.hoverIntent.min.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.hoverintent/1.10.0/jquery.hoverIntent.min.js"></script> -->
     <script src="js/events.js"></script>
+    <script src="js/hoverintent.min.js"></script>
     <script src="js/bioflux.js"></script>
+    
     <script src="js/system.js"></script>
     <script src="js/sidebars.js"></script>
     <script src="js/modal.js"></script>
