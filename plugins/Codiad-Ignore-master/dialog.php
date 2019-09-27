@@ -25,7 +25,7 @@
         } else if ($_GET['action'] == "log") {
     ?>
         <div class="ignore_display">
-            <label><span class="icon-target big-icon"></span>Ignore Settings</label>
+            <label><span class="icon-eye-slash big-icon"></span>Ignore Settings</label>
             <hr>
             <table id="ignore_list">
                 <tr>

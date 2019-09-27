@@ -5,13 +5,18 @@
     "exclude" : "",
     "contextmenu" : [{
         "action" : "codiad.Ignore.ignore($('#context-menu').attr('data-path'));",
-        "icon" : "icon-target",
+        "icon" : "icon-eye-slash",
         "applies-to" : "both",
         "title" : "Ignore"
     }],
+    "rightbar": [{
+        "action": "codiad.Ignore.showDialog();",
+        "icon": "icon-eye-slash",
+        "title": "Ignore"
+    }],    
 	"config": [{
 		"file": "dialog.php?action=log",
-		"icon": "icon-target",
+		"icon": "icon-eye-slash",
 		"title": "Ignore"
 	}]
 }]
