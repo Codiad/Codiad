@@ -95,7 +95,7 @@ if (isset($_SESSION['theme'])) {
     <script src="js/jquery.toastmessage.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script> -->
 
-    <script src="js/amplify.min.js"></script>
+    <script src="js/amplify.min.new.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/amplifyjs/1.1.2/amplify.min.js"></script> -->
     <script src="js/localstorage.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/localStorage/2.0.1/localStorage.min.js"></script> -->
