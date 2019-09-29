@@ -4,7 +4,7 @@
  * See http://opensource.org/licenses/MIT for more information.
  * This information must remain intact.
  */
-
+ 
 (function(global, $){
     
     var codiad = global.codiad,
@@ -33,15 +33,14 @@
             $.getScript(this.path+"libs/beautify-css.js");
             $.getScript(this.path+"libs/beautify-html.js");
             $.getScript(this.path+"libs/beautify.js");
-            $.getScript(this.path+"libs/ext-beautify.new.js", function() {
+            $.getScript(this.path+"libs/ext-beautify.js",function() {
 				_this.beautifyPhp = ace.require("ace/ext/beautify");
 			});
             //Load settings
             this.load();
             //Set subscriptions
-            amplify.subscribe('active.onOpen', function(path){
-	    	if(codiad.editor.getActive() === null)
-			return;
+            amplify.subscribe('active.onFocus', function(path){
+	    	if(codiad.editor.getActive() === null)	return;
                 var manager = codiad.editor.getActive().commands;
                 manager.addCommand({
                     name: "Beautify",
@@ -239,7 +238,8 @@
         //
         //////////////////////////////////////////////////////////
         beautifyContent: function(path, content, settings) {
-            this.checkBeautifySettings();
+        	var _this = this;
+            _this.checkBeautifySettings();
             if (typeof(settings) == 'undefined') {
                 settings = this.settings.beautify;
             }
@@ -251,7 +251,7 @@
             } else if (ext == "js" || ext == "json") {
                 return js_beautify(content, settings);
             } else if (ext == "php") {
-				this.beautifyPhp.beautify(codiad.editor.getActive().getSession());
+				_this.beautifyPhp.beautify(codiad.editor.getActive().getSession());
 				return true;
             } else {
                 return false;
