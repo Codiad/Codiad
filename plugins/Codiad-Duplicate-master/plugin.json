@@ -4,7 +4,7 @@
     "url" : "https://github.com/Andr3as/Codiad-Duplicate",
     "contextmenu" : [{
         "action" : "codiad.Duplicate.showDialog($('#context-menu').attr('data-path'));",
-        "icon" : "icon-list-add",
+        "icon" : "icon-clone",
         "applies-to" : "file-only",
         "title" : "Duplicate"
     }]

@@ -25,7 +25,7 @@
         settings: {
             js: false, json: false, html: false, css: false, auto: false
         },
-        files: ["html", "htm", "js", "json", "css", "php"],
+        files: ["html", "htm", "js", "json", "scss", "css", "php"],
         
         init: function() {
             var _this = this;
@@ -246,7 +246,7 @@
             var ext  = this.getExtension(path);
             if (ext == "html" || ext == "htm") {
                 return html_beautify(content, settings);
-            } else if (ext == "css") {
+            } else if (ext == "css" || ext == "scss") {
                 return css_beautify(content, settings);
             } else if (ext == "js" || ext == "json") {
                 return js_beautify(content, settings);
