@@ -1,6 +1,3 @@
-'use strict';
-
-
 (function(global, $){
 
     var codiad = global.codiad;
@@ -62,7 +59,7 @@
 
                 localStorage.setItem('codiad.sidebars.lock-left-sidebar', _this.leftLock);
             });
-            
+
             $('#lock-right-sidebar')
                 .on('click', function() {
                 if (_this.rightLock) {
