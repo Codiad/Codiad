@@ -27,7 +27,7 @@ if (isset($_SESSION['theme'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Elsenova IDE</title>
+    <title>Atheos IDE</title>
     <?php
     // Load System CSS Files
 
@@ -92,7 +92,7 @@ if (isset($_SESSION['theme'])) {
     <!-- <script src="js/jquery.easing.newnew.js"></script> -->
     <!-- <script src="">https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js</script> -->
 
-    <script src="js/jquery.toastmessage.js"></script>
+    <!--<script src="js/jquery.toastmessage.js"></script>-->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script> -->
 
     <script src="js/amplify.min.new.js"></script>

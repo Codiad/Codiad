@@ -11,10 +11,10 @@
 //////////////////////////////////////////////////////////////////
 
 // PATH TO CODIAD
-define("BASE_PATH", "/var/www/axiom");
+define("BASE_PATH", "/var/www/atheos");
 
 // BASE URL TO CODIAD (without trailing slash)
-define("BASE_URL", "code.teagey.com");
+define("BASE_URL", "dev.atheos.io");
 
 // THEME : default, modern or clear (look at /themes)
 define("THEME", "modern");
