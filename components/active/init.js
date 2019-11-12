@@ -61,7 +61,6 @@
             }
             var ext = codiad.filemanager.getExtension(path);
             var mode = codiad.editor.selectMode(ext);
-
             var fn = function() {
                 //var Mode = require('ace/mode/' + mode)
                 //    .Mode;
@@ -78,7 +77,6 @@
                 var session = new EditSession(content);
                 session.setMode("ace/mode/" + mode);
                 session.setUndoManager(new UndoManager());
-
                 session.path = path;
                 session.serverMTime = mtime;
                 _this.sessions[path] = session;
