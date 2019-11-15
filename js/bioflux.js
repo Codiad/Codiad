@@ -36,11 +36,25 @@
 		return (Array.isArray(a)) ? a[~~(Math.random() * a.length)] : false;
 	};
 
-	publicAPIs.queryO = function(s) {
-		return document.querySelector(s);
+	publicAPIs.queryO = function(selector) {
+		try {
+			if (!selector) {
+				throw "Required parameter missing";
+			}
+			return document.querySelector(selector);
+		} catch (err) {
+			publicAPIs.log(err, 'error');
+		}
 	};
-	publicAPIs.queryA = function(s) {
-		return document.querySelectorAll(s);
+	publicAPIs.queryA = function(selector) {
+		try {
+			if (!selector) {
+				throw "Required parameter missing";
+			}
+			return document.querySelectorAll(selector);
+		} catch (err) {
+			publicAPIs.log(err, 'error');
+		}
 	};
 
 	publicAPIs.addClass = function(selector, cls) {
@@ -60,7 +74,7 @@
 			publicAPIs.log(err, 'error');
 		}
 	};
-	
+
 	publicAPIs.removeClass = function(selector, cls) {
 		try {
 			if (!selector || !cls) {
@@ -181,19 +195,19 @@
 
 
 function getScript(source, callback) {
-    var script = document.createElement('script');
-    var prior = document.getElementsByTagName('script')[0];
-    script.async = 1;
+	var script = document.createElement('script');
+	var prior = document.getElementsByTagName('script')[0];
+	script.async = 1;
 
-    script.onload = script.onreadystatechange = function( _, isAbort ) {
-        if(isAbort || !script.readyState || /loaded|complete/.test(script.readyState) ) {
-            script.onload = script.onreadystatechange = null;
-            script = undefined;
+	script.onload = script.onreadystatechange = function(_, isAbort) {
+		if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState)) {
+			script.onload = script.onreadystatechange = null;
+			script = undefined;
 
-            if(!isAbort && callback) setTimeout(callback, 0);
-        }
-    };
+			if (!isAbort && callback) setTimeout(callback, 0);
+		}
+	};
 
-    script.src = source;
-    prior.parentNode.insertBefore(script, prior);
+	script.src = source;
+	prior.parentNode.insertBefore(script, prior);
 }

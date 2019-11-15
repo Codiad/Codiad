@@ -1,3 +1,5 @@
+//src https://webbjocke.com/javascript-check-data-types/
+
 (function(root, factory) {
 	if (typeof define === 'function' && define.amd) {
 		define([], function() {
