@@ -28,13 +28,22 @@ if (isset($_SESSION['theme'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Atheos IDE</title>
+    <link rel="stylesheet" href="fonts/fontawesome/css/all.min.css">
+
     <?php
     // Load System CSS Files
-
     echo('<link rel="stylesheet" href="themes/' . $theme . '/main.css">');
-    // echo('<link rel="stylesheet" href="themes/' . $theme . '/fonts/fontawesome/css/all.min.css">');
-    echo('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"');
-    // echo('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.css">');
+    
+    // Link favicons
+    echo('<link rel="apple-touch-icon" sizes="180x180" href="themes/' . $theme . '/favicons/apple-touch-icon.png">');
+    echo('<link rel="icon" type="image/png" sizes="32x32" href="themes/' . $theme . '/favicons/favicon-32x32.png">');
+    echo('<link rel="icon" type="image/png" sizes="16x16" href="themes/' . $theme . '/favicons/favicon-16x16.png">');
+    echo('<link rel="manifest" href="themes/' . $theme . '/favicons/site.webmanifest">');
+    echo('<link rel="mask-icon" href="themes/' . $theme . '/favicons/safari-pinned-tab.svg" color="#000713">');
+    echo('<link rel="shortcut icon" href="themes/' . $theme . '/favicons/favicon.ico">');
+    echo('<meta name="msapplication-TileColor" content="#2b5797">');
+    echo('<meta name="msapplication-config" content="themes/' . $theme . '/favicons/browserconfig.xml">');
+    echo('<meta name="theme-color" content="#ffffff">');    
 
     // Load Plugin CSS Files
     foreach ($plugins as $plugin) {
@@ -51,15 +60,7 @@ if (isset($_SESSION['theme'])) {
         }
     }
 
-    echo('<link rel="apple-touch-icon" sizes="180x180" href="themes/' . $theme . '/favicons/apple-touch-icon.png">');
-    echo('<link rel="icon" type="image/png" sizes="32x32" href="themes/' . $theme . '/favicons/favicon-32x32.png">');
-    echo('<link rel="icon" type="image/png" sizes="16x16" href="themes/' . $theme . '/favicons/favicon-16x16.png">');
-    echo('<link rel="manifest" href="themes/' . $theme . '/favicons/site.webmanifest">');
-    echo('<link rel="mask-icon" href="themes/' . $theme . '/favicons/safari-pinned-tab.svg" color="#000713">');
-    echo('<link rel="shortcut icon" href="themes/' . $theme . '/favicons/favicon.ico">');
-    echo('<meta name="msapplication-TileColor" content="#2b5797">');
-    echo('<meta name="msapplication-config" content="themes/' . $theme . '/favicons/browserconfig.xml">');
-    echo('<meta name="theme-color" content="#ffffff">');
+
 
     ?>
 
@@ -79,29 +80,16 @@ if (isset($_SESSION['theme'])) {
         }
     })(<?php echo json_encode($lang); ?>)
     </script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script>!window.jQuery && document.write(unescape('%3Cscript src="js/jquery-1.7.2.min.js"%3E%3C/script%3E'));</script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
-
+    <script src="js/jquery-1.7.2.min.js"></script>
     <script src="js/jquery-ui-1.8.23.custom.min.js"></script>
-    <!-- <script src="">https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js</script> -->
 
     <script src="js/jquery.css3.min.js"></script>
 
     <script src="js/jquery.easing.js"></script>
-    <!-- <script src="js/jquery.easing.newnew.js"></script> -->
-    <!-- <script src="">https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js</script> -->
-
-    <!--<script src="js/jquery.toastmessage.js"></script>-->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script> -->
+    <script src="js/jquery.hoverIntent.min.js"></script>
 
     <script src="js/amplify.min.new.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/amplifyjs/1.1.2/amplify.min.js"></script> -->
     <script src="js/localstorage.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/localStorage/2.0.1/localStorage.min.js"></script> -->
-
-    <script src="js/jquery.hoverIntent.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.hoverintent/1.10.0/jquery.hoverIntent.min.js"></script> -->
     <script src="js/events.js"></script>
     <script src="js/hoverintent.min.js"></script>
     <script src="js/bioflux.js"></script>
@@ -401,7 +389,11 @@ if (isset($_SESSION['theme'])) {
     </div>
 
     <div id="modal-overlay"></div>
-    <div id="modal"><div id="close-handle" class="icon-cancel" onclick="codiad.modal.unload();"></div><div id="drag-handle" class="icon-arrows"></div><div id="modal-content"></div></div>
+    <div id="modal">
+    	<div id="close-handle" class="icon-cancel" onclick="codiad.modal.unload();"></div>
+    	<div id="drag-handle" class="icon-arrows"></div>
+    	<div id="modal-content"></div>
+    </div>
 
     <iframe id="download"></iframe>
 
