@@ -17,7 +17,7 @@ define("BASE_PATH", "/var/www/atheos");
 define("BASE_URL", "dev.atheos.io");
 
 // THEME : default, modern or clear (look at /themes)
-define("THEME", "modern");
+define("THEME", "atheos");
 
 // ABSOLUTE PATH
 define("WHITEPATHS", BASE_PATH . ",/home");
