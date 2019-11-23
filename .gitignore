@@ -1,10 +1,11 @@
 *~
 *\#
 *.swp
+archive/*
 config.php
-data/
+data/*
 !data/.htaccess
-workspace/
+workspace/*
 !plugins/*
 !plugins/README.md
 !themes/*

@@ -20,7 +20,7 @@ $theme = THEME;
 if (isset($_SESSION['theme'])) {
     $theme = $_SESSION['theme'];
 }
-
+ 
 ?>
 <!doctype html>
 
@@ -88,16 +88,18 @@ if (isset($_SESSION['theme'])) {
     <script src="js/jquery.easing.js"></script>
     <script src="js/jquery.hoverIntent.min.js"></script>
 
-    <script src="js/amplify.min.new.js"></script>
+    <script src="js/amplify.min.js"></script>
     <script src="js/localstorage.js"></script>
     <script src="js/events.js"></script>
     <script src="js/hoverintent.min.js"></script>
     <script src="js/bioflux.js"></script>
     
     <script src="js/system.js"></script>
-    <script src="js/sidebars.js"></script>
+    
+    <script src="js/helpers.js"></script>
+    <script src="js/sidebars.new.js"></script>
     <script src="js/modal.js"></script>
-    <script src="js/message.js"></script>
+    <script src="js/toast.js"></script>
     <script src="js/jsend.js"></script>
     <script src="js/instance.js?v=<?php echo time(); ?>"></script>
     <div id="message"></div>
@@ -388,12 +390,6 @@ if (isset($_SESSION['theme'])) {
 
     </div>
 
-    <div id="modal-overlay"></div>
-    <div id="modal">
-    	<div id="close-handle" class="icon-cancel" onclick="codiad.modal.unload();"></div>
-    	<div id="drag-handle" class="icon-arrows"></div>
-    	<div id="modal-content"></div>
-    </div>
 
     <iframe id="download"></iframe>
 
