@@ -17,7 +17,7 @@ define("BASE_PATH", "absolute/path/to/codiad");
 define("BASE_URL", "domain.tld");
 
 // THEME : default, modern or clear (look at /themes)
-define("THEME", "default");
+define("THEME", "atheos");
 
 // ABSOLUTE PATH, this is used as whitelist for absolute path projects 
 define("WHITEPATHS", BASE_PATH . ",/home");
