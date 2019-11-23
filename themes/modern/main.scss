@@ -7,7 +7,8 @@ $accent-color: #3E50B4;
 $font-size: 14px;
 $font-size-lg: 16px;
 /* SCSS IMPORT FILES */
-@import "modules/reset", "modules/toastmessage";
+@import "modules/reset";
+@import "modules/toast", "modules/modal";
 @import "modules/active", "modules/autocomplete", "modules/editor";
 @import "modules/fileext_textmode", "modules/filemanager", "modules/extensions", "modules/fonts", "modules/market";
 @import "modules/project", "modules/settings", "modules/active-tabs", "modules/user";
@@ -818,70 +819,7 @@ table [class^="icon-"],
   padding   : 0;
   margin    : 10px 0;
 }
-/* Modal */
-#modal-overlay {
-  display   : none;
-  position  : fixed;
-  top       : 0;
-  left      : 0;
-  width     : 100%;
-  height    : 100%;
-  background: #000;
-  opacity   : 0.4;
-  z-index   : 9999998;
-}
 
-#modal {
-  display        : none;
-  position       : absolute;
-  top            : 15%;
-  left           : 50%;
-  max-height     : 70vh;
-  overflow       : auto;
-  background     : #333;
-  z-index        : 9999999;
-  min-height     : 100px;
-  padding        : 0;
-  background-clip: content-box;
-  border         : 3px solid rgba(255, 255, 255, 0.5);
-  /*box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .9);*/
-  border-radius  : $border-radius;
-}
-
-#modal #drag-handle {
-  float    : right;
-  font-size: 20px;
-  margin   : 2px;
-  padding  : 0;
-  cursor   : move;
-  color    : #999;
-}
-
-#modal #drag-handle:hover {
-  color: #fff;
-}
-
-#modal #close-handle {
-  float    : right;
-  font-size: 20px;
-  margin   : 2px;
-  padding  : 0;
-  cursor   : pointer;
-  color    : #999;
-}
-
-#modal #close-handle:hover {
-  color: #fff;
-}
-
-#modal-content {
-  padding: 20px;
-}
-
-#modal-loading {
-  height    : 100px;
-  background: url('images/loading.gif') no-repeat center;
-}
 /* Download iFrame */
 #download {
   display: none;

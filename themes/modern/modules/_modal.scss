@@ -1,0 +1,63 @@
+/* Modal */
+#modal_overlay {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.4);
+	z-index: 9999998;
+	transition: opacity ease-in-out 300ms;
+	opacity: 0.5;
+}
+
+#modal_wrapper {
+	display: none;
+	position: absolute;
+	top: 15%;
+	left: 50%;
+	max-height: 70vh;
+	overflow: auto;
+	background: #333;
+	z-index: 9999999;
+	min-height: 100px;
+	padding: 0;
+	background-clip: content-box;
+	border: 3px solid rgba(255, 255, 255, 0.5);
+	/*box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .9);*/
+	border-radius: $border-radius;
+	// transition: opacity ease-in-out 300ms;
+	// opacity: 0;
+}
+
+// .modal-active {
+// 	opacity: 1;
+// }
+
+#modal_wrapper .icon-arrows {
+	float: right;
+	font-size: 20px;
+	margin: 2px;
+	padding: 0;
+	cursor: move;
+	color: #999;
+}
+
+#modal_wrapper .icon-cancel {
+	float: right;
+	font-size: 20px;
+	margin: 2px;
+	padding: 0;
+	cursor: pointer;
+	color: #999;
+}
+
+#modal_content {
+	padding: 20px;
+}
+
+#modal_loading {
+	height: 100px;
+	background: url('images/loading.gif') no-repeat center;
+}
