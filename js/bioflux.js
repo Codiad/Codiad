@@ -178,15 +178,6 @@
 		return o;
 	};
 
-	publicAPIs.trigger = function(s, e) {
-		if (!e || !s) return;
-		if (s.nodeType === Node.ELEMENT_NODE) {
-			s.dispatchEvent(new Event(e));
-		} else if (typeof s === 'string') {
-			publicAPIs.queryO(s).dispatchEvent(new Event(e));
-		}
-	};
-
 	// Return public APIs
 	return publicAPIs;
 

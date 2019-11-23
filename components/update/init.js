@@ -33,7 +33,7 @@
 
         check: function () {
             var _this = this;
-            $('#modal-content form')
+            $('#modal_content form')
                 .die('submit'); // Prevent form bubbling
                 codiad.modal.load(500, this.dialog + '?action=check');
                 $('#modal-content').html('<div id="modal-loading"></div><div align="center">' + i18n("Contacting GitHub...") + '</div><br>');
@@ -45,7 +45,7 @@
 
         download: function () {
             var _this = this;
-            var archive = $('#modal-content form input[name="archive"]')
+            var archive = $('#modal_content form input[name="archive"]')
                         .val();
             $('#download')
                 .attr('src', archive);            

@@ -492,14 +492,14 @@
                 type: type,
                 path: path
             });
-            $('#modal-content form')
+            $('#modal_content form')
                 .live('submit', function(e) {
                     e.preventDefault();
-                    var shortName = $('#modal-content form input[name="object_name"]')
+                    var shortName = $('#modal_content form input[name="object_name"]')
                         .val();
-                    var path = $('#modal-content form input[name="path"]')
+                    var path = $('#modal_content form input[name="path"]')
                         .val();
-                    var type = $('#modal-content form input[name="type"]')
+                    var type = $('#modal_content form input[name="type"]')
                         .val();
                     var createPath = path + '/' + shortName;
                     $.get(codiad.filemanager.controller + '?action=create&path=' + encodeURIComponent(createPath) + '&type=' + type, function(data) {
@@ -547,7 +547,7 @@
                         action: 'overwrite',
                         path: path + '/' + shortName
                     });
-                    $('#modal-content form')
+                    $('#modal_content form')
                         .live('submit', function(e) {
                         e.preventDefault();
                         var duplicate = false;
@@ -591,10 +591,10 @@
             var type = this.getType(path);
             var _this = this;
             codiad.modal.load(250, this.dialog, { action: 'rename', path: path, short_name: shortName, type: type});
-            $('#modal-content form')
+            $('#modal_content form')
                 .live('submit', function(e) {
                     e.preventDefault();
-                    var newName = $('#modal-content form input[name="object_name"]')
+                    var newName = $('#modal_content form input[name="object_name"]')
                         .val();
                     // Build new path
                     var arr = path.split('/');
@@ -653,7 +653,7 @@
                 action: 'delete',
                 path: path
             });
-            $('#modal-content form')
+            $('#modal_content form')
                 .live('submit', function(e) {
                 e.preventDefault();
                 $.get(_this.controller + '?action=delete&path=' + encodeURIComponent(path), function(data) {
@@ -689,9 +689,9 @@
             codiad.modal.load_process.done( function() {
                 var lastSearched = JSON.parse(localStorage.getItem("lastSearched"));
                 if(lastSearched) {
-                    $('#modal-content form input[name="search_string"]').val(lastSearched.searchText);
-                    $('#modal-content form input[name="search_file_type"]').val(lastSearched.fileExtension);
-                    $('#modal-content form select[name="search_type"]').val(lastSearched.searchType);
+                    $('#modal_content form input[name="search_string"]').val(lastSearched.searchText);
+                    $('#modal_content form input[name="search_file_type"]').val(lastSearched.fileExtension);
+                    $('#modal_content form select[name="search_type"]').val(lastSearched.searchType);
                     if(lastSearched.searchResults != '') {
                       $('#filemanager-search-results').slideDown().html(lastSearched.searchResults);
                     }
@@ -699,21 +699,21 @@
             });
             codiad.modal.hideOverlay();
             var _this = this;
-            $('#modal-content form')
+            $('#modal_content form')
                 .live('submit', function(e) {
                 $('#filemanager-search-processing')
                     .show();
                 e.preventDefault();
-                searchString = $('#modal-content form input[name="search_string"]')
+                searchString = $('#modal_content form input[name="search_string"]')
                     .val();
-                fileExtensions=$('#modal-content form input[name="search_file_type"]')
+                fileExtensions=$('#modal_content form input[name="search_file_type"]')
                      .val();
                 searchFileType=$.trim(fileExtensions);
                 if (searchFileType != '') {
                     //season the string to use in find command
                     searchFileType = "\\(" + searchFileType.replace(/\s+/g, "\\|") + "\\)";
                 }
-                searchType = $('#modal-content form select[name="search_type"]')
+                searchType = $('#modal_content form select[name="search_type"]')
                     .val();
                 $.post(_this.controller + '?action=search&path=' + encodeURIComponent(path) + '&type=' + searchType, {
                     search_string: searchString,

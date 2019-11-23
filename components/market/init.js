@@ -25,7 +25,7 @@
         //////////////////////////////////////////////////////////////////
 
         list: function(type, note) {
-            $('#modal-content form')
+            $('#modal_content form')
                 .die('submit'); // Prevent form bubbling
             codiad.modal.load(800, this.dialog + '?action=list&type='+type+'&note='+note);
         },
@@ -35,7 +35,7 @@
         //////////////////////////////////////////////////////////////////
 
         search: function(e, query, note) {
-            $('#modal-content form')
+            $('#modal_content form')
                 .die('submit'); // Prevent form bubbling
             var key= e.charCode || e.keyCode || e.which;
             if(query != '' && key==13) {
@@ -54,7 +54,7 @@
         install: function(page, type, name, repo) {
             var _this = this;
             if(repo != '') {
-              $('#modal-content').html('<div id="modal-loading"></div><div align="center">Installing ' + name + '...</div><br>');
+              $('#modal_content').html('<div id="modal-loading"></div><div align="center">Installing ' + name + '...</div><br>');
               $.get(_this.controller + '?action=install&type=' + type + '&name=' + name + '&repo=' + repo, function(data) {
                   var response = codiad.jsend.parse(data);
                   if (response == 'error') {
@@ -73,7 +73,7 @@
 
         remove: function(page, type, name) {
             var _this = this;
-            $('#modal-content').html('<div id="modal-loading"></div><div align="center">Deleting ' + name + '...</div><br>');
+            $('#modal_content').html('<div id="modal-loading"></div><div align="center">Deleting ' + name + '...</div><br>');
             $.get(_this.controller + '?action=remove&type=' + type + '&name=' + name, function(data) {
                 var response = codiad.jsend.parse(data);
                 if (response == 'error') {
@@ -89,7 +89,7 @@
 
         update: function(page, type, name) {
             var _this = this;
-            $('#modal-content').html('<div id="modal-loading"></div><div align="center">Updating ' + name + '...</div><br>');
+            $('#modal_content').html('<div id="modal-loading"></div><div align="center">Updating ' + name + '...</div><br>');
             $.get(_this.controller + '?action=update&type=' + type + '&name=' + name, function(data) {
                 var response = codiad.jsend.parse(data);
                 if (response == 'error') {

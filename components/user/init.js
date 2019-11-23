@@ -96,7 +96,7 @@
         //////////////////////////////////////////////////////////////////
 
         list: function() {
-            $('#modal-content form')
+            $('#modal_content form')
                 .die('submit'); // Prevent form bubbling
             codiad.modal.load(400, this.dialog + '?action=list');
         },
@@ -108,15 +108,15 @@
         createNew: function() {
             var _this = this;
             codiad.modal.load(400, this.dialog + '?action=create');
-            $('#modal-content form')
+            $('#modal_content form')
                 .live('submit', function(e) {
                 e.preventDefault();
                 var pass = true;
-                var username = $('#modal-content form input[name="username"]')
+                var username = $('#modal_content form input[name="username"]')
                     .val();
-                var password1 = $('#modal-content form input[name="password1"]')
+                var password1 = $('#modal_content form input[name="password1"]')
                     .val();
-                var password2 = $('#modal-content form input[name="password2"]')
+                var password2 = $('#modal_content form input[name="password2"]')
                     .val();
                 
                 // Check matching passwords
@@ -150,7 +150,7 @@
         delete: function(username) {
             var _this = this;
             codiad.modal.load(400, this.dialog + '?action=delete&username=' + username);
-            $('#modal-content form')
+            $('#modal_content form')
                 .live('submit', function(e) {
                 e.preventDefault();
                 var username = $('#modal-content form input[name="username"]')
@@ -172,12 +172,12 @@
         projects: function(username) {
             codiad.modal.load(400, this.dialog + '?action=projects&username=' + username);
             var _this = this;
-            $('#modal-content form')
+            $('#modal_content form')
                 .live('submit', function(e) {
                 e.preventDefault();
-                var username = $('#modal-content form input[name="username"]')
+                var username = $('#modal_content form input[name="username"]')
                     .val();
-                var accessLevel = $('#modal-content form select[name="access_level"]')
+                var accessLevel = $('#modal_content form select[name="access_level"]')
                     .val();
                 var projects = new Array();
                 $('input:checkbox[name="project"]:checked').each(function(){
@@ -205,14 +205,14 @@
         password: function(username) {
             var _this = this;
             codiad.modal.load(400, this.dialog + '?action=password&username=' + username);
-            $('#modal-content form')
+            $('#modal_content form')
                 .live('submit', function(e) {
                 e.preventDefault();
-                var username = $('#modal-content form input[name="username"]')
+                var username = $('#modal_content form input[name="username"]')
                     .val();
-                var password1 = $('#modal-content form input[name="password1"]')
+                var password1 = $('#modal_content form input[name="password1"]')
                     .val();
-                var password2 = $('#modal-content form input[name="password2"]')
+                var password2 = $('#modal_content form input[name="password2"]')
                     .val();
                 if (password1 != password2) {
                     codiad.message.error(i18n('Passwords Do Not Match'));
