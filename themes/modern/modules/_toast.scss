@@ -1,0 +1,110 @@
+#toast-container {
+    width: 280px;
+    z-index: 99999;
+    position: absolute;
+}
+
+.toast-wrapper {
+    height: auto;
+    background: #333;
+    padding: 5px;
+    font-size: 12px;
+    border: 2px solid #999;
+    display: block;
+    position: relative;
+    margin: 0 0 12px 0;
+    transition: opacity ease-in-out 300ms;
+    opacity: 0;
+}
+
+.toast-active {
+	opacity: 1;
+}
+
+.toast-message {
+    text-align: left;
+    margin: 0 20px;
+    display: inline-block;
+}
+
+.toast-close {
+	font-size: 14px;
+	float: right;
+	cursor: pointer;
+}
+
+.toast-icon {
+	font-size: 14px;
+	float: left;
+}
+
+.toast-icon.fa-check-circle {
+    color: limegreen;
+}
+
+.toast-icon.fa-info-circle {
+    color: aqua;
+}
+
+.toast-icon.fa-exclamation-triangle {
+    color: orange;
+}
+
+.toast-icon.fa-exclamation-circle {
+    color: red;
+}
+
+/**
+ * positions
+ *
+ * pattern: toast-position-[value]
+ * where 'value' is the real value of the plugin option 'position'
+ *
+ */
+.toast-position-top-left {
+    position: fixed;
+    left: 20px;
+    top: 20px;
+}
+
+.toast-position-top-center {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    margin-left: -140px;
+}
+
+.toast-position-top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
+.toast-position-middle-left {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    margin-top: -40px;
+}
+
+.toast-position-middle-center {
+    position: fixed;
+    left: 50%;
+    margin-left: -140px;
+    margin-top: -40px;
+    top: 50%;
+}
+
+.toast-position-middle-right {
+    position: fixed;
+    right: 20px;
+    margin-left: -140px;
+    margin-top: -40px;
+    top: 50%;
+}
+
+.toast-position-bottom-right {
+    position: fixed;
+    bottom: 30px;
+    right: 25px;
+}
