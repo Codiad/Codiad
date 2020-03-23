@@ -8,6 +8,6 @@ For more information on the project please check out the **[check out the Wiki](
 
 ## Unmaintained Status
 
-Given its age and number of viable alternatives now available, Codiad is no longer under active maintenance by core contributors. You may use the [issues](https://github.com/Codiad/Codiad/issues) for seeking community help on any ongoing issues, however, the code maintained in this repository is unlikely to be updated.
+Given its age and number of viable alternatives now available, Codiad is no longer under active maintenance by core contributors. You may use the [issues](https://github.com/Codiad/Codiad/issues) for seeking community help on any ongoing issues, however, the code maintained in this repository is unlikely to be updated. [Atheos IDE](https://github.com/Atheos/Atheos) is an alternative which based on Codiad.  
 
 Distributed under the MIT-Style License. See `LICENSE.txt` file for more information.
