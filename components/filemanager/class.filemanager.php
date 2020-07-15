@@ -57,7 +57,7 @@ class Filemanager extends Common
             $this->rel_path .= "/";
         }
         if (!empty($get['query'])) {
-            $this->query = escapeshellarg($get['query']);
+            $this->query = escapeshellcmd($get['query']);
         }
         if (!empty($get['options'])) {
             $this->foptions = $get['options'];
@@ -71,10 +71,10 @@ class Filemanager extends Common
         }
         // Search
         if (!empty($post['search_string'])) {
-            $this->search_string = escapeshellarg($post['search_string']);
+            $this->search_string = escapeshellcmd($post['search_string']);
         }
         if (!empty($post['search_file_type'])) {
-            $this->search_file_type = escapeshellarg($post['search_file_type']);
+            $this->search_file_type = escapeshellcmd($post['search_file_type']);
         }
         // Create
         if (!empty($get['type'])) {
