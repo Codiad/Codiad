@@ -160,7 +160,11 @@ define("WHITEPATHS", BASE_PATH . ",/home");
 $cookie_lifetime = "0";
 
 // TIMEZONE
-date_default_timezone_set("' . $timezone . '");
+try {
+    date_default_timezone_set("' . $timezone . '");
+} catch (Exception $e) {
+    date_default_timezone_set("UTC");
+}
 
 // External Authentification
 //define("AUTH_PATH", "/path/to/customauth.php");
