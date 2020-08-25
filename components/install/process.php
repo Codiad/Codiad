@@ -83,7 +83,7 @@ if (!file_exists($users) && !file_exists($projects) && !file_exists($active)) {
     } else {
         $project_path = $project_name;
     }
-    $timezone = $_POST['timezone'];
+    $timezone = preg_replace('/[^a-zA-Z\/]/', '', $_POST['timezone']);
 
     //////////////////////////////////////////////////////////////////
     // Create Projects files
@@ -160,7 +160,7 @@ define("WHITEPATHS", BASE_PATH . ",/home");
 $cookie_lifetime = "0";
 
 // TIMEZONE
-date_default_timezone_set("' . $_POST['timezone'] . '");
+date_default_timezone_set("' . $timezone . '");
 
 // External Authentification
 //define("AUTH_PATH", "/path/to/customauth.php");
