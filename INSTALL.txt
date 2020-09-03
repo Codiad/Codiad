@@ -4,7 +4,7 @@ CODIAD INSTALLATION
 To install simply place the contents of the system in a web accessible
 folder.
 
-Ensure that the following have write capabilities:
+Ensure that the following have write capabilities: or simply CHMOD 777
 
     /config.php
     /data
