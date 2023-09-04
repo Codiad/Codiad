@@ -1,0 +1,11 @@
+[ { "author" : "daeks",
+    "version": "0.3",
+    "name" : "Diff Viewer",
+    "url" : "https://github.com/daeks/Codiad-DiffViewer.git",
+    "contextmenu" : [{
+        "action" : "codiad.diff.select($('#context-menu').attr('data-path'));",
+        "icon" : "icon-list-add",
+        "applies-to" : "file-only",
+        "title" : "Compare File"
+        }]
+  } ]
