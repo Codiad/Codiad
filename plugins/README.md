@@ -8,4 +8,4 @@ Some majors plugins : test under php 8.1, 8.2 soon.
 * Codiad Deep Linking : link a file to edit it in Codiad *****
 * Diffviewer : hilight diff between 2 files *****
 * Duplicate : quick copy of a file *****
-* #HTMLPreview : Open html file as preview during editing a css file. *****
+* HTMLPreview : Open html file as preview during editing a css file. *****
