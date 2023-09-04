@@ -92,7 +92,8 @@ if (!file_exists($users) && !file_exists($projects) && !file_exists($active)) {
     $project_path = cleanPath($project_path);
 
     if (!isAbsPath($project_path)) {
-        $project_path = str_replace(" ", "_", preg_replace('/[^\w-\.]/', '', $project_path));
+        //$project_path = str_replace(" ", "_", preg_replace('/[^\w-\.]/', '', $project_path));
+		$project_path = str_replace(" ", "_", preg_replace('/[^-\.\w]/', '', $project_path));
         mkdir($workspace . "/" . $project_path);
     } else {
         $project_path = cleanPath($project_path);
