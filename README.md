@@ -9,14 +9,15 @@ For more information on the project please check out the **[check out the Wiki](
 ## SECURITY:
 
 !! DON'T USE THIS APPLICATION ON PUBLIC SERVER !!
-PHP and js scrit have a long carrier.
+
+PHP and js script have a long carrier.
 Use it on local or remote private server.
 
 ## Todo
-*Stress test under php 8.2
-*config.php working on all server
-*better error message
-*new theme
+* Stress test under php 8.2
+* config.php working on all server
+* better error message
+* new theme
 
 ## Unmaintained Status
 
