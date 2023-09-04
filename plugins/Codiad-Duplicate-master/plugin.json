@@ -1,0 +1,11 @@
+[{ "author" : "Andr3as",
+    "version": "0.2.2",
+    "name" : "Duplicate",
+    "url" : "https://github.com/Andr3as/Codiad-Duplicate",
+    "contextmenu" : [{
+        "action" : "codiad.Duplicate.showDialog($('#context-menu').attr('data-path'));",
+        "icon" : "icon-list-add",
+        "applies-to" : "file-only",
+        "title" : "Duplicate"
+    }]
+}]
