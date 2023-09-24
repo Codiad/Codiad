@@ -1,8 +1,13 @@
 *~
 *\#
 *.swp
+# Server
+.ht*
+
 # OS or Editor folders
 ._*
+.DS_Store
+Thumbs.db
 
 # Codiad user spe.
 config.php
