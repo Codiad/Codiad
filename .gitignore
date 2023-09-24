@@ -1,10 +1,14 @@
 *~
 *\#
 *.swp
+# OS or Editor folders
+._*
+
+# Codiad user spe.
 config.php
 data/
 workspace/
-plugins/*
+# plugins/*
 !plugins/README.md
 themes/*
 !themes/default/
