@@ -1,10 +1,19 @@
 *~
 *\#
 *.swp
+# Server
+.ht*
+
+# OS or Editor folders
+._*
+.DS_Store
+Thumbs.db
+
+# Codiad user spe.
 config.php
 data/
 workspace/
-plugins/*
+# plugins/*
 !plugins/README.md
 themes/*
 !themes/default/

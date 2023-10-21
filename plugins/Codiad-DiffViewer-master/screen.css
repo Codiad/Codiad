@@ -1,0 +1,50 @@
+/* Scroll Container */
+.scrollingArea { 
+    height: 450px;
+    width: 800px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Diff Table */
+.diff td {
+  vertical-align : top;
+  white-space    : pre;
+  white-space    : pre-wrap;
+  font-family    : monospace;
+}
+.diff th {
+    background-color: #3b3b3b;
+}
+
+/* Line Stuff */
+.diff .firstcolumns {
+    width: 60px;
+}
+.diff .linenumber {
+    background-color: #1D1D1D;
+    border-left: 1px solid #454445;
+    border-right: 1px solid #454445;
+    border-top: 0;
+    border-bottom: 0;
+}
+.diff .diffUnmodified {
+    border: 0;
+    background-color: #141414;
+}
+.diff .diffDeleted {
+    background-color: #944F4F;
+    border: 0;
+}
+.diff .diffInserted {
+    background-color: #3E7240;
+    border: 0;
+}
+
+/* Bottom Bar */
+.added {
+    color: #3E7240;
+}
+.deleted {
+    color: #944F4F;
+}

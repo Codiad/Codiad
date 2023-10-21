@@ -6,6 +6,19 @@ Codiad was built with simplicity in mind, allowing for fast, interactive develop
 
 For more information on the project please check out the **[check out the Wiki](https://github.com/Codiad/Codiad/wiki)** or **[the Codiad Website](http://www.codiad.com)**
 
+## SECURITY:
+
+!! DON'T USE THIS APPLICATION ON PUBLIC SERVER !!
+
+PHP and js script have a long carrier.
+Use it on local or remote private server.
+
+## Todo
+* Stress test under php 8.2
+* config.php working on all server
+* better error message
+* new theme
+
 ## Unmaintained Status
 
 Given its age and number of viable alternatives now available, Codiad is no longer under active maintenance by core contributors. You may use the [issues](https://github.com/Codiad/Codiad/issues) for seeking community help on any ongoing issues, however, the code maintained in this repository is unlikely to be updated.

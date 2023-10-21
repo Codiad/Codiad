@@ -54,7 +54,11 @@ if (!checkPath($_GET['path'])) {
     //////////////////////////////////////////////////////////////////
 
     $Filemanager = new Filemanager($_GET, $_POST, $_FILES);
-    $Filemanager->project = @$_SESSION['project']['path'];
+	//FV 2.8.6
+    //$Filemanager->project = @$_SESSION['project']['path'];
+    if(isset($_SESSION['project']['path'])){ 
+		$Filemanager->project = @$_SESSION['project']['path']; 
+	}
 
 switch ($action) {
     case 'index':

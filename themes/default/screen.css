@@ -20,7 +20,7 @@
     background-color: #999;
 }
 
-::-webkit-scrollbar-thumb:horizontal {i
+::-webkit-scrollbar-thumb:horizontal {
     width: 5px;
     background-color: #666;
     -webkit-border-radius: 3px;
